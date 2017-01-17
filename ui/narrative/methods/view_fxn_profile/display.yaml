@@ -36,6 +36,20 @@ parameters :
             The Set of Genomes to examine
         long-hint  : |
             The Set of Genomes to examine
+    target_fams :
+        ui-name : |
+            Custom Domains
+        short-hint : |
+            Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
+        long-hint  : |
+            Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
+    heatmap :
+        ui-name : |
+	    Heatmap?
+        short-hint : |
+            Display as heatmap (default: numerical table)
+        long-hint  : |
+            Display as heatmap (default: numerical table)
 
 description : |
     <p>After DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for a Genome Set.</p>

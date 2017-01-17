@@ -21,6 +21,28 @@
             "text_options": {
                 "valid_ws_types": [ "KBaseSearch.GenomeSet" ]
             }
+        },
+        {
+            "id": "target_fams",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": true,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+            }
+        },
+        {
+            "id": "heatmap",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "checkbox",
+            "checkbox_options": {
+	    	"checked_value": "1",
+	    	"unchecked_value": "0"
+            }
         }
     ],
     "behavior": {
@@ -37,6 +59,14 @@
                     "input_parameter": "input_genomeSet_ref",
 		    "target_property": "input_genomeSet_ref",
 		    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter": "target_fams",
+		    "target_property": "target_fams"
+                },
+                {
+                    "input_parameter": "heatmap",
+		    "target_property": "heatmap"
                 }
             ],
             "output_mapping": [
