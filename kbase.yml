@@ -2,7 +2,7 @@ module-name:
     kb_phylogenomics
 
 module-description:
-    A KBase module
+    A KBase module for comparative and phylogenomic visualization analysis
 
 service-language:
     python

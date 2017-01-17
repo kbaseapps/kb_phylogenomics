@@ -12,7 +12,7 @@
     },
     "parameters": [ 
         {
-            "id": "input_genomeSet_ref",
+            "id": "input_genome_ref",
             "optional": false,
             "advanced": false,
             "allow_multiple": false,
