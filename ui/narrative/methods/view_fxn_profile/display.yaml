@@ -45,7 +45,7 @@ parameters :
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
     heatmap :
         ui-name : |
-	    Heatmap?
+	    Heatmap\?
         short-hint : |
             Display as heatmap (default: numerical table)
         long-hint  : |
