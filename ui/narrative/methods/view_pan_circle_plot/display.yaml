@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Viz Pangenome Circle Plot
+name: View Pangenome Circle Plot
 
 tooltip: |
     View a Microbial Pangenome as a Circle Plot
@@ -47,4 +47,4 @@ parameters :
 description : |
     <p>After Pangenome calculation, you can use this method to view the overlapping membership of genes against a base genome.</p>
 
-    <p>Viz Pangenome Circle Plot App written by Dylan Chivian (DCChivian@lbl.gov), using Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>
+    <p>View Pangenome Circle Plot App written by Dylan Chivian (DCChivian@lbl.gov), using Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>

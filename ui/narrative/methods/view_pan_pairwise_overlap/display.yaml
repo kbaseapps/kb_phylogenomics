@@ -47,4 +47,4 @@ parameters :
 description : |
     <p>View the Pangenome overlaps in a pairwise triangle.</p>
 
-    <p>Viz Pangenome Pairwise Overlap App written by Dylan Chivian (DCChivian@lbl.gov), using the Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>
+    <p>View Pangenome Pairwise Overlap App written by Dylan Chivian (DCChivian@lbl.gov), using the Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>

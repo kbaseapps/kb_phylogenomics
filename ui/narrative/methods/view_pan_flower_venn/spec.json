@@ -38,7 +38,7 @@
         "service-mapping": {
             "url": "",
             "name": "kb_phylogenomics",
-            "method": "viz_pan_flower_venn",
+            "method": "view_pan_flower_venn",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",

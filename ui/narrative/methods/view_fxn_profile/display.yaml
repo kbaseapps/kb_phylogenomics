@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Viz Fxn Profile
+name: View Fxn Profile
 
 tooltip: |
     Examine the general functional distribution or specific functional gene families for a Genome Set
@@ -40,4 +40,4 @@ parameters :
 description : |
     <p>After DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for a Genome Set.</p>
 
-    <p>Viz Fxn Profile App written by Dylan Chivian (DCChivian@lbl.gov), using DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>
+    <p>View Fxn Profile App written by Dylan Chivian (DCChivian@lbl.gov), using DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>

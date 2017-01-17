@@ -27,7 +27,7 @@
         "service-mapping": {
             "url": "",
             "name": "kb_phylogenomics",
-            "method": "viz_genome_circle_plot",
+            "method": "view_genome_circle_plot",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",

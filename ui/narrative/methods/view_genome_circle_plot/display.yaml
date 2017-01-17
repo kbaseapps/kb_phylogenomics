@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Viz Genome Circle Plot
+name: View Genome Circle Plot
 
 tooltip: |
     View a Microbial Genome as a Circle Plot
@@ -40,4 +40,4 @@ parameters :
 description : |
     <p>After DomainAnnotation, you can use this method to view the general functional positioning within a Microbial Genome.</p>
 
-    <p>Viz Genome Circle Plot App written by Dylan Chivian (DCChivian@lbl.gov), using DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>
+    <p>View Genome Circle Plot App written by Dylan Chivian (DCChivian@lbl.gov), using DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>

@@ -38,7 +38,7 @@
         "service-mapping": {
             "url": "",
             "name": "kb_phylogenomics",
-            "method": "viz_pan_pairwise_overlap",
+            "method": "view_pan_pairwise_overlap",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",

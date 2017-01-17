@@ -49,7 +49,7 @@
         "service-mapping": {
             "url": "",
             "name": "kb_phylogenomics",
-            "method": "viz_pan_phylo",
+            "method": "view_pan_phylo",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",
