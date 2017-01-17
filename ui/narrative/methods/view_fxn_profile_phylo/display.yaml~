@@ -47,4 +47,5 @@ parameters :
 description : |
     <p>After DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for a Genome Set using the Species Tree as context.</p>
 
-    <p>Viz Fxn Profile Phylo App written by Dylan Chivian (DCChivian@lbl.gov) using DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov) and Species Tree Builder App by Roman Sutormin and Paramvir Dehal (PSDehal@lbl.gov).</p>
+
+    <p>DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>

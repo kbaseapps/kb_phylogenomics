@@ -46,5 +46,4 @@ parameters :
 
 description : |
     <p>View Pangenome as Accumulation plots for Core and Peripheral.</p>
-
-    <p>Viz Pangenome Accumulation App written by Dylan Chivian (DCChivian@lbl.gov), using the Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>
+    <p>Phylogenetic Pangenome App written by Dylan Chivian (DCChivian@lbl.gov), using Trees from the Species Tree builder by Roman Sutormin (RSutormin@lbl.gov) and the Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>

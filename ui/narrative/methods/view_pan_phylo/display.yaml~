@@ -53,5 +53,6 @@ parameters :
 
 description : |
     <p>View the Pangenome in a Phylogenetic Context.</p>
-
     <p>Phylogenetic Pangenome App written by Dylan Chivian (DCChivian@lbl.gov), using Trees from the Species Tree builder by Roman Sutormin (RSutormin@lbl.gov) and Paramvir Dehal (PSDehal@lbl.gov) and the Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>
+
+    <p>DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>

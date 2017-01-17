@@ -27,7 +27,7 @@
         "service-mapping": {
             "url": "",
             "name": "kb_phylogenomics",
-            "method": "viz_fxn_profile",
+            "method": "viz_pan_accumulation_plot",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",

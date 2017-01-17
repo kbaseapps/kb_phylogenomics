@@ -1,14 +1,14 @@
 #
 # define display information
 #
-name: Pan Flower Venn
+name: Pan Pairwise Overlaps
 
 tooltip: |
-    View the Venn Diagram of a Pangenome in a flower shape
+    View the Pairwise Overlaps in a Pangenome
 
 screenshots: []
 
-icon: pan_flower-purple.png
+icon: pan_pairwise-purple.png
 
 #
 # define a set of similar methods that might be useful to the user
@@ -33,9 +33,9 @@ parameters :
         ui-name : |
             Base Genome
         short-hint : |
-            The Genome to use as a base for the Flower Venn
+            The Genome to use as a base
         long-hint  : |
-            The Genome to use as a base for the Flower Venn
+            The Genome to use as a base
     input_pangenome_ref :
         ui-name : |
             Pangenome
@@ -45,6 +45,5 @@ parameters :
             The Pangenome that contains the homolog relationships
 
 description : |
-    <p>View the Pangenome overlaps as a Venn Diagram in a flower shape.</p>
-
-    <p>Viz Pan Flower App written by Dylan Chivian (DCChivian@lbl.gov), using the Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>
+    <p>View the Pangenome overlaps in a pairwise triangle.</p>
+    <p>Phylogenetic Pangenome App written by Dylan Chivian (DCChivian@lbl.gov), using Trees from the Species Tree builder by Roman Sutormin (RSutormin@lbl.gov) and the Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>
