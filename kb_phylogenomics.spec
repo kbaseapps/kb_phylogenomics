@@ -12,6 +12,7 @@ module kb_phylogenomics {
     typedef string workspace_name;
     typedef string data_obj_ref;
     typedef string data_obj_name;
+    typedef int    bool;
 
 
     /* run_DomainAnnotation_Sets()
