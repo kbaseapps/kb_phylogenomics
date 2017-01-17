@@ -34,6 +34,53 @@ module kb_phylogenomics {
         authentication required;
 
 
+    /* view_fxn_profile()
+    **
+    ** show a table/heatmap of general categories or custom gene families for a set of Genomes
+    */
+    typedef structure {
+        workspace_name workspace_name;
+        data_obj_ref   input_genomeSet_ref;
+	/*data_obj_ref   DomainAnnotation_Set;*/
+
+	list<string> target_fams;
+	bool         heatmap;
+    } view_fxn_profile_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } view_fxn_profile_Output;
+
+    funcdef view_fxn_profile(view_fxn_profile_Input params) 
+        returns (view_fxn_profile_Output output) 
+        authentication required;
+
+
+    /* view_fxn_profile_phylo()
+    **
+    ** show a table/heatmap of general categories or custom gene families for a set of Genomes using the species tree
+    */
+    typedef structure {
+        workspace_name workspace_name;
+        data_obj_ref   input_genomeSet_ref;
+	data_obj_ref   input_speciesTree_ref;
+	/*data_obj_ref   DomainAnnotation_Set;*/
+
+	list<string> target_fams;
+	bool         heatmap;
+    } view_fxn_profile_phylo_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } view_fxn_profile_phylo_Output;
+
+    funcdef view_fxn_profile_phylo(view_fxn_profile_phylo_Input params) 
+        returns (view_fxn_profile_phylo_Output output) 
+        authentication required;
+
+
     /* view_genome_circle_plot()
     **
     ** build a circle plot of a microbial genome
@@ -151,47 +198,6 @@ module kb_phylogenomics {
 
     funcdef view_pan_phylo(view_pan_phylo_Input params) 
         returns (view_pan_phylo_Output output) 
-        authentication required;
-
-
-    /* view_fxn_profile()
-    **
-    ** show a table/heatmap of general categories or custom gene families for a set of Genomes
-    */
-    typedef structure {
-        workspace_name workspace_name;
-        data_obj_ref   input_genomeSet_ref;
-	/*data_obj_ref   DomainAnnotation_Set;*/
-    } view_fxn_profile_Input;
-
-    typedef structure {
-        string report_name;
-        string report_ref;
-    } view_fxn_profile_Output;
-
-    funcdef view_fxn_profile(view_fxn_profile_Input params) 
-        returns (view_fxn_profile_Output output) 
-        authentication required;
-
-
-    /* view_fxn_profile_phylo()
-    **
-    ** show a table/heatmap of general categories or custom gene families for a set of Genomes using the species tree
-    */
-    typedef structure {
-        workspace_name workspace_name;
-        data_obj_ref   input_genomeSet_ref;
-	data_obj_ref   input_speciesTree_ref;
-	/*data_obj_ref   DomainAnnotation_Set;*/
-    } view_fxn_profile_phylo_Input;
-
-    typedef structure {
-        string report_name;
-        string report_ref;
-    } view_fxn_profile_phylo_Output;
-
-    funcdef view_fxn_profile_phylo(view_fxn_profile_phylo_Input params) 
-        returns (view_fxn_profile_phylo_Output output) 
         authentication required;
 
 };
