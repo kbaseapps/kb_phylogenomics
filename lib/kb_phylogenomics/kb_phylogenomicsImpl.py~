@@ -1,0 +1,281 @@
+# -*- coding: utf-8 -*-
+#BEGIN_HEADER
+import os
+import sys
+import shutil
+import hashlib
+import subprocess
+import requests
+import re
+import traceback
+import uuid
+from datetime import datetime
+from pprint import pprint, pformat
+
+import numpy as np
+from Bio import SeqIO
+
+from biokbase.workspace.client import Workspace as workspaceService
+from KBaseReport.KBaseReportClient import KBaseReport
+
+from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
+
+#END_HEADER
+
+
+class kb_phylogenomics:
+    '''
+    Module Name:
+    kb_phylogenomics
+
+    Module Description:
+    A KBase module: kb_phylogenomics
+
+This module contains methods for running and visualizing results of phylogenomics and comparative genomics analyses
+    '''
+
+    ######## WARNING FOR GEVENT USERS ####### noqa
+    # Since asynchronous IO can lead to methods - even the same method -
+    # interrupting each other, you must be *very* careful when using global
+    # state. A method could easily clobber the state set by another while
+    # the latter method is running.
+    ######################################### noqa
+    VERSION = "0.0.1"
+    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
+    GIT_COMMIT_HASH = "cc82246a4eb3b07997eee4b37ab8e565497be7a1"
+
+    #BEGIN_CLASS_HEADER
+    #END_CLASS_HEADER
+
+    # config contains contents of config file in a hash or None if it couldn't
+    # be found
+    def __init__(self, config):
+        #BEGIN_CONSTRUCTOR
+        #END_CONSTRUCTOR
+        pass
+
+
+    def run_DomainAnnotation_Sets(self, ctx, params):
+        """
+        :param params: instance of type "run_DomainAnnotation_Sets_Input"
+           (run_DomainAnnotation_Sets() ** ** run the DomainAnnotation App
+           against a GenomeSet) -> structure: parameter "workspace_name" of
+           type "workspace_name" (** Common types), parameter
+           "input_genomeSet_ref" of type "data_obj_ref"
+        :returns: instance of type "run_DomainAnnotation_Sets_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN run_DomainAnnotation_Sets
+        #END run_DomainAnnotation_Sets
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method run_DomainAnnotation_Sets return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def view_fxn_profile(self, ctx, params):
+        """
+        :param params: instance of type "view_fxn_profile_Input"
+           (view_fxn_profile() ** ** show a table/heatmap of general
+           categories or custom gene families for a set of Genomes) ->
+           structure: parameter "workspace_name" of type "workspace_name" (**
+           Common types), parameter "input_genomeSet_ref" of type
+           "data_obj_ref", parameter "target_fams" of list of String,
+           parameter "heatmap" of type "bool"
+        :returns: instance of type "view_fxn_profile_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_fxn_profile
+        #END view_fxn_profile
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_fxn_profile return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def view_fxn_profile_phylo(self, ctx, params):
+        """
+        :param params: instance of type "view_fxn_profile_phylo_Input"
+           (view_fxn_profile_phylo() ** ** show a table/heatmap of general
+           categories or custom gene families for a set of Genomes using the
+           species tree) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter
+           "input_genomeSet_ref" of type "data_obj_ref", parameter
+           "input_speciesTree_ref" of type "data_obj_ref", parameter
+           "target_fams" of list of String, parameter "heatmap" of type "bool"
+        :returns: instance of type "view_fxn_profile_phylo_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_fxn_profile_phylo
+        #END view_fxn_profile_phylo
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_fxn_profile_phylo return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def view_genome_circle_plot(self, ctx, params):
+        """
+        :param params: instance of type "view_genome_circle_plot_Input"
+           (view_genome_circle_plot() ** ** build a circle plot of a
+           microbial genome) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter "input_genome_ref"
+           of type "data_obj_ref"
+        :returns: instance of type "view_genome_circle_plot_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_genome_circle_plot
+        #END view_genome_circle_plot
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_genome_circle_plot return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def view_pan_circle_plot(self, ctx, params):
+        """
+        :param params: instance of type "view_pan_circle_plot_Input"
+           (view_pan_circle_plot() ** ** build a circle plot of a microbial
+           genome with its pangenome members) -> structure: parameter
+           "workspace_name" of type "workspace_name" (** Common types),
+           parameter "input_genome_ref" of type "data_obj_ref", parameter
+           "input_pangenome_ref" of type "data_obj_ref"
+        :returns: instance of type "view_pan_circle_plot_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_pan_circle_plot
+        #END view_pan_circle_plot
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_pan_circle_plot return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def view_pan_accumulation_plot(self, ctx, params):
+        """
+        :param params: instance of type "view_pan_accumulation_plot_Input"
+           (view_pan_accumulation_plot() ** ** build an accumulation plot of
+           a pangenome) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter "input_genome_ref"
+           of type "data_obj_ref", parameter "input_pangenome_ref" of type
+           "data_obj_ref"
+        :returns: instance of type "view_pan_accumulation_plot_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_pan_accumulation_plot
+        #END view_pan_accumulation_plot
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_pan_accumulation_plot return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def view_pan_flower_venn(self, ctx, params):
+        """
+        :param params: instance of type "view_pan_flower_venn_Input"
+           (view_pan_flower_venn() ** ** build a multi-member pangenome
+           flower venn diagram) -> structure: parameter "workspace_name" of
+           type "workspace_name" (** Common types), parameter
+           "input_genome_ref" of type "data_obj_ref", parameter
+           "input_pangenome_ref" of type "data_obj_ref"
+        :returns: instance of type "view_pan_flower_venn_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_pan_flower_venn
+        #END view_pan_flower_venn
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_pan_flower_venn return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def view_pan_pairwise_overlap(self, ctx, params):
+        """
+        :param params: instance of type "view_pan_pairwise_overlap_Input"
+           (view_pan_pairwise_overlap() ** ** build a multi-member pangenome
+           pairwise overlap plot) -> structure: parameter "workspace_name" of
+           type "workspace_name" (** Common types), parameter
+           "input_genome_ref" of type "data_obj_ref", parameter
+           "input_pangenome_ref" of type "data_obj_ref"
+        :returns: instance of type "view_pan_pairwise_overlap_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_pan_pairwise_overlap
+        #END view_pan_pairwise_overlap
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_pan_pairwise_overlap return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def view_pan_phylo(self, ctx, params):
+        """
+        :param params: instance of type "view_pan_phylo_Input"
+           (view_pan_phylo() ** ** show the pangenome accumulation using a
+           tree) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter "input_genome_ref"
+           of type "data_obj_ref", parameter "input_pangenome_ref" of type
+           "data_obj_ref", parameter "input_speciesTree_ref" of type
+           "data_obj_ref"
+        :returns: instance of type "view_pan_phylo_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_pan_phylo
+        #END view_pan_phylo
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_pan_phylo return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+    def status(self, ctx):
+        #BEGIN_STATUS
+        returnVal = {'state': "OK",
+                     'message': "",
+                     'version': self.VERSION,
+                     'git_url': self.GIT_URL,
+                     'git_commit_hash': self.GIT_COMMIT_HASH}
+        #END_STATUS
+        return [returnVal]
