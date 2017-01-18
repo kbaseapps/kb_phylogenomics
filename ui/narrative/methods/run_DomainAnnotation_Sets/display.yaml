@@ -1,0 +1,43 @@
+#
+# define display information
+#
+name: DomainAnnotation Sets
+
+tooltip: |
+    Run DomainAnnotation on a Genome Set
+
+screenshots: []
+
+icon: domains-red.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_genomeSet_ref :
+        ui-name : |
+            Genome Set
+        short-hint : |
+            The Set of Genomes upon which to run DomainAnnotation
+        long-hint  : |
+            The Set of Genomes upon which to run DomainAnnotation
+
+description : |
+    <p>run DomainAnnotation runs the DomainAnnotation App on all the members of a Genome Set.</p>
+
+    <p>DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>
