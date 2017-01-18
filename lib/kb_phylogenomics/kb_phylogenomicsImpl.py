@@ -146,7 +146,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ### STEP 3: run DomainAnnotation on each genome in set
         try:
 #            daClient = DomainAnnotationClient (url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
-            TEMP_SERVICE_VER='dev'
+            TEMP_SERVICE_VER='beta'
             daClient = DomainAnnotationClient (url=self.callbackURL, token=ctx['token'], service_ver=TEMP_SERVICE_VER)  # SDK Local
             #daClient = DomainAnnotationClient (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
