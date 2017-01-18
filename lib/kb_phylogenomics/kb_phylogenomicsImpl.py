@@ -19,7 +19,7 @@ from Bio import SeqIO
 from biokbase.workspace.client import Workspace as workspaceService
 from KBaseReport.KBaseReportClient import KBaseReport
 
-from DomainAnnotation.DomainAnnotationClient import DomainAnnotationClient
+from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
 #from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
 
 #END_HEADER
@@ -145,10 +145,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         ### STEP 3: run DomainAnnotation on each genome in set
         try:
-#            daClient = DomainAnnotationClient (url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
+#            daClient = DomainAnnotation (url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
             TEMP_SERVICE_VER='beta'
-            daClient = DomainAnnotationClient (url=self.callbackURL, token=ctx['token'], service_ver=TEMP_SERVICE_VER)  # SDK Local
-            #daClient = DomainAnnotationClient (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
+            daClient = DomainAnnotation (url=self.callbackURL, token=ctx['token'], service_ver=TEMP_SERVICE_VER)  # SDK Local
+            #daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
             raise ValueError ("unable to instantiate DomainAnnotationClient")
 
