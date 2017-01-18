@@ -140,7 +140,7 @@ This module contains methods for running and visualizing results of phylogenomic
         genome_ids = genomeSet_obj['elements'].keys()
         genome_refs = []
         for genome_id in genome_ids:
-            genome_refs.append (genome_set_obj['elements'][genome_id])
+            genome_refs.append (genomeSet_obj['elements'][genome_id])
 
 
         ### STEP 3: run DomainAnnotation on each genome in set
