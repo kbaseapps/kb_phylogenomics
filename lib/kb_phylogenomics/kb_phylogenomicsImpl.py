@@ -19,7 +19,7 @@ from Bio import SeqIO
 from biokbase.workspace.client import Workspace as workspaceService
 from KBaseReport.KBaseReportClient import KBaseReport
 
-from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
+from DomainAnnotation.DomainAnnotationClient import DomainAnnotationClient
 #from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
 
 #END_HEADER
