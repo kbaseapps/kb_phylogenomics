@@ -9,7 +9,7 @@ RUN curl https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -
     export PATH=~/anaconda_ete/bin:$PATH
 
 # Install ETE
-RUN ~/anaconda_ete/conda install -c etetoolkit ete3 ete3_external_apps && \
+RUN ~/anaconda_ete/bin/conda install -c etetoolkit ete3 ete3_external_apps && \
     ete3 version && \
     ete3 build check && \
     export PATH=~/anaconda_ete/bin:$PATH
