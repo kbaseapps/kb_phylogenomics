@@ -4,14 +4,14 @@ MAINTAINER KBase Developer
 
 # Install Minconda  (you can ignore this step if you already have Anaconda/Miniconda)
 ##wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O Miniconda-latest-Linux-x86_64.sh
-RUN curl http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -o Miniconda-latest-Linux-x86_64.sh
-RUN bash Miniconda-latest-Linux-x86_64.sh -b -p ~/anaconda_ete/
-RUN export PATH=~/anaconda_ete/bin:$PATH
+RUN curl https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -o Miniconda2-latest-Linux-x86_64.sh && \
+    bash Miniconda2-latest-Linux-x86_64.sh -b -p ~/anaconda_ete/ && \
+    export PATH=~/anaconda_ete/bin:$PATH
 
 # Install ETE
 RUN conda install -c etetoolkit ete3 ete3_external_apps && \
-#    ete3 version && \
-#    ete3 build check && \
+    ete3 version && \
+    ete3 build check && \
     export PATH=~/anaconda_ete/bin:$PATH
 
 
