@@ -71,7 +71,6 @@ class kb_phylogenomics(object):
            categories or custom gene families for a set of Genomes using the
            species tree) -> structure: parameter "workspace_name" of type
            "workspace_name" (** Common types), parameter
-           "input_genomeSet_ref" of type "data_obj_ref", parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "target_fams" of list of String, parameter "heatmap" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->

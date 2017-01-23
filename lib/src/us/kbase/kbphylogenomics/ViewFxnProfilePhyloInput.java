@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "workspace_name",
-    "input_genomeSet_ref",
     "input_speciesTree_ref",
     "target_fams",
     "heatmap"
@@ -34,8 +33,6 @@ public class ViewFxnProfilePhyloInput {
 
     @JsonProperty("workspace_name")
     private java.lang.String workspaceName;
-    @JsonProperty("input_genomeSet_ref")
-    private java.lang.String inputGenomeSetRef;
     @JsonProperty("input_speciesTree_ref")
     private java.lang.String inputSpeciesTreeRef;
     @JsonProperty("target_fams")
@@ -56,21 +53,6 @@ public class ViewFxnProfilePhyloInput {
 
     public ViewFxnProfilePhyloInput withWorkspaceName(java.lang.String workspaceName) {
         this.workspaceName = workspaceName;
-        return this;
-    }
-
-    @JsonProperty("input_genomeSet_ref")
-    public java.lang.String getInputGenomeSetRef() {
-        return inputGenomeSetRef;
-    }
-
-    @JsonProperty("input_genomeSet_ref")
-    public void setInputGenomeSetRef(java.lang.String inputGenomeSetRef) {
-        this.inputGenomeSetRef = inputGenomeSetRef;
-    }
-
-    public ViewFxnProfilePhyloInput withInputGenomeSetRef(java.lang.String inputGenomeSetRef) {
-        this.inputGenomeSetRef = inputGenomeSetRef;
         return this;
     }
 
@@ -131,7 +113,7 @@ public class ViewFxnProfilePhyloInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", targetFams=")+ targetFams)+", heatmap=")+ heatmap)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", targetFams=")+ targetFams)+", heatmap=")+ heatmap)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

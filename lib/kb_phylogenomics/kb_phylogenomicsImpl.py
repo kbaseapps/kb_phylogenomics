@@ -44,7 +44,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "cc82246a4eb3b07997eee4b37ab8e565497be7a1"
+    GIT_COMMIT_HASH = "f781cac5982d643350d79f32d31b51c8735f157a"
 
     #BEGIN_CLASS_HEADER
 
@@ -227,7 +227,6 @@ This module contains methods for running and visualizing results of phylogenomic
            categories or custom gene families for a set of Genomes using the
            species tree) -> structure: parameter "workspace_name" of type
            "workspace_name" (** Common types), parameter
-           "input_genomeSet_ref" of type "data_obj_ref", parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "target_fams" of list of String, parameter "heatmap" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
