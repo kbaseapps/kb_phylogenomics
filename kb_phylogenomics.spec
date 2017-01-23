@@ -64,7 +64,7 @@ module kb_phylogenomics {
     */
     typedef structure {
         workspace_name workspace_name;
-        data_obj_ref   input_genomeSet_ref;
+        /*data_obj_ref   input_genomeSet_ref;*/
 	data_obj_ref   input_speciesTree_ref;
 	/*data_obj_ref   DomainAnnotation_Set;*/
 
