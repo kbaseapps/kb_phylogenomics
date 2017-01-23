@@ -29,20 +29,13 @@ suggestions:
 # Configure the display and description of parameters
 #
 parameters :
-    input_genomeSet_ref :
-        ui-name : |
-            Genome Set
-        short-hint : |
-            The Set of Genomes to examine
-        long-hint  : |
-            The Set of Genomes to examine
     input_speciesTree_ref :
         ui-name : |
             Species Tree
         short-hint : |
-            The Species Tree associated with the Genome Set
+            The Species Tree for which you wish to examine the functional complement
         long-hint  : |
-            The Species Tree associated with the Genome Set
+            The Species Tree for which you wish to examine the functional complement
     target_fams :
         ui-name : |
             Custom Domains

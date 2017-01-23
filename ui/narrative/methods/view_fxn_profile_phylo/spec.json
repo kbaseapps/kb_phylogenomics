@@ -5,23 +5,12 @@
     ],
     "contact": "",
     "visible": true,
-    "categories": ["inactive", "comparative_genomics"],
+    "categories": ["active", "comparative_genomics"],
     "widgets": {
         "input": null,
         "output": "no-display"
     },
     "parameters": [ 
-        {
-            "id": "input_genomeSet_ref",
-            "optional": false,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": [ "KBaseSearch.GenomeSet" ]
-            }
-        },
         {
             "id": "input_speciesTree_ref",
             "optional": false,
@@ -65,11 +54,6 @@
                 {
                     "narrative_system_variable": "workspace",
                     "target_property": "workspace_name"
-                },
-                {
-                    "input_parameter": "input_genomeSet_ref",
-		    "target_property": "input_genomeSet_ref",
-		    "target_type_transform": "resolved-ref"
                 },
                 {
                     "input_parameter": "input_speciesTree_ref",
