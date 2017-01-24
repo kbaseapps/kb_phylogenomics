@@ -314,7 +314,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<tr>']
         html_report_lines += ['<td>SPECIES TREE</td>']
         for fam in fams:
-            html_report_lines += ['<td><font color="'+graph_color+'" size='+graph_fontsize='>'+graph_char+'</font></td>']
+            html_report_lines += ['<td><font color="'+graph_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
         html_report_lines += ['</tr>']
         
         html_report_lines += ['</table>']
