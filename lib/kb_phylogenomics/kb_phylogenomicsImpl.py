@@ -20,7 +20,7 @@ from biokbase.workspace.client import Workspace as workspaceService
 from KBaseReport.KBaseReportClient import KBaseReport
 
 from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
-from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
+#from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
 
 #END_HEADER
 
@@ -211,6 +211,131 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN view_fxn_profile
+        console = []
+        self.log(console, 'Running view_fxn_profile_phylo(): ')
+        self.log(console, "\n"+pformat(params))
+
+        token = ctx['token']
+        wsClient = workspaceService(self.workspaceURL, token=token)
+        headers = {'Authorization': 'OAuth '+token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+
+        # param checks
+        required_params = ['input_speciesTree_ref'
+                          ]
+# DEBUG 
+#        for arg in required_params:
+#            if arg not in params or params[arg] == None or params[arg] == '':
+#                raise ValueError ("Must define required param: '"+arg+"'")
+
+        # load provenance
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        provenance[0]['input_ws_objects']=[str(params['input_speciesTree_ref'])]
+
+
+        # set the output path
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
+        output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        format = 'png'
+        output_tree_img_file_path = os.path.join(output_dir, 'tree.'+format);
+
+
+        # configure fams
+        fams = ['A', 'B', 'C', 'PF00007']
+        genome_ids = ['spree', 'smarties', 'skittles', 'rolos', 'butterfinger', 'milky way', 'snickers', 'skor', 'heath bar', 'starburst']
+
+        # create figures
+        newick_str = "(A:1,(B:1,(E:1,D:1):0.5):0.5);"
+
+
+        phyloplot = PhyloPlotUtil (self.config)
+        phyloplot.write_tree_to_file (newick_str, output_tree_img_file_path, 200, format)
+
+        
+        # build report
+        #
+        reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
+        reportObj = {'objects_created': [],
+                     #'text_message': '',  # or is it 'message'?
+                     'message': '',  # or is it 'text_message'?
+                     'direct_html': '',
+                     'direct_html_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+                     }
+
+
+        # build html report
+        sp = '&nbsp;'
+        text_color = "#606060"
+        graph_color = "lightblue"
+        #graph_width = 100
+        graph_char = "."
+        graph_fontsize = "-2"
+        #row_spacing = "-2"
+        num_rows = len(genome_ids)
+
+        html_report_lines = []
+        html_report_lines += ['<html>']
+        html_report_lines += ['<body bgcolor="white">']
+
+        # header
+        html_report_lines += ['<table cellpadding=10 cellspacing=10 border=1>']
+        html_report_lines += ['<tr><td valign=bottom><font color="'+text_color+'"><b>Species Tree</b></font></td>']
+        for fam in fams:
+            html_report_lines += ['<td valign=bottom><font color="'+text_color+'"><b>']
+            for c_i,c in enumerate(fam):
+                if c_i < len(fam)-1:
+                    html_report_lines += [c+'<br>']
+                else:
+                    html_report_lines += [c]
+            html_report_lines += ['</b></font></td>']
+        html_report_lines += ['</tr>']
+
+        # first row
+        html_report_lines += ['<tr>']
+        html_report_lines += ['<td rowspan='+str(num_rows)+'><img src="'+output_tree_img_file_path+'"></td>']
+        genome_id = genome_ids[0]
+        for fam in fams:
+            cell_color = graph_color
+            html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
+        html_report_lines += ['</tr>']
+
+        # rest of rows
+        for genome_i,genome_id in enumerate(genome_ids):
+            if genome_i == 0:
+                continue
+            html_report_lines += ['<tr>']
+            for fam in fams:
+                cell_color = graph_color
+                html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
+            html_report_lines += ['</tr>']
+        
+        html_report_lines += ['</table>']
+        html_report_lines += ['</body>']
+        html_report_lines += ['</html>']
+
+        reportObj['direct_html'] = "\n".join(html_report_lines)
+
+
+        # save report object
+        #
+        report = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
+        report_info = report.create_extended_report(reportObj)
+
+        output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
+
         #END view_fxn_profile
 
         # At some point might do deeper type checking...
