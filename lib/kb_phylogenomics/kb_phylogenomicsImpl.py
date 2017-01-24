@@ -252,9 +252,10 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['input_speciesTree_ref'
                           ]
-        for arg in required_params:
-            if arg not in params or params[arg] == None or params[arg] == '':
-                raise ValueError ("Must define required param: '"+arg+"'")
+# DEBUG 
+#        for arg in required_params:
+#            if arg not in params or params[arg] == None or params[arg] == '':
+#                raise ValueError ("Must define required param: '"+arg+"'")
 
         # load provenance
         provenance = [{}]
