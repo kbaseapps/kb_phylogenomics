@@ -11,8 +11,9 @@ RUN export PATH=~/anaconda_ete/bin:$PATH
 # Install ETE
 RUN ~/anaconda_ete/bin/conda install -c etetoolkit ete3 ete3_external_apps
 RUN export PATH=~/anaconda_ete/bin:$PATH
-RUN ~/anaconda_ete/bin/ete3 version && \
-    ~/anaconda_ete/bin/ete3 build check
+RUN ~/anaconda_ete/bin/ete3 version
+RUN ~/anaconda_ete/bin/ete3 build check
+RUN export PATH=~/anaconda_ete/bin:$PATH
 
 
 # RUN apt-get update
