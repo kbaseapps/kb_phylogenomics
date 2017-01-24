@@ -303,8 +303,11 @@ This module contains methods for running and visualizing results of phylogenomic
         # header
         html_report_lines += ['<table cellpadding=0 cellspacing=0 border=0>']
         html_report_lines += ['<tr><td><font color="'+text_color+'"><b>Species Tree</b></font></td>']
-#        for fam in fams:
-#            html_report_lines += [<td><font color="'+text_color+'"><b>fam</b></font></td>']
+        for fam in fams:
+            html_report_lines += ['<td><font color="'+text_color+'"><b>']
+            for c in fam:
+                html_report_lines += [c+'<br>']
+            html_report_lines += ['</b></font></td>']
         html_report_lines += ['</tr>']
 
         # figure
