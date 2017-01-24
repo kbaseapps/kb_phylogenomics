@@ -20,7 +20,7 @@ from biokbase.workspace.client import Workspace as workspaceService
 from KBaseReport.KBaseReportClient import KBaseReport
 
 from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
-#from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
+from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
 
 #END_HEADER
 
@@ -264,13 +264,25 @@ This module contains methods for running and visualizing results of phylogenomic
         provenance[0]['input_ws_objects']=[str(params['input_speciesTree_ref'])]
 
 
+        # set the output path
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
+        output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        format = 'png'
+        output_tree_img_file_path = os.path.join(output_dir, 'tree.'+format);
+
 
         # configure fams
         fams = ['A', 'B', 'C', 'PF00007']
         genome_ids = ['spree', 'smarties', 'skittles', 'rolos', 'butterfinger', 'milky way', 'snickers', 'skor', 'heath bar', 'starburst']
 
         # create figures
+        newick_str = "(A:1,(B:1,(E:1,D:1):0.5):0.5);"
 
+
+        phyloplot = PhyloPlotUtil (self.config)
+        phyloplot.write_tree_to_file (newick_str, output_tree_img_file_path, 200, format)
 
         
         # build report
@@ -317,7 +329,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # first row
         html_report_lines += ['<tr>']
-        html_report_lines += ['<td rowspan='+str(num_rows)+'>SPECIES TREE</td>']
+        html_report_lines += ['<td rowspan='+str(num_rows)+'><img src="'+output_tree_img_file_path+'"></td>']
         genome_id = genome_ids[0]
         for fam in fams:
             cell_color = graph_color
@@ -331,7 +343,7 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<tr>']
             for fam in fams:
                 cell_color = graph_color
-                html_report_lines += ['<td><font color="'+cell_color+'" size='+cell_fontsize+'>'+graph_char+'</font></td>']
+                html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
             html_report_lines += ['</tr>']
         
         html_report_lines += ['</table>']
