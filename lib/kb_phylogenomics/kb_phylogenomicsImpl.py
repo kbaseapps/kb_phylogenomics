@@ -290,7 +290,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # build html report
         sp = '&nbsp;'
         text_color = "#606060"
-        #graph_color = "lightblue"
+        graph_color = "lightblue"
         #graph_width = 100
         graph_char = "."
         graph_fontsize = "-2"
