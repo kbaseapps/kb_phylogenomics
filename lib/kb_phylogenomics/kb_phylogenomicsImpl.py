@@ -212,7 +212,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # return variables are: output
         #BEGIN view_fxn_profile
         console = []
-        self.log(console, 'Running view_fxn_profile_phylo(): ')
+        self.log(console, 'Running view_fxn_profile(): ')
         self.log(console, "\n"+pformat(params))
 
         token = ctx['token']
@@ -225,18 +225,18 @@ This module contains methods for running and visualizing results of phylogenomic
         SERVICE_VER = 'release'
 
         # param checks
-        required_params = ['input_speciesTree_ref'
+        required_params = ['input_genomeSet_ref'
                           ]
-# DEBUG 
-#        for arg in required_params:
-#            if arg not in params or params[arg] == None or params[arg] == '':
-#                raise ValueError ("Must define required param: '"+arg+"'")
+
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError ("Must define required param: '"+arg+"'")
 
         # load provenance
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
-        provenance[0]['input_ws_objects']=[str(params['input_speciesTree_ref'])]
+        provenance[0]['input_ws_objects']=[str(params['input_genomeSet_ref'])]
 
 
         # set the output path
@@ -244,20 +244,11 @@ This module contains methods for running and visualizing results of phylogenomic
         output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        format = 'png'
-        output_tree_img_file_path = os.path.join(output_dir, 'tree.'+format);
 
 
         # configure fams
         fams = ['A', 'B', 'C', 'PF00007']
         genome_ids = ['spree', 'smarties', 'skittles', 'rolos', 'butterfinger', 'milky way', 'snickers', 'skor', 'heath bar', 'starburst']
-
-        # create figures
-        newick_str = "(A:1,(B:1,(E:1,D:1):0.5):0.5);"
-
-
-        phyloplot = PhyloPlotUtil (self.config)
-        phyloplot.write_tree_to_file (newick_str, output_tree_img_file_path, 200, format)
 
         
         # build report
@@ -291,7 +282,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # header
         html_report_lines += ['<table cellpadding=10 cellspacing=10 border=1>']
-        html_report_lines += ['<tr><td valign=bottom><font color="'+text_color+'"><b>Species Tree</b></font></td>']
+        html_report_lines += ['<tr><td valign=bottom><font color="'+text_color+'"><b>Genomes</b></font></td>']
         for fam in fams:
             html_report_lines += ['<td valign=bottom><font color="'+text_color+'"><b>']
             for c_i,c in enumerate(fam):
@@ -302,23 +293,14 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['</b></font></td>']
         html_report_lines += ['</tr>']
 
-        # first row
-        html_report_lines += ['<tr>']
-        html_report_lines += ['<td rowspan='+str(num_rows)+'><img src="'+output_tree_img_file_path+'"></td>']
-        genome_id = genome_ids[0]
-        for fam in fams:
-            cell_color = graph_color
-            html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
-        html_report_lines += ['</tr>']
-
         # rest of rows
         for genome_i,genome_id in enumerate(genome_ids):
-            if genome_i == 0:
-                continue
             html_report_lines += ['<tr>']
+            html_report_lines += ['<td align=right><font color="'+text_color+'">'+genome_id+'</font></td>']
             for fam in fams:
                 cell_color = graph_color
-                html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
+                cell_val = "88%"
+                html_report_lines += ['<td title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
             html_report_lines += ['</tr>']
         
         html_report_lines += ['</table>']
