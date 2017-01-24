@@ -1,3 +1,6 @@
+import os
+
+os.environ['PATH'] = '/root/anaconda_ete/bin:'+os.environ['PATH']
 from ete3 import Tree
 
 class PhyloPlotUtil:
