@@ -8,7 +8,7 @@
     "categories": ["active", "comparative_genomics"],
     "widgets": {
         "input": null,
-        "output": "KBaseReport"
+        "output": "no-display"
     },
     "parameters": [ 
         {
