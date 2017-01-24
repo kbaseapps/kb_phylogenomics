@@ -267,6 +267,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # configure fams
         fams = ['A', 'B', 'C', 'PF00007']
+        genome_ids = ['spree', 'smarties', 'skittles', 'rolos', 'butterfinger', 'milky way', 'snickers', 'skor', 'heath bar', 'starburst']
 
         # create figures
         # HERE
@@ -295,13 +296,14 @@ This module contains methods for running and visualizing results of phylogenomic
         graph_char = "."
         graph_fontsize = "-2"
         #row_spacing = "-2"
+        num_rows = len(genome_ids)
 
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<body bgcolor="white">']
 
         # header
-        html_report_lines += ['<table cellpadding=10 cellspacing=10 border=0>']
+        html_report_lines += ['<table cellpadding=10 cellspacing=10 border=1>']
         html_report_lines += ['<tr><td><font color="'+text_color+'"><b>Species Tree</b></font></td>']
         for fam in fams:
             html_report_lines += ['<td><font color="'+text_color+'"><b>']
@@ -312,10 +314,25 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # figure
         html_report_lines += ['<tr>']
-        html_report_lines += ['<td>SPECIES TREE</td>']
+        html_report_lines += ['<td rowspan='+num_rows+'>SPECIES TREE</td>']
+            for fam in fams:
+                html_report_lines += ['<td><font color="'+graph_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
+                html_report_lines += ['</tr>']
+        
+        # first row
+        genome_id = genome_ids[0]
         for fam in fams:
             html_report_lines += ['<td><font color="'+graph_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
         html_report_lines += ['</tr>']
+
+        # rest of rows
+        for genome_i,genome_id in enumerate(genome_ids):
+            if genome_i == 0:
+                continue
+            html_report_lines += ['<tr>']
+            for fam in fams:
+                html_report_lines += ['<td><font color="'+graph_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
+            html_report_lines += ['</tr>']
         
         html_report_lines += ['</table>']
         html_report_lines += ['</body>']
