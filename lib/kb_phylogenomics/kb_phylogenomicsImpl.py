@@ -304,11 +304,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # header
         html_report_lines += ['<table cellpadding=10 cellspacing=10 border=1>']
-        html_report_lines += ['<tr><td><font color="'+text_color+'"><b>Species Tree</b></font></td>']
+        html_report_lines += ['<tr><td valign=bottom><font color="'+text_color+'"><b>Species Tree</b></font></td>']
         for fam in fams:
-            html_report_lines += ['<td><font color="'+text_color+'"><b>']
-            for c in fam:
-                html_report_lines += [c+'<br>']
+            html_report_lines += ['<td valign=bottom><font color="'+text_color+'"><b>']
+            for c_i,c in enumerate(fam):
+                if c_i < len(fam)-1:
+                    html_report_lines += [c+'<br>']
+                else:
+                    html_report_lines += [c]
             html_report_lines += ['</b></font></td>']
         html_report_lines += ['</tr>']
 
