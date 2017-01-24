@@ -1,0 +1,25 @@
+D	CELLULAR PROCESSES AND SIGNALING	Cell cycle control, cell division, chromosome partitioning
+M	CELLULAR PROCESSES AND SIGNALING	Cell wall/membrane/envelope biogenesis
+N	CELLULAR PROCESSES AND SIGNALING	Cell motility
+O	CELLULAR PROCESSES AND SIGNALING	Post-translational modification, protein turnover, and chaperones
+T	CELLULAR PROCESSES AND SIGNALING	Signal transduction mechanisms
+U	CELLULAR PROCESSES AND SIGNALING	Intracellular trafficking, secretion, and vesicular transport
+V	CELLULAR PROCESSES AND SIGNALING	Defense mechanisms
+W	CELLULAR PROCESSES AND SIGNALING	Extracellular structures
+Y	CELLULAR PROCESSES AND SIGNALING	Nuclear structure
+Z	CELLULAR PROCESSES AND SIGNALING	Cytoskeleton
+A	INFORMATION STORAGE AND PROCESSING	RNA processing and modification
+B	INFORMATION STORAGE AND PROCESSING	Chromatin structure and dynamics
+J	INFORMATION STORAGE AND PROCESSING	Translation, ribosomal structure and biogenesis
+K	INFORMATION STORAGE AND PROCESSING	Transcription
+L	INFORMATION STORAGE AND PROCESSING	Replication, recombination and repair
+C	METABOLISM	Energy production and conversion
+E	METABOLISM	Amino acid transport and metabolism
+F	METABOLISM	Nucleotide transport and metabolism
+G	METABOLISM	Carbohydrate transport and metabolism
+H	METABOLISM	Coenzyme transport and metabolism
+I	METABOLISM	Lipid transport and metabolism
+P	METABOLISM	Inorganic ion transport and metabolism
+Q	METABOLISM	Secondary metabolites biosynthesis, transport, and catabolism
+R	POORLY CHARACTERIZED	  General function prediction only
+S	POORLY CHARACTERIZED	  Function unknown
