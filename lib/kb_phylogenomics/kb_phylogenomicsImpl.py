@@ -272,6 +272,21 @@ This module contains methods for running and visualizing results of phylogenomic
         # HERE
 
         
+        # build report
+        #
+        reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
+        reportObj = {'objects_created': [],
+                     #'text_message': '',  # or is it 'message'?
+                     'message': '',  # or is it 'text_message'?
+                     'direct_html': '',
+                     'direct_html_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+                     }
+
+
         # build html report
         sp = '&nbsp;'
         text_color = "#606060"
@@ -303,21 +318,6 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
 
         reportObj['direct_html'] = "\n".join(html_report_lines)
-
-
-        # build report
-        #
-        reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
-        reportObj = {'objects_created': [],
-                     #'text_message': '',  # or is it 'message'?
-                     'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
-                     'direct_html_index': 0,
-                     'file_links': [],
-                     'html_links': [],
-                     'workspace_name': params['workspace_name'],
-                     'report_object_name': reportName
-                     }
 
 
         # save report object
