@@ -7,13 +7,13 @@ MAINTAINER KBase Developer
 RUN curl https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -o Miniconda2-latest-Linux-x86_64.sh && \
     bash Miniconda2-latest-Linux-x86_64.sh -b -p ~/anaconda_ete/
 RUN export PATH=~/anaconda_ete/bin:$PATH
+RUN echo "export PATH=~/anaconda_ete/bin:$PATH" >> ~/.profile
 
 # Install ETE
 RUN ~/anaconda_ete/bin/conda install -c etetoolkit ete3 ete3_external_apps
-RUN export PATH=~/anaconda_ete/bin:$PATH
 RUN ~/anaconda_ete/bin/ete3 version
-#RUN ~/anaconda_ete/bin/ete3 build check
-RUN export PATH=~/anaconda_ete/bin:$PATH
+RUN ~/anaconda_ete/bin/ete3 build check
+
 
 
 # RUN apt-get update

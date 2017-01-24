@@ -282,7 +282,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # header
         html_report_lines += ['<table cellpadding=10 cellspacing=10 border=1>']
-        html_report_lines += ['<tr><td valign=bottom><font color="'+text_color+'"><b>Genomes</b></font></td>']
+        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
         for fam in fams:
             html_report_lines += ['<td valign=bottom><font color="'+text_color+'"><b>']
             for c_i,c in enumerate(fam):
