@@ -290,18 +290,18 @@ This module contains methods for running and visualizing results of phylogenomic
         # build html report
         sp = '&nbsp;'
         text_color = "#606060"
-        bar_color = "lightblue"
-        bar_width = 100
-        bar_char = "."
-        bar_fontsize = "-2"
-        row_spacing = "-2"
+        #graph_color = "lightblue"
+        #graph_width = 100
+        graph_char = "."
+        graph_fontsize = "-2"
+        #row_spacing = "-2"
 
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<body bgcolor="white">']
 
         # header
-        html_report_lines += ['<table cellpadding=0 cellspacing=0 border=0>']
+        html_report_lines += ['<table cellpadding=10 cellspacing=10 border=0>']
         html_report_lines += ['<tr><td><font color="'+text_color+'"><b>Species Tree</b></font></td>']
         for fam in fams:
             html_report_lines += ['<td><font color="'+text_color+'"><b>']
@@ -313,7 +313,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # figure
         html_report_lines += ['<tr>']
         html_report_lines += ['<td>SPECIES TREE</td>']
-        html_report_lines += ['<td>TABLE</td>']
+        for fam in fams:
+            html_report_lines += ['<td><font color="'+graph_color+'" size='+graph_fontsize='>'+graph_char+'</font></td>']
         html_report_lines += ['</tr>']
         
         html_report_lines += ['</table>']
