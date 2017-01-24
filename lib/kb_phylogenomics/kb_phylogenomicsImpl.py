@@ -261,7 +261,7 @@ This module contains methods for running and visualizing results of phylogenomic
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
-        provenance[0]['input_ws_objects']=[str(input_params['input_speciesTree_ref'])]
+        provenance[0]['input_ws_objects']=[str(params['input_speciesTree_ref'])]
 
 
 
