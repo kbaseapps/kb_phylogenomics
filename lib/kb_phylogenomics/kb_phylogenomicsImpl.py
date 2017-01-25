@@ -265,6 +265,10 @@ This module contains methods for running and visualizing results of phylogenomic
             os.makedirs(output_dir)
 
 
+        # DEBUG
+        self.log(console, "GOT HERE A")
+
+
         # get genome set
         input_ref = params['input_genomeSet_ref']
         try:
@@ -279,7 +283,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # get set obj
         try:
-            genomeSet_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            genomeSet_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
         except:
             raise ValueError ("unable to fetch genomeSet: "+input_ref)
 
@@ -308,8 +312,18 @@ This module contains methods for running and visualizing results of phylogenomic
             if input_obj_type not in accepted_input_types:
                 raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
-            genome_obj_name_by_ref[input_ref] = input_name
+            genome_obj_name_by_ref[genome_ref] = input_name
 
+            try:
+                genome_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            except:
+                raise ValueError ("unable to fetch genome: "+input_ref)
+
+            genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
+
+
+        # DEBUG
+        self.log(console, "GOT HERE B")
 
 # HERE
 
@@ -331,6 +345,9 @@ This module contains methods for running and visualizing results of phylogenomic
                      'report_object_name': reportName
                      }
 
+        # DEBUG
+        self.log(console, "GOT HERE C")
+
 
         # build html report
         sp = '&nbsp;'
@@ -346,6 +363,9 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<html>']
         html_report_lines += ['<body bgcolor="white">']
 
+        # DEBUG
+        self.log(console, "GOT HERE D")
+
         # header
         html_report_lines += ['<table cellpadding=10 cellspacing=10 border=1>']
         html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
@@ -359,11 +379,14 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['</b></font></td>']
         html_report_lines += ['</tr>']
 
+        # DEBUG
+        self.log(console, "GOT HERE E")
+
         # rest of rows
         for genome_ref in enumerate(genome_refs):
-            genome_obj_name = genome_obj_name_by_ref[genome_ref]
+            genome_sci_name = genome_sci_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td align=right><font color="'+text_color+'">'+genome_obj_name+'</font></td>']
+            html_report_lines += ['<td align=right><font color="'+text_color+'">'+genome_sci_name+'</font></td>']
             for fam in fams:
                 cell_color = graph_color
                 cell_val = "88%"
@@ -374,13 +397,14 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
 
+        # DEBUG
+        self.log(console, "GOT HERE F")
+
         reportObj['direct_html'] = "\n".join(html_report_lines)
 
-        # DEBUG
-        self.log(console, "GOT HERE B")
-        output = { 'report_name': 'foo', 'report_ref': 'bar' }
-        return [output]
 
+        # DEBUG
+        self.log(console, "GOT HERE G")
 
 
         # save report object
@@ -389,7 +413,14 @@ This module contains methods for running and visualizing results of phylogenomic
         #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
         report_info = report.create_extended_report(reportObj)
 
+        # DEBUG
+        self.log(console, "GOT HERE H")
+
+
         output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
+
+        # DEBUG
+        self.log(console, "GOT HERE I")
 
         #END view_fxn_profile
 
