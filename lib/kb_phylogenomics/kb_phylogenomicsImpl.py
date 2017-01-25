@@ -246,7 +246,8 @@ This module contains methods for running and visualizing results of phylogenomic
         SERVICE_VER = 'release'
 
         # param checks
-        required_params = ['input_genomeSet_ref'
+        required_params = ['input_genomeSet_ref',
+                           'namespace'
                           ]
 
         for arg in required_params:
@@ -319,12 +320,69 @@ This module contains methods for running and visualizing results of phylogenomic
 
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
 
-# HERE
 
         # configure fams
-        fams = ['A', 'B', 'C', 'PF00007']
+        if params['namespace'] == 'custom':
+            if 'target_fams' not in params or not params['target_fams'] or len(params['target_fams']) ==0:
+                raise ValueError ("Must configure 'target_fams' if namespace == 'custom'")
 
-        
+            target_fams = []
+            for target_fam in params['target_fams']:
+                target_fam = re.sub ("cog", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("PFAM", "PF", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("P-FAM", "PF", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("P_FAM", "PF", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+
+                target_fam = re.sub ("COG-", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("COG_", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("COG ", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("COG ", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("PF-", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("PF_", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("PF ", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("TIGR-", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("TIGR_", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("TIGR ", "COG", target_fam, flags=re.IGNORECASE)
+
+
+                if target_fam.startswith('COG'):
+                    this_namespace = 'COG'
+                    target_fam = re.sub("COG", "", target_fam)
+                    num_id_len = 4
+                elif target_fam.startswith('PF'):
+                    this_namespace = 'PF'
+                    target_fam = re.sub("PF", "", target_fam)
+                    num_id_len = 5
+                elif target_fam.startswith('TIGR'):
+                    this_namespace = 'TIGR'
+                    target_fam = re.sub("TIGR", "", target_fam)
+                    num_id_len = 5
+                else:
+                    raise ValueError ("unrecognized custom domain family: '"+str(target_fam)+"'")
+                leading_zeros = ''
+                for c_i in range(num_id_len - len(str(target_fam))):
+                    leading_zeros += '0'
+
+                target_fam = this_namespace + leading_zeros + target_fam
+
+                target_fams.append(target_fam)
+
+            fams = target_fams
+        elif params['namespace'] == 'COG':
+            raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
+        elif params['namespace'] == 'PFAM':
+            raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
+        elif params['namespace'] == 'TIGRFAM':
+            raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
+        elif params['namespace'] == 'SEED':
+            raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
+        else:
+            raise ValueError ("Unknown namespace: '"+str(params['namespace'])+"'")
+
+
         # build report
         #
         reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
@@ -439,12 +497,12 @@ This module contains methods for running and visualizing results of phylogenomic
         SERVICE_VER = 'release'
 
         # param checks
-        required_params = ['input_speciesTree_ref'
+        required_params = ['input_speciesTree_ref',
+                           'namespace'
                           ]
-# DEBUG 
-#        for arg in required_params:
-#            if arg not in params or params[arg] == None or params[arg] == '':
-#                raise ValueError ("Must define required param: '"+arg+"'")
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError ("Must define required param: '"+arg+"'")
 
         # load provenance
         provenance = [{}]
