@@ -23,7 +23,7 @@
             }
         },
         {
-            "id": "top_level_namespace",
+            "id": "namespace",
             "optional": false,
             "advanced": false,
             "allow_multiple": false,
@@ -145,12 +145,24 @@
 		    "target_type_transform": "resolved-ref"
                 },
                 {
+                    "input_parameter": "namespace",
+		    "target_property": "namespace"
+                },
+                {
                     "input_parameter": "target_fams",
 		    "target_property": "target_fams"
                 },
                 {
+                    "input_parameter": "count_category",
+		    "target_property": "count_category"
+                },
+                {
                     "input_parameter": "heatmap",
 		    "target_property": "heatmap"
+                },
+                {
+                    "input_parameter": "vertical",
+		    "target_property": "vertical"
                 }
             ],
             "output_mapping": [

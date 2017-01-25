@@ -36,6 +36,13 @@ parameters :
             The Species Tree for which you wish to examine the functional complement
         long-hint  : |
             The Species Tree for which you wish to examine the functional complement
+    namespace :
+        ui-name : |
+            Domain Namespace
+        short-hint : |
+            Do top-level analysis or Custom Domain Families?
+        long-hint  : |
+            Do top-level analysis or Custom Domain Families?
     target_fams :
         ui-name : |
             Custom Domains
@@ -43,6 +50,13 @@ parameters :
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
         long-hint  : |
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
+    count_category :
+        ui-name : |
+            Values
+        short-hint : |
+            Calculate numbers as percentages or raw counts
+        long-hint  : |
+            Calculate numbers as percentages or raw counts
     heatmap :
         ui-name : |
             Heatmap?
@@ -50,6 +64,13 @@ parameters :
             Display as heatmap (default: numerical table)
         long-hint  : |
             Display as heatmap (default: numerical table)
+    vertical :
+        ui-name : |
+            Vertical orientation?
+        short-hint : |
+            Show table/heatmap with genomes along vertical and family categories along horizontal
+        long-hint  : |
+            Show table/heatmap with genomes along vertical and family categories along horizontal
 
 description : |
     <p>After DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for a Genome Set using the Species Tree as context.</p>
