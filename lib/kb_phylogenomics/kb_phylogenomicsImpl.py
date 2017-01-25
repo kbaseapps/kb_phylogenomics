@@ -277,16 +277,18 @@ This module contains methods for running and visualizing results of phylogenomic
         if input_obj_type not in accepted_input_types:
             raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
-        # DEBUG
-        self.log(console, "GOT HERE")
-        output = { 'report_name': 'foo', 'report_ref': 'bar' }
-        return [output]
-
         # get set obj
         try:
             genomeSet_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
         except:
             raise ValueError ("unable to fetch genomeSet: "+input_ref)
+
+
+        # DEBUG
+        self.log(console, "GOT HERE")
+        output = { 'report_name': 'foo', 'report_ref': 'bar' }
+        return [output]
+
 
         # get genome refs and object names
         genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
