@@ -140,7 +140,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_id in genome_ids:
             genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
 
-        genome_name_by_ref = dict()
+        genome_obj_name_by_ref = dict()
         for genome_ref in genome_refs:
 
             # get genome object name
@@ -157,7 +157,7 @@ This module contains methods for running and visualizing results of phylogenomic
             if input_obj_type not in accepted_input_types:
                 raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
-            genome_name_by_ref[input_ref] = input_name
+            genome_obj_name_by_ref[input_ref] = input_name
 
 
         ### STEP 3: run DomainAnnotation on each genome in set
@@ -172,7 +172,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # RUN DomainAnnotations
         report_text = ''
         for genome_i,genome_ref in enumerate(genome_refs):
-            genome_obj_name = genome_name_by_ref[genome_ref]
+            genome_obj_name = genome_obj_name_by_ref[genome_ref]
             domains_obj_name = genome_obj_name+'.DomainAnnotation'
             DomainAnnotation_Params = { 'genome_ref': genome_ref,
                                         'dms_ref': 'KBasePublicGeneDomains/All',
@@ -277,6 +277,11 @@ This module contains methods for running and visualizing results of phylogenomic
         if input_obj_type not in accepted_input_types:
             raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
+        # DEBUG
+        self.log(console, "GOT HERE")
+        output = { 'report_name': 'foo', 'report_ref': report_info: 'bar' }
+        return [output]
+
         # get set obj
         try:
             genomeSet_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
@@ -289,7 +294,8 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_id in genome_ids:
             genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
 
-        genome_name_by_ref = dict()
+        genome_obj_name_by_ref = dict()
+        genome_sci_name_by_ref = dict()
         for genome_ref in genome_refs:
 
             # get genome object name
@@ -306,7 +312,7 @@ This module contains methods for running and visualizing results of phylogenomic
             if input_obj_type not in accepted_input_types:
                 raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
-            genome_name_by_ref[input_ref] = input_name
+            genome_obj_name_by_ref[input_ref] = input_name
 
 
 # HERE
@@ -359,9 +365,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # rest of rows
         for genome_ref in enumerate(genome_refs):
-            genome_name = genome_name_by_ref[genome_ref]
+            genome_obj_name = genome_obj_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td align=right><font color="'+text_color+'">'+genome_name+'</font></td>']
+            html_report_lines += ['<td align=right><font color="'+text_color+'">'+genome_obj_name+'</font></td>']
             for fam in fams:
                 cell_color = graph_color
                 cell_val = "88%"
