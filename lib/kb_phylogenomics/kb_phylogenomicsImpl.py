@@ -311,12 +311,6 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_obj_name_by_ref[input_ref] = input_name
 
 
-        # DEBUG
-        self.log(console, "GOT HERE B")
-        output = { 'report_name': 'foo', 'report_ref': 'bar' }
-        return [output]
-
-
 # HERE
 
         # configure fams
@@ -381,6 +375,12 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
 
         reportObj['direct_html'] = "\n".join(html_report_lines)
+
+        # DEBUG
+#        self.log(console, "GOT HERE B")
+#        output = { 'report_name': 'foo', 'report_ref': 'bar' }
+#        return [output]
+
 
 
         # save report object
