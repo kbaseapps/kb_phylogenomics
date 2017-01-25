@@ -383,7 +383,7 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "GOT HERE E")
 
         # rest of rows
-        for genome_ref in enumerate(genome_refs):
+        for genome_ref in genome_refs:
             genome_sci_name = genome_sci_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
             html_report_lines += ['<td align=right><font color="'+text_color+'">'+genome_sci_name+'</font></td>']
