@@ -114,22 +114,18 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         ### STEP 2: build a list of genomes to iterate through
+
+        # get genome set
         input_ref = params['input_genomeSet_ref']
-        input_name = None
-        # check set type
         try:
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-
             input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
             input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
-            input_name = input_obj_info[NAME_I]
-
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-
         accepted_input_types = ["KBaseSearch.GenomeSet" ]
         if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input reads of type '"+input_reads_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
         # get set obj
         try:
@@ -137,10 +133,30 @@ This module contains methods for running and visualizing results of phylogenomic
         except:
             raise ValueError ("unable to fetch genomeSet: "+input_ref)
 
-        genome_ids = genomeSet_obj['elements'].keys()
+        # get genome refs and object names
+        genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
         genome_refs = []
         for genome_id in genome_ids:
-            genome_refs.append (genomeSet_obj['elements'][genome_id])
+            genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
+
+        genome_name_by_ref = dict()
+        for genome_ref in genome_refs:
+
+            # get genome object name
+            input_ref = genome_ref
+            try:
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                input_name = input_obj_info[NAME_I]
+
+            except Exception as e:
+                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+            accepted_input_types = ["KBaseGenomes.Genome" ]
+            if input_obj_type not in accepted_input_types:
+                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+            genome_name_by_ref[input_ref] = input_name
 
 
         ### STEP 3: run DomainAnnotation on each genome in set
@@ -155,12 +171,12 @@ This module contains methods for running and visualizing results of phylogenomic
         # RUN DomainAnnotations
         report_text = ''
         for genome_i,genome_ref in enumerate(genome_refs):
-            genome_id = genome_ids[genome_i]
-            domains_id = genome_id+'.DomainAnnotation'
+            genome_obj_name = genome_name_by_ref[genome_ref]
+            domains_obj_name = genome_obj_name+'.DomainAnnotation'
             DomainAnnotation_Params = { 'genome_ref': genome_ref,
                                         'dms_ref': 'KBasePublicGeneDomains/All',
                                         #'ws': params['workspace_name'],
-                                        'output_result_id': domains_id
+                                        'output_result_id': domains_obj_name
                                       }
             da_retVal = daClient.search_domains (ctx, DomainAnnotation_Params)[0]
             this_output_ref  = da_retVal['output_result_id']
@@ -211,6 +227,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN view_fxn_profile
+
+        ### STEP 0: basic init
         console = []
         self.log(console, 'Running view_fxn_profile(): ')
         self.log(console, "\n"+pformat(params))
@@ -246,9 +264,54 @@ This module contains methods for running and visualizing results of phylogenomic
             os.makedirs(output_dir)
 
 
+        # get genome set
+        input_ref = params['input_genomeSet_ref']
+        try:
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+        accepted_input_types = ["KBaseSearch.GenomeSet" ]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+        # get set obj
+        try:
+            genomeSet_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
+        except:
+            raise ValueError ("unable to fetch genomeSet: "+input_ref)
+
+        # get genome refs and object names
+        genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
+        genome_refs = []
+        for genome_id in genome_ids:
+            genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
+
+        genome_name_by_ref = dict()
+        for genome_ref in genome_refs:
+
+            # get genome object name
+            input_ref = genome_ref
+            try:
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                input_name = input_obj_info[NAME_I]
+
+            except Exception as e:
+                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+            accepted_input_types = ["KBaseGenomes.Genome" ]
+            if input_obj_type not in accepted_input_types:
+                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+            genome_name_by_ref[input_ref] = input_name
+
+
+# HERE
+
         # configure fams
         fams = ['A', 'B', 'C', 'PF00007']
-        genome_ids = ['spree', 'smarties', 'skittles', 'rolos', 'butterfinger', 'milky way', 'snickers', 'skor', 'heath bar', 'starburst']
 
         
         # build report
@@ -274,7 +337,7 @@ This module contains methods for running and visualizing results of phylogenomic
         graph_char = "."
         graph_fontsize = "-2"
         #row_spacing = "-2"
-        num_rows = len(genome_ids)
+        num_rows = len(genome_refs)
 
         html_report_lines = []
         html_report_lines += ['<html>']
@@ -294,9 +357,10 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</tr>']
 
         # rest of rows
-        for genome_i,genome_id in enumerate(genome_ids):
+        for genome_ref in enumerate(genome_refs):
+            genome_name = genome_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td align=right><font color="'+text_color+'">'+genome_id+'</font></td>']
+            html_report_lines += ['<td align=right><font color="'+text_color+'">'+genome_name+'</font></td>']
             for fam in fams:
                 cell_color = graph_color
                 cell_val = "88%"
@@ -343,6 +407,9 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN view_fxn_profile_phylo
+
+
+        ### STEP 0: basic init
         console = []
         self.log(console, 'Running view_fxn_profile_phylo(): ')
         self.log(console, "\n"+pformat(params))
