@@ -23,6 +23,48 @@
             }
         },
         {
+            "id": "top_level_namespace",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "custom" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "custom",
+					"display": "Use Custom Families",
+					"id": "custom",
+					"ui-name": "custom"
+				},
+				{
+					"value": "COG",
+					"display": "COG Functional Categories",
+					"id": "COG",
+					"ui-name": "COG"
+				},
+				{
+					"value": "PFAM",
+					"display": "Pfam A Clans",
+					"id": "PFAM",
+					"ui-name": "PFAM"
+				},
+				{
+					"value": "TIGRFAM",
+					"display": "TIGRFam Roles",
+					"id": "TIGRFAM",
+					"ui-name": "TIGRFAM"
+				},
+				{
+					"value": "SEED",
+					"display": "SEED Roles",
+					"id": "SEED",
+					"ui-name": "SEED"
+				}
+		]
+            }
+        },
+        {
             "id": "target_fams",
             "optional": true,
             "advanced": false,
@@ -33,11 +75,53 @@
             }
         },
         {
+            "id": "count_category",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "perc_annot" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "perc_annot",
+					"display": "percentage of annotated protein-coding genes",
+					"id": "perc_annot",
+					"ui-name": "perc_annot"
+				},
+				{
+					"value": "perc_all",
+					"display": "percentage of all protein-coding genes",
+					"id": "perc_all",
+					"ui-name": "perc_all"
+				},
+				{
+					"value": "raw_count",
+					"display": "raw count of genes",
+					"id": "raw_count",
+					"ui-name": "raw_count"
+				}
+		]
+            }
+        },
+        {
             "id": "heatmap",
             "optional": true,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "0" ],
+            "default_values": [ "1" ],
+            "field_type": "checkbox",
+            "checkbox_options": {
+	    	"checked_value": "1",
+	    	"unchecked_value": "0"
+            }
+        },
+        {
+            "id": "vertical",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "1" ],
             "field_type": "checkbox",
             "checkbox_options": {
 	    	"checked_value": "1",
