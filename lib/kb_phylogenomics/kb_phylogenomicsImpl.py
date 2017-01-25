@@ -279,7 +279,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # DEBUG
         self.log(console, "GOT HERE")
-        output = { 'report_name': 'foo', 'report_ref': report_info: 'bar' }
+        output = { 'report_name': 'foo', 'report_ref': 'bar' }
         return [output]
 
         # get set obj
