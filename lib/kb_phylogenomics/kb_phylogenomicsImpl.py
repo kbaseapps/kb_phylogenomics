@@ -45,7 +45,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "f781cac5982d643350d79f32d31b51c8735f157a"
+    GIT_COMMIT_HASH = "32ac266efa1464d184b99384c7bef34562dcb8f4"
 
     #BEGIN_CLASS_HEADER
 
@@ -220,8 +220,10 @@ This module contains methods for running and visualizing results of phylogenomic
            categories or custom gene families for a set of Genomes) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_genomeSet_ref" of type
-           "data_obj_ref", parameter "target_fams" of list of String,
-           parameter "heatmap" of type "bool"
+           "data_obj_ref", parameter "top_level_namespace" of String,
+           parameter "target_fams" of list of String, parameter
+           "count_category" of String, parameter "heatmap" of type "bool",
+           parameter "vertical" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -263,10 +265,6 @@ This module contains methods for running and visualizing results of phylogenomic
         output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-
-
-        # DEBUG
-        self.log(console, "GOT HERE A")
 
 
         # get genome set
@@ -321,10 +319,6 @@ This module contains methods for running and visualizing results of phylogenomic
 
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
 
-
-        # DEBUG
-        self.log(console, "GOT HERE B")
-
 # HERE
 
         # configure fams
@@ -345,9 +339,6 @@ This module contains methods for running and visualizing results of phylogenomic
                      'report_object_name': reportName
                      }
 
-        # DEBUG
-        self.log(console, "GOT HERE C")
-
 
         # build html report
         sp = '&nbsp;'
@@ -356,6 +347,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #graph_width = 100
         graph_char = "."
         graph_fontsize = "-2"
+        graph_padding = 5
+        graph_spacing = 5
         #row_spacing = "-2"
         num_rows = len(genome_refs)
 
@@ -363,14 +356,11 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<html>']
         html_report_lines += ['<body bgcolor="white">']
 
-        # DEBUG
-        self.log(console, "GOT HERE D")
-
         # header
-        html_report_lines += ['<table cellpadding=10 cellspacing=10 border=1>']
-        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
+        html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border=1>']
+        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'" size='+graph_fontsize+'><b>Genomes</b></font></td>']
         for fam in fams:
-            html_report_lines += ['<td valign=bottom><font color="'+text_color+'"><b>']
+            html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+graph_fontsize+'><b>']
             for c_i,c in enumerate(fam):
                 if c_i < len(fam)-1:
                     html_report_lines += [c+'<br>']
@@ -378,9 +368,6 @@ This module contains methods for running and visualizing results of phylogenomic
                     html_report_lines += [c]
             html_report_lines += ['</b></font></td>']
         html_report_lines += ['</tr>']
-
-        # DEBUG
-        self.log(console, "GOT HERE E")
 
         # rest of rows
         for genome_ref in genome_refs:
@@ -397,14 +384,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
 
-        # DEBUG
-        self.log(console, "GOT HERE F")
-
         reportObj['direct_html'] = "\n".join(html_report_lines)
-
-
-        # DEBUG
-        self.log(console, "GOT HERE G")
 
 
         # save report object
@@ -413,14 +393,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
         report_info = report.create_extended_report(reportObj)
 
-        # DEBUG
-        self.log(console, "GOT HERE H")
-
-
         output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
-
-        # DEBUG
-        self.log(console, "GOT HERE I")
 
         #END view_fxn_profile
 
@@ -439,7 +412,9 @@ This module contains methods for running and visualizing results of phylogenomic
            species tree) -> structure: parameter "workspace_name" of type
            "workspace_name" (** Common types), parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
-           "target_fams" of list of String, parameter "heatmap" of type "bool"
+           "top_level_namespace" of String, parameter "target_fams" of list
+           of String, parameter "count_category" of String, parameter
+           "heatmap" of type "bool", parameter "vertical" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

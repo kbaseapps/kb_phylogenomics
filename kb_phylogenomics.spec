@@ -44,8 +44,11 @@ module kb_phylogenomics {
         data_obj_ref   input_genomeSet_ref;
 	/*data_obj_ref   DomainAnnotation_Set;*/
 
+	string       top_level_namespace;
 	list<string> target_fams;
+	string       count_category;
 	bool         heatmap;
+	bool         vertical;
     } view_fxn_profile_Input;
 
     typedef structure {
@@ -68,8 +71,11 @@ module kb_phylogenomics {
 	data_obj_ref   input_speciesTree_ref;
 	/*data_obj_ref   DomainAnnotation_Set;*/
 
+	string       top_level_namespace;
 	list<string> target_fams;
+	string       count_category;
 	bool         heatmap;
+	bool         vertical;
     } view_fxn_profile_phylo_Input;
 
     typedef structure {

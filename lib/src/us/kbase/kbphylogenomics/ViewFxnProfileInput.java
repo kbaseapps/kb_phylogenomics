@@ -26,8 +26,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "workspace_name",
     "input_genomeSet_ref",
+    "top_level_namespace",
     "target_fams",
-    "heatmap"
+    "count_category",
+    "heatmap",
+    "vertical"
 })
 public class ViewFxnProfileInput {
 
@@ -35,10 +38,16 @@ public class ViewFxnProfileInput {
     private java.lang.String workspaceName;
     @JsonProperty("input_genomeSet_ref")
     private java.lang.String inputGenomeSetRef;
+    @JsonProperty("top_level_namespace")
+    private java.lang.String topLevelNamespace;
     @JsonProperty("target_fams")
     private List<String> targetFams;
+    @JsonProperty("count_category")
+    private java.lang.String countCategory;
     @JsonProperty("heatmap")
     private Long heatmap;
+    @JsonProperty("vertical")
+    private Long vertical;
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     @JsonProperty("workspace_name")
@@ -71,6 +80,21 @@ public class ViewFxnProfileInput {
         return this;
     }
 
+    @JsonProperty("top_level_namespace")
+    public java.lang.String getTopLevelNamespace() {
+        return topLevelNamespace;
+    }
+
+    @JsonProperty("top_level_namespace")
+    public void setTopLevelNamespace(java.lang.String topLevelNamespace) {
+        this.topLevelNamespace = topLevelNamespace;
+    }
+
+    public ViewFxnProfileInput withTopLevelNamespace(java.lang.String topLevelNamespace) {
+        this.topLevelNamespace = topLevelNamespace;
+        return this;
+    }
+
     @JsonProperty("target_fams")
     public List<String> getTargetFams() {
         return targetFams;
@@ -83,6 +107,21 @@ public class ViewFxnProfileInput {
 
     public ViewFxnProfileInput withTargetFams(List<String> targetFams) {
         this.targetFams = targetFams;
+        return this;
+    }
+
+    @JsonProperty("count_category")
+    public java.lang.String getCountCategory() {
+        return countCategory;
+    }
+
+    @JsonProperty("count_category")
+    public void setCountCategory(java.lang.String countCategory) {
+        this.countCategory = countCategory;
+    }
+
+    public ViewFxnProfileInput withCountCategory(java.lang.String countCategory) {
+        this.countCategory = countCategory;
         return this;
     }
 
@@ -101,6 +140,21 @@ public class ViewFxnProfileInput {
         return this;
     }
 
+    @JsonProperty("vertical")
+    public Long getVertical() {
+        return vertical;
+    }
+
+    @JsonProperty("vertical")
+    public void setVertical(Long vertical) {
+        this.vertical = vertical;
+    }
+
+    public ViewFxnProfileInput withVertical(Long vertical) {
+        this.vertical = vertical;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -113,7 +167,7 @@ public class ViewFxnProfileInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", targetFams=")+ targetFams)+", heatmap=")+ heatmap)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", topLevelNamespace=")+ topLevelNamespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
