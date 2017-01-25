@@ -7,6 +7,7 @@ import shutil
 import hashlib
 import subprocess
 import requests
+requests.packages.urllib3.disable_warnings()
 import re
 import traceback
 import uuid
