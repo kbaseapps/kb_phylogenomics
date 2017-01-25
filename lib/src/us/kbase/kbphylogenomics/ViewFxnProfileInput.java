@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "workspace_name",
     "input_genomeSet_ref",
-    "top_level_namespace",
+    "namespace",
     "target_fams",
     "count_category",
     "heatmap",
@@ -38,8 +38,8 @@ public class ViewFxnProfileInput {
     private java.lang.String workspaceName;
     @JsonProperty("input_genomeSet_ref")
     private java.lang.String inputGenomeSetRef;
-    @JsonProperty("top_level_namespace")
-    private java.lang.String topLevelNamespace;
+    @JsonProperty("namespace")
+    private java.lang.String namespace;
     @JsonProperty("target_fams")
     private List<String> targetFams;
     @JsonProperty("count_category")
@@ -80,18 +80,18 @@ public class ViewFxnProfileInput {
         return this;
     }
 
-    @JsonProperty("top_level_namespace")
-    public java.lang.String getTopLevelNamespace() {
-        return topLevelNamespace;
+    @JsonProperty("namespace")
+    public java.lang.String getNamespace() {
+        return namespace;
     }
 
-    @JsonProperty("top_level_namespace")
-    public void setTopLevelNamespace(java.lang.String topLevelNamespace) {
-        this.topLevelNamespace = topLevelNamespace;
+    @JsonProperty("namespace")
+    public void setNamespace(java.lang.String namespace) {
+        this.namespace = namespace;
     }
 
-    public ViewFxnProfileInput withTopLevelNamespace(java.lang.String topLevelNamespace) {
-        this.topLevelNamespace = topLevelNamespace;
+    public ViewFxnProfileInput withNamespace(java.lang.String namespace) {
+        this.namespace = namespace;
         return this;
     }
 
@@ -167,7 +167,7 @@ public class ViewFxnProfileInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", topLevelNamespace=")+ topLevelNamespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

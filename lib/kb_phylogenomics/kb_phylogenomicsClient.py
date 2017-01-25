@@ -55,10 +55,10 @@ class kb_phylogenomics(object):
            categories or custom gene families for a set of Genomes) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_genomeSet_ref" of type
-           "data_obj_ref", parameter "top_level_namespace" of String,
-           parameter "target_fams" of list of String, parameter
-           "count_category" of String, parameter "heatmap" of type "bool",
-           parameter "vertical" of type "bool"
+           "data_obj_ref", parameter "namespace" of String, parameter
+           "target_fams" of list of String, parameter "count_category" of
+           String, parameter "heatmap" of type "bool", parameter "vertical"
+           of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -74,9 +74,9 @@ class kb_phylogenomics(object):
            species tree) -> structure: parameter "workspace_name" of type
            "workspace_name" (** Common types), parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
-           "top_level_namespace" of String, parameter "target_fams" of list
-           of String, parameter "count_category" of String, parameter
-           "heatmap" of type "bool", parameter "vertical" of type "bool"
+           "namespace" of String, parameter "target_fams" of list of String,
+           parameter "count_category" of String, parameter "heatmap" of type
+           "bool", parameter "vertical" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

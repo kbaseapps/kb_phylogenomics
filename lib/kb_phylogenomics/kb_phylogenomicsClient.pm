@@ -225,7 +225,7 @@ $output is a kb_phylogenomics.view_fxn_profile_Output
 view_fxn_profile_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
-	top_level_namespace has a value which is a string
+	namespace has a value which is a string
 	target_fams has a value which is a reference to a list where each element is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
@@ -248,7 +248,7 @@ $output is a kb_phylogenomics.view_fxn_profile_Output
 view_fxn_profile_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
-	top_level_namespace has a value which is a string
+	namespace has a value which is a string
 	target_fams has a value which is a reference to a list where each element is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
@@ -335,7 +335,7 @@ $output is a kb_phylogenomics.view_fxn_profile_phylo_Output
 view_fxn_profile_phylo_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
-	top_level_namespace has a value which is a string
+	namespace has a value which is a string
 	target_fams has a value which is a reference to a list where each element is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
@@ -358,7 +358,7 @@ $output is a kb_phylogenomics.view_fxn_profile_phylo_Output
 view_fxn_profile_phylo_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
-	top_level_namespace has a value which is a string
+	namespace has a value which is a string
 	target_fams has a value which is a reference to a list where each element is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
@@ -1317,7 +1317,7 @@ view_fxn_profile()
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
-top_level_namespace has a value which is a string
+namespace has a value which is a string
 target_fams has a value which is a reference to a list where each element is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
@@ -1332,7 +1332,7 @@ vertical has a value which is a kb_phylogenomics.bool
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
-top_level_namespace has a value which is a string
+namespace has a value which is a string
 target_fams has a value which is a reference to a list where each element is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
@@ -1398,7 +1398,7 @@ view_fxn_profile_phylo()
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
-top_level_namespace has a value which is a string
+namespace has a value which is a string
 target_fams has a value which is a reference to a list where each element is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
@@ -1413,7 +1413,7 @@ vertical has a value which is a kb_phylogenomics.bool
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
-top_level_namespace has a value which is a string
+namespace has a value which is a string
 target_fams has a value which is a reference to a list where each element is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool

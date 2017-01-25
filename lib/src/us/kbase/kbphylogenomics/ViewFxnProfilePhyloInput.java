@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "workspace_name",
     "input_speciesTree_ref",
-    "top_level_namespace",
+    "namespace",
     "target_fams",
     "count_category",
     "heatmap",
@@ -38,8 +38,8 @@ public class ViewFxnProfilePhyloInput {
     private java.lang.String workspaceName;
     @JsonProperty("input_speciesTree_ref")
     private java.lang.String inputSpeciesTreeRef;
-    @JsonProperty("top_level_namespace")
-    private java.lang.String topLevelNamespace;
+    @JsonProperty("namespace")
+    private java.lang.String namespace;
     @JsonProperty("target_fams")
     private List<String> targetFams;
     @JsonProperty("count_category")
@@ -80,18 +80,18 @@ public class ViewFxnProfilePhyloInput {
         return this;
     }
 
-    @JsonProperty("top_level_namespace")
-    public java.lang.String getTopLevelNamespace() {
-        return topLevelNamespace;
+    @JsonProperty("namespace")
+    public java.lang.String getNamespace() {
+        return namespace;
     }
 
-    @JsonProperty("top_level_namespace")
-    public void setTopLevelNamespace(java.lang.String topLevelNamespace) {
-        this.topLevelNamespace = topLevelNamespace;
+    @JsonProperty("namespace")
+    public void setNamespace(java.lang.String namespace) {
+        this.namespace = namespace;
     }
 
-    public ViewFxnProfilePhyloInput withTopLevelNamespace(java.lang.String topLevelNamespace) {
-        this.topLevelNamespace = topLevelNamespace;
+    public ViewFxnProfilePhyloInput withNamespace(java.lang.String namespace) {
+        this.namespace = namespace;
         return this;
     }
 
@@ -167,7 +167,7 @@ public class ViewFxnProfilePhyloInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", topLevelNamespace=")+ topLevelNamespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

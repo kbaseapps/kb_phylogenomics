@@ -45,7 +45,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "32ac266efa1464d184b99384c7bef34562dcb8f4"
+    GIT_COMMIT_HASH = "4720fef9687b8129fbf921361ed8dce86850167d"
 
     #BEGIN_CLASS_HEADER
 
@@ -220,10 +220,10 @@ This module contains methods for running and visualizing results of phylogenomic
            categories or custom gene families for a set of Genomes) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_genomeSet_ref" of type
-           "data_obj_ref", parameter "top_level_namespace" of String,
-           parameter "target_fams" of list of String, parameter
-           "count_category" of String, parameter "heatmap" of type "bool",
-           parameter "vertical" of type "bool"
+           "data_obj_ref", parameter "namespace" of String, parameter
+           "target_fams" of list of String, parameter "count_category" of
+           String, parameter "heatmap" of type "bool", parameter "vertical"
+           of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -412,9 +412,9 @@ This module contains methods for running and visualizing results of phylogenomic
            species tree) -> structure: parameter "workspace_name" of type
            "workspace_name" (** Common types), parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
-           "top_level_namespace" of String, parameter "target_fams" of list
-           of String, parameter "count_category" of String, parameter
-           "heatmap" of type "bool", parameter "vertical" of type "bool"
+           "namespace" of String, parameter "target_fams" of list of String,
+           parameter "count_category" of String, parameter "heatmap" of type
+           "bool", parameter "vertical" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

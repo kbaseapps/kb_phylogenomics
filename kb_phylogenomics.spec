@@ -44,7 +44,7 @@ module kb_phylogenomics {
         data_obj_ref   input_genomeSet_ref;
 	/*data_obj_ref   DomainAnnotation_Set;*/
 
-	string       top_level_namespace;
+	string       namespace;
 	list<string> target_fams;
 	string       count_category;
 	bool         heatmap;
@@ -71,7 +71,7 @@ module kb_phylogenomics {
 	data_obj_ref   input_speciesTree_ref;
 	/*data_obj_ref   DomainAnnotation_Set;*/
 
-	string       top_level_namespace;
+	string       namespace;
 	list<string> target_fams;
 	string       count_category;
 	bool         heatmap;
