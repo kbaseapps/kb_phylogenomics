@@ -284,12 +284,6 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ("unable to fetch genomeSet: "+input_ref)
 
 
-        # DEBUG
-        self.log(console, "GOT HERE")
-        output = { 'report_name': 'foo', 'report_ref': 'bar' }
-        return [output]
-
-
         # get genome refs and object names
         genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
         genome_refs = []
@@ -315,6 +309,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[input_ref] = input_name
+
+
+        # DEBUG
+        self.log(console, "GOT HERE B")
+        output = { 'report_name': 'foo', 'report_ref': 'bar' }
+        return [output]
 
 
 # HERE
