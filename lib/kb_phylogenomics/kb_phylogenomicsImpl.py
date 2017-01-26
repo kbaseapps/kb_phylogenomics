@@ -328,6 +328,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             target_fams = []
             for target_fam in params['target_fams']:
+                self.log("TARGET_FAM BEFORE: '"+str(target_fam)+"'")  # DEBUG
                 target_fam = re.sub ("cog", "COG", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("PFAM", "PF", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("P-FAM", "PF", target_fam, flags=re.IGNORECASE)
@@ -346,7 +347,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 target_fam = re.sub ("TIGR-", "COG", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("TIGR_", "COG", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("TIGR ", "COG", target_fam, flags=re.IGNORECASE)
-
+                self.log("TARGET_FAM AFTER: '"+str(target_fam)+"'")  # DEBUG
 
                 if target_fam.startswith('COG'):
                     this_namespace = 'COG'
@@ -367,6 +368,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     leading_zeros += '0'
 
                 target_fam = this_namespace + leading_zeros + target_fam
+                self.log("TARGET_FAM AFTER2: '"+str(target_fam)+"'")  # DEBUG
 
                 target_fams.append(target_fam)
 
@@ -416,7 +418,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # header
         html_report_lines += ['<table cellpadding='+str(graph_padding)+' cellspacing='+str(graph_spacing)+' border=1>']
-        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'" size='+str(graph_fontsize)+'><b>Genomes</b></font></td>']
+        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
         for fam in fams:
             html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+str(graph_fontsize)+'><b>']
             for c_i,c in enumerate(fam):
@@ -431,7 +433,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             genome_sci_name = genome_sci_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td align=right><font color="'+text_color+'">'+genome_sci_name+'</font></td>']
+            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+str(graph_fontsize)+'>'+genome_sci_name+'</font></td>']
             for fam in fams:
                 cell_color = graph_color
                 cell_val = "88%"
