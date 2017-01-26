@@ -25,8 +25,11 @@ RUN make all
 #RUN echo "export PATH=/kb/module/anaconda_ete/bin:$PATH" >> ~/.bashrc  # WORKS
 
 # Install X11 (for ETE)
-#RUN sudo apt-get -y --fix-missing install xorg openbox
-#RUN echo "/etc/init.d/x11-common start" >> ~/.bashrc
+##RUN sudo apt-get -y --fix-missing install xorg openbox
+##RUN echo "/etc/init.d/x11-common start" >> ~/.bashrc
+##RUN apt-get -y --fix-missing install xserver-xorg
+##RUN echo "/usr/bin/X :0" >> ~/.bashrc
+#RUN apt-get -y --fix-missing install xvfb
 
 # Install ETE
 #RUN /kb/module/anaconda_ete/bin/conda install -c etetoolkit ete3 ete3_external_apps
