@@ -328,7 +328,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             target_fams = []
             for target_fam in params['target_fams']:
-                self.log("TARGET_FAM BEFORE: '"+str(target_fam)+"'")  # DEBUG
+                self.log(console, "TARGET_FAM BEFORE: '"+str(target_fam)+"'")  # DEBUG
                 target_fam = re.sub ("cog", "COG", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("PFAM", "PF", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("P-FAM", "PF", target_fam, flags=re.IGNORECASE)
@@ -347,7 +347,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 target_fam = re.sub ("TIGR-", "COG", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("TIGR_", "COG", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("TIGR ", "COG", target_fam, flags=re.IGNORECASE)
-                self.log("TARGET_FAM AFTER: '"+str(target_fam)+"'")  # DEBUG
+                self.log(console, "TARGET_FAM AFTER: '"+str(target_fam)+"'")  # DEBUG
 
                 if target_fam.startswith('COG'):
                     this_namespace = 'COG'
@@ -368,7 +368,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     leading_zeros += '0'
 
                 target_fam = this_namespace + leading_zeros + target_fam
-                self.log("TARGET_FAM AFTER2: '"+str(target_fam)+"'")  # DEBUG
+                self.log(console, "TARGET_FAM AFTER2: '"+str(target_fam)+"'")  # DEBUG
 
                 target_fams.append(target_fam)
 
