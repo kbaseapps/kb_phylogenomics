@@ -415,10 +415,10 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<body bgcolor="white">']
 
         # header
-        html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border=1>']
-        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'" size='+graph_fontsize+'><b>Genomes</b></font></td>']
+        html_report_lines += ['<table cellpadding='+str(graph_padding)+' cellspacing='+str(graph_spacing)+' border=1>']
+        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'" size='+str(graph_fontsize)+'><b>Genomes</b></font></td>']
         for fam in fams:
-            html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+graph_fontsize+'><b>']
+            html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+str(graph_fontsize)+'><b>']
             for c_i,c in enumerate(fam):
                 if c_i < len(fam)-1:
                     html_report_lines += [c+'<br>']
@@ -435,7 +435,7 @@ This module contains methods for running and visualizing results of phylogenomic
             for fam in fams:
                 cell_color = graph_color
                 cell_val = "88%"
-                html_report_lines += ['<td title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
+                html_report_lines += ['<td title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
             html_report_lines += ['</tr>']
         
         html_report_lines += ['</table>']
@@ -580,7 +580,7 @@ This module contains methods for running and visualizing results of phylogenomic
         genome_id = genome_ids[0]
         for fam in fams:
             cell_color = graph_color
-            html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
+            html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
         html_report_lines += ['</tr>']
 
         # rest of rows
@@ -590,7 +590,7 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<tr>']
             for fam in fams:
                 cell_color = graph_color
-                html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+graph_fontsize+'>'+graph_char+'</font></td>']
+                html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
             html_report_lines += ['</tr>']
         
         html_report_lines += ['</table>']
