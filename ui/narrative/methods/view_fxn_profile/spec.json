@@ -79,10 +79,16 @@
             "optional": true,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "perc_annot" ],
+            "default_values": [ "raw_count" ],
             "field_type": "dropdown",
             "dropdown_options": {
 	    	"options": [
+				{
+					"value": "raw_count",
+					"display": "raw count of genes",
+					"id": "raw_count",
+					"ui-name": "raw_count"
+				},
 				{
 					"value": "perc_annot",
 					"display": "percentage of annotated protein-coding genes",
@@ -94,12 +100,6 @@
 					"display": "percentage of all protein-coding genes",
 					"id": "perc_all",
 					"ui-name": "perc_all"
-				},
-				{
-					"value": "raw_count",
-					"display": "raw count of genes",
-					"id": "raw_count",
-					"ui-name": "raw_count"
 				}
 		]
             }
