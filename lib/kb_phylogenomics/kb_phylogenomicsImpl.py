@@ -417,6 +417,11 @@ This module contains methods for running and visualizing results of phylogenomic
         KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
         KBASE_DOMAINHIT_GENE_STRAND_I    = 3  # not used
         KBASE_DOMAINHIT_GENE_HITS_DICT_I = 4
+        KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J      = 0
+        KBASE_DOMAINHIT_GENE_HITS_DICT_END_J      = 1
+        KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J   = 2
+        KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J = 3
+        KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J  = 4
 
         for ws_id in uniq_genome_ws_ids.keys():
             try:
