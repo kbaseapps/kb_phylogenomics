@@ -410,6 +410,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # capture domain hits to genes within each namespace
         #
+        dom_hits = dict()
         KBASE_DOMAINHIT_GENE_ID_I        = 0
         KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
         KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
