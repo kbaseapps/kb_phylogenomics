@@ -590,7 +590,10 @@ This module contains methods for running and visualizing results of phylogenomic
             graph_cat_fontsize = "-1"
         else:
             graph_cat_fontsize = "1"
-        cell_fontsize = "-2"
+        if graph_cat_fontsize < graph_gen_fontsize:
+            cell_fontsize = graph_cat_fontsize
+        else:
+            cell_fontsize = graph_gen_fontsize
         graph_padding = 5
         graph_spacing = 5
         #row_spacing = "-2"
@@ -625,9 +628,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     cell_val += '%'
 
                 if 'heatmap' in params and params['heatmap'] == 1:
-                    html_report_lines += ['<td title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(cell_fontsize)+'>'+graph_char+'</font></td>']
+                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(cell_fontsize)+'>'+graph_char+'</font></td>']
                 else:
-                    html_report_lines += ['<td><font color="'+text_color+'" size='+str(graph_fontsize)+'>'+str(cell_val)+'</font></td>']
+                    html_report_lines += ['<td align=center valign=middle><font color="'+text_color+'" size='+str(cell_fontsize)+'>'+str(cell_val)+'</font></td>']
 
             html_report_lines += ['</tr>']
         
