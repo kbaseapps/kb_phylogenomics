@@ -580,17 +580,17 @@ This module contains methods for running and visualizing results of phylogenomic
         #graph_width = 100
         graph_char = "."
         if len(genome_refs) > 20:
-            graph_gen_fontsize = "-2"
+            graph_gen_fontsize = "0"
         elif len(genome_refs) > 10:
-            graph_gen_fontsize = "-1"
-        else:
             graph_gen_fontsize = "1"
-        if len(cats) > 30:
-            graph_cat_fontsize = "-2"
-        elif len(cats) > 15:
-            graph_cat_fontsize = "-1"
         else:
+            graph_gen_fontsize = "2"
+        if len(cats) > 30:
+            graph_cat_fontsize = "0"
+        elif len(cats) > 15:
             graph_cat_fontsize = "1"
+        else:
+            graph_cat_fontsize = "2"
         if graph_cat_fontsize < graph_gen_fontsize:
             cell_fontsize = graph_cat_fontsize
         else:
