@@ -578,7 +578,19 @@ This module contains methods for running and visualizing results of phylogenomic
         graph_color = "lightblue"
         #graph_width = 100
         graph_char = "."
-        graph_fontsize = "-2"
+        if len(genome_refs) > 10:
+            graph_gen_fontsize = "-2"
+        elif len(genome_refs) > 5:
+            graph_gen_fontsize = "-1"
+        else:
+            graph_gen_fontsize = "1"
+        if len(cats) > 10:
+            graph_cat_fontsize = "-2"
+        elif len(cats) > 5:
+            graph_cat_fontsize = "-1"
+        else:
+            graph_cat_fontsize = "1"
+        cell_fontsize = "-2"
         graph_padding = 5
         graph_spacing = 5
         #row_spacing = "-2"
@@ -592,7 +604,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<table cellpadding='+str(graph_padding)+' cellspacing='+str(graph_spacing)+' border=1>']
         html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
         for cat in cats:
-            html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+str(graph_fontsize)+'><b>']
+            html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>']
             for c_i,c in enumerate(cat):
                 if c_i < len(cat)-1:
                     html_report_lines += [c+'<br>']
@@ -605,7 +617,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             genome_sci_name = genome_sci_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+str(graph_fontsize)+'>'+genome_sci_name+'</font></td>']
+            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+str(graph_gen_fontsize)+'>'+genome_sci_name+'</font></td>']
             for cat in cats:
                 cell_color = graph_color
                 cell_val = table_data[genome_ref][cat]
@@ -613,7 +625,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     cell_val += '%'
 
                 if 'heatmap' in params and params['heatmap'] == 1:
-                    html_report_lines += ['<td title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
+                    html_report_lines += ['<td title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(cell_fontsize)+'>'+graph_char+'</font></td>']
                 else:
                     html_report_lines += ['<td><font color="'+text_color+'" size='+str(graph_fontsize)+'>'+str(cell_val)+'</font></td>']
 
