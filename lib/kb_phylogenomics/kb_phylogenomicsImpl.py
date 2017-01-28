@@ -609,7 +609,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border=1>']
         html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
         for cat in cats:
-            html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
+            html_report_lines += ['<td valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
             for c_i,c in enumerate(cat):
                 if c_i < len(cat)-1:
                     html_report_lines += [c+'<br>']
@@ -625,9 +625,12 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'>'+genome_sci_name+'</font></td>']
             for cat in cats:
                 cell_color = graph_color  # FIX: this should be a calculation
-                cell_val = str(table_data[genome_ref][cat])
+
                 if params['count_category'].startswith('perc'):
+                    cell_val = str("%.8f"%table_data[genome_ref][cat])
                     cell_val += '%'
+                else:
+                    cell_val = str(table_data[genome_ref][cat])
 
                 if 'heatmap' in params and params['heatmap'] == 1:
                     html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+cell_fontsize+'>'+graph_char+'</font></td>']
