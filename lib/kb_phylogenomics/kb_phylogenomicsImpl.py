@@ -611,7 +611,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<body bgcolor="white">']
 
         # header
-        html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border=1>']
+        html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border=0>']
         html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
         for cat in cats:
             html_report_lines += ['<td valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
