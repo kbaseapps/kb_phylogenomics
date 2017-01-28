@@ -356,6 +356,8 @@ This module contains methods for running and visualizing results of phylogenomic
             target_fams = []
             for target_fam in params['target_fams']:
                 target_fam = re.sub ("cog", "COG", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("pf", "PF", target_fam, flags=re.IGNORECASE)
+                target_fam = re.sub ("tigr", "TIGR", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("PFAM", "PF", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("P-FAM", "PF", target_fam, flags=re.IGNORECASE)
                 target_fam = re.sub ("P_FAM", "PF", target_fam, flags=re.IGNORECASE)
@@ -398,9 +400,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
         elif params['namespace'] == 'COG':
             raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
-        elif params['namespace'] == 'PFAM':
+        elif params['namespace'] == 'PF':
             raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
-        elif params['namespace'] == 'TIGRFAM':
+        elif params['namespace'] == 'TIGR':
             raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
         elif params['namespace'] == 'SEED':
             raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
