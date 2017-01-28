@@ -531,8 +531,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 for cat in cats:
                     namespace = re.sub ('\d+$', '', cat)
                     for gene_name in dom_hits[genome_ref].keys():
-                        if cat in dom_hits[genome_ref][gene_name]:
-                            table_data[genome_ref][cat] += 1
+                        if namespace in dom_hits[genome_ref][gene_name]:
+                            if cat in dom_hits[genome_ref][gene_name][namespace]:
+                                table_data[genome_ref][cat] += 1
 
             # ADD: TOP LEVEL LOGIC HERE
 
@@ -578,15 +579,15 @@ This module contains methods for running and visualizing results of phylogenomic
         graph_color = "lightblue"
         #graph_width = 100
         graph_char = "."
-        if len(genome_refs) > 10:
+        if len(genome_refs) > 20:
             graph_gen_fontsize = "-2"
-        elif len(genome_refs) > 5:
+        elif len(genome_refs) > 10:
             graph_gen_fontsize = "-1"
         else:
             graph_gen_fontsize = "1"
-        if len(cats) > 10:
+        if len(cats) > 30:
             graph_cat_fontsize = "-2"
-        elif len(cats) > 5:
+        elif len(cats) > 15:
             graph_cat_fontsize = "-1"
         else:
             graph_cat_fontsize = "1"
@@ -628,7 +629,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     cell_val += '%'
 
                 if 'heatmap' in params and params['heatmap'] == 1:
-                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(cell_fontsize)+'>'+graph_char+'</font></td>']
+                    html_report_lines += ['<td align=center valign=middle title="'+str(cell_val)+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(cell_fontsize)+'>'+graph_char+'</font></td>']
                 else:
                     html_report_lines += ['<td align=center valign=middle><font color="'+text_color+'" size='+str(cell_fontsize)+'>'+str(cell_val)+'</font></td>']
 
