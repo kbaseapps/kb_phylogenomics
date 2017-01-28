@@ -506,6 +506,9 @@ This module contains methods for running and visualizing results of phylogenomic
                         for namespace in namespace_classes:
                             if dom_hits_by_namespace[namespace]:
                                 genes_with_hits_cnt[genome_ref][namespace] += 1
+
+                                if gene_name not in dom_hits[genome_ref]:
+                                    dom_hits[genome_ref][gene_name] = dict()
                                 
                                 if top_hit_flag:
                                     dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
