@@ -130,6 +130,31 @@
 	    	"checked_value": "1",
 	    	"unchecked_value": "0"
             }
+        },
+        {
+            "id": "top_hit",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "checkbox",
+            "checkbox_options": {
+	    	"checked_value": "1",
+	    	"unchecked_value": "0"
+            }
+        },
+        {
+            "id": "e_value",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "1e-5" ],
+            "field_type": "text",
+            "text_options": {
+	    	"validate_as": "float",
+	    	"min_float": "0.0",
+	    	"max_float": "0.1",
+            }
         }
     ],
     "behavior": {
@@ -166,6 +191,14 @@
                 {
                     "input_parameter": "vertical",
 		    "target_property": "vertical"
+                },
+	        {
+                    "input_parameter": "top_hit",
+		    "target_property": "top_hit"
+                },
+                {
+                    "input_parameter": "e_value",
+		    "target_property": "e_value"
                 }
             ],
             "output_mapping": [

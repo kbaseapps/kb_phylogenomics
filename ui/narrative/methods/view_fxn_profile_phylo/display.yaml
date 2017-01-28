@@ -71,6 +71,20 @@ parameters :
             Show table/heatmap with genomes along vertical and family categories along horizontal
         long-hint  : |
             Show table/heatmap with genomes along vertical and family categories along horizontal
+    top_hit :
+        ui-name : |
+            Top hit only?
+        short-hint : |
+            Count only the top hit within a namespace (e.g. Pfam)
+        long-hint  : |
+            Count only the top hit within a namespace (e.g. Pfam)
+    e_value :
+        ui-name : |
+            E-value lower limit
+        short-hint : |
+            Ignore domain hits below e-value threshold
+        long-hint  : |
+            Ignore domain hits below e-value threshold
 
 description : |
     <p>After DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for a Genome Set using the Species Tree as context.</p>
