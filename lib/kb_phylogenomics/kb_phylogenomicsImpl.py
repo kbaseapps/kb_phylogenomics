@@ -592,12 +592,12 @@ This module contains methods for running and visualizing results of phylogenomic
             graph_cat_fontsize = "2"
         else:
             graph_cat_fontsize = "3"
-        if graph_cat_fontsize < graph_gen_fontsize:
+        if int(graph_cat_fontsize) < int(graph_gen_fontsize):
             cell_fontsize = graph_cat_fontsize
         else:
             cell_fontsize = graph_gen_fontsize
-        graph_padding = 5
-        graph_spacing = 5
+        graph_padding = "5"
+        graph_spacing = "5"
         #row_spacing = "-2"
         num_rows = len(genome_refs)
 
@@ -624,7 +624,7 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<tr>']
             html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'>'+genome_sci_name+'</font></td>']
             for cat in cats:
-                cell_color = graph_color
+                cell_color = graph_color  # FIX: this should be a calculation
                 cell_val = str(table_data[genome_ref][cat])
                 if params['count_category'].startswith('perc'):
                     cell_val += '%'
