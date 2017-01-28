@@ -549,7 +549,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
 
-                    table_data[genome_ref][cat] /= total_genes
+                    table_data[genome_ref][cat] /= float(total_genes)
                     table_data[genome_ref][cat] *= 100.0
 
         # determine high val
