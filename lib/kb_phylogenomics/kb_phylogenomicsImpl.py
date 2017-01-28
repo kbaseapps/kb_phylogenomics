@@ -45,7 +45,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "0f6e8dd93d6f7cb68a6c877a1da3560096a41821"
+    GIT_COMMIT_HASH = "9d31f1f9f8858cdcf713ab0c8f4c5d5fe6f16c68"
 
     #BEGIN_CLASS_HEADER
 
@@ -223,7 +223,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "data_obj_ref", parameter "namespace" of String, parameter
            "target_fams" of list of String, parameter "count_category" of
            String, parameter "heatmap" of type "bool", parameter "vertical"
-           of type "bool"
+           of type "bool", parameter "top_hit" of type "bool", parameter
+           "e_value" of Double
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -573,7 +574,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "namespace" of String, parameter "target_fams" of list of String,
            parameter "count_category" of String, parameter "heatmap" of type
-           "bool", parameter "vertical" of type "bool"
+           "bool", parameter "vertical" of type "bool", parameter "top_hit"
+           of type "bool", parameter "e_value" of Double
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

@@ -30,7 +30,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "target_fams",
     "count_category",
     "heatmap",
-    "vertical"
+    "vertical",
+    "top_hit",
+    "e_value"
 })
 public class ViewFxnProfileInput {
 
@@ -48,6 +50,10 @@ public class ViewFxnProfileInput {
     private Long heatmap;
     @JsonProperty("vertical")
     private Long vertical;
+    @JsonProperty("top_hit")
+    private Long topHit;
+    @JsonProperty("e_value")
+    private Double eValue;
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     @JsonProperty("workspace_name")
@@ -155,6 +161,36 @@ public class ViewFxnProfileInput {
         return this;
     }
 
+    @JsonProperty("top_hit")
+    public Long getTopHit() {
+        return topHit;
+    }
+
+    @JsonProperty("top_hit")
+    public void setTopHit(Long topHit) {
+        this.topHit = topHit;
+    }
+
+    public ViewFxnProfileInput withTopHit(Long topHit) {
+        this.topHit = topHit;
+        return this;
+    }
+
+    @JsonProperty("e_value")
+    public Double getEValue() {
+        return eValue;
+    }
+
+    @JsonProperty("e_value")
+    public void setEValue(Double eValue) {
+        this.eValue = eValue;
+    }
+
+    public ViewFxnProfileInput withEValue(Double eValue) {
+        this.eValue = eValue;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -167,7 +203,7 @@ public class ViewFxnProfileInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

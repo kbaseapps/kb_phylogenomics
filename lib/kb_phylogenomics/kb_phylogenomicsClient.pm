@@ -230,6 +230,8 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
+	top_hit has a value which is a kb_phylogenomics.bool
+	e_value has a value which is a float
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -253,6 +255,8 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
+	top_hit has a value which is a kb_phylogenomics.bool
+	e_value has a value which is a float
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -340,6 +344,8 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
+	top_hit has a value which is a kb_phylogenomics.bool
+	e_value has a value which is a float
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -363,6 +369,8 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
+	top_hit has a value which is a kb_phylogenomics.bool
+	e_value has a value which is a float
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1322,6 +1330,8 @@ target_fams has a value which is a reference to a list where each element is a s
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
+top_hit has a value which is a kb_phylogenomics.bool
+e_value has a value which is a float
 
 </pre>
 
@@ -1337,6 +1347,8 @@ target_fams has a value which is a reference to a list where each element is a s
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
+top_hit has a value which is a kb_phylogenomics.bool
+e_value has a value which is a float
 
 
 =end text
@@ -1403,6 +1415,8 @@ target_fams has a value which is a reference to a list where each element is a s
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
+top_hit has a value which is a kb_phylogenomics.bool
+e_value has a value which is a float
 
 </pre>
 
@@ -1418,6 +1432,8 @@ target_fams has a value which is a reference to a list where each element is a s
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
+top_hit has a value which is a kb_phylogenomics.bool
+e_value has a value which is a float
 
 
 =end text
