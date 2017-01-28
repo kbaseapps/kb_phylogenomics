@@ -246,6 +246,16 @@ This module contains methods for running and visualizing results of phylogenomic
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
 
+        # base config
+        namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
+        e_value_thresh = None
+        if 'e_value' in params and params['e_value'] != None and params['e_value'] != '':
+            e_value_thresh = float (params['e_value'])
+        top_hit_flag = False
+        if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
+            top_hit_flag = True
+
+
         # param checks
         required_params = ['input_genomeSet_ref',
                            'namespace'
@@ -270,6 +280,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         # get genome set
+        #
         input_ref = params['input_genomeSet_ref']
         try:
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
@@ -397,12 +408,12 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ("Unknown namespace: '"+str(params['namespace'])+"'")
 
 
-        # tally domain counts
+        # capture domain hits to genes within each namespace
         #
         KBASE_DOMAINHIT_GENE_ID_I        = 0
-        #KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
-        #KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
-        #KBASE_DOMAINHIT_GENE_STRAND_I    = 3  # not used
+        KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
+        KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
+        KBASE_DOMAINHIT_GENE_STRAND_I    = 3  # not used
         KBASE_DOMAINHIT_GENE_HITS_DICT_I = 4
 
         for ws_id in uniq_genome_ws_ids.keys():
@@ -424,7 +435,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_ref = domain_data['genome_ref']
                 if genome_ref not in genome_refs:
                     continue
-                
+
+                dom_hits[genome_ref] = dict()
+                genes_with_hits_cnt[genome_ref] = dict()
+                for namespace in namespace_classes:
+                    dom_hits[genome_ref][namespace] = dict()
+                    genes_with_hits_cnt[genome_ref][namespace] = 0
+
                 for scaffold_id_iter in domain_data['data'].keys():
                     for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
                         gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
@@ -437,52 +454,96 @@ This module contains methods for running and visualizing results of phylogenomic
                         #gene_end       = CDS_domain_list[KBASE_DOMAINHIT_GENE_END_I]
                         #gene_strand    = CDS_domain_list[KBASE_DOMAINHIT_GENE_STRAND_I]
                         gene_hits_dict = CDS_domain_list[KBASE_DOMAINHIT_GENE_HITS_DICT_I]
-                        gene_hits_list = []
+
+                        dom_hits_by_namespace = dict()
+                        for namespace in namespace_classes:
+                            dom_hits_by_namespace[namespace] = dict()
+                            top_hit_val_by_namespace[namespace] = 100
+                            top_hit_dom_by_namespace[namespace] = None
+
                         for domfam in gene_hits_dict.keys():
-                            # skip CD hits for now
-                            if domfam[0:2] != 'PF' and domfam[0:3] != 'COG' and domfam[0:4] != 'TIGR':
+                            if domfam.startswith('PF'):
+                                self.log(console,"domfam B4: "+domfam)  # DEBUG
+                                domfam = re.sub('\.[^\.]*$','',domfam)
+                                self.log(console,"domfam AF: "+domfam)  # DEBUG
+
+                            known_namespace = False
+                            for this_namespace in namespace_classes:
+                                if domfam.startswith(this_namespace):
+                                    namespace = this_namespace
+                                    known_namespace = True
+                            if not known_namespace:
                                 continue
-                            #Global_Domains[i][gene_name] = gene_hits_dict
+
                             for hit in gene_hits_dict[domfam]:
-                                list_format_hit = hit
-                                list_format_hit.append (domfam)
-                                #list_format_hit[DOMHIT_BEG_I]      = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J]
-                                #list_format_hit[DOMHIT_END_I]      = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J]
-                                #list_format_hit[DOMHIT_EVALUE_I]   = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J]
-                                #list_format_hit[DOMHIT_BITSCORE_I] = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J]
-                                #list_format_hit[DOMHIT_ALNPERC_I]  = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J]
-                                gene_hits_list.append(list_format_hit)
-                                #print ("   DOMAIN_HIT: "+domfam)  # DEBUG
-                                #print ("%s\t%s\t%s\t%s\t%d\t%d\t%f"%(genome_id, scaffold_id, gene_name, domfam, hit_beg, hit_end, hit_evalue))
-                        Global_Domains[genome_ref][contig_id_iter][gene_name] = sorted (gene_hits_list, key=sort_by_bitscore_key, reverse=True)
+                                beg       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J])
+                                end       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J])
+                                e_value   = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J])
+                                bit_score = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J])
+                                aln_perc  = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J])
 
-                
-# HERE
+                                if e_value_thresh != None and e_value > e_value_thresh:
+                                    continue
+                                if top_hit_flag:
+                                    if top_hit_dom_by_namespace[namespace] == None \
+                                            or top_hit_val_by_namespace[namespace] > e_value:
+                                        top_hit_dom_by_namespace[namespace] = domfam
+                                        top_hit_val_by_namespace[namespace] = e_value
+                                        
+                                dom_hits_by_namespace[namespace][domfam] = True
 
+                        # store assignments for gene
+                        for namespace in namespace_classes:
+                            if dom_hits_by_namespace[namespace]:
+                                genes_with_hits_cnt[genome_ref][namespace] += 1
+                                
+                                if top_hit_flag:
+                                    dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
+                                else:
+                                    dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
+                                
 
-
-
-
-
-
-        # calculate data
+        # calculate table
         #
         table_data = dict()
-        high_val = dict()
+        overall_high_val = 0
+
+        # count raw
         for genome_ref in genome_refs:
             if genome_ref not in table_data:
                 table_data[genome_ref] = dict()
-                
-            # high val
-            high_val[genome_ref] = 0
-            if high_val[genome_ref] < genome_CDS_count_by_ref[genome_ref]:
-                high_val[genome_ref] = genome_CDS_count_by_ref[genome_ref]
-                
+                for cat in cats:
+                    table_data[genome_ref][cat] = 0
+
+            # custom
+            if params['namespace'] == 'custom':
+                for cat in cats:
+                    namespace = re.sub ('\d+$', '', cat)
+                    for gene_name in dom_hits[genome_ref].keys():
+                        if cat in dom_hits[genome_ref][gene_name][namespace]:
+                            table_data[genome_ref][cat] += 1
+
+            # ADD: TOP LEVEL LOGIC HERE
+
+
+        # make percs
+        if param['count_category'].startswith('perc'):
+            for genome_ref in genome_refs:
+                for cat in cats:
+                    namespace = re.sub ('\d+$', '', cat)
+                    if param['count_category'] == 'perc_annot':
+                        total_genes = genes_with_hits_cnt[genome_ref][namespace]
+                    else:
+                        total_genes = genome_CDS_count_by_ref[genome_ref]
+
+                    table_data[genome_ref][cat] /= total_genes
+                    table_data[genome_ref][cat] *= 100.0
+
+        # determine high val
+        for genome_ref in genome_refs:
             for cat in cats:
-                # DEBUG
-                table_data[genome_ref][cat] = genome_CDS_count_by_ref[genome_ref]
-
-
+                if table_data[genome_ref][cat] > overall_high_val:
+                    overall_high_val = table_data[genome_ref][cat]
 
 
         # build report
@@ -534,10 +595,17 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_sci_name = genome_sci_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
             html_report_lines += ['<td align=right><font color="'+text_color+'" size='+str(graph_fontsize)+'>'+genome_sci_name+'</font></td>']
-            for fam in fams:
+            for cat in cats:
                 cell_color = graph_color
-                cell_val = "88%"
-                html_report_lines += ['<td title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
+                cell_val = table_data[genome_ref][cat]
+                if params['count_category'].startswith('perc'):
+                    cell_val += '%'
+
+                if 'heatmap' in params and params['heatmap'] == 1:
+                    html_report_lines += ['<td title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
+                else:
+                    html_report_lines += ['<td><font color="'+text_color+'" size='+str(graph_fontsize)+'>'+str(cell_val)+'</font></td>']
+
             html_report_lines += ['</tr>']
         
         html_report_lines += ['</table>']
