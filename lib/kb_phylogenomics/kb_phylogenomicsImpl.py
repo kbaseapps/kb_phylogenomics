@@ -474,7 +474,8 @@ This module contains methods for running and visualizing results of phylogenomic
                         for domfam in gene_hits_dict.keys():
                             if domfam.startswith('PF'):
                                 domfam_clean = re.sub('\.[^\.]*$','',domfam)
-
+                            else:
+                                domfam_clean = domfam
                             known_namespace = False
                             for this_namespace in namespace_classes:
                                 if domfam.startswith(this_namespace):
@@ -580,17 +581,17 @@ This module contains methods for running and visualizing results of phylogenomic
         #graph_width = 100
         graph_char = "."
         if len(genome_refs) > 20:
-            graph_gen_fontsize = "0"
-        elif len(genome_refs) > 10:
             graph_gen_fontsize = "1"
-        else:
+        elif len(genome_refs) > 10:
             graph_gen_fontsize = "2"
-        if len(cats) > 30:
-            graph_cat_fontsize = "0"
-        elif len(cats) > 15:
-            graph_cat_fontsize = "1"
         else:
+            graph_gen_fontsize = "3"
+        if len(cats) > 30:
+            graph_cat_fontsize = "1"
+        elif len(cats) > 15:
             graph_cat_fontsize = "2"
+        else:
+            graph_cat_fontsize = "3"
         if graph_cat_fontsize < graph_gen_fontsize:
             cell_fontsize = graph_cat_fontsize
         else:
