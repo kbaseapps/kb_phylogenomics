@@ -469,8 +469,8 @@ This module contains methods for running and visualizing results of phylogenomic
                         for domfam in gene_hits_dict.keys():
                             if domfam.startswith('PF'):
                                 self.log(console,"domfam B4: "+domfam)  # DEBUG
-                                domfam = re.sub('\.[^\.]*$','',domfam)
-                                self.log(console,"domfam AF: "+domfam)  # DEBUG
+                                domfam_clean = re.sub('\.[^\.]*$','',domfam)
+                                self.log(console,"domfam AF: "+domfam_clean)  # DEBUG
 
                             known_namespace = False
                             for this_namespace in namespace_classes:
@@ -492,10 +492,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                 if top_hit_flag:
                                     if top_hit_dom_by_namespace[namespace] == None \
                                             or top_hit_val_by_namespace[namespace] > e_value:
-                                        top_hit_dom_by_namespace[namespace] = domfam
+                                        top_hit_dom_by_namespace[namespace] = domfam_clean
                                         top_hit_val_by_namespace[namespace] = e_value
                                         
-                                dom_hits_by_namespace[namespace][domfam] = True
+                                dom_hits_by_namespace[namespace][domfam_clean] = True
 
                         # store assignments for gene
                         for namespace in namespace_classes:
