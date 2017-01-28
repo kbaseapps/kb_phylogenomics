@@ -538,11 +538,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         # make percs
-        if param['count_category'].startswith('perc'):
+        if params['count_category'].startswith('perc'):
             for genome_ref in genome_refs:
                 for cat in cats:
                     namespace = re.sub ('\d+$', '', cat)
-                    if param['count_category'] == 'perc_annot':
+                    if params['count_category'] == 'perc_annot':
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
