@@ -287,7 +287,8 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ("unable to fetch genomeSet: "+input_ref)
 
 
-        # get genome refs and object names
+        # get genome refs, object names, sci names, and protein-coding gene counts
+        #
         genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
         genome_refs = []
         for genome_id in genome_ids:
@@ -295,6 +296,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
         genome_obj_name_by_ref = dict()
         genome_sci_name_by_ref = dict()
+        genome_CDS_count_by_ref = dict()
+        uniq_genome_ws_ids = dict()
+
         for genome_ref in genome_refs:
 
             # get genome object name
@@ -304,6 +308,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
                 input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
+                uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
 
             except Exception as e:
                 raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
@@ -318,10 +323,20 @@ This module contains methods for running and visualizing results of phylogenomic
             except:
                 raise ValueError ("unable to fetch genome: "+input_ref)
 
+            # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
+            
+            # CDS cnt
+            cds_cnt = 0
+            for feature in genome_obj['features']:
+                if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
+                    cds_cnt += 1
+            genome_CDS_count_by_ref[genome_ref] = cds_cnt
 
 
-        # configure fams
+        # configure categories
+        #
+        cats = []
         if params['namespace'] == 'custom':
             if 'target_fams' not in params or not params['target_fams'] or len(params['target_fams']) ==0:
                 raise ValueError ("Must configure 'target_fams' if namespace == 'custom'")
@@ -367,7 +382,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 target_fam = this_namespace + leading_zeros + target_fam
                 target_fams.append(target_fam)
 
-            fams = target_fams
+            cats = target_fams
 
         elif params['namespace'] == 'COG':
             raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
@@ -379,6 +394,94 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ("Do not yet support "+str(params['namespace'])+" namespace")
         else:
             raise ValueError ("Unknown namespace: '"+str(params['namespace'])+"'")
+
+
+        # tally domain counts
+        #
+        KBASE_DOMAINHIT_GENE_ID_I        = 0
+        #KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
+        #KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
+        #KBASE_DOMAINHIT_GENE_STRAND_I    = 3  # not used
+        KBASE_DOMAINHIT_GENE_HITS_DICT_I = 4
+
+        for ws_id in uniq_genome_ws_ids.keys():
+            try:
+                dom_annot_obj_info_list = wsClient.list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
+            except Exception as e:
+                raise ValueError ("Unable to list DomainAnnotation objects from workspace: "+str(ws_id)+" "+str(e))
+
+            for info in dom_annot_obj_info_list:
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            
+                dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
+                try:
+                    domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
+                except:
+                    raise ValueError ("unable to fetch domain annotation: "+dom_annot_ref)
+
+                # read domain data object
+                genome_ref = domain_data['genome_ref']
+                if genome_ref not in genome_refs:
+                    continue
+                
+                for scaffold_id_iter in domain_data['data'].keys():
+                    for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
+                        gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
+                        #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID) 
+                        gene_name = gene_ID
+                        #(contig_name, gene_name) = (gene_ID[0:gene_ID.index(".")], gene_ID[gene_ID.index(".")+1:])
+                        #print ("DOMAIN_HIT: "+contig_name+" "+gene_name)  # DEBUG
+                        #print ("DOMAIN_HIT for gene: "+gene_name)  # DEBUG
+                        #gene_beg       = CDS_domain_list[KBASE_DOMAINHIT_GENE_BEG_I]
+                        #gene_end       = CDS_domain_list[KBASE_DOMAINHIT_GENE_END_I]
+                        #gene_strand    = CDS_domain_list[KBASE_DOMAINHIT_GENE_STRAND_I]
+                        gene_hits_dict = CDS_domain_list[KBASE_DOMAINHIT_GENE_HITS_DICT_I]
+                        gene_hits_list = []
+                        for domfam in gene_hits_dict.keys():
+                            # skip CD hits for now
+                            if domfam[0:2] != 'PF' and domfam[0:3] != 'COG' and domfam[0:4] != 'TIGR':
+                                continue
+                            #Global_Domains[i][gene_name] = gene_hits_dict
+                            for hit in gene_hits_dict[domfam]:
+                                list_format_hit = hit
+                                list_format_hit.append (domfam)
+                                #list_format_hit[DOMHIT_BEG_I]      = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J]
+                                #list_format_hit[DOMHIT_END_I]      = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J]
+                                #list_format_hit[DOMHIT_EVALUE_I]   = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J]
+                                #list_format_hit[DOMHIT_BITSCORE_I] = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J]
+                                #list_format_hit[DOMHIT_ALNPERC_I]  = hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J]
+                                gene_hits_list.append(list_format_hit)
+                                #print ("   DOMAIN_HIT: "+domfam)  # DEBUG
+                                #print ("%s\t%s\t%s\t%s\t%d\t%d\t%f"%(genome_id, scaffold_id, gene_name, domfam, hit_beg, hit_end, hit_evalue))
+                        Global_Domains[genome_ref][contig_id_iter][gene_name] = sorted (gene_hits_list, key=sort_by_bitscore_key, reverse=True)
+
+                
+# HERE
+
+
+
+
+
+
+
+        # calculate data
+        #
+        table_data = dict()
+        high_val = dict()
+        for genome_ref in genome_refs:
+            if genome_ref not in table_data:
+                table_data[genome_ref] = dict()
+                
+            # high val
+            high_val[genome_ref] = 0
+            if high_val[genome_ref] < genome_CDS_count_by_ref[genome_ref]:
+                high_val[genome_ref] = genome_CDS_count_by_ref[genome_ref]
+                
+            for cat in cats:
+                # DEBUG
+                table_data[genome_ref][cat] = genome_CDS_count_by_ref[genome_ref]
+
+
 
 
         # build report

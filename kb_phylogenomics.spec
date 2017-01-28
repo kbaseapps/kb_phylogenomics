@@ -49,6 +49,8 @@ module kb_phylogenomics {
 	string       count_category;
 	bool         heatmap;
 	bool         vertical;
+	bool         top_hit;
+	float        e_value;
     } view_fxn_profile_Input;
 
     typedef structure {
@@ -76,6 +78,8 @@ module kb_phylogenomics {
 	string       count_category;
 	bool         heatmap;
 	bool         vertical;
+	bool         top_hit;
+	float        e_value;
     } view_fxn_profile_phylo_Input;
 
     typedef structure {
