@@ -473,9 +473,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                         for domfam in gene_hits_dict.keys():
                             if domfam.startswith('PF'):
-                                self.log(console,"domfam B4: "+domfam)  # DEBUG
                                 domfam_clean = re.sub('\.[^\.]*$','',domfam)
-                                self.log(console,"domfam AF: "+domfam_clean)  # DEBUG
 
                             known_namespace = False
                             for this_namespace in namespace_classes:
@@ -533,7 +531,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 for cat in cats:
                     namespace = re.sub ('\d+$', '', cat)
                     for gene_name in dom_hits[genome_ref].keys():
-                        if cat in dom_hits[genome_ref][gene_name][namespace]:
+                        if cat in dom_hits[genome_ref][gene_name]:
                             table_data[genome_ref][cat] += 1
 
             # ADD: TOP LEVEL LOGIC HERE
