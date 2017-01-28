@@ -153,7 +153,7 @@
             "text_options": {
 	    	"validate_as": "float",
 	    	"min_float": "0.0",
-	    	"max_float": "0.1",
+	    	"max_float": "0.1"
             }
         }
     ],
