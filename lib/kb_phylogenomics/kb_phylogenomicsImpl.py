@@ -640,7 +640,13 @@ This module contains methods for running and visualizing results of phylogenomic
                     cell_val = str(table_data[genome_ref][cat])
 
                 if 'heatmap' in params and params['heatmap'] == 1:
-                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+cell_fontsize+'>'+graph_char+'</font></td>']
+                    if table_data[genome_ref][cat] == 0:
+                        this_text_color = text_color
+                        this_graph_char = "0"
+                    else:
+                        this_text_color = cell_color
+                        this_graph_char = graph_char
+                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
                 else:
                     html_report_lines += ['<td align=center valign=middle><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
 
