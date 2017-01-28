@@ -586,9 +586,9 @@ This module contains methods for running and visualizing results of phylogenomic
             graph_gen_fontsize = "2"
         else:
             graph_gen_fontsize = "3"
-        if len(cats) > 30:
+        if len(cats) > 20:
             graph_cat_fontsize = "1"
-        elif len(cats) > 15:
+        elif len(cats) > 5:
             graph_cat_fontsize = "2"
         else:
             graph_cat_fontsize = "3"
@@ -606,33 +606,33 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<body bgcolor="white">']
 
         # header
-        html_report_lines += ['<table cellpadding='+str(graph_padding)+' cellspacing='+str(graph_spacing)+' border=1>']
+        html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border=1>']
         html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
         for cat in cats:
-            html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>']
+            html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
             for c_i,c in enumerate(cat):
                 if c_i < len(cat)-1:
                     html_report_lines += [c+'<br>']
                 else:
                     html_report_lines += [c]
-            html_report_lines += ['</b></font></td>']
+            html_report_lines += ['</font></td>']
         html_report_lines += ['</tr>']
 
         # rest of rows
         for genome_ref in genome_refs:
             genome_sci_name = genome_sci_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+str(graph_gen_fontsize)+'>'+genome_sci_name+'</font></td>']
+            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'>'+genome_sci_name+'</font></td>']
             for cat in cats:
                 cell_color = graph_color
-                cell_val = table_data[genome_ref][cat]
+                cell_val = str(table_data[genome_ref][cat])
                 if params['count_category'].startswith('perc'):
                     cell_val += '%'
 
                 if 'heatmap' in params and params['heatmap'] == 1:
-                    html_report_lines += ['<td align=center valign=middle title="'+str(cell_val)+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(cell_fontsize)+'>'+graph_char+'</font></td>']
+                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+cell_fontsize+'>'+graph_char+'</font></td>']
                 else:
-                    html_report_lines += ['<td align=center valign=middle><font color="'+text_color+'" size='+str(cell_fontsize)+'>'+str(cell_val)+'</font></td>']
+                    html_report_lines += ['<td align=center valign=middle><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
 
             html_report_lines += ['</tr>']
         
