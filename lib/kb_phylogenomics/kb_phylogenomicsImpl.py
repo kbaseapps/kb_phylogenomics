@@ -591,10 +591,10 @@ This module contains methods for running and visualizing results of phylogenomic
         # header
         html_report_lines += ['<table cellpadding='+str(graph_padding)+' cellspacing='+str(graph_spacing)+' border=1>']
         html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
-        for fam in fams:
+        for cat in cats:
             html_report_lines += ['<td valign=bottom><font color="'+text_color+'" size='+str(graph_fontsize)+'><b>']
-            for c_i,c in enumerate(fam):
-                if c_i < len(fam)-1:
+            for c_i,c in enumerate(cat):
+                if c_i < len(cat)-1:
                     html_report_lines += [c+'<br>']
                 else:
                     html_report_lines += [c]
@@ -746,10 +746,10 @@ This module contains methods for running and visualizing results of phylogenomic
         # header
         html_report_lines += ['<table cellpadding=10 cellspacing=10 border=1>']
         html_report_lines += ['<tr><td valign=bottom><font color="'+text_color+'"><b>Species Tree</b></font></td>']
-        for fam in fams:
+        for cat in cats:
             html_report_lines += ['<td valign=bottom><font color="'+text_color+'"><b>']
-            for c_i,c in enumerate(fam):
-                if c_i < len(fam)-1:
+            for c_i,c in enumerate(cat):
+                if c_i < len(cat)-1:
                     html_report_lines += [c+'<br>']
                 else:
                     html_report_lines += [c]
@@ -760,7 +760,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<tr>']
         html_report_lines += ['<td rowspan='+str(num_rows)+'><img src="'+output_tree_img_file_path+'"></td>']
         genome_id = genome_ids[0]
-        for fam in fams:
+        for cat in cats:
             cell_color = graph_color
             html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
         html_report_lines += ['</tr>']
@@ -770,7 +770,7 @@ This module contains methods for running and visualizing results of phylogenomic
             if genome_i == 0:
                 continue
             html_report_lines += ['<tr>']
-            for fam in fams:
+            for cat in cats:
                 cell_color = graph_color
                 html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
             html_report_lines += ['</tr>']
