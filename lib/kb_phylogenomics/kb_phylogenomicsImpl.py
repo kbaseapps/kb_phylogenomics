@@ -559,6 +559,8 @@ This module contains methods for running and visualizing results of phylogenomic
             for cat in cats:
                 if table_data[genome_ref][cat] > overall_high_val:
                     overall_high_val = table_data[genome_ref][cat]
+        if overall_high_val == 0:
+            raise ValueError ("unable to find any counts")
 
 
         # build report
@@ -579,9 +581,10 @@ This module contains methods for running and visualizing results of phylogenomic
         # build html report
         sp = '&nbsp;'
         text_color = "#606060"
-        graph_color = "lightblue"
+        #graph_color = "lightblue"
         #graph_width = 100
         graph_char = "."
+        color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f']
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -626,10 +629,12 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<tr>']
             html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'>'+genome_sci_name+'</font></td>']
             for cat in cats:
-                cell_color = graph_color  # FIX: this should be a calculation
+                cell_color_i = 15 - int(round(15* table_data[genome_ref][cat] / float(overall_high_val)))
+                c = color_list[cell_color_i]
+                cell_color = '#'+c+c+c+c+'FF'
 
                 if params['count_category'].startswith('perc'):
-                    cell_val = str("%.8f"%table_data[genome_ref][cat])
+                    cell_val = str("%.3f"%table_data[genome_ref][cat])
                     cell_val += '%'
                 else:
                     cell_val = str(table_data[genome_ref][cat])
