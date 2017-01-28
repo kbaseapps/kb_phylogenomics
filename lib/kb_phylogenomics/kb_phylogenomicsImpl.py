@@ -457,7 +457,10 @@ This module contains methods for running and visualizing results of phylogenomic
                         #gene_strand    = CDS_domain_list[KBASE_DOMAINHIT_GENE_STRAND_I]
                         gene_hits_dict = CDS_domain_list[KBASE_DOMAINHIT_GENE_HITS_DICT_I]
 
-                        dom_hits_by_namespace = dict()
+                        dom_hits_by_namespace    = dict()
+                        top_hit_val_by_namespace = dict()
+                        top_hit_dom_by_namespace = dict()
+
                         for namespace in namespace_classes:
                             dom_hits_by_namespace[namespace] = dict()
                             top_hit_val_by_namespace[namespace] = 100
