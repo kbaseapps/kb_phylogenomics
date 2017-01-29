@@ -44,16 +44,16 @@
 					"ui-name": "COG"
 				},
 				{
-					"value": "PFAM",
+					"value": "PF",
 					"display": "Pfam A Clans",
-					"id": "PFAM",
-					"ui-name": "PFAM"
+					"id": "PF",
+					"ui-name": "PF"
 				},
 				{
-					"value": "TIGRFAM",
+					"value": "TIGR",
 					"display": "TIGRFam Roles",
-					"id": "TIGRFAM",
-					"ui-name": "TIGRFAM"
+					"id": "TIGR",
+					"ui-name": "TIGR"
 				},
 				{
 					"value": "SEED",
