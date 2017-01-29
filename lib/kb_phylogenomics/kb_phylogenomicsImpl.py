@@ -938,7 +938,7 @@ This module contains methods for running and visualizing results of phylogenomic
             for cat in cats:
                 if not cat_seen[cat] and not show_blanks:
                     continue
-                max_color = len(color_list)
+                max_color = len(color_list)-1
                 val = table_data[genome_ref][cat]
                 if 'log_scale' in params:
                     log_base = float(params['log_base'])
