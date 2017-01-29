@@ -378,12 +378,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 if namespace == 'COG':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
-                            domfam, class, domfam_name = line.split("\t")
+                            [domfam, class, domfam_name] = line.split("\t")[0:3]
                             domfam2name[namespace][domfam] = domfam_name
                 elif namespace == 'PF':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
-                            [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")
+                            [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
                             if domfam_name.startswith(domfam_id):
                                 combo_name = domfam_name
                             else:
