@@ -379,9 +379,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             #[domfam, class, domfam_name] = line.split("\t")[0:3]
+                            print ('LINE: '+line+"\n")
                             row = line.split("\t")
                             domfam = row[0]
-                            class = row[1]
+                            #class = row[1]
                             domfam_name = row[2]
                             domfam2name[namespace][domfam] = domfam_name
                 elif namespace == 'PF':
