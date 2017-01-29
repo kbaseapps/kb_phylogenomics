@@ -646,19 +646,25 @@ This module contains methods for running and visualizing results of phylogenomic
                                 if gene_name not in dom_hits[genome_ref]:
                                     dom_hits[genome_ref][gene_name] = dict()
 
-                                domfam = feature['function'].strip()
-                                domfam = re.sub (' *\#.*$', '', domfam)
-                                domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', domfam)
-                                domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', domfam)
-                                domfam = re.sub (' ','_',domfam)
-                                
-                                if f_cnt % 100 == 0:
-                                    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
+                                domfam_list = []
+                                annot_set = feature['function'].strip().split(';')
+                                for annot in annot_set:
+                                    annot_set_2 = annot.strip().split('@')
+                                    for annot2 in annot_set_2:
+                                        domfam = annot2.strip()
+                                        domfam = re.sub (' *\#.*$', '', domfam)
+                                        domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', domfam)
+                                        domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', domfam)
+                                        domfam = re.sub (' ','_',domfam)
+                                        domfam_list.append(domfam)
+                                        if f_cnt % 100 == 0:
+                                            self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
 
                                 if top_hit_flag:  # does SEED give more than one function?
-                                    dom_hits[genome_ref][gene_name][namespace] = { domfam: True }
+                                    dom_hits[genome_ref][gene_name][namespace][domfam_list[0]] = True
                                 else:
-                                    dom_hits[genome_ref][gene_name][namespace] = { domfam: True }
+                                    for domfam in domfam_list:
+                                        dom_hits[genome_ref][gene_name][namespace][domfam] = True
 
                     f_cnt += 1  # DEBUG
 
@@ -696,11 +702,16 @@ This module contains methods for running and visualizing results of phylogenomic
                 if genome_ref not in genome_refs:
                     continue
 
-                dom_hits[genome_ref] = dict()
-                genes_with_hits_cnt[genome_ref] = dict()
+                if genome_ref not in dom_hits:
+                    dom_hits[genome_ref] = dict()
+
+                if genome_ref not in genes_with_hits_cnt:
+                    genes_with_hits_cnt[genome_ref] = dict()
+
                 for namespace in namespace_classes:
-                    dom_hits[genome_ref][namespace] = dict()
-                    genes_with_hits_cnt[genome_ref][namespace] = 0
+                    if namespace not in dom_hits[genome_ref]:
+                        dom_hits[genome_ref][namespace] = dict()
+                        genes_with_hits_cnt[genome_ref][namespace] = 0
 
                 for scaffold_id_iter in domain_data['data'].keys():
                     for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
