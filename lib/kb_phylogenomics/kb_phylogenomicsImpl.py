@@ -767,7 +767,8 @@ This module contains methods for running and visualizing results of phylogenomic
                             for domfam in dom_hits[genome_ref][gene_name][namespace].keys():
                                 if domfam in domfam2cat[namespace]:
                                     cat = domfam2cat[namespace][domfam]
-                                    table_data[genome_ref][cat] += 1
+                                    if cat in cats:
+                                        table_data[genome_ref][cat] += 1
                 
         # make percs
         if params['count_category'].startswith('perc'):
