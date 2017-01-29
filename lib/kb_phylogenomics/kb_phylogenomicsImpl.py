@@ -636,7 +636,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             gene_name = feature['id']
                             
                             if f_cnt % 100 == 0:
-                                self.log (console, "fxn: "+str(feature['function']))  # DEBUG
+                                self.log (console, "fxn: '"+str(feature['function'])+"'")  # DEBUG
                             # store assignments for gene
                             for namespace in ['SEED']:
                                 if namespace not in genes_with_hits_cnt[genome_ref]:
