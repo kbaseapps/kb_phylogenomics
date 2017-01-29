@@ -162,7 +162,7 @@
             "field_type": "text",
             "text_options": {
 	    	"validate_as": "float",
-	    	"min_float": "1.0"
+	    	"min_float": "1.1"
             }
         },
         {
