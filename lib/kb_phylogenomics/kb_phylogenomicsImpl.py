@@ -630,7 +630,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
                         if f_cnt % 100 == 0:
-                            self.log (console, "prot: "+str(feature['protein_translaton']))  # DEBUG
+                            self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
                         if 'function' in feature and feature['function'] != None and feature['function'] != '':
                             gene_name = feature['id']
@@ -878,6 +878,7 @@ This module contains methods for running and visualizing results of phylogenomic
         graph_char = sp
         color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
         max_color = len(color_list)-1
+        cat_disp_trunc_len = 15
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -937,6 +938,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 cell_title = cat2name[params['namespace']][cat].strip()
                 cat_disp = cat
                 cat_disp = re.sub ("TIGR_", "", cat_disp)
+
+                if len(cat_disp) > cat_disp_trunc_len:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
             html_report_lines += ['<td title="'+cell_title+'" valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
             for c_i,c in enumerate(cat_disp):
                 if c_i < len(cat)-1:
