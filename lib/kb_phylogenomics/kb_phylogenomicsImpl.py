@@ -862,6 +862,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #graph_char = "."
         graph_char = sp
         color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
+        max_color = len(color_list)-1
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -938,16 +939,18 @@ This module contains methods for running and visualizing results of phylogenomic
             for cat in cats:
                 if not cat_seen[cat] and not show_blanks:
                     continue
-                max_color = len(color_list)-1
                 val = table_data[genome_ref][cat]
-                if 'log_scale' in params:
-                    log_base = float(params['log_base'])
-                    if log_base <= 1.0:
-                        raise ValueError ("log base must be > 1.0")
-                    val = math.log(val, log_base)
-                cell_color_i = max_color - int(round(max_color * val / float(overall_high_val)))
-                c = color_list[cell_color_i]
-                cell_color = '#'+c+c+c+c+'FF'
+                if val == 0:
+                    cell_color = 'white'
+                else:
+                    if 'log_scale' in params:
+                        log_base = float(params['log_base'])
+                        if log_base <= 1.0:
+                            raise ValueError ("log base must be > 1.0")
+                        val = math.log(val, log_base)
+                    cell_color_i = max_color - int(round(max_color * val / float(overall_high_val)))
+                    c = color_list[cell_color_i]
+                    cell_color = '#'+c+c+c+c+'FF'
 
                 if params['count_category'].startswith('perc'):
                     cell_val = str("%.3f"%table_data[genome_ref][cat])
