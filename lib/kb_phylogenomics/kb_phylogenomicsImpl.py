@@ -162,9 +162,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         ### STEP 3: run DomainAnnotation on each genome in set
         try:
-#            daClient = DomainAnnotation (url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
-            TEMP_SERVICE_VER='beta'
-            daClient = DomainAnnotation (url=self.callbackURL, token=ctx['token'], service_ver=TEMP_SERVICE_VER)  # SDK Local
+            daClient = DomainAnnotation (url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
             #daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
             raise ValueError ("unable to instantiate DomainAnnotationClient")
@@ -173,7 +171,9 @@ This module contains methods for running and visualizing results of phylogenomic
         report_text = ''
         for genome_i,genome_ref in enumerate(genome_refs):
             genome_obj_name = genome_obj_name_by_ref[genome_ref]
-            domains_obj_name = genome_obj_name+'.DomainAnnotation'
+            domains_obj_name = re.sub ('[\.\-\_\:]GenomeAnnotation$', '', genome_obj_name)
+            domains_obj_name = re.sub ('[\.\-\_\:]Genome$', '', domains_obj_name)
+            domains_obj_name = '.DomainAnnotation'
             DomainAnnotation_Params = { 'genome_ref': genome_ref,
                                         'dms_ref': 'KBasePublicGeneDomains/All',
                                         #'ws': params['workspace_name'],
