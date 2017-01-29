@@ -512,8 +512,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     if line.startswith('!'):
                         continue
                     [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
-                    cat = id2cat[cat_id]
-                    domfam2cat[namespace][domfam] = cat
+                    if cat_id != '' and cat_id != 0:
+                        cat = id2cat[cat_id]
+                        domfam2cat[namespace][domfam] = cat
 
         # SEED: categories are high-level summations
         elif params['namespace'] == 'SEED':
