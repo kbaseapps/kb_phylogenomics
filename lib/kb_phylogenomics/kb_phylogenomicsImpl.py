@@ -268,20 +268,20 @@ This module contains methods for running and visualizing results of phylogenomic
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        domain_cats_basepath           = '/kb/module/data/domain_desc'
-        domain_to_cat_map_path['COG']  = domain_desc_basepath +'/'+ 'COG_2014.tsv'
-        domain_cat_names_path['COG']   = domain_desc_basepath +'/'+ 'COG_2014_funcat.tsv'
-        domain_fam_names_path['COG']   = domain_desc_basepath +'/'+ 'COG_2014.tsv'
-        domain_to_cat_map_path['PF']   = domain_desc_basepath +'/'+ 'Pfam-A.clans.tsv'
-        domain_cat_names_path['PF']    = domain_desc_basepath +'/'+ 'Pfam-A.clans_names.tsv'
-        domain_fam_names_path['PF']    = domain_desc_basepath +'/'+ 'Pfam-A.clans.tsv'
-        domain_to_cat_map_path['TIGR'] = domain_desc_basepath +'/'+ 'TIGRInfo.tsv'
-        domain_cat_names_path['TIGR']  = domain_desc_basepath +'/'+ 'tigrrole2go.txt'
-        #domain_fam_names_path['TIGR']  = domain_desc_basepath +'/'+ 'tigrfams2go.txt'
-        domain_fam_names_path['TIGR']  = domain_desc_basepath +'/'+ 'TIGRInfo.tsv'
-        domain_to_cat_map_path['SEED'] = domain_desc_basepath +'/'+ 'SEED_subsys.txt'
-        domain_cat_names_path['SEED']  = domain_desc_basepath +'/'+ 'SEED_funcat.txt'
-        domain_fam_names_path['SEED']  = domain_desc_basepath +'/'+ 'SEED_subsys.txt'
+        domain_cats_basepath           = os.path.abspath('/kb/module/data/domain_desc')
+        domain_to_cat_map_path['COG']  = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_cat_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
+        domain_fam_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_to_cat_map_path['PF']   = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_cat_names_path['PF']    = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
+        domain_fam_names_path['PF']    = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_to_cat_map_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
+        domain_cat_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
+        #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
+        domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
+        domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
+        domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
+        domain_fam_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
 
 
         # load provenance
