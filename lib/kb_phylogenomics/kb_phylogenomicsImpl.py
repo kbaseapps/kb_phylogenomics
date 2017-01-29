@@ -268,7 +268,7 @@ This module contains methods for running and visualizing results of phylogenomic
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        domain_cats_basepath           = os.path.abspath('/kb/module/data/domain_desc')
+        domain_desc_basepath           = os.path.abspath('/kb/module/data/domain_desc')
         domain_to_cat_map_path['COG']  = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
         domain_cat_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
         domain_fam_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
