@@ -852,7 +852,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #graph_color = "lightblue"
         #graph_width = 100
         graph_char = "."
-        color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f']
+        color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -906,11 +906,14 @@ This module contains methods for running and visualizing results of phylogenomic
                 continue
             if params['namespace'] == 'custom':
                 namespace = re.sub ("\d*$", "", cat)
-                cell_title = domfam2name[namespace][cat]
+                cell_title = domfam2name[namespace][cat].strip()
+                cat_disp = cat
             else:
-                cell_title = cat2name[params['namespace']][cat]
+                cell_title = cat2name[params['namespace']][cat].strip()
+                cat_disp = cat
+                cat_disp = re.sub ("TIGR_", "", cat_disp)
             html_report_lines += ['<td title="'+cell_title+'" valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
-            for c_i,c in enumerate(cat):
+            for c_i,c in enumerate(cat_disp):
                 if c_i < len(cat)-1:
                     html_report_lines += [c+'<br>']
                 else:
@@ -926,7 +929,8 @@ This module contains methods for running and visualizing results of phylogenomic
             for cat in cats:
                 if not cat_seen[cat] and not show_blanks:
                     continue
-                cell_color_i = 15 - int(round(15* table_data[genome_ref][cat] / float(overall_high_val)))
+                max_color = len(color_list)
+                cell_color_i = max_color - int(round(max_color * table_data[genome_ref][cat] / float(overall_high_val)))
                 c = color_list[cell_color_i]
                 cell_color = '#'+c+c+c+c+'FF'
 
