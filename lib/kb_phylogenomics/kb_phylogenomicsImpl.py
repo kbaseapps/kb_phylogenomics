@@ -269,6 +269,9 @@ This module contains methods for running and visualizing results of phylogenomic
             top_hit_flag = True
 
         domain_desc_basepath           = os.path.abspath('/kb/module/data/domain_desc')
+        domain_to_cat_map_path         = dict()
+        domain_cat_names_path          = dict()
+        domain_fam_names_path          = dict()
         domain_to_cat_map_path['COG']  = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
         domain_cat_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
         domain_fam_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
