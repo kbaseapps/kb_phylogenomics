@@ -906,7 +906,9 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</table>']
 
         # key table
-        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>KEY</b></font></td>']
+        html_report_lines += ['<p>']
+        html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
+        html_report_lines += ['<tr><td valign=bottom align=left colspan=2><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
         for cat in cats:
             if not cat_seen[cat] and not show_blanks:
                 continue
