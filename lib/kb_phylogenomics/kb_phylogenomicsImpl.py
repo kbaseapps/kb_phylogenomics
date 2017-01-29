@@ -378,12 +378,16 @@ This module contains methods for running and visualizing results of phylogenomic
                 if namespace == 'COG':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
-                            [domfam, class, domfam_name] = line.split("\t")[0:3]
+                            #[domfam, class, domfam_name] = line.split("\t")[0:3]
+                            row = line.split("\t")
+                            domfam = row[0]
+                            class = row[1]
+                            domfam_name = row[2]
                             domfam2name[namespace][domfam] = domfam_name
                 elif namespace == 'PF':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
-                            [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
+                            [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")
                             if domfam_name.startswith(domfam_id):
                                 combo_name = domfam_name
                             else:
@@ -392,6 +396,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 elif namespace == 'TIGR':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
+                            if line.startswith('!'):
+                                continue
                             [domfam_id, domfam, class_group, class_id, domfam_name, ec_id, domfam_desc] = line.split("\t")
                             if domfam_name != '':
                                 if domfam_desc.startswith(domfam_name):
@@ -479,6 +485,8 @@ This module contains methods for running and visualizing results of phylogenomic
             id2cat = dict()
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
+                    if line.startswith('!'):
+                        continue
                     [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")
 
                     id2cat[cat_id] = cat
@@ -491,6 +499,8 @@ This module contains methods for running and visualizing results of phylogenomic
             # get domfam to cat map
             with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
+                    if line.startswith('!'):
+                        continue
                     [domfam_name, domfam, cat_class, cat_id, ec, dom_name] = line.split("\t")
                     cat = id2cat[cat_id]
                     domfam2cat[namespace][domfam] = cat
