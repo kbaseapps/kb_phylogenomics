@@ -54,7 +54,7 @@
 				},
 				{
 					"value": "TIGR",
-					"display": "TIGRFam Roles",
+					"display": "TIGRFAM Roles",
 					"id": "TIGR",
 					"ui-name": "TIGR"
 				},
