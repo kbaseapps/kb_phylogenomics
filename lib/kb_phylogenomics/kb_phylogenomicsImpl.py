@@ -18,6 +18,7 @@ import numpy as np
 from Bio import SeqIO
 
 from biokbase.workspace.client import Workspace as workspaceService
+from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
 from KBaseReport.KBaseReportClient import KBaseReport
 
 from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
@@ -381,11 +382,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 if namespace == 'COG':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
+                            line.strip()
                             [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
                             domfam2name[namespace][domfam] = domfam_name
                 elif namespace == 'PF':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
+                            line.strip()
                             [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
                             if domfam_name.startswith(domfam_id):
                                 combo_name = domfam_name
@@ -395,6 +398,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 elif namespace == 'TIGR':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
+                            line.strip()
                             if line.startswith('!'):
                                 continue
                             [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
@@ -415,6 +419,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 elif namespace == 'SEED':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
+                            line.strip()
                             [level1, level2, level3, domfam] = line.split("\t")[0:4]
 
                             domfam_desc = domfam
@@ -438,6 +443,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # get cats
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
+                    line.strip()
                     [cat, cat_group, cat_name] = line.split("\t")[0:3]
                     cats.append(cat)
                     cat2name[namespace][cat] = cat_name
@@ -446,6 +452,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # get domfam to cat map
             with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
+                    line.strip()
                     [domfam, cat_str, cat_name] = line.split("\t")[0:3]
                     cat = cat_str[0]  # only use first cat
                     domfam2cat[namespace][domfam] = cat
@@ -461,6 +468,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # get cats
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
+                    line.strip()
                     [cat, cat_name] = line.split("\t")[0:2]
                     cats.append(cat)
                     cat2name[namespace][cat] = cat_name
@@ -469,6 +477,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # get domfam to cat map
             with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
+                    line.strip()
                     [domfam, cat, cat_name, dom_id, dom_name] = line.split("\t")[0:5]
                     domfam2cat[namespace][domfam] = cat
 
@@ -484,6 +493,7 @@ This module contains methods for running and visualizing results of phylogenomic
             id2cat = dict()
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
+                    line.strip()
                     if line.startswith('!'):
                         continue
                     [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")[0:4]
@@ -491,13 +501,14 @@ This module contains methods for running and visualizing results of phylogenomic
                     id2cat[cat_id] = cat
                     cats.append(cat)
                     
-                    cat_name = re.sub (' *\> GO:.*$', '', cat_name)
+                    cat_name = re.sub (' *\> GO:.*$', '', cat_name_plus_go_terms)
                     cat2name[namespace][cat] = cat_name
                     cat2group[namespace][cat] = cat_group
 
             # get domfam to cat map
             with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
+                    line.strip()
                     if line.startswith('!'):
                         continue
                     [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
@@ -515,6 +526,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # get cats
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
+                    line.strip()
                     [cat_group, cat] = line.split("\t")[0:2]
                     cats.append(cat)
                     cat2name[namespace][cat] = cat
@@ -523,6 +535,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # get domfam to cat map
             with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
+                    line.strip()
                     [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
                     domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', domfam)
                     domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', domfam)
@@ -866,14 +879,21 @@ This module contains methods for running and visualizing results of phylogenomic
 
         html_report_lines = []
         html_report_lines += ['<html>']
+        html_report_lines += ['<head><title>KBase Functional Domain Profile</title></head>']
         html_report_lines += ['<body bgcolor="white">']
 
-        # header
+        # table header
         html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
         rowspan = "1"
-        if show_groups: rowspan = "2"
-        #html_report_lines += ['<tr><td valign=bottom align=right rowspan='+rowspan+'><font color="'+text_color+'"><b>Genomes</b></font></td>']
-        html_report_lines += ['<tr><td valign=bottom align=right rowspan='+rowspan+'><font color="'+text_color+'"></td>']
+        if show_groups:  rowspan = "2"
+        label = ''
+        if params['namespace'] != 'custom':
+            label = params['namespace']
+            if label == 'PF':
+                label = 'PFAM'
+            elif label == 'TIGR':
+                label = 'TIGRFAM'
+        html_report_lines += ['<tr><td valign=middle align=center rowspan='+rowspan+'><font color="'+text_color+'">'+label+'</td>']
         
         if show_groups:
             for cat_group in group_order:
@@ -901,7 +921,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             genome_sci_name = genome_sci_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'>'+genome_sci_name+'</font></td>']
+            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><nobr>'+genome_sci_name+'</nobr></font></td>']
             for cat in cats:
                 if not cat_seen[cat] and not show_blanks:
                     continue
@@ -952,15 +972,34 @@ This module contains methods for running and visualizing results of phylogenomic
         # close
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
+        
+        html_report_str = "\n".join(html_report_lines)
+        reportObj['direct_html'] = html_report_str
 
-        reportObj['direct_html'] = "\n".join(html_report_lines)
+
+        # write html to file and upload
+        html_file = os.path.join (output_dir, 'domain_profile_report.html')
+        with open (html_file, 'w', 0) as html_handle:
+            html_handle.write(html_report_str)
+        dfu = DFUClient(self.callbackURL)
+        try:
+            upload_ret = dfu.file_to_shock({'file_path': html_file,
+                                            'make_handle': 0,
+                                            'pack': 'zip'})
+        except:
+            raise ValueError ('Logging exception loading html_report to shock')
+
+        reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
+                                    'name': 'domain_profile_report.html',
+                                    'label': 'Functional Domain Profile report'}
+                                   ]
 
 
         # save report object
         #
-        report = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
-        report_info = report.create_extended_report(reportObj)
+        report_info = reportClient.create_extended_report(reportObj)
 
         output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
 
