@@ -496,6 +496,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     line.strip()
                     if line.startswith('!'):
                         continue
+                    self.log(console,'LINE: '+line)  # DEBUG
                     [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")[0:4]
 
                     id2cat[cat_id] = cat
