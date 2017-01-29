@@ -859,9 +859,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # header
         html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
-        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
+        #html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
+        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"></td>']
         for cat in cats:
-            if not cat_seen[cat]:
+            if not cat_seen[cat] and not show_blanks:
                 continue
             html_report_lines += ['<td valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
             for c_i,c in enumerate(cat):
@@ -902,8 +903,27 @@ This module contains methods for running and visualizing results of phylogenomic
                     html_report_lines += ['<td align=center valign=middle><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
 
             html_report_lines += ['</tr>']
-        
         html_report_lines += ['</table>']
+
+        # key table
+        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>KEY</b></font></td>']
+        for cat in cats:
+            if not cat_seen[cat] and not show_blanks:
+                continue
+            html_report_lines += ['<tr>']
+            html_report_lines += ['<td valign=middle align=left><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(cat)+'</font></td>']
+            if params['namespace'] == 'custom':
+                domfam = cat
+                namespace = re.sub ('\d*$', '', domfam)
+                desc = domfam2name[namespace][domfam]
+            else:
+                namespace = params['namespace']
+                desc = cat2name[namespace][cat]
+            html_report_lines += ['<td valign=middle align=left><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
+            html_report_lines += ['</tr>']
+        html_report_lines += ['</table>']
+
+        # close
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
 
