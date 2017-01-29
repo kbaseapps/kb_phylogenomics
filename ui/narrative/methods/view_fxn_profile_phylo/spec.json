@@ -36,7 +36,7 @@
 	    	"options": [
 				{
 					"value": "custom",
-					"display": "Use Custom Families",
+					"display": "Use Custom Domains",
 					"id": "custom",
 					"ui-name": "custom"
 				},
