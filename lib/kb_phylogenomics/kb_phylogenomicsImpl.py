@@ -808,12 +808,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 for genome_ref in genome_refs:
                     if cat in table_data[genome_ref] and table_data[genome_ref][cat] != None and table_data[genome_ref][cat] > 0:
                         cat_seen[cat] = True
-                        group = cat2group[namespace]cat]
-                        if group != None:
-                            if group not in group_size:
-                                group_order.append(group)
-                                group_size[group] = 0
-                            group_size[group] += 1
+                        cat_group = cat2group[namespace][cat]
+                        if cat_group != None:
+                            if cat_group not in group_size:
+                                group_order.append(cat_group)
+                                group_size[cat_group] = 0
+                            group_size[cat_group] += 1
                         break
 
 
@@ -876,14 +876,19 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<tr><td valign=bottom align=right rowspan='+rowspan+'><font color="'+text_color+'"></td>']
         
         if show_groups:
-            for group in group_order:
-                html_report_lines += ['<td valign=middle align=center colspan='+str(group_size[group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(group)+'</font></td>']
+            for cat_group in group_order:
+                html_report_lines += ['<td valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(cat_group)+'</font></td>']
             html_report_lines += ['</tr><tr>']
 
         for cat in cats:
             if not cat_seen[cat] and not show_blanks:
                 continue
-            html_report_lines += ['<td valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
+            if params['namespace'] == 'custom':
+                namespace = re.sub ("\d*$", "", cat)
+                cell_title = domfam2name[namespace][cat]
+            else:
+                cell_title = cat2name[params['namespace']][cat]
+            html_report_lines += ['<td title="'+cell_title+'" valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
             for c_i,c in enumerate(cat):
                 if c_i < len(cat)-1:
                     html_report_lines += [c+'<br>']
