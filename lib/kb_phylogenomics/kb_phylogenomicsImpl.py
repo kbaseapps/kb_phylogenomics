@@ -622,12 +622,21 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_CDS_count_by_ref[genome_ref] = cds_cnt
 
             # SEED annotations
+            f_cnt = 0  # DEBUG
             if 'SEED' in namespaces_reading:
                 for feature in genome_obj['features']:
+                    if f_cnt % 100 == 0:
+                        self.log (console, "iterating features: "+str(f_cnt))  # DEBUG
+
                     if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
+                        if f_cnt % 100 == 0:
+                            self.log (console, "prot: "+str(feature['protein_translaton']))  # DEBUG
+
                         if 'function' in feature and feature['function'] != None and feature['function'] != '':
                             gene_name = feature['id']
-
+                            
+                            if f_cnt % 100 == 0:
+                                self.log (console, "fxn: "+str(feature['function']))  # DEBUG
                             # store assignments for gene
                             for namespace in ['SEED']:
                                 if namespace not in genes_with_hits_cnt[genome_ref]:
@@ -639,11 +648,17 @@ This module contains methods for running and visualizing results of phylogenomic
 
                                 domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', feature['function'])
                                 domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', feature['function'])
+                                domfam = re.sub (' ','_',domfam)
                                 
+                                if f_cnt % 100 == 0:
+                                    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
+
                                 if top_hit_flag:  # does SEED give more than one function?
                                     dom_hits[genome_ref][gene_name][namespace] = { domfam: True }
                                 else:
                                     dom_hits[genome_ref][gene_name][namespace] = { domfam: True }
+
+                    f_cnt += 1  # DEBUG
 
 
         # capture domain hits to genes within each namespace
