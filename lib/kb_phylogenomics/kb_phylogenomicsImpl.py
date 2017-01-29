@@ -646,8 +646,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                 if gene_name not in dom_hits[genome_ref]:
                                     dom_hits[genome_ref][gene_name] = dict()
 
-                                domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', feature['function'])
-                                domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', feature['function'])
+                                domfam = feature['function'].strip()
+                                domfam = re.sub (' *\#.*$', '', domfam)
+                                domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', domfam)
+                                domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', domfam)
                                 domfam = re.sub (' ','_',domfam)
                                 
                                 if f_cnt % 100 == 0:
