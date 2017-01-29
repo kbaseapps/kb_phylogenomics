@@ -761,16 +761,15 @@ This module contains methods for running and visualizing results of phylogenomic
             # high level summation
             else:
                 namespace = params['namespace']
-                for cat in cats:
-                    for gene_name in dom_hits[genome_ref].keys():
-                        if namespace in dom_hits[genome_ref][gene_name]:
-                            for domfam in dom_hits[genome_ref][gene_name][namespace].keys():
-                                if domfam in domfam2cat[namespace]:
-                                    cat = domfam2cat[namespace][domfam]
-                                    if cat in cats:
-                                        table_data[genome_ref][cat] += 1
+                for gene_name in dom_hits[genome_ref].keys():
+                    if namespace in dom_hits[genome_ref][gene_name]:
+                        for domfam in dom_hits[genome_ref][gene_name][namespace].keys():
+                            if domfam in domfam2cat[namespace]:
+                                cat = domfam2cat[namespace][domfam]
+                                if cat in cats:
+                                    table_data[genome_ref][cat] += 1
                 
-        # make percs
+        # adjust to percs
         if params['count_category'].startswith('perc'):
             for genome_ref in genome_refs:
                 for cat in cats:
@@ -802,10 +801,19 @@ This module contains methods for running and visualizing results of phylogenomic
             for cat in cats:
                 cat_seen[cat] = False
         else:
+            namespace = params['namespace']
+            group_size = dict()
+            group_order = []
             for cat in cats:
                 for genome_ref in genome_refs:
                     if cat in table_data[genome_ref] and table_data[genome_ref][cat] != None and table_data[genome_ref][cat] > 0:
                         cat_seen[cat] = True
+                        group = cat2group[namespace]cat]
+                        if group != None:
+                            if group not in group_size:
+                                group_order.append(group)
+                                group_size[group] = 0
+                            group_size[group] += 1
                         break
 
 
@@ -852,6 +860,9 @@ This module contains methods for running and visualizing results of phylogenomic
         border = "1"
         #row_spacing = "-2"
         num_rows = len(genome_refs)
+        show_groups = False
+        if params['namespace'] != 'custom' and len(group_order) > 0:
+            show_groups = True
 
         html_report_lines = []
         html_report_lines += ['<html>']
@@ -859,8 +870,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # header
         html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
-        #html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"><b>Genomes</b></font></td>']
-        html_report_lines += ['<tr><td valign=bottom align=right><font color="'+text_color+'"></td>']
+        rowspan = "1"
+        if show_groups: rowspan = "2"
+        #html_report_lines += ['<tr><td valign=bottom align=right rowspan='+rowspan+'><font color="'+text_color+'"><b>Genomes</b></font></td>']
+        html_report_lines += ['<tr><td valign=bottom align=right rowspan='+rowspan+'><font color="'+text_color+'"></td>']
+        
+        if show_groups:
+            for group in group_order:
+                html_report_lines += ['<td valign=middle align=center colspan='+str(group_size[group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(group)+'</font></td>']
+            html_report_lines += ['</tr><tr>']
+
         for cat in cats:
             if not cat_seen[cat] and not show_blanks:
                 continue
