@@ -245,4 +245,4 @@ TIGR_role:25510	157	Unknown function	General > GO:cellular component unknown ; G
 TIGR_role:26010	156	Hypothetical proteins	Conserved > GO:biological process unknown ; GO:0000004
 TIGR_role:26015	704	Hypothetical proteins	Domain > GO:.
 TIGR_role:26020	190	Hypothetical proteins	No database match > GO:.
-TIGR_role:27000	270	Disrupted reading frame > GO:.
+TIGR_role:27000	270	Disrupted reading frame	Disrupted reading frame > GO:.
