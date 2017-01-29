@@ -82,7 +82,7 @@
             "optional": true,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "raw_count" ],
+            "default_values": [ "perc_annot" ],
             "field_type": "dropdown",
             "dropdown_options": {
 	    	"options": [
