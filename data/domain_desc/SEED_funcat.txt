@@ -1,0 +1,30 @@
+Amino Acids and Derivatives
+Carbohydrates
+Cell Division and Cell Cycle
+Cell Wall and Capsule
+Clustering-based subsystems
+Cofactors, Vitamins, Prosthetic Groups, Pigments
+DNA Metabolism
+Dormancy and Sporulation
+Fatty Acids, Lipids, and Isoprenoids
+Iron acquisition and metabolism
+Membrane Transport
+Metabolism of Aromatic Compounds
+Miscellaneous
+Motility and Chemotaxis
+Nitrogen Metabolism
+Nucleosides and Nucleotides
+Phages, Prophages, Transposable elements
+Phages, Prophages, Transposable elements, Plasmids
+Phosphorus Metabolism
+Photosynthesis
+Potassium metabolism
+Protein Metabolism
+RNA Metabolism
+Regulation and Cell signaling
+Respiration
+Secondary Metabolism
+Stress Response
+Sulfur Metabolism
+Virulence
+Virulence, Disease and Defense
