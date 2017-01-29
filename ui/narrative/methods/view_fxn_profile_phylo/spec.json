@@ -155,6 +155,18 @@
 	    	"min_float": "0.0",
 	    	"max_float": "0.1"
             }
+        },
+        {
+            "id": "show_blanks",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "checkbox",
+            "checkbox_options": {
+	    	"checked_value": "1",
+	    	"unchecked_value": "0"
+            }
         }
     ],
     "behavior": {
@@ -199,6 +211,10 @@
                 {
                     "input_parameter": "e_value",
 		    "target_property": "e_value"
+                },
+                {
+                    "input_parameter": "show_blanks",
+		    "target_property": "show_blanks"
                 }
             ],
             "output_mapping": [

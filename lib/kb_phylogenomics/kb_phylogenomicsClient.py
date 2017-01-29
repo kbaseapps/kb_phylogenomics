@@ -59,7 +59,7 @@ class kb_phylogenomics(object):
            "target_fams" of list of String, parameter "count_category" of
            String, parameter "heatmap" of type "bool", parameter "vertical"
            of type "bool", parameter "top_hit" of type "bool", parameter
-           "e_value" of Double
+           "e_value" of Double, parameter "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -78,7 +78,8 @@ class kb_phylogenomics(object):
            "namespace" of String, parameter "target_fams" of list of String,
            parameter "count_category" of String, parameter "heatmap" of type
            "bool", parameter "vertical" of type "bool", parameter "top_hit"
-           of type "bool", parameter "e_value" of Double
+           of type "bool", parameter "e_value" of Double, parameter
+           "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

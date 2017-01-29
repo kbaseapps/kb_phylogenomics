@@ -32,7 +32,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "heatmap",
     "vertical",
     "top_hit",
-    "e_value"
+    "e_value",
+    "show_blanks"
 })
 public class ViewFxnProfileInput {
 
@@ -54,6 +55,8 @@ public class ViewFxnProfileInput {
     private Long topHit;
     @JsonProperty("e_value")
     private Double eValue;
+    @JsonProperty("show_blanks")
+    private Long showBlanks;
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     @JsonProperty("workspace_name")
@@ -191,6 +194,21 @@ public class ViewFxnProfileInput {
         return this;
     }
 
+    @JsonProperty("show_blanks")
+    public Long getShowBlanks() {
+        return showBlanks;
+    }
+
+    @JsonProperty("show_blanks")
+    public void setShowBlanks(Long showBlanks) {
+        this.showBlanks = showBlanks;
+    }
+
+    public ViewFxnProfileInput withShowBlanks(Long showBlanks) {
+        this.showBlanks = showBlanks;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -203,7 +221,7 @@ public class ViewFxnProfileInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

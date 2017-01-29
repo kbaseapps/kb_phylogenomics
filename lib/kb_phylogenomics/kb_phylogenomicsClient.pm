@@ -232,6 +232,7 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	vertical has a value which is a kb_phylogenomics.bool
 	top_hit has a value which is a kb_phylogenomics.bool
 	e_value has a value which is a float
+	show_blanks has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -257,6 +258,7 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	vertical has a value which is a kb_phylogenomics.bool
 	top_hit has a value which is a kb_phylogenomics.bool
 	e_value has a value which is a float
+	show_blanks has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -346,6 +348,7 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	vertical has a value which is a kb_phylogenomics.bool
 	top_hit has a value which is a kb_phylogenomics.bool
 	e_value has a value which is a float
+	show_blanks has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -371,6 +374,7 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	vertical has a value which is a kb_phylogenomics.bool
 	top_hit has a value which is a kb_phylogenomics.bool
 	e_value has a value which is a float
+	show_blanks has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1332,6 +1336,7 @@ heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
 top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
+show_blanks has a value which is a kb_phylogenomics.bool
 
 </pre>
 
@@ -1349,6 +1354,7 @@ heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
 top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
+show_blanks has a value which is a kb_phylogenomics.bool
 
 
 =end text
@@ -1417,6 +1423,7 @@ heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
 top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
+show_blanks has a value which is a kb_phylogenomics.bool
 
 </pre>
 
@@ -1434,6 +1441,7 @@ heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
 top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
+show_blanks has a value which is a kb_phylogenomics.bool
 
 
 =end text

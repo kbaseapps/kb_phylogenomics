@@ -1,30 +1,583 @@
-Amino Acids and Derivatives
-Carbohydrates
-Cell Division and Cell Cycle
-Cell Wall and Capsule
-Clustering-based subsystems
-Cofactors, Vitamins, Prosthetic Groups, Pigments
-DNA Metabolism
-Dormancy and Sporulation
-Fatty Acids, Lipids, and Isoprenoids
-Iron acquisition and metabolism
-Membrane Transport
-Metabolism of Aromatic Compounds
-Miscellaneous
-Motility and Chemotaxis
-Nitrogen Metabolism
-Nucleosides and Nucleotides
-Phages, Prophages, Transposable elements
-Phages, Prophages, Transposable elements, Plasmids
-Phosphorus Metabolism
-Photosynthesis
-Potassium metabolism
-Protein Metabolism
-RNA Metabolism
-Regulation and Cell signaling
-Respiration
-Secondary Metabolism
-Stress Response
-Sulfur Metabolism
-Virulence
-Virulence, Disease and Defense
+Amino Acids and Derivatives	Alanine_biosynthesis
+Amino Acids and Derivatives	Arginine_Biosynthesis_extended
+Amino Acids and Derivatives	Arginine_Deiminase_Pathway
+Amino Acids and Derivatives	Arginine_and_Ornithine_Degradation
+Amino Acids and Derivatives	Aromatic_amino_acid_degradation
+Amino Acids and Derivatives	Aromatic_amino_acid_interconversions_with_aryl_acids
+Amino Acids and Derivatives	Bacilysin_biosynthesis
+Amino Acids and Derivatives	Branched-Chain_Amino_Acid_Biosynthesis
+Amino Acids and Derivatives	Chorismate:_Intermediate_for_synthesis_of_PAPA_antibiotics,_PABA,_anthranilate,_3-hydroxyanthranilate_and_more.
+Amino Acids and Derivatives	Chorismate_Synthesis
+Amino Acids and Derivatives	Common_Pathway_For_Synthesis_of_Aromatic_Compounds_(DAHP_synthase_to_chorismate)
+Amino Acids and Derivatives	Cyanophycin_Metabolism
+Amino Acids and Derivatives	Cysteine_Biosynthesis
+Amino Acids and Derivatives	Glutamate_dehydrogenases
+Amino Acids and Derivatives	Glutamine,_Glutamate,_Aspartate_and_Asparagine_Biosynthesis
+Amino Acids and Derivatives	Glutamine_synthetases
+Amino Acids and Derivatives	Glycine_Biosynthesis
+Amino Acids and Derivatives	Glycine_and_Serine_Utilization
+Amino Acids and Derivatives	Glycine_cleavage_system
+Amino Acids and Derivatives	HMG_CoA_Synthesis
+Amino Acids and Derivatives	Histidine_Biosynthesis
+Amino Acids and Derivatives	Histidine_Degradation
+Amino Acids and Derivatives	Isoleucine_degradation
+Amino Acids and Derivatives	Ketoisovalerate_oxidoreductase
+Amino Acids and Derivatives	L-2-amino-thiazoline-4-carboxylic_acid-Lcysteine_conversion
+Amino Acids and Derivatives	Leucine_Biosynthesis
+Amino Acids and Derivatives	Leucine_Degradation_and_HMG-CoA_Metabolism
+Amino Acids and Derivatives	Lysine_Biosynthesis_DAP_Pathway
+Amino Acids and Derivatives	Lysine_degradation
+Amino Acids and Derivatives	Methionine_Biosynthesis
+Amino Acids and Derivatives	Methionine_Degradation
+Amino Acids and Derivatives	Methionine_Salvage
+Amino Acids and Derivatives	Phenylalanine_and_Tyrosine_Branches_from_Chorismate
+Amino Acids and Derivatives	Polyamine_Metabolism
+Amino Acids and Derivatives	Proline,_4-hydroxyproline_uptake_and_utilization
+Amino Acids and Derivatives	Proline_Synthesis
+Amino Acids and Derivatives	Serine_Biosynthesis
+Amino Acids and Derivatives	Threonine_anaerobic_catabolism_gene_cluster
+Amino Acids and Derivatives	Threonine_and_Homoserine_Biosynthesis
+Amino Acids and Derivatives	Threonine_degradation
+Amino Acids and Derivatives	Tryptophan_synthesis
+Amino Acids and Derivatives	Urea_decomposition
+Amino Acids and Derivatives	Valine_degradation
+Carbohydrates	2-Ketogluconate_Utilization
+Carbohydrates	2-methylcitrate_to_2-methylaconitate_metabolism_cluster
+Carbohydrates	Acetoin,_butanediol_metabolism
+Carbohydrates	Acetyl-CoA_fermentation_to_Butyrate
+Carbohydrates	Alpha-acetolactate_operon
+Carbohydrates	Beta-Glucoside_Metabolism
+Carbohydrates	Butanol_Biosynthesis
+Carbohydrates	CO2_uptake,_carboxysome
+Carbohydrates	Calvin-Benson_cycle
+Carbohydrates	Carboxysome
+Carbohydrates	Chitin_and_N-acetylglucosamine_utilization
+Carbohydrates	D-Galacturonate_and_D-Glucuronate_Utilization
+Carbohydrates	D-Sorbitol(D-Glucitol)_and_L-Sorbose_Utilization
+Carbohydrates	D-Tagatose_and_Galactitol_Utilization
+Carbohydrates	D-allose_utilization
+Carbohydrates	D-galactarate,_D-glucarate_and_D-glycerate_catabolism
+Carbohydrates	D-galactonate_catabolism
+Carbohydrates	D-gluconate_and_ketogluconates_metabolism
+Carbohydrates	D-ribose_utilization
+Carbohydrates	Deoxyribose_and_Deoxynucleoside_Catabolism
+Carbohydrates	Di-Inositol-Phosphate_biosynthesis
+Carbohydrates	Dihydroxyacetone_kinases
+Carbohydrates	Entner-Doudoroff_Pathway
+Carbohydrates	Erythritol_utilization
+Carbohydrates	Ethanolamine_utilization
+Carbohydrates	Fermentations:_Lactate
+Carbohydrates	Fermentations:_Mixed_acid
+Carbohydrates	Formaldehyde_assimilation:_Ribulose_monophosphate_pathway
+Carbohydrates	Fructooligosaccharides(FOS)_and_Raffinose_Utilization
+Carbohydrates	Fructose_utilization
+Carbohydrates	Glycerol_and_Glycerol-3-phosphate_Uptake_and_Utilization
+Carbohydrates	Glycerol_fermenation_to_1,3-propanediol
+Carbohydrates	Glycogen_metabolism
+Carbohydrates	Glycolate,_glyoxylate_interconversions
+Carbohydrates	Glycolysis_and_Gluconeogenesis
+Carbohydrates	Glycolysis_and_Gluconeogenesis,_including_Archaeal_enzymes
+Carbohydrates	Hexose_Phosphate_Uptake_System
+Carbohydrates	Inositol_catabolism
+Carbohydrates	Isobutyryl-CoA_to_Propionyl-CoA_Module
+Carbohydrates	L-Arabinose_utilization
+Carbohydrates	L-ascorbate_utilization_(and_related_gene_clusters)
+Carbohydrates	L-fucose_utilization
+Carbohydrates	L-fucose_utilization_temp
+Carbohydrates	L-rhamnose_utilization
+Carbohydrates	Lactate_utilization
+Carbohydrates	Lacto-N-Biose_I_and_Galacto-N-Biose_Metabolic_Pathway
+Carbohydrates	Lactose_and_Galactose_Uptake_and_Utilization
+Carbohydrates	Lactose_utilization
+Carbohydrates	Malonate_decarboxylase
+Carbohydrates	Maltose_and_Maltodextrin_Utilization
+Carbohydrates	Mannitol_Utilization
+Carbohydrates	Mannose_Metabolism
+Carbohydrates	Melibiose_Utilization
+Carbohydrates	Methanogenesis
+Carbohydrates	Methanogenesis_from_methylated_compounds
+Carbohydrates	Methylcitrate_cycle
+Carbohydrates	Methylglyoxal_Metabolism
+Carbohydrates	N-Acetyl-Galactosamine_and_Galactosamine_Utilization
+Carbohydrates	Neotrehalosadiamine_(NTD)_Biosynthesis_Operon
+Carbohydrates	One-carbon_metabolism_by_tetrahydropterines
+Carbohydrates	Pentose_phosphate_pathway
+Carbohydrates	Photorespiration_(oxidative_C2_cycle)
+Carbohydrates	Predicted_carbohydrate_hydrolases
+Carbohydrates	Propanediol_utilization
+Carbohydrates	Propionate-CoA_to_Succinate_Module
+Carbohydrates	Propionyl-CoA_to_Succinyl-CoA_Module
+Carbohydrates	Pyruvate:ferredoxin_oxidoreductase
+Carbohydrates	Pyruvate_Alanine_Serine_Interconversions
+Carbohydrates	Pyruvate_metabolism_I:_anaplerotic_reactions,_PEP
+Carbohydrates	Pyruvate_metabolism_II:_acetyl-CoA,_acetogenesis_from_pyruvate
+Carbohydrates	Ribitol,_Xylitol,_Arabitol,_Mannitol_and_Sorbitol_utilization
+Carbohydrates	Serine-glyoxylate_cycle
+Carbohydrates	Sucrose_utilization
+Carbohydrates	Sucrose_utilization_Shewanella
+Carbohydrates	TCA_Cycle
+Carbohydrates	Trehalose_Biosynthesis
+Carbohydrates	Trehalose_Uptake_and_Utilization
+Carbohydrates	Tricarballylate_Utilization
+Carbohydrates	Unknown_sugar_utilization_(cluster_yphABCDEFG)
+Carbohydrates	Xylose_utilization
+Cell Division and Cell Cycle	Bacterial_Cytoskeleton
+Cell Division and Cell Cycle	Control_of_cell_elongation_-_division_cycle_in_Bacilli
+Cell Division and Cell Cycle	Cyanobacterial_Circadian_Clock
+Cell Division and Cell Cycle	Heterocyst_formation_in_cyanobacteria
+Cell Division and Cell Cycle	Macromolecular_synthesis_operon
+Cell Division and Cell Cycle	MukBEF_Chromosome_Condensation
+Cell Division and Cell Cycle	Two_cell_division_clusters_relating_to_chromosome_partitioning
+Cell Division and Cell Cycle	YgjD_and_YeaZ
+Cell Wall and Capsule	Alginate_metabolism
+Cell Wall and Capsule	CMP-N-acetylneuraminate_Biosynthesis
+Cell Wall and Capsule	Capsular_Polysaccharide_(CPS)_of_Campylobacter
+Cell Wall and Capsule	Capsular_heptose_biosynthesis
+Cell Wall and Capsule	Capsular_surface_virulence_antigen_loci
+Cell Wall and Capsule	Colanic_acid_biosynthesis
+Cell Wall and Capsule	D-Alanyl_Lipoteichoic_Acid_Biosynthesis
+Cell Wall and Capsule	KDO2-Lipid_A_biosynthesis
+Cell Wall and Capsule	LOS_core_oligosaccharide_biosynthesis
+Cell Wall and Capsule	Lipid_A-Ara4N_pathway_(_Polymyxin_resistance_)
+Cell Wall and Capsule	Lipid_A_modifications
+Cell Wall and Capsule	Lipopolysaccharide-related_cluster_in_Alphaproteobacteria
+Cell Wall and Capsule	O-Methyl_Phosphoramidate_Capsule_Modification_in_Campylobacter
+Cell Wall and Capsule	Peptidoglycan_Biosynthesis
+Cell Wall and Capsule	Phosphorylcholine_incorporation_in_LPS
+Cell Wall and Capsule	Polysaccharide_deacetylases
+Cell Wall and Capsule	Pseudaminic_Acid_Biosynthesis
+Cell Wall and Capsule	Rhamnose_containing_glycans
+Cell Wall and Capsule	Serotype_determining_Capsular_polysaccharide_biosynthesis_in_Staphylococcus
+Cell Wall and Capsule	Sialic_Acid_Metabolism
+Cell Wall and Capsule	Teichoic_and_lipoteichoic_acids_biosynthesis
+Cell Wall and Capsule	Teichuronic_acid_biosynthesis
+Cell Wall and Capsule	UDP-N-acetylmuramate_from_Fructose-6-phosphate_Biosynthesis
+Cell Wall and Capsule	Xanthan_Exopolysaccharide_Biosynthesis_and_Export
+Cell Wall and Capsule	YjeE
+Cell Wall and Capsule	dTDP-rhamnose_synthesis
+Cell Wall and Capsule	linker_unit-arabinogalactan_synthesis
+Cell Wall and Capsule	mycolic_acid_synthesis
+Clustering-based subsystems	Bacterial_Cell_Division
+Clustering-based subsystems	Bacterial_RNA-metabolizing_Zn-dependent_hydrolases
+Clustering-based subsystems	CBSS-214092.1.peg.3450
+Clustering-based subsystems	CBSS-261594.1.peg.2640
+Clustering-based subsystems	CBSS-262316.1.peg.2929
+Clustering-based subsystems	CBSS-262719.3.peg.410
+Clustering-based subsystems	CBSS-343509.6.peg.2644
+Clustering-based subsystems	CBSS-562.2.peg.5158_SK3_including
+Clustering-based subsystems	Cluster-based_Subsystem_Grouping_Hypotheticals_-_perhaps_Proteosome_Related
+Clustering-based subsystems	Conenzyme_B12_related_Hypothetical:_Clusters_with_cobST
+Clustering-based subsystems	Conserved_gene_cluster_associated_with_Met-tRNA_formyltransferase
+Clustering-based subsystems	LMPTP_YfkJ_cluster
+Clustering-based subsystems	LMPTP_YwlE_cluster
+Clustering-based subsystems	NusA-TFII_Cluster
+Clustering-based subsystems	PA0057_cluster
+Clustering-based subsystems	Putative_hemin_transporter
+Clustering-based subsystems	Putative_sulfate_assimilation_cluster
+Clustering-based subsystems	Spore_Coat
+Clustering-based subsystems	Type_III_secretion_systems,_extended
+Clustering-based subsystems	YeiH
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Bilin_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Biotin_biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Chlorophyll_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Chlorophyll_Degradation
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Cobalamin_synthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Coenzyme_A_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Coenzyme_B12_biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Coenzyme_B_synthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Coenzyme_F420_synthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Coenzyme_PQQ_synthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Experimental_tye
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Flavodoxin
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Folate_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Heme_and_Siroheme_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Heme_biosynthesis_orphans
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Lipoic_acid_metabolism
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Menaquinone_Biosynthesis_via_Futalosine
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Menaquinone_and_Phylloquinone_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Molybdenum_cofactor_biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	NAD_and_NADP_cofactor_biosynthesis_global
+Cofactors, Vitamins, Prosthetic Groups, Pigments	NAD_regulation
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Plastoquinone_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	PnuC-like_transporters
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Pterin_biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Pyridoxin_(Vitamin_B6)_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Pyrroloquinoline_Quinone_biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Riboflavin,_FMN_and_FAD_metabolism
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Thiamin_biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Tocopherol_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	Ubiquinone_Biosynthesis
+Cofactors, Vitamins, Prosthetic Groups, Pigments	p-Aminobenzoyl-Glutamate_Utilization
+DNA Metabolism	2-phosphoglycolate_salvage
+DNA Metabolism	ATP-dependent_Nuclease
+DNA Metabolism	CRISPRs
+DNA Metabolism	DNA-replication
+DNA Metabolism	DNA_Helicase_of_Unknown_Function
+DNA Metabolism	DNA_Repair_Base_Excision
+DNA Metabolism	DNA_repair,_UvrABC_system
+DNA Metabolism	DNA_repair,_bacterial
+DNA Metabolism	DNA_repair,_bacterial_DinG_and_relatives
+DNA Metabolism	DNA_repair,_bacterial_MutL-MutS_system
+DNA Metabolism	DNA_repair,_bacterial_RecFOR_pathway
+DNA Metabolism	DNA_repair,_bacterial_UvrD_and_related_helicases
+DNA Metabolism	DNA_repair_and_recombination_eukaryotic
+DNA Metabolism	DNA_replication,_archaeal
+DNA Metabolism	DNA_structural_proteins,_bacterial
+DNA Metabolism	DNA_topoisomerases,_Type_I,_ATP-independent
+DNA Metabolism	DNA_topoisomerases,_Type_II,_ATP-dependent
+DNA Metabolism	Plasmid_replication
+DNA Metabolism	Restriction-Modification_System
+DNA Metabolism	RuvABC_plus_a_hypothetical
+DNA Metabolism	YcfH
+Dormancy and Sporulation	Bacillus_biofilm_matrix_protein_component_TasA_and_homologs
+Dormancy and Sporulation	Spore_germination
+Dormancy and Sporulation	Sporulation_Cluster_III_A
+Dormancy and Sporulation	Sporulation_gene_orphans
+Fatty Acids, Lipids, and Isoprenoids	Archaeal_lipids
+Fatty Acids, Lipids, and Isoprenoids	Carotenoids
+Fatty Acids, Lipids, and Isoprenoids	Fatty_Acid_Biosynthesis_FASII
+Fatty Acids, Lipids, and Isoprenoids	Glycerolipid_and_Glycerophospholipid_Metabolism_in_Bacteria
+Fatty Acids, Lipids, and Isoprenoids	Isoprenoid_Biosynthesis
+Fatty Acids, Lipids, and Isoprenoids	Polyhydroxybutyrate_metabolism
+Fatty Acids, Lipids, and Isoprenoids	Polyprenyl_Diphosphate_Biosynthesis
+Fatty Acids, Lipids, and Isoprenoids	Terpen_biosynthesis
+Fatty Acids, Lipids, and Isoprenoids	Triacylglycerol_metabolism
+Fatty Acids, Lipids, and Isoprenoids	polyprenyl_synthesis
+Iron acquisition and metabolism	Campylobacter_Iron_Metabolism
+Iron acquisition and metabolism	Heme,_hemin_uptake_and_utilization_systems_in_GramPositives
+Iron acquisition and metabolism	Hemin_transport_system
+Iron acquisition and metabolism	Iron_acquisition_in_Vibrio
+Iron acquisition and metabolism	Siderophore_Aerobactin
+Iron acquisition and metabolism	Siderophore_Enterobactin
+Iron acquisition and metabolism	Siderophore_Pyoverdine
+Iron acquisition and metabolism	Siderophore_Staphylobactin
+Iron acquisition and metabolism	Siderophore_pyochelin
+Iron acquisition and metabolism	Transport_of_Iron
+Membrane Transport	ABC_transporter_alkylphosphonate_(TC_3.A.1.9.1)
+Membrane Transport	ABC_transporter_branched-chain_amino_acid_(TC_3.A.1.4.1)
+Membrane Transport	ABC_transporter_dipeptide_(TC_3.A.1.5.2)
+Membrane Transport	ABC_transporter_of_unknown_substrate_X
+Membrane Transport	ABC_transporter_oligopeptide_(TC_3.A.1.5.1)
+Membrane Transport	ABC_transporter_peptide_(TC_3.A.1.5.5)
+Membrane Transport	ABC_transporter_tungstate_(TC_3.A.1.6.2)
+Membrane Transport	Agrobacterium_opine_transport
+Membrane Transport	Choline_Transport
+Membrane Transport	Curli_production
+Membrane Transport	ECF_class_transporters
+Membrane Transport	ESAT-6_proteins_secretion_system_in_Actinobacteria
+Membrane Transport	ESAT-6_proteins_secretion_system_in_Firmicutes
+Membrane Transport	Fructose_and_Mannose_Inducible_PTS
+Membrane Transport	Mannose-sensitive_hemagglutinin_type_4_pilus
+Membrane Transport	Na(+)_H(+)_antiporter
+Membrane Transport	Sodium_Hydrogen_Antiporter
+Membrane Transport	Ton_and_Tol_transport_systems
+Membrane Transport	Toxin_co-regulated_pilus
+Membrane Transport	Transport_of_Manganese
+Membrane Transport	Transport_of_Molybdenum
+Membrane Transport	Transport_of_Nickel_and_Cobalt
+Membrane Transport	Transport_of_Zinc
+Membrane Transport	Twin-arginine_translocation_system
+Membrane Transport	Type_4_conjugative_transfer_system,_IncI1_type
+Membrane Transport	Type_III_secretion_system_orphans
+Membrane Transport	Type_IV_pilus
+Membrane Transport	Widespread_colonization_island
+Membrane Transport	pVir_Plasmid_of_Campylobacter
+Metabolism of Aromatic Compounds	4-Hydroxyphenylacetic_acid_catabolic_pathway
+Metabolism of Aromatic Compounds	Acetophenone_carboxylase_1
+Metabolism of Aromatic Compounds	Anaerobic_toluene_and_ethylbenzene_degradation
+Metabolism of Aromatic Compounds	Aromatic_Amin_Catabolism
+Metabolism of Aromatic Compounds	Benzoate_degradation
+Metabolism of Aromatic Compounds	Benzoate_transport_and_degradation_cluster
+Metabolism of Aromatic Compounds	Biphenyl_Degradation
+Metabolism of Aromatic Compounds	Catechol_branch_of_beta-ketoadipate_pathway
+Metabolism of Aromatic Compounds	Central_meta-cleavage_pathway_of_aromatic_compound_degradation
+Metabolism of Aromatic Compounds	Chloroaromatic_degradation_pathway
+Metabolism of Aromatic Compounds	Cresol_degradation
+Metabolism of Aromatic Compounds	Gentisare_degradation
+Metabolism of Aromatic Compounds	Homogentisate_pathway_of_aromatic_compound_degradation
+Metabolism of Aromatic Compounds	N-heterocyclic_aromatic_compound_degradation
+Metabolism of Aromatic Compounds	Naphtalene_and_antracene_degradation
+Metabolism of Aromatic Compounds	Phenylpropanoid_compound_degradation
+Metabolism of Aromatic Compounds	Protocatechuate_branch_of_beta-ketoadipate_pathway
+Metabolism of Aromatic Compounds	Quinate_degradation
+Metabolism of Aromatic Compounds	Salicylate_and_gentisate_catabolism
+Metabolism of Aromatic Compounds	Salicylate_ester_degradation
+Metabolism of Aromatic Compounds	Toluene_degradation
+Metabolism of Aromatic Compounds	carbazol_degradation_cluster
+Metabolism of Aromatic Compounds	n-Phenylalkanoic_acid_degradation
+Metabolism of Aromatic Compounds	p-Hydroxybenzoate_degradation
+Metabolism of Aromatic Compounds	p-cymene_degradation
+Miscellaneous	Archease
+Miscellaneous	Conserved_gene_cluster_possibly_involved_in_RNA_metabolism
+Miscellaneous	Luciferases
+Miscellaneous	Muconate_lactonizing_enzyme_family
+Miscellaneous	Synechocystis_experimental
+Miscellaneous	YaaA
+Miscellaneous	YbbK
+Miscellaneous	ZZ_gjo_need_homes
+Motility and Chemotaxis	Archaeal_Flagellum
+Motility and Chemotaxis	Bacterial_Chemotaxis
+Motility and Chemotaxis	Flagellar_motility
+Motility and Chemotaxis	Flagellum
+Motility and Chemotaxis	Flagellum_in_Campylobacter
+Motility and Chemotaxis	Rhamnolipids_in_Pseudomonas
+Nitrogen Metabolism	Allantoin_Utilization
+Nitrogen Metabolism	Amidase_clustered_with_urea_and_nitrile_hydratase_functions
+Nitrogen Metabolism	Ammonia_assimilation
+Nitrogen Metabolism	Cyanate_hydrolysis
+Nitrogen Metabolism	Denitrification
+Nitrogen Metabolism	Dissimilatory_nitrite_reductase
+Nitrogen Metabolism	Nitrate_and_nitrite_ammonification
+Nitrogen Metabolism	Nitric_oxide_synthase
+Nitrogen Metabolism	Nitrogen_fixation
+Nitrogen Metabolism	Nitrosative_stress
+Nucleosides and Nucleotides	AMP_to_3-phosphoglycerate
+Nucleosides and Nucleotides	Adenosyl_nucleosidases
+Nucleosides and Nucleotides	De_Novo_Purine_Biosynthesis
+Nucleosides and Nucleotides	De_Novo_Pyrimidine_Synthesis
+Nucleosides and Nucleotides	Hydantoin_metabolism
+Nucleosides and Nucleotides	Nucleoside_triphosphate_pyrophosphohydrolase_MazG
+Nucleosides and Nucleotides	Nudix_proteins_(nucleoside_triphosphate_hydrolases)
+Nucleosides and Nucleotides	Purine_Utilization
+Nucleosides and Nucleotides	Purine_conversions
+Nucleosides and Nucleotides	Purine_nucleotide_synthesis_regulator
+Nucleosides and Nucleotides	Pyrimidine_utilization
+Nucleosides and Nucleotides	Ribonucleotide_reduction
+Nucleosides and Nucleotides	Xanthosine_utilization_(xap_region)
+Phages, Prophages, Transposable elements	Phage_capsid_proteins
+Phages, Prophages, Transposable elements, Plasmids	Conjugative_transposon,_Bacteroidales
+Phages, Prophages, Transposable elements, Plasmids	IbrA_and_IbrB:_co-activators_of_prophage_gene_expression
+Phages, Prophages, Transposable elements, Plasmids	Integrons
+Phages, Prophages, Transposable elements, Plasmids	Listeria_Pathogenicity_Island_LIPI-1_extended
+Phages, Prophages, Transposable elements, Plasmids	Listeria_phi-A118-like_prophages
+Phages, Prophages, Transposable elements, Plasmids	Staphylococcal_pathogenicity_islands_SaPI
+Phages, Prophages, Transposable elements, Plasmids	Staphylococcal_phi-Mu50B-like_prophages
+Phages, Prophages, Transposable elements, Plasmids	Tn552
+Phages, Prophages, Transposable elements, Plasmids	Vibrio_pathogenicity_island
+Phosphorus Metabolism	Alkylphosphonate_utilization
+Phosphorus Metabolism	High_affinity_phosphate_transporter_and_control_of_PHO_regulon
+Phosphorus Metabolism	Phosphate_metabolism
+Phosphorus Metabolism	Phosphonate_metabolism
+Photosynthesis	Bacterial_light-harvesting_proteins
+Photosynthesis	Chlorosome
+Photosynthesis	Photosystem_I
+Photosynthesis	Photosystem_I-type_photosynthetic_reaction_center
+Photosynthesis	Photosystem_II
+Photosynthesis	Photosystem_II-type_photosynthetic_reaction_center
+Photosynthesis	Phycobilisome
+Potassium metabolism	Glutathione-regulated_potassium-efflux_system_and_associated_functions
+Potassium metabolism	Potassium_homeostasis
+Potassium metabolism	pH_adaptation_potassium_efflux_system
+Protein Metabolism	Glycine_reductase,_sarcosine_reductase_and_betaine_reductase
+Protein Metabolism	GroEL_GroES
+Protein Metabolism	Inteins
+Protein Metabolism	N-linked_Glycosylation_in_Bacteria
+Protein Metabolism	Peptidyl-prolyl_cis-trans_isomerase
+Protein Metabolism	Periplasmic_disulfide_interchange
+Protein Metabolism	Programmed_frameshift
+Protein Metabolism	Proteasome_archaeal
+Protein Metabolism	Proteasome_bacterial
+Protein Metabolism	Proteasome_eukaryotic
+Protein Metabolism	Protein_chaperones
+Protein Metabolism	Protein_degradation
+Protein Metabolism	Protein_secretion_by_ABC-type_exporters
+Protein Metabolism	Proteolysis_in_bacteria,_ATP-dependent
+Protein Metabolism	Putative_TldE-TldD_proteolytic_complex
+Protein Metabolism	Pyrrolysine
+Protein Metabolism	Ribosomal_protein_S12p_Asp_methylthiotransferase
+Protein Metabolism	Ribosomal_protein_S5p_acylation
+Protein Metabolism	Ribosome_LSU_bacterial
+Protein Metabolism	Ribosome_LSU_chloroplast
+Protein Metabolism	Ribosome_LSU_eukaryotic_and_archaeal
+Protein Metabolism	Ribosome_LSU_mitochondrial
+Protein Metabolism	Ribosome_SSU_bacterial
+Protein Metabolism	Ribosome_SSU_chloroplast
+Protein Metabolism	Ribosome_SSU_eukaryotic_and_archaeal
+Protein Metabolism	Ribosome_SSU_mitochondrial
+Protein Metabolism	Ribosome_activity_modulation
+Protein Metabolism	Ribosome_biogenesis_bacterial
+Protein Metabolism	Selenocysteine_metabolism
+Protein Metabolism	Signal_peptidase
+Protein Metabolism	Thermosome,_archaeal
+Protein Metabolism	Trans-translation_by_stalled_ribosomes
+Protein Metabolism	Translation_elongation_factor_G_family
+Protein Metabolism	Translation_elongation_factors_eukaryotic_and_archaeal
+Protein Metabolism	Translation_initiation_factors_eukaryotic_and_archaeal
+Protein Metabolism	Universal_GTPases
+Protein Metabolism	rRNAs
+Protein Metabolism	tRNA_aminoacylation,_Asp_and_Asn
+Protein Metabolism	tRNA_aminoacylation,_Glu_and_Gln
+Protein Metabolism	tRNAs
+RNA Metabolism	ATP-dependent_RNA_helicases,_bacterial
+RNA Metabolism	Exosome
+RNA Metabolism	Group_II_intron-associated_genes
+RNA Metabolism	Polyadenylation_bacterial
+RNA Metabolism	Queuosine-Archaeosine_Biosynthesis
+RNA Metabolism	RNA_3'-terminal_phosphate_cyclase
+RNA Metabolism	RNA_polymerase_I
+RNA Metabolism	RNA_polymerase_II
+RNA Metabolism	RNA_polymerase_III
+RNA Metabolism	RNA_polymerase_III_initiation_factors
+RNA Metabolism	RNA_polymerase_II_initiation_factors
+RNA Metabolism	RNA_polymerase_archaeal
+RNA Metabolism	RNA_polymerase_archaeal_initiation_factors
+RNA Metabolism	RNA_polymerase_bacterial
+RNA Metabolism	RNA_polymerase_chloroplast
+RNA Metabolism	RNA_processing_and_degradation,_bacterial
+RNA Metabolism	Ribonuclease_H
+RNA Metabolism	Ribonuclease_P_archaeal_and_eukaryal
+RNA Metabolism	Ribosome_biogenesis_archaeal
+RNA Metabolism	Rrf2_family_transcriptional_regulators
+RNA Metabolism	Spliceosome
+RNA Metabolism	Transcription_factors_bacterial
+RNA Metabolism	Transcription_factors_cyanobacterial_RpoD-like_sigma_factors
+RNA Metabolism	Transcription_initiation,_bacterial_sigma_factors
+RNA Metabolism	Wyeosine-MimG_Biosynthesis
+RNA Metabolism	tRNA_nucleotidyltransferase
+RNA Metabolism	tRNA_processing
+RNA Metabolism	tRNA_splicing
+Regulation and Cell signaling	Autoinducer_2_(AI-2)_transport_and_processing_(lsrACDBFGE_operon)
+Regulation and Cell signaling	Biofilm_formation_in_Staphylococcus
+Regulation and Cell signaling	Coagulation_cascade
+Regulation and Cell signaling	CytR_regulation
+Regulation and Cell signaling	DNA-binding_regulatory_proteins,_strays
+Regulation and Cell signaling	MazEF_toxin-antitoxing_(programmed_cell_death)_system
+Regulation and Cell signaling	Murein_hydrolase_regulation_and_cell_death
+Regulation and Cell signaling	Orphan_regulatory_proteins
+Regulation and Cell signaling	Oxygen_and_light_sensor_PpaA-PpsR
+Regulation and Cell signaling	Pseudomonas_quinolone_signal_PQS
+Regulation and Cell signaling	Quorum_Sensing:_Autoinducer-2_Synthesis
+Regulation and Cell signaling	Quorum_sensing_regulation_in_Pseudomonas
+Regulation and Cell signaling	Regulatory_Intramembrane_Proteolysis_Pathways
+Regulation and Cell signaling	Sex_pheromones_in_Enterococcus_faecalis_and_other_Firmicutes
+Regulation and Cell signaling	SpeB-SpeF_extended_regulon
+Regulation and Cell signaling	Streptococcal_Mga_Regulon
+Regulation and Cell signaling	Stringent_Response,_(p)ppGpp_metabolism
+Regulation and Cell signaling	Toxin-antitoxin_replicon_stabilization_systems
+Regulation and Cell signaling	Two-component_regulatory_systems_in_Campylobacter
+Regulation and Cell signaling	cAMP_signaling_in_bacteria
+Respiration	Anaerobic_respiratory_reductases
+Respiration	Biogenesis_of_c-type_cytochromes
+Respiration	Biogenesis_of_cbb3-type_cytochrome_c_oxidases
+Respiration	Biogenesis_of_cytochrome_c_oxidases
+Respiration	CO_Dehydrogenase
+Respiration	Carbon_monoxide_dehydrogenase_maturation_factors
+Respiration	Carbon_monoxide_induced_hydrogenase
+Respiration	Coenzyme_F420-H2_dehydrogenase_(methanophenazine)
+Respiration	Coenzyme_F420_hydrogenase
+Respiration	Cytochrome_B6-F_complex
+Respiration	Energy-conserving_hydrogenase_(ferredoxin)
+Respiration	F0F1-type_ATP_synthase
+Respiration	Flavocytochrome_C
+Respiration	Formate_dehydrogenase
+Respiration	Formate_hydrogenase
+Respiration	H2:CoM-S-S-HTP_oxidoreductase
+Respiration	Hydrogenases
+Respiration	Membrane-bound_Ni,_Fe-hydrogenase
+Respiration	Methanophenazine_hydrogenase
+Respiration	Na(+)-translocating_NADH-quinone_oxidoreductase_and_rnf-like_group_of_electron_transport_complexes
+Respiration	Na+_translocating_decarboxylases_and_related_biotin-dependent_enzymes
+Respiration	NiFe_hydrogenase_maturation
+Respiration	Reductive_Dechlorination
+Respiration	Respiratory_Complex_I
+Respiration	Respiratory_dehydrogenases_1
+Respiration	Soluble_cytochromes_and_functionally_related_electron_carriers
+Respiration	Succinate_dehydrogenase
+Respiration	Terminal_AA3-600_quinol_oxidase
+Respiration	Terminal_cytochrome_C_oxidases
+Respiration	Terminal_cytochrome_O_ubiquinol_oxidase
+Respiration	Terminal_cytochrome_d_ubiquinol_oxidases
+Respiration	Terminal_cytochrome_oxidases
+Respiration	Tetrathionate_respiration
+Respiration	Ubiquinone_Menaquinone-cytochrome_c_reductase_complexes
+Respiration	V-Type_ATP_synthase
+Respiration	trimethylamine_N-oxide_(TMAO)_reductase
+Secondary Metabolism	2-isocapryloyl-3R-hydroxymethyl-gamma-butyrolactone_and_other_bacterial_morphogens
+Secondary Metabolism	Alkaloid_biosynthesis_from_L-lysine
+Secondary Metabolism	Apigenin_derivatives
+Secondary Metabolism	Auxin_biosynthesis
+Secondary Metabolism	Auxin_degradation
+Secondary Metabolism	Biflavanoid_biosynthesis
+Secondary Metabolism	Caffeic_acid_derivatives
+Secondary Metabolism	Cannabinoid_biosynthesis
+Secondary Metabolism	Cinnamic_Acid_Degradation
+Secondary Metabolism	Clavulanic_acid_biosynthesis
+Secondary Metabolism	Flavanone_biosynthesis
+Secondary Metabolism	Lignine_biosynthesis
+Secondary Metabolism	Octadecanoids
+Secondary Metabolism	Phenazine_biosynthesis
+Secondary Metabolism	Phenylpropanoids_general_biosynthesis
+Secondary Metabolism	Phenylpropionate_Degradation
+Secondary Metabolism	Phytoalexin_biosynthesis
+Secondary Metabolism	Phytosterol_biosynthesis
+Secondary Metabolism	Quinolinic_acid_and_its_derivatives
+Secondary Metabolism	Salicylic_acid_biosynthesis1
+Secondary Metabolism	Steroid_sulfates
+Secondary Metabolism	Suberine_biosynthesis
+Secondary Metabolism	Tannin_biosynthesis
+Stress Response	Acid_resistance_mechanisms
+Stress Response	Bacterial_hemoglobins
+Stress Response	Betaine_biosynthesis_from_glycine
+Stress Response	Choline_and_Betaine_Uptake_and_Betaine_Biosynthesis
+Stress Response	D-tyrosyl-tRNA(Tyr)_deacylase
+Stress Response	Dimethylarginine_metabolism
+Stress Response	Ectoine_biosynthesis_and_regulation
+Stress Response	Flavohaemoglobin
+Stress Response	Glutaredoxins
+Stress Response	Glutathione-dependent_pathway_of_formaldehyde_detoxification
+Stress Response	Glutathione:_Biosynthesis_and_gamma-glutamyl_cycle
+Stress Response	Glutathione:_Non-redox_reactions
+Stress Response	Glutathione:_Redox_cycle
+Stress Response	Glutathione_analogs:_mycothiol
+Stress Response	Glutathionylspermidine_and_Trypanothione
+Stress Response	Heat_shock_dnaK_gene_cluster_extended
+Stress Response	Hfl_operon
+Stress Response	Oxidative_stress
+Stress Response	Redox-dependent_regulation_of_nucleus_processes
+Stress Response	Rubrerythrin
+Stress Response	SigmaB_stress_responce_regulation
+Stress Response	Sugar-phosphate_stress_regulation
+Stress Response	Universal_stress_protein_family
+Sulfur Metabolism	Alkanesulfonate_assimilation
+Sulfur Metabolism	Alkanesulfonates_Utilization
+Sulfur Metabolism	DMSP_breakdown
+Sulfur Metabolism	Galactosylceramide_and_Sulfatide_metabolism
+Sulfur Metabolism	Sulfate_reduction-associated_complexes
+Sulfur Metabolism	Sulfur_oxidation
+Sulfur Metabolism	Taurine_Utilization
+Sulfur Metabolism	Thioredoxin-disulfide_reductase
+Sulfur Metabolism	Utilization_of_glutathione_as_a_sulphur_source
+Virulence	Type_4_secretion_and_conjugative_transfer
+Virulence, Disease and Defense	Adhesins_in_Staphylococcus
+Virulence, Disease and Defense	Adhesion_of_Campylobacter
+Virulence, Disease and Defense	Aminoglycoside_adenylyltransferases
+Virulence, Disease and Defense	Arsenic_resistance
+Virulence, Disease and Defense	Bacteriocin-like_peptides_Blp
+Virulence, Disease and Defense	Beta-lactamase
+Virulence, Disease and Defense	Cholera_toxin
+Virulence, Disease and Defense	Cobalt-zinc-cadmium_resistance
+Virulence, Disease and Defense	Copper_homeostasis
+Virulence, Disease and Defense	Copper_homeostasis:_copper_tolerance
+Virulence, Disease and Defense	Cytolethal_distending_toxin_of_Campylobacter_jejuni
+Virulence, Disease and Defense	Cytolysin_and_Lipase_operon_in_Vibrio
+Virulence, Disease and Defense	Fosfomycin_resistance
+Virulence, Disease and Defense	Listeria_surface_proteins:_Internalin-like_proteins
+Virulence, Disease and Defense	Listeria_surface_proteins:_LPXTG_motif
+Virulence, Disease and Defense	MLST
+Virulence, Disease and Defense	Mercuric_reductase
+Virulence, Disease and Defense	Mercury_resistance_operon
+Virulence, Disease and Defense	Methicillin_resistance_in_Staphylococci
+Virulence, Disease and Defense	Multidrug_Resistance,_2-protein_version_Found_in_Gram-positive_bacteria
+Virulence, Disease and Defense	Multidrug_Resistance,_Tripartite_Systems_Found_in_Gram_Negative_Bacteria
+Virulence, Disease and Defense	Multidrug_Resistance_Efflux_Pumps
+Virulence, Disease and Defense	Multidrug_efflux_pump_in_Campylobacter_jejuni_(CmeABC_operon)
+Virulence, Disease and Defense	Prophage-encoded_Exotoxins
+Virulence, Disease and Defense	Resistance_to_Vancomycin
+Virulence, Disease and Defense	Resistance_to_fluoroquinolones
+Virulence, Disease and Defense	Salmonella_invasion_locus
+Virulence, Disease and Defense	Streptococcus_pneumoniae_Vancomycin_Tolerance_Locus
+Virulence, Disease and Defense	Streptococcus_pyogenes_Virulome
+Virulence, Disease and Defense	Streptococcus_pyogenes_recombinatorial_zone
+Virulence, Disease and Defense	Streptolysin_S_Biosynthesis_and_Transport
+Virulence, Disease and Defense	Streptothricin_resistance
+Virulence, Disease and Defense	Zinc_resistance

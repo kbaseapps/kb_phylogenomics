@@ -51,6 +51,7 @@ module kb_phylogenomics {
 	bool         vertical;
 	bool         top_hit;
 	float        e_value;
+	bool         show_blanks;
     } view_fxn_profile_Input;
 
     typedef structure {
@@ -80,6 +81,7 @@ module kb_phylogenomics {
 	bool         vertical;
 	bool         top_hit;
 	float        e_value;
+	bool         show_blanks;
     } view_fxn_profile_phylo_Input;
 
     typedef structure {

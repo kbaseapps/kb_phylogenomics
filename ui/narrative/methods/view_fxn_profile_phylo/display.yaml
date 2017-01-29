@@ -85,6 +85,13 @@ parameters :
             Ignore domain hits below e-value threshold
         long-hint  : |
             Ignore domain hits below e-value threshold
+    show_blanks :
+        ui-name : |
+            Show blanks
+        short-hint : |
+            Show categories or families that have no counts
+        long-hint  : |
+            Show categories or families that have no counts
 
 description : |
     <p>After DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for a Genome Set using the Species Tree as context.</p>
