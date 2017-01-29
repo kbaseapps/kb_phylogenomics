@@ -85,6 +85,13 @@ parameters :
             Ignore domain hits below e-value threshold
         long-hint  : |
             Ignore domain hits below e-value threshold
+    log_scale :
+        ui-name : |
+            Heatmap Log Base
+        short-hint : |
+            Set if you want the heatmap to show colors using a log scale
+        long-hint  : |
+            Set if you want the heatmap to show colors using a log scale
     show_blanks :
         ui-name : |
             Show blanks

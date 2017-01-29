@@ -51,6 +51,7 @@ module kb_phylogenomics {
 	bool         vertical;
 	bool         top_hit;
 	float        e_value;
+	float        log_scale;
 	bool         show_blanks;
     } view_fxn_profile_Input;
 
@@ -81,6 +82,7 @@ module kb_phylogenomics {
 	bool         vertical;
 	bool         top_hit;
 	float        e_value;
+	float        log_scale;
 	bool         show_blanks;
     } view_fxn_profile_phylo_Input;
 

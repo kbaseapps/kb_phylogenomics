@@ -154,6 +154,18 @@
             }
         },
         {
+            "id": "log_scale",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+	    	"validate_as": "float",
+	    	"min_float": "1.0"
+            }
+        },
+        {
             "id": "show_blanks",
             "optional": true,
             "advanced": true,
@@ -208,6 +220,10 @@
                 {
                     "input_parameter": "e_value",
 		    "target_property": "e_value"
+                },
+                {
+                    "input_parameter": "log_scale",
+		    "target_property": "log_scale"
                 },
                 {
                     "input_parameter": "show_blanks",

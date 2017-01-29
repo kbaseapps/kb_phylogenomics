@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "vertical",
     "top_hit",
     "e_value",
+    "log_scale",
     "show_blanks"
 })
 public class ViewFxnProfileInput {
@@ -55,6 +56,8 @@ public class ViewFxnProfileInput {
     private Long topHit;
     @JsonProperty("e_value")
     private Double eValue;
+    @JsonProperty("log_scale")
+    private Double logScale;
     @JsonProperty("show_blanks")
     private Long showBlanks;
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
@@ -194,6 +197,21 @@ public class ViewFxnProfileInput {
         return this;
     }
 
+    @JsonProperty("log_scale")
+    public Double getLogScale() {
+        return logScale;
+    }
+
+    @JsonProperty("log_scale")
+    public void setLogScale(Double logScale) {
+        this.logScale = logScale;
+    }
+
+    public ViewFxnProfileInput withLogScale(Double logScale) {
+        this.logScale = logScale;
+        return this;
+    }
+
     @JsonProperty("show_blanks")
     public Long getShowBlanks() {
         return showBlanks;
@@ -221,7 +239,7 @@ public class ViewFxnProfileInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logScale=")+ logScale)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

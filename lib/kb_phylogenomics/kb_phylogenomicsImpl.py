@@ -15,6 +15,7 @@ from datetime import datetime
 from pprint import pprint, pformat
 
 import numpy as np
+import math
 from Bio import SeqIO
 
 from biokbase.workspace.client import Workspace as workspaceService
@@ -46,7 +47,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "ff08749bab6f966a911d9f7905fa64be797ef38a"
+    GIT_COMMIT_HASH = "f5ab3977f63dfad79af2e4f93d586d6370903624"
 
     #BEGIN_CLASS_HEADER
 
@@ -225,7 +226,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "target_fams" of list of String, parameter "count_category" of
            String, parameter "heatmap" of type "bool", parameter "vertical"
            of type "bool", parameter "top_hit" of type "bool", parameter
-           "e_value" of Double, parameter "show_blanks" of type "bool"
+           "e_value" of Double, parameter "log_scale" of Double, parameter
+           "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -802,8 +804,14 @@ This module contains methods for running and visualizing results of phylogenomic
         # determine high val
         for genome_ref in genome_refs:
             for cat in cats:
-                if table_data[genome_ref][cat] > overall_high_val:
-                    overall_high_val = table_data[genome_ref][cat]
+                val = table_data[genome_ref][cat]
+                if 'log_scale' in params:
+                    log_base = float(params['log_base'])
+                    if log_base <= 1.0:
+                        raise ValueError ("log base must be > 1.0")
+                    val = math.log(val, log_base)
+                if val > overall_high_val:
+                    overall_high_val = val
         if overall_high_val == 0:
             raise ValueError ("unable to find any counts")
 
@@ -851,7 +859,8 @@ This module contains methods for running and visualizing results of phylogenomic
         text_color = "#606060"
         #graph_color = "lightblue"
         #graph_width = 100
-        graph_char = "."
+        #graph_char = "."
+        graph_char = sp
         color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
@@ -930,7 +939,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 if not cat_seen[cat] and not show_blanks:
                     continue
                 max_color = len(color_list)
-                cell_color_i = max_color - int(round(max_color * table_data[genome_ref][cat] / float(overall_high_val)))
+                val = table_data[genome_ref][cat]
+                if 'log_scale' in params:
+                    log_base = float(params['log_base'])
+                    if log_base <= 1.0:
+                        raise ValueError ("log base must be > 1.0")
+                    val = math.log(val, log_base)
+                cell_color_i = max_color - int(round(max_color * val / float(overall_high_val)))
                 c = color_list[cell_color_i]
                 cell_color = '#'+c+c+c+c+'FF'
 
@@ -1029,7 +1044,7 @@ This module contains methods for running and visualizing results of phylogenomic
            parameter "count_category" of String, parameter "heatmap" of type
            "bool", parameter "vertical" of type "bool", parameter "top_hit"
            of type "bool", parameter "e_value" of Double, parameter
-           "show_blanks" of type "bool"
+           "log_scale" of Double, parameter "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
