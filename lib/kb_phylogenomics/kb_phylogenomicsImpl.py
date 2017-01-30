@@ -723,11 +723,6 @@ This module contains methods for running and visualizing results of phylogenomic
                 if genome_ref not in genes_with_hits_cnt:
                     genes_with_hits_cnt[genome_ref] = dict()
 
-                for namespace in namespace_classes:
-                    if namespace not in dom_hits[genome_ref]:
-                        dom_hits[genome_ref][namespace] = dict()
-                        genes_with_hits_cnt[genome_ref][namespace] = 0
-
                 for scaffold_id_iter in domain_data['data'].keys():
                     for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
                         gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
@@ -741,13 +736,13 @@ This module contains methods for running and visualizing results of phylogenomic
                         #gene_strand    = CDS_domain_list[KBASE_DOMAINHIT_GENE_STRAND_I]
                         gene_hits_dict = CDS_domain_list[KBASE_DOMAINHIT_GENE_HITS_DICT_I]
 
-                        dom_hits_by_namespace    = dict()
-                        top_hit_val_by_namespace = dict()
-                        top_hit_dom_by_namespace = dict()
+                        dom_hits_by_namespace       = dict()
+                        top_hit_evalue_by_namespace = dict()
+                        top_hit_dom_by_namespace    = dict()
 
                         for namespace in namespace_classes:
                             dom_hits_by_namespace[namespace] = dict()
-                            top_hit_val_by_namespace[namespace] = 100
+                            top_hit_evalue_by_namespace[namespace] = 100
                             top_hit_dom_by_namespace[namespace] = None
 
                         for domfam in gene_hits_dict.keys():
@@ -774,15 +769,17 @@ This module contains methods for running and visualizing results of phylogenomic
                                     continue
                                 if top_hit_flag:
                                     if top_hit_dom_by_namespace[namespace] == None \
-                                            or top_hit_val_by_namespace[namespace] > e_value:
+                                            or top_hit_evalue_by_namespace[namespace] > e_value:
                                         top_hit_dom_by_namespace[namespace] = domfam_clean
-                                        top_hit_val_by_namespace[namespace] = e_value
+                                        top_hit_evalue_by_namespace[namespace] = e_value
                                         
                                 dom_hits_by_namespace[namespace][domfam_clean] = True
 
                         # store assignments for gene
                         for namespace in namespace_classes:
-                            if not genes_with_hits_cnt[genome_ref][namespace]:
+                            if namespace == 'SEED':
+                                continue
+                            if namespace not in genes_with_hits_cnt[genome_ref]:
                                 genes_with_hits_cnt[genome_ref][namespace] = 0
                             if dom_hits_by_namespace[namespace]:
                                 genes_with_hits_cnt[genome_ref][namespace] += 1
