@@ -927,6 +927,7 @@ This module contains methods for running and visualizing results of phylogenomic
         color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
         max_color = len(color_list)-1
         cat_disp_trunc_len = 20
+        max_group_width = 20
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -972,7 +973,20 @@ This module contains methods for running and visualizing results of phylogenomic
         
         if show_groups:
             for cat_group in group_order:
-                html_report_lines += ['<td valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(cat_group)+'</font></td>']
+                cat_group_words = cat_group.split()
+                new_cat_group_words = []
+                if len(cat_group) > max_group_width:
+                    sentence_len = 0
+                    for w_i,word in enumerate(cat_group_words):
+                        new_cat_group_words.append(word)
+                        sentence_len += len(word)
+                        if w_i < len(cat_group_words)-1:
+                            if sentence_len + 1 + cat_group_words[w_i+1] > max_group_width:
+                                new_cat_group_words[w_i] += '<br>'
+                                sentence_len = 0
+                    cat_group_words = new_cat_group_words
+                cat_group_disp = " ".join(cat_group_words)
+                html_report_lines += ['<td valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_group_disp+'</font></td>']
             html_report_lines += ['</tr><tr>']
 
         for cat in cats:
