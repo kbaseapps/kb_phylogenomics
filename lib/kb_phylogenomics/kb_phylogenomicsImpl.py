@@ -333,7 +333,7 @@ This module contains methods for running and visualizing results of phylogenomic
             cat2domfams[namespace] = dict()
 
             # get high-level cats
-            tigrrole_id2cat = []
+            tigrrole_id2cat = dict()
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line.strip()
