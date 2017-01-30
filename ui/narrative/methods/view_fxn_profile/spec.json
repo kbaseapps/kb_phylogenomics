@@ -75,6 +75,48 @@
             }
         },
         {
+            "id": "extra_target_fam_groups",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": true,
+            "default_values": [ "" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "foo",
+					"display": "FOO",
+					"id": "foo",
+					"ui-name": "foo"
+				},
+				{
+					"value": "bar",
+					"display": "BAR",
+					"id": "bar",
+					"ui-name": "bar"
+				},
+				{
+					"value": "crocodile",
+					"display": "CROCODILE",
+					"id": "crocodile",
+					"ui-name": "crocodile"
+				},
+				{
+					"value": "alligator",
+					"display": "ALLIGATOR",
+					"id": "alligator",
+					"ui-name": "alligator"
+				},
+				{
+					"value": "tortoise",
+					"display": "TORTOISE",
+					"id": "tortoise",
+					"ui-name": "tortoise"
+				}
+		]
+            }
+        },
+        {
             "id": "count_category",
             "optional": true,
             "advanced": false,
@@ -200,6 +242,10 @@
                 {
                     "input_parameter": "target_fams",
 		    "target_property": "target_fams"
+                },
+                {
+                    "input_parameter": "extra_target_fam_groups",
+		    "target_property": "extra_target_fam_groups"
                 },
                 {
                     "input_parameter": "count_category",

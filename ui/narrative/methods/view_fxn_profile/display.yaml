@@ -50,6 +50,13 @@ parameters :
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
         long-hint  : |
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
+    extra_target_fam_groups :
+        ui-name : |
+            Custom Domain Groups
+        short-hint : |
+            Domain Families from particular namespace groups to target in the analysis
+        long-hint  : |
+            Domain Families from particular namespace groups to target in the analysis
     count_category :
         ui-name : |
             Values
