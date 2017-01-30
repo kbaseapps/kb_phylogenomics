@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "input_genomeSet_ref",
     "namespace",
     "target_fams",
+    "extra_target_fam_groups",
     "count_category",
     "heatmap",
     "vertical",
@@ -46,6 +47,8 @@ public class ViewFxnProfileInput {
     private java.lang.String namespace;
     @JsonProperty("target_fams")
     private List<String> targetFams;
+    @JsonProperty("extra_target_fam_groups")
+    private List<String> extraTargetFamGroups;
     @JsonProperty("count_category")
     private java.lang.String countCategory;
     @JsonProperty("heatmap")
@@ -119,6 +122,21 @@ public class ViewFxnProfileInput {
 
     public ViewFxnProfileInput withTargetFams(List<String> targetFams) {
         this.targetFams = targetFams;
+        return this;
+    }
+
+    @JsonProperty("extra_target_fam_groups")
+    public List<String> getExtraTargetFamGroups() {
+        return extraTargetFamGroups;
+    }
+
+    @JsonProperty("extra_target_fam_groups")
+    public void setExtraTargetFamGroups(List<String> extraTargetFamGroups) {
+        this.extraTargetFamGroups = extraTargetFamGroups;
+    }
+
+    public ViewFxnProfileInput withExtraTargetFamGroups(List<String> extraTargetFamGroups) {
+        this.extraTargetFamGroups = extraTargetFamGroups;
         return this;
     }
 
@@ -239,7 +257,7 @@ public class ViewFxnProfileInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logScale=")+ logScale)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", extraTargetFamGroups=")+ extraTargetFamGroups)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logScale=")+ logScale)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

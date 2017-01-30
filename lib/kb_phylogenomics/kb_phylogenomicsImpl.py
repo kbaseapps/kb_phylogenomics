@@ -47,7 +47,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "f5ab3977f63dfad79af2e4f93d586d6370903624"
+    GIT_COMMIT_HASH = "22ee4972d7d2ed6e4440c11899834ab5bb245ca4"
 
     #BEGIN_CLASS_HEADER
 
@@ -223,11 +223,12 @@ This module contains methods for running and visualizing results of phylogenomic
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_genomeSet_ref" of type
            "data_obj_ref", parameter "namespace" of String, parameter
-           "target_fams" of list of String, parameter "count_category" of
-           String, parameter "heatmap" of type "bool", parameter "vertical"
-           of type "bool", parameter "top_hit" of type "bool", parameter
-           "e_value" of Double, parameter "log_scale" of Double, parameter
-           "show_blanks" of type "bool"
+           "target_fams" of list of String, parameter
+           "extra_target_fam_groups" of list of String, parameter
+           "count_category" of String, parameter "heatmap" of type "bool",
+           parameter "vertical" of type "bool", parameter "top_hit" of type
+           "bool", parameter "e_value" of Double, parameter "log_scale" of
+           Double, parameter "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """

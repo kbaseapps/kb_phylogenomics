@@ -46,6 +46,7 @@ module kb_phylogenomics {
 
 	string       namespace;
 	list<string> target_fams;
+	list<string> extra_target_fam_groups;
 	string       count_category;
 	bool         heatmap;
 	bool         vertical;
