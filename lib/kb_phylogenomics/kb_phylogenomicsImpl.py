@@ -370,8 +370,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 if target_fam.startswith('SEED'):
                     namespaces_reading['SEED'] = True
                     target_fam = target_fam.strip()
-                    target_fam = re.sub (' *\(EC [\d\.\-]*\) *$', '', target_fam)
-                    target_fam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', target_fam)
+                    target_fam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
+                    target_fam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
                     target_fam = re.sub (' ', '_', target_fam)
                 else:
                     target_fam = this_namespace + leading_zeros + target_fam
@@ -429,8 +429,8 @@ This module contains methods for running and visualizing results of phylogenomic
                             domfam_desc = domfam
                             domfam = domfam.strip()
                             domfam = re.sub (' *\#.*$', '', domfam)
-                            domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', domfam)
-                            domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', domfam)
+                            domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                            domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
                             domfam = re.sub (' ', '_', domfam)
                             if domfam in domfam2name[namespace]:
                                 if len(domfam_desc) > len(domfam2name[namespace][domfam]):
@@ -545,8 +545,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 for line in dom2cat_map_handle.readlines():
                     line.strip()
                     [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                    domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', domfam)
-                    domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', domfam)
+                    domfam = domfam.strip()
+                    domfam = re.sub (' *\#.*$', '', domfam)
+                    domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                    domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                    domfam = re.sub (' ', '_', domfam)
                     domfam2cat[namespace][domfam] = cat
 
         # just in case
@@ -659,9 +662,9 @@ This module contains methods for running and visualizing results of phylogenomic
                                     for annot2 in annot_set_2:
                                         domfam = annot2.strip()
                                         domfam = re.sub (' *\#.*$', '', domfam)
-                                        domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', domfam)
-                                        domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', domfam)
-                                        domfam = re.sub (' ','_',domfam)
+                                        domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                                        domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                                        domfam = re.sub (' ', '_', domfam)
                                         domfam_list.append(domfam)
                                         if f_cnt % 100 == 0:
                                             self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
