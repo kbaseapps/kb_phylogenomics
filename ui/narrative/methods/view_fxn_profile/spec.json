@@ -196,7 +196,7 @@
             }
         },
         {
-            "id": "log_scale",
+            "id": "log_base",
             "optional": true,
             "advanced": true,
             "allow_multiple": false,
@@ -268,8 +268,8 @@
 		    "target_property": "e_value"
                 },
                 {
-                    "input_parameter": "log_scale",
-		    "target_property": "log_scale"
+                    "input_parameter": "log_base",
+		    "target_property": "log_base"
                 },
                 {
                     "input_parameter": "show_blanks",

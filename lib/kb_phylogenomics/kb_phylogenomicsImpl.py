@@ -47,7 +47,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "22ee4972d7d2ed6e4440c11899834ab5bb245ca4"
+    GIT_COMMIT_HASH = "3d5fa3272be3684c5a6c6262a997be61f5f7b6a1"
 
     #BEGIN_CLASS_HEADER
 
@@ -227,7 +227,7 @@ This module contains methods for running and visualizing results of phylogenomic
            "extra_target_fam_groups" of list of String, parameter
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
-           "bool", parameter "e_value" of Double, parameter "log_scale" of
+           "bool", parameter "e_value" of Double, parameter "log_base" of
            Double, parameter "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
@@ -862,7 +862,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             for cat in cats:
                 val = table_data[genome_ref][cat]
-                if 'log_scale' in params:
+                if 'log_base' in params:
                     log_base = float(params['log_base'])
                     if log_base <= 1.0:
                         raise ValueError ("log base must be > 1.0")
@@ -1004,7 +1004,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 if val == 0:
                     cell_color = 'white'
                 else:
-                    if 'log_scale' in params:
+                    if 'log_base' in params:
                         log_base = float(params['log_base'])
                         if log_base <= 1.0:
                             raise ValueError ("log base must be > 1.0")
@@ -1108,7 +1108,7 @@ This module contains methods for running and visualizing results of phylogenomic
            parameter "count_category" of String, parameter "heatmap" of type
            "bool", parameter "vertical" of type "bool", parameter "top_hit"
            of type "bool", parameter "e_value" of Double, parameter
-           "log_scale" of Double, parameter "show_blanks" of type "bool"
+           "log_base" of Double, parameter "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

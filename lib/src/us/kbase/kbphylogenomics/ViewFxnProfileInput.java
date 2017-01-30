@@ -34,7 +34,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "vertical",
     "top_hit",
     "e_value",
-    "log_scale",
+    "log_base",
     "show_blanks"
 })
 public class ViewFxnProfileInput {
@@ -59,8 +59,8 @@ public class ViewFxnProfileInput {
     private Long topHit;
     @JsonProperty("e_value")
     private Double eValue;
-    @JsonProperty("log_scale")
-    private Double logScale;
+    @JsonProperty("log_base")
+    private Double logBase;
     @JsonProperty("show_blanks")
     private Long showBlanks;
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
@@ -215,18 +215,18 @@ public class ViewFxnProfileInput {
         return this;
     }
 
-    @JsonProperty("log_scale")
-    public Double getLogScale() {
-        return logScale;
+    @JsonProperty("log_base")
+    public Double getLogBase() {
+        return logBase;
     }
 
-    @JsonProperty("log_scale")
-    public void setLogScale(Double logScale) {
-        this.logScale = logScale;
+    @JsonProperty("log_base")
+    public void setLogBase(Double logBase) {
+        this.logBase = logBase;
     }
 
-    public ViewFxnProfileInput withLogScale(Double logScale) {
-        this.logScale = logScale;
+    public ViewFxnProfileInput withLogBase(Double logBase) {
+        this.logBase = logBase;
         return this;
     }
 
@@ -257,7 +257,7 @@ public class ViewFxnProfileInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", extraTargetFamGroups=")+ extraTargetFamGroups)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logScale=")+ logScale)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", extraTargetFamGroups=")+ extraTargetFamGroups)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

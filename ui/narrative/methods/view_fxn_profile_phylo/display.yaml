@@ -85,7 +85,7 @@ parameters :
             Ignore domain hits below e-value threshold
         long-hint  : |
             Ignore domain hits below e-value threshold
-    log_scale :
+    log_base :
         ui-name : |
             Heatmap Log Base
         short-hint : |

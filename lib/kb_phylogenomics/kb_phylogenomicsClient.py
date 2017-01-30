@@ -60,7 +60,7 @@ class kb_phylogenomics(object):
            "extra_target_fam_groups" of list of String, parameter
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
-           "bool", parameter "e_value" of Double, parameter "log_scale" of
+           "bool", parameter "e_value" of Double, parameter "log_base" of
            Double, parameter "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
@@ -81,7 +81,7 @@ class kb_phylogenomics(object):
            parameter "count_category" of String, parameter "heatmap" of type
            "bool", parameter "vertical" of type "bool", parameter "top_hit"
            of type "bool", parameter "e_value" of Double, parameter
-           "log_scale" of Double, parameter "show_blanks" of type "bool"
+           "log_base" of Double, parameter "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
