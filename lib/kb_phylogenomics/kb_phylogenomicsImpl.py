@@ -928,6 +928,7 @@ This module contains methods for running and visualizing results of phylogenomic
         max_color = len(color_list)-1
         cat_disp_trunc_len = 20
         max_group_width = 20
+        cell_width = '10px'
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -1046,9 +1047,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     else:
                         this_text_color = cell_color
                         this_graph_char = graph_char
-                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" bgcolor="'+cell_color+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
+                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" bgcolor="'+cell_color+'" style="width:'+cell_width+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
                 else:
-                    html_report_lines += ['<td align=center valign=middle><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
+                    html_report_lines += ['<td align=center valign=middle style="'+cell_width+'"><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
 
             html_report_lines += ['</tr>']
         html_report_lines += ['</table>']
