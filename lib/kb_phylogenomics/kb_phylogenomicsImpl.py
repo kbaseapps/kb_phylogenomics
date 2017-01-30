@@ -695,7 +695,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # DEBUG
         for genome_ref in genome_refs:
-            self.log (console, "SEED ANNOT CNT A: '"+genes_with_hits_cnt[genome_ref]['SEED']+"'")
+            self.log (console, "SEED ANNOT CNT A: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
         for ws_id in uniq_genome_ws_ids.keys():
             try:
@@ -797,7 +797,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 
         # DEBUG
         for genome_ref in genome_refs:
-            self.log (console, "SEED ANNOT CNT B: '"+genes_with_hits_cnt[genome_ref]['SEED']+"'")
+            self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
                                     
         # calculate table
