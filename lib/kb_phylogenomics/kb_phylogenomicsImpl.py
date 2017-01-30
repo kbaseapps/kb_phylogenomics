@@ -254,11 +254,14 @@ This module contains methods for running and visualizing results of phylogenomic
         required_params = ['input_genomeSet_ref',
                            'namespace'
                           ]
-
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
                 raise ValueError ("Must define required param: '"+arg+"'")
 
+        if params['namespace'] == 'custom':
+            if ('target_fams' not in params or not params['target_fams']) \
+                    and 'extra_target_fam_groups' not in params or not params['extra_target_fam_groups']):
+                raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups'")
 
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
@@ -287,8 +290,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
         domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
         domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
-        domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
+        domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
+        #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
         domain_fam_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
 
 
@@ -315,8 +318,6 @@ This module contains methods for running and visualizing results of phylogenomic
         namespaces_reading = dict()
 
         if params['namespace'] == 'custom':
-            if 'target_fams' not in params or not params['target_fams'] or len(params['target_fams']) ==0:
-                raise ValueError ("Must configure 'target_fams' if namespace == 'custom'")
 
             target_fams = []
             for target_fam in params['target_fams']:
@@ -537,7 +538,8 @@ This module contains methods for running and visualizing results of phylogenomic
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line.strip()
-                    [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
+                    #[cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
+                    [cat_group, cat] = line.split("\t")[0:2]
                     if cat not in cats:
                         cats.append(cat)
                         cat_disp = re.sub ('_', ' ', cat)
