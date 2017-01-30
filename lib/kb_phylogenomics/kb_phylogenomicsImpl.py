@@ -693,6 +693,10 @@ This module contains methods for running and visualizing results of phylogenomic
         KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J = 3
         KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J  = 4
 
+        # DEBUG
+        for genome_ref in genome_refs:
+            self.log (console, "SEED ANNOT CNT A: '"+genes_with_hits_cnt[genome_ref]['SEED']+"'")
+
         for ws_id in uniq_genome_ws_ids.keys():
             try:
                 dom_annot_obj_info_list = wsClient.list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
@@ -791,6 +795,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                 else:
                                     dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
                                 
+        # DEBUG
+        for genome_ref in genome_refs:
+            self.log (console, "SEED ANNOT CNT B: '"+genes_with_hits_cnt[genome_ref]['SEED']+"'")
+
                                     
         # calculate table
         #
@@ -834,8 +842,8 @@ This module contains methods for running and visualizing results of phylogenomic
                         else:
                             namespace = params['namespace']
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
-                        self.log("NAMESPACE: '"+str(namespace)+"'")
-                        self.log("TOTAL_GENES: '"+str(total_genes)+"'")
+                        self.log(console, "NAMESPACE: '"+str(namespace)+"'")  # DEBUG
+                        self.log(console, "TOTAL_GENES: '"+str(total_genes)+"'")  # DEBUG
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
 
