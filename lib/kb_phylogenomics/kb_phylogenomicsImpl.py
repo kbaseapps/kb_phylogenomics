@@ -286,7 +286,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
         domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
         domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
+        #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
+        domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
         domain_fam_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
 
 
@@ -535,7 +536,7 @@ This module contains methods for running and visualizing results of phylogenomic
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line.strip()
-                    [cat_group, cat] = line.split("\t")[0:2]
+                    [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
                     cats.append(cat)
                     cat2name[namespace][cat] = cat
                     cat2group[namespace][cat] = cat_group
