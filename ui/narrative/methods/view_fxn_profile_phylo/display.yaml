@@ -52,7 +52,7 @@ parameters :
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
     count_category :
         ui-name : |
-            Values
+            View values as
         short-hint : |
             Calculate numbers as percentages or raw counts
         long-hint  : |

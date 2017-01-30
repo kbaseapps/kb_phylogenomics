@@ -59,7 +59,7 @@ parameters :
             Domain Families from particular namespace groups to target in the analysis
     count_category :
         ui-name : |
-            Values
+            View values as
         short-hint : |
             Calculate numbers as percentages or raw counts
         long-hint  : |
