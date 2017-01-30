@@ -557,7 +557,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                 domfam2name[namespace][domfam] = domfam_desc
 
         # just in case
-        else:
+        elif params['namespace'] != 'COG' \
+                and params['namespace' != 'PF' \
+                and params['namespace' != 'TIGR' \
+                and params['namespace' != 'SEED':
             raise ValueError ("Unknown namespace: '"+str(params['namespace'])+"'")
 
 
