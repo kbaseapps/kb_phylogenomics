@@ -322,7 +322,7 @@ This module contains methods for running and visualizing results of phylogenomic
         if params['namespace'] != 'custom':
             for namespace in ['COG','PF','TIGR','SEED']:
                 if params['namespace'] == namespace:
-                    namespace_reading[namespace] = True
+                    namespaces_reading[namespace] = True
 
         # read all mappings between groups and domfams
         for namespace in ['COG','PF','TIGR','SEED']:
