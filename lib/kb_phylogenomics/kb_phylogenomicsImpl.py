@@ -340,14 +340,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     if namespace == 'COG':
                         [cat, cat_group, cat_name] = line.split("\t")[0:3]
-                        if namespace == params['namespace']:
+                        if namespace == params['namespace'] and cat not in cats:
                             cats.append(cat)
                         cat2name[namespace][cat] = cat_name
                         cat2group[namespace][cat] = cat_group
 
                     elif namespace == 'PF':
                         [cat, cat_name] = line.split("\t")[0:2]
-                        if namespace == params['namespace']:
+                        if namespace == params['namespace'] and cat not in cats:
                             cats.append(cat)
                         cat2name[namespace][cat] = cat_name
                         cat2group[namespace][cat] = None
@@ -357,7 +357,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             continue
                         [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")[0:4]
                         tigrrole_id2cat[cat_id] = cat
-                        if namespace == params['namespace']:
+                        if namespace == params['namespace'] and cat not in cats:
                             cats.append(cat)
                         cat_name = re.sub (' *\> GO:.*$', '', cat_name_plus_go_terms)
                         cat2name[namespace][cat] = cat_name
@@ -556,6 +556,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
                             domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
                             domfam = re.sub (' ', '_', domfam)
+                            domfam = 'SEED'+domfam
                             if domfam in domfam2name[namespace]:
                                 if len(domfam_desc) > len(domfam2name[namespace][domfam]):
                                     domfam2name[namespace][domfam] = domfam_desc
