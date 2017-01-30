@@ -499,6 +499,7 @@ This module contains methods for running and visualizing results of phylogenomic
             cats = target_fams + extra_target_fams
 
             # store names of targets
+            domfam2name = dict()
             for namespace in namespaces_reading.keys():
                 domfam2name[namespace] = dict()
                 if namespace == 'COG':
