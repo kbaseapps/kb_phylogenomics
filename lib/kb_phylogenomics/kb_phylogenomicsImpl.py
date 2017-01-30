@@ -630,7 +630,8 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_CDS_count_by_ref[genome_ref] = cds_cnt
 
             # SEED annotations
-            f_cnt = 0  # DEBUG
+            #
+            #f_cnt = 0  # DEBUG
             if 'SEED' in namespaces_reading:
                 for feature in genome_obj['features']:
                     #if f_cnt % 100 == 0:
@@ -643,8 +644,9 @@ This module contains methods for running and visualizing results of phylogenomic
                         if 'function' in feature and feature['function'] != None and feature['function'] != '':
                             gene_name = feature['id']
                             
-                            if f_cnt % 100 == 0:
-                                self.log (console, "fxn: '"+str(feature['function'])+"'")  # DEBUG
+                            #if f_cnt % 100 == 0:
+                            #    self.log (console, "fxn: '"+str(feature['function'])+"'")  # DEBUG
+
                             # store assignments for gene
                             for namespace in ['SEED']:
                                 if namespace not in genes_with_hits_cnt[genome_ref]:
@@ -666,8 +668,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                         domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
                                         domfam = re.sub (' ', '_', domfam)
                                         domfam_list.append(domfam)
-                                        if f_cnt % 100 == 0:
-                                            self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
+                                        #if f_cnt % 100 == 0:
+                                        #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
 
                                 if top_hit_flag:  # does SEED give more than one function?
                                     dom_hits[genome_ref][gene_name][namespace][domfam_list[0]] = True
@@ -675,7 +677,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                     for domfam in domfam_list:
                                         dom_hits[genome_ref][gene_name][namespace][domfam] = True
 
-                    f_cnt += 1  # DEBUG
+                    #f_cnt += 1  # DEBUG
 
 
         # capture domain hits to genes within each namespace
@@ -828,10 +830,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 for cat in cats:
                     if params['count_category'] == 'perc_annot':
                         if params['namespace'] == 'custom':
-                            namespace = re.sub ('\d+$', '', cat)
+                            namespace = re.sub ('\d*$', '', cat)
                         else:
                             namespace = params['namespace']
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
+                        self.log("NAMESPACE: '"+str(namespace)+"'")
+                        self.log("TOTAL_GENES: '"+str(total_genes)+"'")
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
 
