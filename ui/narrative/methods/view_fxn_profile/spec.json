@@ -84,34 +84,34 @@
             "dropdown_options": {
 	    	"options": [
 				{
-					"value": "foo",
-					"display": "FOO",
-					"id": "foo",
-					"ui-name": "foo"
+					"value": "SEED: Alanine_biosynthesis",
+					"display": "SEED: Alanine biosynthesis",
+					"id": "SEED: Alanine_biosynthesis",
+					"ui-name": "SEED: Alanine_biosynthesis"
 				},
 				{
-					"value": "bar",
-					"display": "BAR",
-					"id": "bar",
-					"ui-name": "bar"
+					"value": "SEED: Sulfate_reduction-associated_complexes",
+					"display": "SEED: Sulfate reduction-associated complexes",
+					"id": "SEED: Sulfate_reduction-associated_complexes",
+					"ui-name": "SEED: Sulfate_reduction-associated_complexes"
 				},
 				{
-					"value": "crocodile",
-					"display": "CROCODILE",
-					"id": "crocodile",
-					"ui-name": "crocodile"
+					"value": "TIGR: role:11010: Amino acid biosynthesis Aromatic amino acid family",
+					"display": "TIGR: role:11010: Amino acid biosynthesis Aromatic amino acid family",
+					"id": "TIGR: role:11010: Amino acid biosynthesis Aromatic amino acid family",
+					"ui-name": "TIGR: role:11010: Amino acid biosynthesis Aromatic amino acid family"
 				},
 				{
-					"value": "alligator",
-					"display": "ALLIGATOR",
-					"id": "alligator",
-					"ui-name": "alligator"
+					"value": "PFAM: Clan CL0028: AB_hydrolase",
+					"display": "PFAM: Clan CL0028: AB_hydrolase",
+					"id": "PFAM: Clan CL0028: AB_hydrolase",
+					"ui-name": "PFAM: Clan CL0028: AB_hydrolase"
 				},
 				{
-					"value": "tortoise",
-					"display": "TORTOISE",
-					"id": "tortoise",
-					"ui-name": "tortoise"
+					"value": "COG: N: Cell motility",
+					"display": "COG: N: Cell motility",
+					"id": "COG: N: Cell motility",
+					"ui-name": "COG: N: Cell motility",
 				}
 		]
             }
