@@ -537,9 +537,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 for line in dom_cat_handle.readlines():
                     line.strip()
                     [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                    cats.append(cat)
-                    cat2name[namespace][cat] = cat
-                    cat2group[namespace][cat] = cat_group
+                    if cat not in cats:
+                        cats.append(cat)
+                        cat2name[namespace][cat] = cat
+                        cat2group[namespace][cat] = cat_group
 
             # get domfam to cat map
             with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
