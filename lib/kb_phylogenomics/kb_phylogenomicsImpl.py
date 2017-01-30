@@ -982,7 +982,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         new_cat_group_words.append(word)
                         sentence_len += len(word)
                         if w_i < len(cat_group_words)-1:
-                            if sentence_len + 1 + cat_group_words[w_i+1] > max_group_width:
+                            if sentence_len + 1 + len(cat_group_words[w_i+1]) > max_group_width:
                                 new_cat_group_words[w_i] += '<br>'
                                 sentence_len = 0
                     cat_group_words = new_cat_group_words
