@@ -1051,7 +1051,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
         
         html_report_str = "\n".join(html_report_lines)
-        reportObj['direct_html'] = html_report_str
+        #reportObj['direct_html'] = html_report_str   # DEBUG
 
 
         # write html to file and upload
