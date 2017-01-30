@@ -862,7 +862,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             for cat in cats:
                 val = table_data[genome_ref][cat]
-                if 'log_base' in params:
+                if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                     log_base = float(params['log_base'])
                     if log_base <= 1.0:
                         raise ValueError ("log base must be > 1.0")
@@ -1004,7 +1004,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 if val == 0:
                     cell_color = 'white'
                 else:
-                    if 'log_base' in params:
+                    if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                         log_base = float(params['log_base'])
                         if log_base <= 1.0:
                             raise ValueError ("log base must be > 1.0")
