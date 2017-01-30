@@ -456,7 +456,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     else:
                         namespace_found = False
                         for namespace_iter in ['COG','PF','TIGR']:
-                            if target_fam.startswith(this_namespace):
+                            if target_fam.startswith(namespace_iter):
                                 this_namespace = namespace_iter
                                 namespaces_reading[this_namespace] = True
                                 target_fam = re.sub(this_namespace, "", target_fam)
@@ -1003,7 +1003,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 val = table_data[genome_ref][cat]
                 if val == 0:
                     cell_color = 'white'
-                else:
+                else:                    
                     if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                         log_base = float(params['log_base'])
                         if log_base <= 1.0:
