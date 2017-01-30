@@ -369,8 +369,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     
                 if target_fam.startswith('SEED'):
                     namespaces_reading['SEED'] = True
+                    target_fam = target_fam.strip()
                     target_fam = re.sub (' *\(EC [\d\.\-]*\) *$', '', target_fam)
                     target_fam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', target_fam)
+                    target_fam = re.sub (' ', '_', target_fam)
                 else:
                     target_fam = this_namespace + leading_zeros + target_fam
 
@@ -425,8 +427,11 @@ This module contains methods for running and visualizing results of phylogenomic
                             [level1, level2, level3, domfam] = line.split("\t")[0:4]
 
                             domfam_desc = domfam
+                            domfam = domfam.strip()
+                            domfam = re.sub (' *\#.*$', '', domfam)
                             domfam = re.sub (' *\(EC [\d\.\-]*\) *$', '', domfam)
                             domfam = re.sub (' *\(TC [\w\d\.\-]*\) *$', '', domfam)
+                            domfam = re.sub (' ', '_', domfam)
                             if domfam in domfam2name[namespace]:
                                 if len(domfam_desc) > len(domfam2name[namespace][domfam]):
                                     domfam2name[namespace][domfam] = domfam_desc
@@ -625,12 +630,12 @@ This module contains methods for running and visualizing results of phylogenomic
             f_cnt = 0  # DEBUG
             if 'SEED' in namespaces_reading:
                 for feature in genome_obj['features']:
-                    if f_cnt % 100 == 0:
-                        self.log (console, "iterating features: "+str(f_cnt))  # DEBUG
+                    #if f_cnt % 100 == 0:
+                    #    self.log (console, "iterating features: "+str(f_cnt))  # DEBUG
 
                     if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
-                        if f_cnt % 100 == 0:
-                            self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
+                        #if f_cnt % 100 == 0:
+                        #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
                         if 'function' in feature and feature['function'] != None and feature['function'] != '':
                             gene_name = feature['id']
