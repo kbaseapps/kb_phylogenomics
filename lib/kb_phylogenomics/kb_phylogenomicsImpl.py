@@ -682,119 +682,120 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # capture domain hits to genes within each namespace
         #
-        KBASE_DOMAINHIT_GENE_ID_I        = 0
-        KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
-        KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
-        KBASE_DOMAINHIT_GENE_STRAND_I    = 3  # not used
-        KBASE_DOMAINHIT_GENE_HITS_DICT_I = 4
-        KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J      = 0
-        KBASE_DOMAINHIT_GENE_HITS_DICT_END_J      = 1
-        KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J   = 2
-        KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J = 3
-        KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J  = 4
+        if params['namespace'] != 'SEED':
+            KBASE_DOMAINHIT_GENE_ID_I        = 0
+            KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
+            KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
+            KBASE_DOMAINHIT_GENE_STRAND_I    = 3  # not used
+            KBASE_DOMAINHIT_GENE_HITS_DICT_I = 4
+            KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J      = 0
+            KBASE_DOMAINHIT_GENE_HITS_DICT_END_J      = 1
+            KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J   = 2
+            KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J = 3
+            KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J  = 4
 
-        # DEBUG
-        for genome_ref in genome_refs:
-            self.log (console, "SEED ANNOT CNT A: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
+            # DEBUG
+            #for genome_ref in genome_refs:
+            #    self.log (console, "SEED ANNOT CNT A: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
-        for ws_id in uniq_genome_ws_ids.keys():
-            try:
-                dom_annot_obj_info_list = wsClient.list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
-            except Exception as e:
-                raise ValueError ("Unable to list DomainAnnotation objects from workspace: "+str(ws_id)+" "+str(e))
-
-            for info in dom_annot_obj_info_list:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            
-                dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
+            for ws_id in uniq_genome_ws_ids.keys():
                 try:
-                    domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
-                except:
-                    raise ValueError ("unable to fetch domain annotation: "+dom_annot_ref)
+                    dom_annot_obj_info_list = wsClient.list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
+                except Exception as e:
+                    raise ValueError ("Unable to list DomainAnnotation objects from workspace: "+str(ws_id)+" "+str(e))
 
-                # read domain data object
-                genome_ref = domain_data['genome_ref']
-                if genome_ref not in genome_refs:
-                    continue
+                for info in dom_annot_obj_info_list:
+                    [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            
+                    dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
+                    try:
+                        domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
+                    except:
+                        raise ValueError ("unable to fetch domain annotation: "+dom_annot_ref)
 
-                if genome_ref not in dom_hits:
-                    dom_hits[genome_ref] = dict()
+                    # read domain data object
+                    genome_ref = domain_data['genome_ref']
+                    if genome_ref not in genome_refs:
+                        continue
 
-                if genome_ref not in genes_with_hits_cnt:
-                    genes_with_hits_cnt[genome_ref] = dict()
+                    if genome_ref not in dom_hits:
+                        dom_hits[genome_ref] = dict()
 
-                for scaffold_id_iter in domain_data['data'].keys():
-                    for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
-                        gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
-                        #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID) 
-                        gene_name = gene_ID
-                        #(contig_name, gene_name) = (gene_ID[0:gene_ID.index(".")], gene_ID[gene_ID.index(".")+1:])
-                        #print ("DOMAIN_HIT: "+contig_name+" "+gene_name)  # DEBUG
-                        #print ("DOMAIN_HIT for gene: "+gene_name)  # DEBUG
-                        #gene_beg       = CDS_domain_list[KBASE_DOMAINHIT_GENE_BEG_I]
-                        #gene_end       = CDS_domain_list[KBASE_DOMAINHIT_GENE_END_I]
-                        #gene_strand    = CDS_domain_list[KBASE_DOMAINHIT_GENE_STRAND_I]
-                        gene_hits_dict = CDS_domain_list[KBASE_DOMAINHIT_GENE_HITS_DICT_I]
+                    if genome_ref not in genes_with_hits_cnt:
+                        genes_with_hits_cnt[genome_ref] = dict()
 
-                        dom_hits_by_namespace       = dict()
-                        top_hit_evalue_by_namespace = dict()
-                        top_hit_dom_by_namespace    = dict()
+                    for scaffold_id_iter in domain_data['data'].keys():
+                        for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
+                            gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
+                            #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID) 
+                            gene_name = gene_ID
+                            #(contig_name, gene_name) = (gene_ID[0:gene_ID.index(".")], gene_ID[gene_ID.index(".")+1:])
+                            #print ("DOMAIN_HIT: "+contig_name+" "+gene_name)  # DEBUG
+                            #print ("DOMAIN_HIT for gene: "+gene_name)  # DEBUG
+                            #gene_beg       = CDS_domain_list[KBASE_DOMAINHIT_GENE_BEG_I]
+                            #gene_end       = CDS_domain_list[KBASE_DOMAINHIT_GENE_END_I]
+                            #gene_strand    = CDS_domain_list[KBASE_DOMAINHIT_GENE_STRAND_I]
+                            gene_hits_dict = CDS_domain_list[KBASE_DOMAINHIT_GENE_HITS_DICT_I]
 
-                        for namespace in namespace_classes:
-                            dom_hits_by_namespace[namespace] = dict()
-                            top_hit_evalue_by_namespace[namespace] = 100
-                            top_hit_dom_by_namespace[namespace] = None
+                            dom_hits_by_namespace       = dict()
+                            top_hit_evalue_by_namespace = dict()
+                            top_hit_dom_by_namespace    = dict()
 
-                        for domfam in gene_hits_dict.keys():
-                            if domfam.startswith('PF'):
-                                domfam_clean = re.sub('\.[^\.]*$','',domfam)
-                            else:
-                                domfam_clean = domfam
-                            known_namespace = False
-                            for this_namespace in namespace_classes:
-                                if domfam.startswith(this_namespace):
-                                    namespace = this_namespace
-                                    known_namespace = True
-                            if not known_namespace:
-                                continue
+                            for namespace in namespace_classes:
+                                dom_hits_by_namespace[namespace] = dict()
+                                top_hit_evalue_by_namespace[namespace] = 100
+                                top_hit_dom_by_namespace[namespace] = None
 
-                            for hit in gene_hits_dict[domfam]:
-                                beg       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J])
-                                end       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J])
-                                e_value   = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J])
-                                bit_score = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J])
-                                aln_perc  = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J])
-
-                                if e_value_thresh != None and e_value > e_value_thresh:
-                                    continue
-                                if top_hit_flag:
-                                    if top_hit_dom_by_namespace[namespace] == None \
-                                            or top_hit_evalue_by_namespace[namespace] > e_value:
-                                        top_hit_dom_by_namespace[namespace] = domfam_clean
-                                        top_hit_evalue_by_namespace[namespace] = e_value
-                                        
-                                dom_hits_by_namespace[namespace][domfam_clean] = True
-
-                        # store assignments for gene
-                        for namespace in namespace_classes:
-                            if namespace == 'SEED':
-                                continue
-                            if namespace not in genes_with_hits_cnt[genome_ref]:
-                                genes_with_hits_cnt[genome_ref][namespace] = 0
-                            if dom_hits_by_namespace[namespace]:
-                                genes_with_hits_cnt[genome_ref][namespace] += 1
-
-                                if gene_name not in dom_hits[genome_ref]:
-                                    dom_hits[genome_ref][gene_name] = dict()
-                                
-                                if top_hit_flag:
-                                    dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
+                            for domfam in gene_hits_dict.keys():
+                                if domfam.startswith('PF'):
+                                    domfam_clean = re.sub('\.[^\.]*$','',domfam)
                                 else:
-                                    dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
+                                    domfam_clean = domfam
+                                known_namespace = False
+                                for this_namespace in namespace_classes:
+                                    if domfam.startswith(this_namespace):
+                                        namespace = this_namespace
+                                        known_namespace = True
+                                if not known_namespace:
+                                    continue
+
+                                for hit in gene_hits_dict[domfam]:
+                                    beg       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J])
+                                    end       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J])
+                                    e_value   = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J])
+                                    bit_score = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J])
+                                    aln_perc  = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J])
+
+                                    if e_value_thresh != None and e_value > e_value_thresh:
+                                        continue
+                                    if top_hit_flag:
+                                        if top_hit_dom_by_namespace[namespace] == None \
+                                                or top_hit_evalue_by_namespace[namespace] > e_value:
+                                            top_hit_dom_by_namespace[namespace] = domfam_clean
+                                            top_hit_evalue_by_namespace[namespace] = e_value
+                                        
+                                    dom_hits_by_namespace[namespace][domfam_clean] = True
+
+                            # store assignments for gene
+                            for namespace in namespace_classes:
+                                if namespace == 'SEED':
+                                    continue
+                                if namespace not in genes_with_hits_cnt[genome_ref]:
+                                    genes_with_hits_cnt[genome_ref][namespace] = 0
+                                if dom_hits_by_namespace[namespace]:
+                                    genes_with_hits_cnt[genome_ref][namespace] += 1
+
+                                    if gene_name not in dom_hits[genome_ref]:
+                                        dom_hits[genome_ref][gene_name] = dict()
+                                
+                                    if top_hit_flag:
+                                        dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
+                                    else:
+                                        dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
                                 
         # DEBUG
-        for genome_ref in genome_refs:
-            self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
+        #for genome_ref in genome_refs:
+        #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
                                     
         # calculate table
@@ -812,7 +813,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # custom
             if params['namespace'] == 'custom':
                 for cat in cats:
-                    namespace = re.sub ('\d+$', '', cat)
+                    namespace = re.sub ('\d*$', '', cat)
                     for gene_name in dom_hits[genome_ref].keys():
                         if namespace in dom_hits[genome_ref][gene_name]:
                             if cat in dom_hits[genome_ref][gene_name][namespace]:
@@ -824,9 +825,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 for gene_name in dom_hits[genome_ref].keys():
                     if namespace in dom_hits[genome_ref][gene_name]:
                         for domfam in dom_hits[genome_ref][gene_name][namespace].keys():
+                            self.log(console, "DOMFAM: '"+str(domfam)+"'")  # DEBUG
+
                             if domfam in domfam2cat[namespace]:
                                 cat = domfam2cat[namespace][domfam]
+                                self.log(console, "CAT: '"+str(cat)+"'")  # DEBUG
                                 if cat in cats:
+                                    self.log(console, "CAT_FOUND: '"+str(cat)+"'")  # DEBUG
                                     table_data[genome_ref][cat] += 1
                 
         # adjust to percs
@@ -839,8 +844,6 @@ This module contains methods for running and visualizing results of phylogenomic
                         else:
                             namespace = params['namespace']
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
-                        self.log(console, "NAMESPACE: '"+str(namespace)+"'")  # DEBUG
-                        self.log(console, "TOTAL_GENES: '"+str(total_genes)+"'")  # DEBUG
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
 
