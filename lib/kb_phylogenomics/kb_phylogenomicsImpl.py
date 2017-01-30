@@ -558,9 +558,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # just in case
         elif params['namespace'] != 'COG' \
-                and params['namespace' != 'PF' \
-                and params['namespace' != 'TIGR' \
-                and params['namespace' != 'SEED':
+                and params['namespace'] != 'PF' \
+                and params['namespace'] != 'TIGR' \
+                and params['namespace'] != 'SEED':
             raise ValueError ("Unknown namespace: '"+str(params['namespace'])+"'")
 
 
