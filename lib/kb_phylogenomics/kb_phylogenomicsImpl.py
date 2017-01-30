@@ -650,6 +650,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                                 if gene_name not in dom_hits[genome_ref]:
                                     dom_hits[genome_ref][gene_name] = dict()
+                                    dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
                                 annot_set = feature['function'].strip().split(';')
