@@ -260,7 +260,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         if params['namespace'] == 'custom':
             if ('target_fams' not in params or not params['target_fams']) \
-                    and 'extra_target_fam_groups' not in params or not params['extra_target_fam_groups']):
+                    and ('extra_target_fam_groups' not in params or not params['extra_target_fam_groups']):
                 raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups'")
 
         # base config
@@ -315,73 +315,187 @@ This module contains methods for running and visualizing results of phylogenomic
         cat2name = dict()
         cat2group = dict()
         domfam2cat = dict()
+        cat2domfams = dict()
         namespaces_reading = dict()
 
+        # categories are high-level summations
+        if params['namespace'] != 'custom':
+            for namespace in ['COG','PF','TIGR','SEED']:
+                if params['namespace'] == namespace:
+                    namespace_reading[namespace] = True
+
+        # read all mappings between groups and domfams
+        for namespace in ['COG','PF','TIGR','SEED']:
+
+            cat2name[namespace] = dict()
+            cat2group[namespace] = dict()
+            domfam2cat[namespace] = dict()
+            cat2domfams[namespace] = dict()
+
+            # get high-level cats
+            tigrrole_id2cat = []
+            with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
+                for line in dom_cat_handle.readlines():
+                    line.strip()
+
+                    if namespace == 'COG':
+                        [cat, cat_group, cat_name] = line.split("\t")[0:3]
+                        if namespace == params['namespace']:
+                            cats.append(cat)
+                        cat2name[namespace][cat] = cat_name
+                        cat2group[namespace][cat] = cat_group
+
+                    elif namespace == 'PF':
+                        [cat, cat_name] = line.split("\t")[0:2]
+                        if namespace == params['namespace']:
+                            cats.append(cat)
+                        cat2name[namespace][cat] = cat_name
+                        cat2group[namespace][cat] = None
+
+                    elif namespace == 'TIGR':
+                        if line.startswith('!'):
+                            continue
+                        [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")[0:4]
+                        tigrrole_id2cat[cat_id] = cat
+                        if namespace == params['namespace']:
+                            cats.append(cat)
+                        cat_name = re.sub (' *\> GO:.*$', '', cat_name_plus_go_terms)
+                        cat2name[namespace][cat] = cat_name
+                        cat2group[namespace][cat] = cat_group
+
+                    elif namespace == 'SEED':
+                        #[cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
+                        [cat_group, cat] = line.split("\t")[0:2]
+                        if namespace == params['namespace'] and cat not in cats:
+                            cats.append(cat)
+                        cat_disp = re.sub ('_', ' ', cat)
+                        cat2name[namespace][cat] = cat_disp
+                        cat2group[namespace][cat] = cat_group
+
+            # get domfam to cat map, and vice versa
+            with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
+                for line in dom2cat_map_handle.readlines():
+                    line.strip()
+
+                    if namespace == 'COG':
+                        [domfam, cat_str, cat_name] = line.split("\t")[0:3]
+                        cat = cat_str[0]  # only use first cat
+
+                    elif namespace == 'PF':
+                        [domfam, cat, cat_name, dom_id, dom_name] = line.split("\t")[0:5]
+
+                    elif namespace == 'TIGR':
+                        if line.startswith('!'):
+                            continue
+                        [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
+                        if cat_id != '' and int(cat_id) != 0 and cat_id in tigrrole_id2cat:
+                            cat = tigrrole_id2cat[cat_id]
+                        else:
+                            continue
+
+                    elif namespace == 'SEED':
+                        [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
+                        domfam = domfam.strip()
+                        domfam = re.sub (' *\#.*$', '', domfam)
+                        domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub (' ', '_', domfam)
+
+                    domfam2cat[namespace][domfam] = cat
+                    if cat not in cat2domfams[namespace]:
+                        cat2domfams[namespace][cat] = []
+                    cat2domfams[namespace][cat].append(domfam)
+
+        # custom domains
         if params['namespace'] == 'custom':
 
+            # add target fams
             target_fams = []
-            for target_fam in params['target_fams']:
-                target_fam = re.sub ("cog", "COG", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("pf", "PF", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("tigr", "TIGR", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("seed", "SEED", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("PFAM", "PF", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("P-FAM", "PF", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("P_FAM", "PF", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+            if 'target_fams' in params and params['target_fams']:
+                for target_fam in params['target_fams']:
+                    target_fam = re.sub ("cog", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("pf", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("tigr", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("seed", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("PFAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("P-FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("P_FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
 
-                target_fam = re.sub ("COG:", "COG", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("COG-", "COG", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("COG_", "COG", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("COG *", "COG", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("PF:", "PF", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("PF-", "PF", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("PF_", "PF", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("PF *", "PF", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("SEED:", "SEED", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("SEED-", "SEED", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("SEED_", "SEED", target_fam, flags=re.IGNORECASE)
-                target_fam = re.sub ("SEED *", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("COG:", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("COG-", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("COG_", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("COG *", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("PF:", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("PF-", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("PF_", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("PF *", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("SEED:", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("SEED-", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("SEED_", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("SEED *", "SEED", target_fam, flags=re.IGNORECASE)
 
-                if target_fam.startswith('COG'):
-                    this_namespace = 'COG'
-                    target_fam = re.sub("COG", "", target_fam)
-                    num_id_len = 4
-                    namespaces_reading['COG'] = True
-                elif target_fam.startswith('PF'):
-                    this_namespace = 'PF'
-                    target_fam = re.sub("PF", "", target_fam)
-                    num_id_len = 5
-                    namespaces_reading['PF'] = True
-                elif target_fam.startswith('TIGR'):
-                    this_namespace = 'TIGR'
-                    target_fam = re.sub("TIGR", "", target_fam)
-                    num_id_len = 5
-                    namespaces_reading['TIGR'] = True
-                else:
-                    raise ValueError ("unrecognized custom domain family: '"+str(target_fam)+"'")
-                leading_zeros = ''
-                for c_i in range(num_id_len - len(str(target_fam))):
-                    leading_zeros += '0'
+                    num_id_len = dict()
+                    num_id_len['COG'] = 4
+                    num_id_len['PF'] = 5
+                    num_id_len['TIGR'] = 5
                     
-                if target_fam.startswith('SEED'):
-                    namespaces_reading['SEED'] = True
-                    target_fam = target_fam.strip()
-                    target_fam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
-                    target_fam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
-                    target_fam = re.sub (' ', '_', target_fam)
-                else:
-                    target_fam = this_namespace + leading_zeros + target_fam
+                    if target_fam.startswith('SEED'):
+                        namespaces_reading['SEED'] = True
+                        target_fam = target_fam.strip()
+                        target_fam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub (' ', '_', target_fam)
+                    else:
+                        namespace_found = False
+                        for namespace_iter in ['COG','PF','TIGR']:
+                            if target_fam.startswith(this_namespace):
+                                this_namespace = namespace_iter
+                                namespaces_reading[this_namespace] = True
+                                target_fam = re.sub(this_namespace, "", target_fam)
+                                namespace_found = True
+                                break
+                        if not namespace_found:
+                            raise ValueError ("unrecognized custom domain family: '"+str(target_fam)+"'")
+                        leading_zeros = ''
+                        for c_i in range(num_id_len[this_namespace] - len(str(target_fam))):
+                            leading_zeros += '0'
+                        target_fam = this_namespace + leading_zeros + target_fam
 
-                target_fams.append(target_fam)
+                    target_fams.append(target_fam)
 
-            cats = target_fams
+            # add extra target fams
+            extra_target_fams = []
+            if 'extra_target_fam_groups' in params and params['extra_target_fam_groups']:
+                for target_group in params['extra_target_fam_groups']:
+
+                    namespace = re.sub (":.*$", "", target_group)
+                    namespaces_reading[namespace] = True
+
+                    if namespace == 'COG':
+                        this_group = re.sub ("COG: ", "", target_group)
+                        this_group = re.sub (":.*$", "", this_group)
+                    elif namespace == 'PF':
+                        this_group = re.sub ("PF: Clan ", "", target_group)
+                        this_group = re.sub (":.*$", "", this_group)
+                    elif namespace == 'TIGR':
+                        this_group = re.sub ("TIGR: role:", "", target_group)
+                        this_group = re.sub (":.*$", "", this_group)
+                        this_group = 'role:'+this_group
+                    elif namespace == 'SEED':
+                        this_group = re.sub ("SEED: ", "", target_group)
+
+                    for domfam in cat2domfams[namespace][this_group]:
+                        extra_target_fams.append(domfam)
+
+            # we have our targets
+            cats = target_fams + extra_target_fams
 
             # store names of targets
             for namespace in namespaces_reading.keys():
@@ -440,123 +554,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                     domfam2name[namespace][domfam] = domfam_desc
                             else:
                                 domfam2name[namespace][domfam] = domfam_desc
-
-
-        # COG: categories are high-level summations
-        elif params['namespace'] == 'COG':
-            namespace = params['namespace']
-            namespaces_reading[namespace] = True
-            cat2name[namespace] = dict()
-            cat2group[namespace] = dict()
-            domfam2cat[namespace] = dict()
-
-            # get cats
-            with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
-                for line in dom_cat_handle.readlines():
-                    line.strip()
-                    [cat, cat_group, cat_name] = line.split("\t")[0:3]
-                    cats.append(cat)
-                    cat2name[namespace][cat] = cat_name
-                    cat2group[namespace][cat] = cat_group
-
-            # get domfam to cat map
-            with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
-                for line in dom2cat_map_handle.readlines():
-                    line.strip()
-                    [domfam, cat_str, cat_name] = line.split("\t")[0:3]
-                    cat = cat_str[0]  # only use first cat
-                    domfam2cat[namespace][domfam] = cat
-
-        # PFAM: categories are high-level summations
-        elif params['namespace'] == 'PF':
-            namespace = params['namespace']
-            namespaces_reading[namespace] = True
-            cat2name[namespace] = dict()
-            cat2group[namespace] = dict()
-            domfam2cat[namespace] = dict()
-
-            # get cats
-            with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
-                for line in dom_cat_handle.readlines():
-                    line.strip()
-                    [cat, cat_name] = line.split("\t")[0:2]
-                    cats.append(cat)
-                    cat2name[namespace][cat] = cat_name
-                    cat2group[namespace][cat] = None
-
-            # get domfam to cat map
-            with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
-                for line in dom2cat_map_handle.readlines():
-                    line.strip()
-                    [domfam, cat, cat_name, dom_id, dom_name] = line.split("\t")[0:5]
-                    domfam2cat[namespace][domfam] = cat
-
-        # TIGRFAM: categories are high-level summations
-        elif params['namespace'] == 'TIGR':
-            namespace = params['namespace']
-            namespaces_reading[namespace] = True
-            cat2name[namespace] = dict()
-            cat2group[namespace] = dict()
-            domfam2cat[namespace] = dict()
-
-            # get cats
-            id2cat = dict()
-            with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
-                for line in dom_cat_handle.readlines():
-                    line.strip()
-                    if line.startswith('!'):
-                        continue
-                    [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")[0:4]
-
-                    id2cat[cat_id] = cat
-                    cats.append(cat)
-                    
-                    cat_name = re.sub (' *\> GO:.*$', '', cat_name_plus_go_terms)
-                    cat2name[namespace][cat] = cat_name
-                    cat2group[namespace][cat] = cat_group
-
-            # get domfam to cat map
-            with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
-                for line in dom2cat_map_handle.readlines():
-                    line.strip()
-                    if line.startswith('!'):
-                        continue
-                    [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
-                    if cat_id != '' and int(cat_id) != 0 and cat_id in id2cat:
-                        cat = id2cat[cat_id]
-                        domfam2cat[namespace][domfam] = cat
-
-        # SEED: categories are high-level summations
-        elif params['namespace'] == 'SEED':
-            namespace = params['namespace']
-            namespaces_reading[namespace] = True
-            cat2name[namespace] = dict()
-            cat2group[namespace] = dict()
-            domfam2cat[namespace] = dict()
-
-            # get cats
-            with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
-                for line in dom_cat_handle.readlines():
-                    line.strip()
-                    #[cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                    [cat_group, cat] = line.split("\t")[0:2]
-                    if cat not in cats:
-                        cats.append(cat)
-                        cat_disp = re.sub ('_', ' ', cat)
-                        cat2name[namespace][cat] = cat_disp
-                        cat2group[namespace][cat] = cat_group
-
-            # get domfam to cat map
-            with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
-                for line in dom2cat_map_handle.readlines():
-                    line.strip()
-                    [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                    domfam = domfam.strip()
-                    domfam = re.sub (' *\#.*$', '', domfam)
-                    domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                    domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                    domfam = re.sub (' ', '_', domfam)
-                    domfam2cat[namespace][domfam] = cat
 
         # just in case
         else:
