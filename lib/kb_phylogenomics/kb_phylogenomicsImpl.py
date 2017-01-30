@@ -539,7 +539,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
                     if cat not in cats:
                         cats.append(cat)
-                        cat2name[namespace][cat] = cat
+                        cat_disp = re.sub ('_', ' ', cat)
+                        cat2name[namespace][cat] = cat_disp
                         cat2group[namespace][cat] = cat_group
 
             # get domfam to cat map
@@ -914,7 +915,7 @@ This module contains methods for running and visualizing results of phylogenomic
         graph_char = sp
         color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
         max_color = len(color_list)-1
-        cat_disp_trunc_len = 15
+        cat_disp_trunc_len = 20
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -1052,7 +1053,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
         
         html_report_str = "\n".join(html_report_lines)
-        #reportObj['direct_html'] = html_report_str   # DEBUG
+        reportObj['direct_html'] = html_report_str
 
 
         # write html to file and upload
