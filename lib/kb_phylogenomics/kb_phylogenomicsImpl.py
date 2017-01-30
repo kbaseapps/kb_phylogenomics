@@ -826,13 +826,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 for gene_name in dom_hits[genome_ref].keys():
                     if namespace in dom_hits[genome_ref][gene_name]:
                         for domfam in dom_hits[genome_ref][gene_name][namespace].keys():
-                            self.log(console, "DOMFAM: '"+str(domfam)+"'")  # DEBUG
+                            #self.log(console, "DOMFAM: '"+str(domfam)+"'")  # DEBUG
 
                             if domfam in domfam2cat[namespace]:
                                 cat = domfam2cat[namespace][domfam]
-                                self.log(console, "CAT: '"+str(cat)+"'")  # DEBUG
+                                #self.log(console, "CAT: '"+str(cat)+"'")  # DEBUG
                                 if cat in cats:
-                                    self.log(console, "CAT_FOUND: '"+str(cat)+"'")  # DEBUG
+                                    #self.log(console, "CAT_FOUND: '"+str(cat)+"'")  # DEBUG
                                     table_data[genome_ref][cat] += 1
                 
         # adjust to percs
