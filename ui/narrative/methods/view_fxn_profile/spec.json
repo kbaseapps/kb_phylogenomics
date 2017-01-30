@@ -102,10 +102,10 @@
 					"ui-name": "TIGR: role:11010: Amino acid biosynthesis Aromatic amino acid family"
 				},
 				{
-					"value": "PFAM: Clan CL0028: AB_hydrolase",
+					"value": "PF: Clan CL0028: AB_hydrolase",
 					"display": "PFAM: Clan CL0028: AB_hydrolase",
-					"id": "PFAM: Clan CL0028: AB_hydrolase",
-					"ui-name": "PFAM: Clan CL0028: AB_hydrolase"
+					"id": "PF: Clan CL0028: AB_hydrolase",
+					"ui-name": "PF: Clan CL0028: AB_hydrolase"
 				},
 				{
 					"value": "COG: N: Cell motility",
