@@ -414,38 +414,41 @@ This module contains methods for running and visualizing results of phylogenomic
             target_fams = []
             if 'target_fams' in params and params['target_fams']:
                 for target_fam in params['target_fams']:
-                    target_fam = re.sub ("cog", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("pf", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("tigr", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("seed", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("PFAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("P-FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("P_FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = target_fam.strip()
+                    target_fam = re.sub ("^cog", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^pf", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^seed", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
 
-                    target_fam = re.sub ("COG:", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("COG-", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("COG_", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("COG *", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("PF:", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("PF-", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("PF_", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("PF *", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("SEED:", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("SEED-", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("SEED_", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("SEED *", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^COG:", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^COG-", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^COG_", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^COG *", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^PF:", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^PF-", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^PF_", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^PF *", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub ("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
 
                     num_id_len = dict()
                     num_id_len['COG'] = 4
                     num_id_len['PF'] = 5
                     num_id_len['TIGR'] = 5
+
+                    self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
                     
                     if target_fam.startswith('SEED'):
                         namespaces_reading['SEED'] = True
@@ -468,6 +471,8 @@ This module contains methods for running and visualizing results of phylogenomic
                         for c_i in range(num_id_len[this_namespace] - len(str(target_fam))):
                             leading_zeros += '0'
                         target_fam = this_namespace + leading_zeros + target_fam
+
+                    self.log (console, "TARGET_FAM B: '"+target_fam+"'")  # DEBUG
 
                     target_fams.append(target_fam)
 
