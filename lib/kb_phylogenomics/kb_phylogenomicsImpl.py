@@ -400,6 +400,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
                         domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
                         domfam = re.sub (' ', '_', domfam)
+                        domfam = 'SEED'+domfam
 
                     domfam2cat[namespace][domfam] = cat
                     if cat not in cat2domfams[namespace]:
@@ -580,7 +581,7 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ("unable to fetch genomeSet: "+input_ref)
 
 
-        # get genome refs, object names, sci names, and protein-coding gene counts
+        # get genome refs, object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
         genome_refs = []
@@ -670,6 +671,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                         domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
                                         domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
                                         domfam = re.sub (' ', '_', domfam)
+                                        domfam = 'SEED'+domfam
                                         domfam_list.append(domfam)
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
