@@ -73,18 +73,18 @@ parameters :
             Display as heatmap (default: numerical table)
     vertical :
         ui-name : |
-            Vertical orientation?
+            Genomes as rows?
         short-hint : |
-            Show table/heatmap with genomes along vertical and family categories along horizontal
+            Show table with genomes as rows
         long-hint  : |
-            Show table/heatmap with genomes along vertical and family categories along horizontal
+            Show table with genomes as rows
     top_hit :
         ui-name : |
-            Top hit only?
+            Top hit per gene only?
         short-hint : |
-            Count only the top hit within a namespace (e.g. Pfam)
+            Count only the top hit per gene within a namespace (e.g. Pfam)
         long-hint  : |
-            Count only the top hit within a namespace (e.g. Pfam)
+            Count only the top hit per gene within a namespace (e.g. Pfam)
     e_value :
         ui-name : |
             E-value lower limit
