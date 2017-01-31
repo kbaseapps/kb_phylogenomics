@@ -859,7 +859,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 for cat in cats:
                     if params['count_category'] == 'perc_annot':
                         if params['namespace'] == 'custom':
-                            namespace = re.sub ('\d*$', '', cat)
+                            if cat.startswith('SEED'):
+                                namespace = 'SEED'
+                            else:
+                                namespace = re.sub ('\d*$', '', cat)
                         else:
                             namespace = params['namespace']
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
