@@ -478,6 +478,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # add extra target fams
             extra_target_fams = []
+            domfam2group = dict()
             if 'extra_target_fam_groups' in params and params['extra_target_fam_groups']:
                 for target_group in params['extra_target_fam_groups']:
 
@@ -499,6 +500,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     for domfam in cat2domfams[namespace][this_group]:
                         extra_target_fams.append(domfam)
+                        domfam2group[domfam] = target_group
 
             # we have our targets
             cats = target_fams + extra_target_fams
@@ -890,8 +892,12 @@ This module contains methods for running and visualizing results of phylogenomic
         if overall_high_val == 0:
             raise ValueError ("unable to find any counts")
 
-        # determine cats with a value
+
+        # determine cats with a value and build group
+        #
         cat_seen = dict()
+        group_size = dict()
+        group_order = []
         for cat in cats:
             cat_seen[cat] = False
         if params['namespace'] == 'custom':
@@ -899,10 +905,15 @@ This module contains methods for running and visualizing results of phylogenomic
                 for genome_ref in genome_refs:
                     if cat in table_data[genome_ref] and table_data[genome_ref][cat] != 0:
                         cat_seen[cat] = True
+                        cat_group = domfam2group[cat]
+                        if cat_group != None:
+                            if cat_group not in group_size:
+                                group_order.append(cat_group)
+                                group_size[cat_group] = 0
+                            group_size[cat_group] += 1
+                        break
         else:
             namespace = params['namespace']
-            group_size = dict()
-            group_order = []
             for cat in cats:
                 for genome_ref in genome_refs:
                     if cat in table_data[genome_ref] and table_data[genome_ref][cat] != None and table_data[genome_ref][cat] > 0:
@@ -1015,13 +1026,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 cell_title = domfam2name[namespace][cat].strip()
                 cat_disp = cat
                 cat_disp = re.sub ('^SEED', 'SEED:', cat_disp)
-                if len(cat_disp) > cat_disp_trunc_len:
+                if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
             else:
                 cell_title = cat2name[params['namespace']][cat].strip()
                 cat_disp = cat
                 cat_disp = re.sub ("TIGR_", "", cat_disp)
-                if len(cat_disp) > cat_disp_trunc_len:
+                if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
             html_report_lines += ['<td title="'+cell_title+'" valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
             for c_i,c in enumerate(cat_disp):
