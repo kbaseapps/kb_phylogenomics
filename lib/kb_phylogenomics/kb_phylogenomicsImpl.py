@@ -266,7 +266,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
         show_blanks = False
-        if 'show_blanks' in params and params['show_blanks'] == 1:
+        if 'show_blanks' in params and params['show_blanks'] == '1':
             show_blanks = True
         e_value_thresh = None
         if 'e_value' in params and params['e_value'] != None and params['e_value'] != '':
@@ -1014,11 +1014,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     namespace = re.sub ("\d*$", "", cat)
                 cell_title = domfam2name[namespace][cat].strip()
                 cat_disp = cat
+                if len(cat_disp) > cat_disp_trunc_len:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
             else:
                 cell_title = cat2name[params['namespace']][cat].strip()
                 cat_disp = cat
                 cat_disp = re.sub ("TIGR_", "", cat_disp)
-
                 if len(cat_disp) > cat_disp_trunc_len:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
             html_report_lines += ['<td title="'+cell_title+'" valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
@@ -1057,7 +1058,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     cell_val = str(table_data[genome_ref][cat])
 
-                if 'heatmap' in params and params['heatmap'] == 1:
+                if 'heatmap' in params and params['heatmap'] == '1':
                     if table_data[genome_ref][cat] == 0:
                         this_text_color = text_color
                         this_graph_char = "0"
