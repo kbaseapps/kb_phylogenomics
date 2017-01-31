@@ -832,7 +832,10 @@ This module contains methods for running and visualizing results of phylogenomic
             # custom
             if params['namespace'] == 'custom':
                 for cat in cats:
-                    namespace = re.sub ('\d*$', '', cat)
+                    if cat.startswith('SEED'):
+                        namespace = 'SEED'
+                    else:
+                        namespace = re.sub ('\d*$', '', cat)
                     for gene_name in dom_hits[genome_ref].keys():
                         if namespace in dom_hits[genome_ref][gene_name]:
                             if cat in dom_hits[genome_ref][gene_name][namespace]:
@@ -1005,7 +1008,10 @@ This module contains methods for running and visualizing results of phylogenomic
             if not cat_seen[cat] and not show_blanks:
                 continue
             if params['namespace'] == 'custom':
-                namespace = re.sub ("\d*$", "", cat)
+                if cat.startswith('SEED'):
+                    namespace = 'SEED'
+                else:
+                    namespace = re.sub ("\d*$", "", cat)
                 cell_title = domfam2name[namespace][cat].strip()
                 cat_disp = cat
             else:
@@ -1077,7 +1083,10 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(cat)+'</font></td>']
             if params['namespace'] == 'custom':
                 domfam = cat
-                namespace = re.sub ('\d*$', '', domfam)
+                if cat.startswith('SEED'):
+                    namespace = 'SEED'
+                else:
+                    namespace = re.sub ('\d*$', '', domfam)
                 desc = domfam2name[namespace][domfam]
             else:
                 namespace = params['namespace']
