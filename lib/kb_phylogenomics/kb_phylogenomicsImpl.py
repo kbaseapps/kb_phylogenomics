@@ -493,7 +493,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     elif namespace == 'TIGR':
                         this_group = re.sub ("TIGR: role:", "", target_group)
                         this_group = re.sub (":.*$", "", this_group)
-                        this_group = 'role:'+this_group
+                        this_group = 'TIGR_role:'+this_group
                     elif namespace == 'SEED':
                         this_group = re.sub ("SEED: ", "", target_group)
 
