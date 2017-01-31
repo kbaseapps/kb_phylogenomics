@@ -873,7 +873,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             for cat in cats:
                 val = table_data[genome_ref][cat]
-                self.log (console, "HIGH VAL SCAN CAT: '"+cat+"' VAL: '"+str(val)+"'")  # DEBUG
+                #self.log (console, "HIGH VAL SCAN CAT: '"+cat+"' VAL: '"+str(val)+"'")  # DEBUG
                 if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                     log_base = float(params['log_base'])
                     if log_base <= 1.0:
@@ -890,7 +890,9 @@ This module contains methods for running and visualizing results of phylogenomic
             cat_seen[cat] = False
         if params['namespace'] == 'custom':
             for cat in cats:
-                cat_seen[cat] = False
+                for genome_ref in genome_refs:
+                    if cat in table_data[genome_ref] and table_data[genome_ref][cat] != 0:
+                        cat_seen[cat] = True
         else:
             namespace = params['namespace']
             group_size = dict()
