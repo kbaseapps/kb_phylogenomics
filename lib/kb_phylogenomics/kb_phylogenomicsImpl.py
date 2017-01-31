@@ -954,7 +954,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # build html report
         sp = '&nbsp;'
         text_color = "#606060"
-        head_color = "#eeffee"
+        head_color_1 = "#eeffee"
+        head_color_2 = "#ffeeff"
         #graph_color = "lightblue"
         #graph_width = 100
         #graph_char = "."
@@ -1026,7 +1027,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_group_disp = " ".join(cat_group_words)
                 self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
                 self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
-                html_report_lines += ['<td bgcolor="'+head_color+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_group_disp+'</font></td>']
+                html_report_lines += ['<td bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_group_disp+'</font></td>']
             html_report_lines += ['</tr><tr>']
 
         for cat in cats:
@@ -1048,7 +1049,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_disp = re.sub ("TIGR_", "", cat_disp)
                 if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-            html_report_lines += ['<td bgcolor="'+head_color+'"title="'+cell_title+'" valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
+            html_report_lines += ['<td bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
             for c_i,c in enumerate(cat_disp):
                 if c_i < len(cat_disp)-1:
                     html_report_lines += [c+'<br>']
@@ -1118,6 +1119,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 namespace = params['namespace']
                 cat_disp = cat
                 desc = cat2name[namespace][cat]
+            if len(cat_disp) > cat_disp_trunc_len+1:
+                cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
             html_report_lines += ['<tr>']
             html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
             html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
