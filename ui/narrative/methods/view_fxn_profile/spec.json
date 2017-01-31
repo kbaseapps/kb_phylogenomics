@@ -127,7 +127,7 @@
 	    	"options": [
 				{
 					"value": "raw_count",
-					"display": "raw count of genes",
+					"display": "raw count of genes with the annotation",
 					"id": "raw_count",
 					"ui-name": "raw_count"
 				},
