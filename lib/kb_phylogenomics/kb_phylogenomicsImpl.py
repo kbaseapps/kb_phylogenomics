@@ -981,8 +981,9 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             cell_fontsize = graph_cat_fontsize = graph_gen_fontsize
         graph_padding = "5"
-        graph_spacing = "5"
-        border = "1"
+        graph_spacing = "3"
+        #border = "1"
+        border = "0"
         #row_spacing = "-2"
         num_rows = len(genome_refs)
         show_groups = False
