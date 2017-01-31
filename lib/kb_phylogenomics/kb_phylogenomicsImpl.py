@@ -1012,8 +1012,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 if cat_group.startswith('SEED'):
                     cat_group = re.sub ('_',' ',cat_group)
                 cat_group_words = cat_group.split()
-                new_cat_group_words = []
                 if len(cat_group) > max_group_width:
+                    new_cat_group_words = []
                     sentence_len = 0
                     for w_i,word in enumerate(cat_group_words):
                         new_cat_group_words.append(word)
@@ -1024,6 +1024,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                 sentence_len = 0
                     cat_group_words = new_cat_group_words
                 cat_group_disp = " ".join(cat_group_words)
+                self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
+                self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
                 html_report_lines += ['<td bgcolor="'+head_color+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_group_disp+'</font></td>']
             html_report_lines += ['</tr><tr>']
 
