@@ -981,8 +981,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #row_spacing = "-2"
         num_rows = len(genome_refs)
         show_groups = False
-        if params['namespace'] != 'custom' and len(group_order) > 0:
-            show_groups = True
+        if len(group_order) > 0:  show_groups = True
 
         html_report_lines = []
         html_report_lines += ['<html>']
