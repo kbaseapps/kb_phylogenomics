@@ -905,7 +905,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 for genome_ref in genome_refs:
                     if cat in table_data[genome_ref] and table_data[genome_ref][cat] != 0:
                         cat_seen[cat] = True
-                        cat_group = domfam2group[cat]
+                        cat_group = None
+                        if 'extra_target_fam_groups' in params:
+                            if cat in domfam2group:
+                                cat_group = domfam2group[cat]
+                            else:
+                                cat_group = 'N/A'
                         if cat_group != None:
                             if cat_group not in group_size:
                                 group_order.append(cat_group)
