@@ -152,34 +152,34 @@
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "1" ],
-            "field_type": "checkbox",
-            "checkbox_options": {
-	    	"checked_value": "1",
-	    	"unchecked_value": "0"
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "1",
+					"display": "heatmap",
+					"id": "heatmap",
+					"ui-name": "heatmap"
+				},
+				{
+					"value": "0",
+					"display": "numerical",
+					"id": "numerical",
+					"ui-name": "numerical"
+				}
+		]
             }
         },
         {
-            "id": "vertical",
-            "optional": true,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "1" ],
-            "field_type": "checkbox",
-            "checkbox_options": {
-	    	"checked_value": "1",
-	    	"unchecked_value": "0"
-            }
-        },
-        {
-            "id": "top_hit",
+            "id": "log_base",
             "optional": true,
             "advanced": true,
             "allow_multiple": false,
-            "default_values": [ "1" ],
-            "field_type": "checkbox",
-            "checkbox_options": {
-	    	"checked_value": "1",
-	    	"unchecked_value": "0"
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+	    	"validate_as": "float",
+	    	"min_float": "1.1"
             }
         },
         {
@@ -196,15 +196,51 @@
             }
         },
         {
-            "id": "log_base",
+            "id": "vertical",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "1" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "1",
+					"display": "rows",
+					"id": "rows",
+					"ui-name": "rows"
+				},
+				{
+					"value": "0",
+					"display": "columns",
+					"id": "columns",
+					"ui-name": "columns"
+				}
+		]
+            }
+        },
+        {
+            "id": "top_hit",
             "optional": true,
             "advanced": true,
             "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-	    	"validate_as": "float",
-	    	"min_float": "1.1"
+            "default_values": [ "1" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "1",
+					"display": "top domain hit to gene only",
+					"id": "top",
+					"ui-name": "top"
+				},
+				{
+					"value": "0",
+					"display": "all domain hits to gene",
+					"id": "all",
+					"ui-name": "all"
+				}
+		]
             }
         },
         {
@@ -213,10 +249,22 @@
             "advanced": true,
             "allow_multiple": false,
             "default_values": [ "0" ],
-            "field_type": "checkbox",
-            "checkbox_options": {
-	    	"checked_value": "1",
-	    	"unchecked_value": "0"
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "1",
+					"display": "show categories with no hits",
+					"id": "show",
+					"ui-name": "show"
+				},
+				{
+					"value": "0",
+					"display": "hide categories with no hits",
+					"id": "hide",
+					"ui-name": "hide"
+				}
+		]
             }
         }
     ],

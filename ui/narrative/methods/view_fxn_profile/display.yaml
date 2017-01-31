@@ -66,25 +66,18 @@ parameters :
             Calculate numbers as percentages or raw counts
     heatmap :
         ui-name : |
-            Heatmap?
+            View table as
         short-hint : |
-            Display as heatmap (default: numerical table)
+            Display as heatmap or numerical table
         long-hint  : |
-            Display as heatmap (default: numerical table)
-    vertical :
+            Display as heatmap or numerical table
+    log_base :
         ui-name : |
-            Genomes as rows?
+            Heatmap Log Base (optional)
         short-hint : |
-            Show table with genomes as rows
+            Set if you want the heatmap to show colors using a log scale
         long-hint  : |
-            Show table with genomes as rows
-    top_hit :
-        ui-name : |
-            Top hit per gene only?
-        short-hint : |
-            Count only the top hit per gene within a namespace (e.g. Pfam)
-        long-hint  : |
-            Count only the top hit per gene within a namespace (e.g. Pfam)
+            Set if you want the heatmap to show colors using a log scale
     e_value :
         ui-name : |
             E-value lower limit
@@ -92,16 +85,23 @@ parameters :
             Ignore domain hits below e-value threshold
         long-hint  : |
             Ignore domain hits below e-value threshold
-    log_base :
+    vertical :
         ui-name : |
-            Heatmap Log Base
+            View genomes as
         short-hint : |
-            Set if you want the heatmap to show colors using a log scale
+            Show table with genomes as rows
         long-hint  : |
-            Set if you want the heatmap to show colors using a log scale
+            Show table with genomes as rows
+    top_hit :
+        ui-name : |
+            Count annotated genes using
+        short-hint : |
+            Count only the top hit per gene within a namespace (e.g. Pfam)
+        long-hint  : |
+            Count only the top hit per gene within a namespace (e.g. Pfam)
     show_blanks :
         ui-name : |
-            Show blanks
+            Empty categories
         short-hint : |
             Show categories or families that have no counts
         long-hint  : |
