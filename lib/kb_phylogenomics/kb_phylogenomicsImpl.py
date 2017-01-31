@@ -448,7 +448,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     num_id_len['PF'] = 5
                     num_id_len['TIGR'] = 5
 
-                    self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
+                    #self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
                     
                     if target_fam.startswith('SEED'):
                         namespaces_reading['SEED'] = True
@@ -472,7 +472,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             leading_zeros += '0'
                         target_fam = this_namespace + leading_zeros + target_fam
 
-                    self.log (console, "TARGET_FAM B: '"+target_fam+"'")  # DEBUG
+                    #self.log (console, "TARGET_FAM B: '"+target_fam+"'")  # DEBUG
 
                     target_fams.append(target_fam)
 
@@ -872,8 +872,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # determine high val
         for genome_ref in genome_refs:
             for cat in cats:
-                self.log (console, "HIGH VAL SCAN CAT: '"+cat+"'")  # DEBUG
                 val = table_data[genome_ref][cat]
+                self.log (console, "HIGH VAL SCAN CAT: '"+cat+"' VAL: '"+str(val)+"'")  # DEBUG
                 if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                     log_base = float(params['log_base'])
                     if log_base <= 1.0:
@@ -1065,10 +1065,11 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
         html_report_lines += ['<tr><td valign=bottom align=left colspan=2><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
         for cat in cats:
-            #if not cat_seen[cat] and not show_blanks:
-            #    continue
+            cell_color = 'white'
+            if not cat_seen[cat] and not show_blanks:
+                cell_color = "#eeeeee"
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td valign=middle align=left><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(cat)+'</font></td>']
+            html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(cat)+'</font></td>']
             if params['namespace'] == 'custom':
                 domfam = cat
                 namespace = re.sub ('\d*$', '', domfam)
@@ -1076,7 +1077,7 @@ This module contains methods for running and visualizing results of phylogenomic
             else:
                 namespace = params['namespace']
                 desc = cat2name[namespace][cat]
-            html_report_lines += ['<td valign=middle align=left><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
+            html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
             html_report_lines += ['</tr>']
         html_report_lines += ['</table>']
 
