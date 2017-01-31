@@ -507,12 +507,14 @@ This module contains methods for running and visualizing results of phylogenomic
             domfam2name = dict()
             for namespace in namespaces_reading.keys():
                 domfam2name[namespace] = dict()
+
                 if namespace == 'COG':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line.strip()
                             [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
                             domfam2name[namespace][domfam] = domfam_name
+
                 elif namespace == 'PF':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
@@ -523,6 +525,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             else:
                                 combo_name = domfam_id+': '+domfam_name
                             domfam2name[namespace][domfam] = combo_name
+
                 elif namespace == 'TIGR':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
@@ -544,6 +547,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 combo_name += ' (EC '+ec_id+')'
                                     
                             domfam2name[namespace][domfam] = combo_name
+
                 elif namespace == 'SEED':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
