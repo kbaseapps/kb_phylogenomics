@@ -822,7 +822,9 @@ This module contains methods for running and visualizing results of phylogenomic
         # calculate table
         #
         table_data = dict()
-        overall_high_val = 0
+        INSANE_VALUE = 10000000000000000
+        overall_low_val  =  INSANE_VALUE
+        overall_high_val = -INSANE_VALUE
 
         # count raw
         for genome_ref in genome_refs:
@@ -877,7 +879,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     table_data[genome_ref][cat] /= float(total_genes)
                     table_data[genome_ref][cat] *= 100.0
 
-        # determine high val
+        # determine high and low val
         for genome_ref in genome_refs:
             for cat in cats:
                 val = table_data[genome_ref][cat]
@@ -889,7 +891,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     val = math.log(val, log_base)
                 if val > overall_high_val:
                     overall_high_val = val
-        if overall_high_val == 0:
+                if val < overall_low_val:
+                    overall_low_val = val
+        if overall_high_val == -INSANE_VALUE:
             raise ValueError ("unable to find any counts")
 
 
@@ -950,6 +954,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # build html report
         sp = '&nbsp;'
         text_color = "#606060"
+        head_color = "#eeffee"
         #graph_color = "lightblue"
         #graph_width = 100
         #graph_char = "."
@@ -1018,7 +1023,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 sentence_len = 0
                     cat_group_words = new_cat_group_words
                 cat_group_disp = " ".join(cat_group_words)
-                html_report_lines += ['<td valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_group_disp+'</font></td>']
+                html_report_lines += ['<td bgcolor="'+head_color+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_group_disp+'</font></td>']
             html_report_lines += ['</tr><tr>']
 
         for cat in cats:
@@ -1040,9 +1045,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_disp = re.sub ("TIGR_", "", cat_disp)
                 if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-            html_report_lines += ['<td title="'+cell_title+'" valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
+            html_report_lines += ['<td bgcolor="'+head_color+'"title="'+cell_title+'" valign=bottom align=center><font color="'+text_color+'" size='+graph_cat_fontsize+'>']
             for c_i,c in enumerate(cat_disp):
-                if c_i < len(cat)-1:
+                if c_i < len(cat_disp)-1:
                     html_report_lines += [c+'<br>']
                 else:
                     html_report_lines += [c]
@@ -1058,7 +1063,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 if not cat_seen[cat] and not show_blanks:
                     continue
                 val = table_data[genome_ref][cat]
-                if val == 0:
+                if val == 0 and overall_low_val == 0:
                     cell_color = 'white'
                 else:                    
                     if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
@@ -1066,7 +1071,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         if log_base <= 1.0:
                             raise ValueError ("log base must be > 1.0")
                         val = math.log(val, log_base)
-                    cell_color_i = max_color - int(round(max_color * val / float(overall_high_val)))
+                    cell_color_i = max_color - int(round(max_color * (val-overall_low_val) / float(overall_high_val-overall_low_val)))
                     c = color_list[cell_color_i]
                     cell_color = '#'+c+c+c+c+'FF'
 
