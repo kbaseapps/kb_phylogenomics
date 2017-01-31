@@ -336,8 +336,8 @@ This module contains methods for running and visualizing results of phylogenomic
             tigrrole_id2cat = dict()
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
-                    line.strip()
-
+                    line = line.strip()
+                    
                     if namespace == 'COG':
                         [cat, cat_group, cat_name] = line.split("\t")[0:3]
                         if namespace == params['namespace'] and cat not in cats:
@@ -375,7 +375,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # get domfam to cat map, and vice versa
             with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
-                    line.strip()
+                    line = line.strip()
 
                     if namespace == 'COG':
                         [domfam, cat_str, cat_name] = line.split("\t")[0:3]
@@ -511,14 +511,14 @@ This module contains methods for running and visualizing results of phylogenomic
                 if namespace == 'COG':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
-                            line.strip()
+                            line = line.strip()
                             [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
                             domfam2name[namespace][domfam] = domfam_name
 
                 elif namespace == 'PF':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
-                            line.strip()
+                            line = line.strip()
                             [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
                             if domfam_name.startswith(domfam_id):
                                 combo_name = domfam_name
@@ -529,7 +529,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 elif namespace == 'TIGR':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
-                            line.strip()
+                            line = line.strip()
                             if line.startswith('!'):
                                 continue
                             [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
@@ -551,7 +551,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 elif namespace == 'SEED':
                     with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
-                            line.strip()
+                            line = line.strip()
                             [level1, level2, level3, domfam] = line.split("\t")[0:4]
 
                             domfam_desc = domfam
@@ -1065,8 +1065,8 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
         html_report_lines += ['<tr><td valign=bottom align=left colspan=2><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
         for cat in cats:
-            if not cat_seen[cat] and not show_blanks:
-                continue
+            #if not cat_seen[cat] and not show_blanks:
+            #    continue
             html_report_lines += ['<tr>']
             html_report_lines += ['<td valign=middle align=left><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(cat)+'</font></td>']
             if params['namespace'] == 'custom':
