@@ -118,7 +118,7 @@
         },
         {
             "id": "count_category",
-            "optional": true,
+            "optional": false,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "perc_annot" ],
@@ -148,7 +148,7 @@
         },
         {
             "id": "heatmap",
-            "optional": true,
+            "optional": false,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "1" ],
@@ -184,7 +184,7 @@
         },
         {
             "id": "e_value",
-            "optional": true,
+            "optional": false,
             "advanced": true,
             "allow_multiple": false,
             "default_values": [ "1e-5" ],
@@ -197,7 +197,7 @@
         },
         {
             "id": "vertical",
-            "optional": true,
+            "optional": false,
             "advanced": false,
             "allow_multiple": false,
             "default_values": [ "1" ],
@@ -221,7 +221,7 @@
         },
         {
             "id": "top_hit",
-            "optional": true,
+            "optional": false,
             "advanced": true,
             "allow_multiple": false,
             "default_values": [ "1" ],
@@ -245,7 +245,7 @@
         },
         {
             "id": "show_blanks",
-            "optional": true,
+            "optional": false,
             "advanced": true,
             "allow_multiple": false,
             "default_values": [ "0" ],
