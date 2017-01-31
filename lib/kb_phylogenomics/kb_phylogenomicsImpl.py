@@ -1014,6 +1014,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     namespace = re.sub ("\d*$", "", cat)
                 cell_title = domfam2name[namespace][cat].strip()
                 cat_disp = cat
+                cat_disp = re.sub ('^SEED', 'SEED:', cat_disp)
                 if len(cat_disp) > cat_disp_trunc_len:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
             else:
@@ -1080,18 +1081,20 @@ This module contains methods for running and visualizing results of phylogenomic
             cell_color = 'white'
             if not cat_seen[cat] and not show_blanks:
                 cell_color = "#eeeeee"
-            html_report_lines += ['<tr>']
-            html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+str(cat)+'</font></td>']
             if params['namespace'] == 'custom':
                 domfam = cat
                 if cat.startswith('SEED'):
                     namespace = 'SEED'
                 else:
                     namespace = re.sub ('\d*$', '', domfam)
+                cat_disp = re.sub ('^SEED', 'SEED:', cat)
                 desc = domfam2name[namespace][domfam]
             else:
                 namespace = params['namespace']
+                cat_disp = cat
                 desc = cat2name[namespace][cat]
+            html_report_lines += ['<tr>']
+            html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
             html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
             html_report_lines += ['</tr>']
         html_report_lines += ['</table>']
