@@ -997,7 +997,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
         html_report_lines += ['<title>KBase Functional Domain Profile</title>']
-        html_report_lines += ["<style>\n.vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.5;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n/* This element stretches the parent to be square\n   by using the mechanics of vertical margins  */\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}\n</style>"]
+        html_report_lines += ["<style>\n.vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 0.65em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.1;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}\n.vertical-text_title {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner_title {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.0;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner_title:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}\n</style>"]
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
 
@@ -1012,7 +1012,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 label = 'PFAM'
             elif label == 'TIGR':
                 label = 'TIGRFAM'
-        html_report_lines += ['<tr><td valign=middle align=center rowspan='+rowspan+'><font color="'+text_color+'">'+label+'</td>']
+        html_report_lines += ['<tr><td valign=middle align=center rowspan='+rowspan+'><div class="vertical-text_title"><div class="vertical_text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
         
         if show_groups:
             for cat_group in group_order:
@@ -1035,11 +1035,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_group_disp = " ".join(cat_group_words)
 
                 # DEBUG
-                if cat_group not in group_size:
-                    self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
-                    self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
-                    for cg in group_size:
-                        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
+                #if cat_group not in group_size:
+                #    self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
+                #    self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
+                #    for cg in group_size:
+                #        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
 
                 html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
             html_report_lines += ['</tr><tr>']
