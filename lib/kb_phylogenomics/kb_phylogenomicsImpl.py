@@ -957,8 +957,8 @@ This module contains methods for running and visualizing results of phylogenomic
         text_color_2 = "#606060"
         head_color_1 = "#eeeeee"
         head_color_2 = "#eeeeee"
-        #border_color = "#eeffff"
         border_color = "#cccccc"
+        border_right_color = "#ffccff"
         #graph_color = "lightblue"
         #graph_width = 100
         #graph_char = "."
@@ -1060,7 +1060,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_disp = re.sub ("TIGR_", "", cat_disp)
                 if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-            html_report_lines += ['<td style="border-right:solid 2px '+border_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center><font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
+            html_report_lines += ['<td style="border-right:solid 2px '+border_right_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center><font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
             for c_i,c in enumerate(cat_disp):
                 if c_i < len(cat_disp)-1:
                     html_report_lines += [c+'<br>']
