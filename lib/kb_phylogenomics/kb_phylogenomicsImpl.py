@@ -996,8 +996,8 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
+        html_report_lines += ["<style>\n.vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.5;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n/* This element stretches the parent to be square\n   by using the mechanics of vertical margins  */\n.vertical-text__inner:after {\ncontent: "";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}\n</style>"]
         html_report_lines += ['<title>KBase Functional Domain Profile</title>']
-        html_report_lines += ["<style>\n.vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n/* This element stretches the parent to be square\n   by using the mechanics of vertical margins  */\n.vertical-text__inner:after {\ncontent: "";\ndisplay: block;\nmargin: -1.0em 0 100%;\n}\n</style>"]
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
 
@@ -1107,7 +1107,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 if 'heatmap' in params and params['heatmap'] == '1':
                     if table_data[genome_ref][cat] == 0:
                         this_text_color = text_color
-                        this_graph_char = "0"
+                        #this_graph_char = "0"
+                        this_graph_char = sp
                     else:
                         this_text_color = cell_color
                         this_graph_char = graph_char
