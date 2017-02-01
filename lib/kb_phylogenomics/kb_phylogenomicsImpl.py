@@ -1190,7 +1190,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         desc = cat2name[namespace][cat]
                     if len(cat_disp) > cat_disp_trunc_len+1:
                         cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                    cat_disp = sp+cat_disp
+                    cat_disp = sp+sp+cat_disp
                         
                     html_report_lines += ['<tr>']
                     html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
