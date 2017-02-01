@@ -966,7 +966,6 @@ This module contains methods for running and visualizing results of phylogenomic
         color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
         max_color = len(color_list)-1
         cat_disp_trunc_len = 40
-        max_group_width = 20
         cell_width = '10px'
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
@@ -1024,6 +1023,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     cat_group_disp = cat_group
                 cat_group_words = cat_group_disp.split()
+                max_group_width = 3*group_size[cat_group]
                 if len(cat_group) > max_group_width:
                     new_cat_group_words = []
                     sentence_len = 0
