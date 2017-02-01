@@ -955,9 +955,10 @@ This module contains methods for running and visualizing results of phylogenomic
         sp = '&nbsp;'
         text_color   = "#606060"
         text_color_2 = "#606060"
-        head_color_1 = "#eeffff"
+        head_color_1 = "#eeeeee"
         head_color_2 = "#eeeeee"
-        border_color = "#cccccc"
+        #border_color = "#cccccc"
+        border_color = "#eeffff"
         #graph_color = "lightblue"
         #graph_width = 100
         #graph_char = "."
