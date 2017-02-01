@@ -1014,7 +1014,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 label = 'PFAM'
             elif label == 'TIGR':
                 label = 'TIGRFAM'
-        html_report_lines += ['<tr><td valign=bottom align=right rowspan='+rowspan+'><div class="vertical-text_title"><div class="vertical_text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
+        html_report_lines += ['<tr><td valign=bottom align=right rowspan='+rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
         
         if show_groups:
             for cat_group in group_order:
