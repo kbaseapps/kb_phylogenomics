@@ -901,7 +901,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         cat_seen = dict()
         group_size = dict()
-        group_size_with_blanks = ()
+        group_size_with_blanks = dict()
         group_order = []
         for cat in cats:
             cat_seen[cat] = False
@@ -1162,7 +1162,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_group_disp = "&nbsp;<br>".join(cat_group_words)
                 cat_group_disp += sp
 
-                html_report_lines += ['<tr><td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                html_report_lines += ['<tr><td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
                 # add first cat for group
                 first_cat = cats[group_cat_i]
@@ -1193,7 +1193,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 group_cat_i += 1
 
                 # add rest of cats in group
-                for c_i in range(group_cat_i, group_cat_i+group_size[cat_group]-1):
+                for c_i in range(group_cat_i, group_cat_i+group_size_with_blanks[cat_group]-1):
                     cat = cats[c_i]
                     cell_color = 'white'
                     if not cat_seen[cat] and not show_blanks:
