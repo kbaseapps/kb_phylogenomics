@@ -957,8 +957,8 @@ This module contains methods for running and visualizing results of phylogenomic
         text_color_2 = "#606060"
         head_color_1 = "#eeeeee"
         head_color_2 = "#eeeeee"
-        #border_color = "#cccccc"
-        border_color = "#eeffff"
+        #border_color = "#eeffff"
+        border_color = "#cccccc"
         #graph_color = "lightblue"
         #graph_width = 100
         #graph_char = "."
@@ -1028,8 +1028,14 @@ This module contains methods for running and visualizing results of phylogenomic
                                 sentence_len = 0
                     cat_group_words = new_cat_group_words
                 cat_group_disp = " ".join(cat_group_words)
-                self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
-                self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
+
+                # DEBUG
+                if cat_group not in group_size:
+                    self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
+                    self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
+                    for cg in group_size:
+                        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
+
                 html_report_lines += ['<td style="border:solid 2px '+border_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
             html_report_lines += ['</tr><tr>']
 
@@ -1065,7 +1071,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             genome_sci_name = genome_sci_name_by_ref[genome_ref]
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><nobr>'+genome_sci_name+'</nobr></font></td>']
+            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_sci_name+'</nobr></b></font></td>']
             for cat in cats:
                 if not cat_seen[cat] and not show_blanks:
                     continue
