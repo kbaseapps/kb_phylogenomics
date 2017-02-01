@@ -1067,7 +1067,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
             html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center>']
-            html_report_lines += ['<div class="vertical-text"><div class="vertical-text__inner">']
+            if params['namespace'] != 'COG':
+                html_report_lines += ['<div class="vertical-text"><div class="vertical-text__inner">']
             html_report_lines += ['<font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
             #for c_i,c in enumerate(cat_disp):
             #    if c_i < len(cat_disp)-1:
@@ -1076,7 +1077,8 @@ This module contains methods for running and visualizing results of phylogenomic
             #        html_report_lines += [c]
             html_report_lines += [cat_disp]
             html_report_lines += ['</b></font>']
-            html_report_lines += ['</div></div>']
+            if params['namespace'] != 'COG':
+                html_report_lines += ['</div></div>']
             html_report_lines += ['</td>']
         html_report_lines += ['</tr>']
 
