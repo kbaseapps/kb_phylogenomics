@@ -1169,29 +1169,29 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 # add rest of cats in group
                 for c_i in range(group_cat_i, group_cat_i+group_size[cat_group]-1):
-                cell_color = 'white'
-                if not cat_seen[first_cat] and not show_blanks:
-                    cell_color = "#eeeeee"
-                if params['namespace'] == 'custom':
-                    domfam = first_cat
-                    if first_cat.startswith('SEED'):
-                        namespace = 'SEED'
+                    cell_color = 'white'
+                    if not cat_seen[first_cat] and not show_blanks:
+                        cell_color = "#eeeeee"
+                    if params['namespace'] == 'custom':
+                        domfam = first_cat
+                        if first_cat.startswith('SEED'):
+                            namespace = 'SEED'
+                        else:
+                            namespace = re.sub ('\d*$', '', first_cat)
+                        cat_disp = re.sub ('^SEED', 'SEED:', first_cat)
+                        desc = domfam2name[namespace][domfam]
                     else:
-                        namespace = re.sub ('\d*$', '', first_cat)
-                    cat_disp = re.sub ('^SEED', 'SEED:', first_cat)
-                    desc = domfam2name[namespace][domfam]
-                else:
-                    namespace = params['namespace']
-                    cat_disp = first_cat
-                    desc = cat2name[namespace][first_cat]
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                html_report_lines += ['<tr>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
-                html_report_lines += ['</tr>']
+                        namespace = params['namespace']
+                        cat_disp = first_cat
+                        desc = cat2name[namespace][first_cat]
+                    if len(cat_disp) > cat_disp_trunc_len+1:
+                        cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
+                    html_report_lines += ['<tr>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
+                    html_report_lines += ['</tr>']
 
-                group_cat_i += 1
+                    group_cat_i += 1
 
         else:
             for cat in cats:
