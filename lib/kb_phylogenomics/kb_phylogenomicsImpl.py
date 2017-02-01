@@ -996,8 +996,8 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
-        html_report_lines += ["<style>\n.vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.5;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n/* This element stretches the parent to be square\n   by using the mechanics of vertical margins  */\n.vertical-text__inner:after {\ncontent: "";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}\n</style>"]
         html_report_lines += ['<title>KBase Functional Domain Profile</title>']
+        html_report_lines += ["<style>\n.vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.5;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n/* This element stretches the parent to be square\n   by using the mechanics of vertical margins  */\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}\n</style>"]
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
 
@@ -1112,7 +1112,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     else:
                         this_text_color = cell_color
                         this_graph_char = graph_char
-                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" style="'+cell_width+'; border-right:solid 2px '+border_color+'; border-bottom:solid 2px '+border_color+'" bgcolor="'+cell_color+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
+                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" style="'+cell_width+'" bgcolor="'+cell_color+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
                 else:
                     html_report_lines += ['<td align=center valign=middle style="'+cell_width+'; border-right:solid 2px '+border_color+'; border-bottom:solid 2px '+border_color+'"><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
 
