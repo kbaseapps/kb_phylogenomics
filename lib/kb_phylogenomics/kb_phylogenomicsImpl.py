@@ -995,7 +995,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         html_report_lines = []
         html_report_lines += ['<html>']
-        html_report_lines += ['<head><title>KBase Functional Domain Profile</title></head>']
+        html_report_lines += ['<head>']
+        html_report_lines += ['<title>KBase Functional Domain Profile</title>']
+        html_report_lines += ["<style>\n.vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n/* This element stretches the parent to be square\n   by using the mechanics of vertical margins  */\n.vertical-text__inner:after {\ncontent: "";\ndisplay: block;\nmargin: -1.0em 0 100%;\n}\n</style>"]
+        html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
 
         # table header
@@ -1060,13 +1063,18 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_disp = re.sub ("TIGR_", "", cat_disp)
                 if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-            html_report_lines += ['<td style="border-right:solid 2px '+border_right_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center><font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
-            for c_i,c in enumerate(cat_disp):
-                if c_i < len(cat_disp)-1:
-                    html_report_lines += [c+'<br>']
-                else:
-                    html_report_lines += [c]
-            html_report_lines += ['</b></font></td>']
+            html_report_lines += ['<td style="border-right:solid 2px '+border_right_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center>']
+            html_report_lines += ['<div class="vertical-text"><div class="vertical-text__inner">']
+            html_report_lines += ['<font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
+            #for c_i,c in enumerate(cat_disp):
+            #    if c_i < len(cat_disp)-1:
+            #        html_report_lines += [c+'<br>']
+            #    else:
+            #        html_report_lines += [c]
+            html_report_lines += [cat_disp]
+            html_report_lines += ['</b></font>']
+            html_report_lines += ['</div></div>']
+            html_report_lines += ['</td>']
         html_report_lines += ['</tr>']
 
         # rest of rows
