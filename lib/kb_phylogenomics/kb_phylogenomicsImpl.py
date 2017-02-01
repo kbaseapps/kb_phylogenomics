@@ -1126,7 +1126,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # key table
         html_report_lines += ['<p>']
-        html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
+        html_report_lines += ['<table cellpadding=2 cellspacing=5 border='+border+'>']
         html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 4px '+border_color+'"><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
 
         if show_groups:
