@@ -1058,7 +1058,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                 new_cat_group_words[w_i] += '<br>'
                                 sentence_len = 0
                     cat_group_words = new_cat_group_words
-                cat_group_disp = " ".join(cat_group_words)
+                if cat_group_words == 'N/A':
+                    cat_group_disp = ''
+                else:
+                    cat_group_disp = " ".join(cat_group_words)
 
                 # DEBUG
                 #if cat_group not in group_size:
@@ -1067,7 +1070,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 #    for cg in group_size:
                 #        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
 
-                html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                if cat_group_disp == '':
+                    html_report_lines += ['<td bgcolor=white></td>']
+                else:
+                    html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+
             html_report_lines += ['</tr><tr>']
 
         for cat in cats:
@@ -1160,10 +1167,16 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     cat_group_disp = cat_group
                 cat_group_words = cat_group_disp.split()
-                cat_group_disp = "&nbsp;<br>".join(cat_group_words)
-                cat_group_disp += sp
+                if cat_group_words[0] = 'N/A':
+                    cat_group_disp = ''
+                else:
+                    cat_group_disp = "&nbsp;<br>".join(cat_group_words)
+                    cat_group_disp += sp
 
-                html_report_lines += ['<tr><td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                if cat_group_disp == '':
+                    html_report_lines += ['<td bgcolor=white></td>']
+                else:
+                    html_report_lines += ['<tr><td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
                 # add first cat for group
                 first_cat = cats[group_cat_i]
