@@ -901,10 +901,12 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         cat_seen = dict()
         group_size = dict()
+        group_size_with_blanks = ()
         group_order = []
         for cat in cats:
             cat_seen[cat] = False
         if params['namespace'] == 'custom':
+            # get group size
             for cat in cats:
                 for genome_ref in genome_refs:
                     if cat in table_data[genome_ref] and table_data[genome_ref][cat] != 0:
@@ -921,11 +923,24 @@ This module contains methods for running and visualizing results of phylogenomic
                                 group_size[cat_group] = 0
                             group_size[cat_group] += 1
                         break
+            # get group size including blanks
+            for cat in cats:
+                cat_group = None
+                if 'extra_target_fam_groups' in params:
+                    if cat in domfam2group:
+                        cat_group = domfam2group[cat]
+                    else:
+                        cat_group = 'N/A'
+                if cat_group != None:
+                    if cat_group not in group_size_with_blanks:
+                        group_size_with_blanks[cat_group] = 0
+                    group_size_with_blanks[cat_group] += 1
         else:
             namespace = params['namespace']
+            # get group size
             for cat in cats:
                 for genome_ref in genome_refs:
-                    if cat in table_data[genome_ref] and table_data[genome_ref][cat] != None and table_data[genome_ref][cat] > 0:
+                    if cat in table_data[genome_ref] and table_data[genome_ref][cat] != None and table_data[genome_ref][cat] != 0:
                         cat_seen[cat] = True
                         cat_group = cat2group[namespace][cat]
                         if cat_group != None:
@@ -934,6 +949,13 @@ This module contains methods for running and visualizing results of phylogenomic
                                 group_size[cat_group] = 0
                             group_size[cat_group] += 1
                         break
+            # get group size including blanks
+            for cat in cats:
+                cat_group = cat2group[namespace][cat]
+                if cat_group != None:
+                    if cat_group not in group_size_with_blanks:
+                        group_size_with_blanks[cat_group] = 0
+                    group_size_with_blanks[cat_group] += 1
 
 
         # build report
