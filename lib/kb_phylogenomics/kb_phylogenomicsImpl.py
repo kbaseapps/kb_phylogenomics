@@ -1127,7 +1127,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # key table
         html_report_lines += ['<p>']
         html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
-        html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 5px '+border_color+'"><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
+        html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 4px '+border_color+'"><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
 
         if show_groups:
             group_cat_i = 0
@@ -1139,7 +1139,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_group_words = cat_group_disp.split()
                 cat_group_disp = "<br>".join(cat_group_words)
 
-                html_report_lines += ['<tr><td style="border-right:solid 5px '+border_color+'" valign=top align=right rowspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                html_report_lines += ['<tr><td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
                 # add first cat for group
                 first_cat = cats[group_cat_i]
@@ -1169,21 +1169,22 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 # add rest of cats in group
                 for c_i in range(group_cat_i, group_cat_i+group_size[cat_group]-1):
+                    cat = cats[c_i]
                     cell_color = 'white'
-                    if not cat_seen[first_cat] and not show_blanks:
+                    if not cat_seen[cat] and not show_blanks:
                         cell_color = "#eeeeee"
                     if params['namespace'] == 'custom':
-                        domfam = first_cat
-                        if first_cat.startswith('SEED'):
+                        domfam = cat
+                        if cat.startswith('SEED'):
                             namespace = 'SEED'
                         else:
-                            namespace = re.sub ('\d*$', '', first_cat)
-                        cat_disp = re.sub ('^SEED', 'SEED:', first_cat)
+                            namespace = re.sub ('\d*$', '', cat)
+                        cat_disp = re.sub ('^SEED', 'SEED:', cat)
                         desc = domfam2name[namespace][domfam]
                     else:
                         namespace = params['namespace']
-                        cat_disp = first_cat
-                        desc = cat2name[namespace][first_cat]
+                        cat_disp = cat
+                        desc = cat2name[namespace][cat]
                     if len(cat_disp) > cat_disp_trunc_len+1:
                         cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
                     html_report_lines += ['<tr>']
