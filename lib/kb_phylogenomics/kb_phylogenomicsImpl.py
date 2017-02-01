@@ -1014,8 +1014,10 @@ This module contains methods for running and visualizing results of phylogenomic
         if show_groups:
             for cat_group in group_order:
                 if cat_group.startswith('SEED'):
-                    cat_group = re.sub ('_',' ',cat_group)
-                cat_group_words = cat_group.split()
+                    cat_group = re.sub ('_',' ',cat_group_disp)
+                else:
+                    cat_group_disp = cat_group
+                cat_group_words = cat_group_disp.split()
                 if len(cat_group) > max_group_width:
                     new_cat_group_words = []
                     sentence_len = 0
