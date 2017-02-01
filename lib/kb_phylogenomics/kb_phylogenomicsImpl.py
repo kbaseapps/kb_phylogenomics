@@ -889,7 +889,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     log_base = float(params['log_base'])
                     if log_base <= 1.0:
                         raise ValueError ("log base must be > 1.0")
+                    # DEBUG
                     self.log (console, "GENOME_REF: '"+str(genome_ref)+"' CAT: '"+str(cat)+"' VAL: '"+str(val)+"' BASE: '"+str(log_base)+"'")  # DEBUG
+                    if val == 0: val = 1
+
                     val = math.log(val, log_base)
                 if val > overall_high_val:
                     overall_high_val = val
