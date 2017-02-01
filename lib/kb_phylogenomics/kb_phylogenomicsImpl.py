@@ -1029,7 +1029,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_group_disp = " ".join(cat_group_words)
                 self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
                 self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
-                html_report_lines += ['<td style="border:solid 2px #606060" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                html_report_lines += ['<td style="border:solid 2px '+border_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
             html_report_lines += ['</tr><tr>']
 
         for cat in cats:
@@ -1051,7 +1051,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_disp = re.sub ("TIGR_", "", cat_disp)
                 if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-            html_report_lines += ['<td style="border:solid 2px #606060" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center><font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
+            html_report_lines += ['<td style="border:solid 2px '+border_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center><font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
             for c_i,c in enumerate(cat_disp):
                 if c_i < len(cat_disp)-1:
                     html_report_lines += [c+'<br>']
