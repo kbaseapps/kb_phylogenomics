@@ -965,7 +965,7 @@ This module contains methods for running and visualizing results of phylogenomic
         graph_char = sp
         color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
         max_color = len(color_list)-1
-        cat_disp_trunc_len = 20
+        cat_disp_trunc_len = 40
         max_group_width = 20
         cell_width = '10px'
         if len(genome_refs) > 20:
