@@ -954,9 +954,10 @@ This module contains methods for running and visualizing results of phylogenomic
         # build html report
         sp = '&nbsp;'
         text_color   = "#606060"
-        text_color_2 = "#ffffff"
-        head_color_1 = "#ccffcc"
+        text_color_2 = "#606060"
+        head_color_1 = "#99ff99"
         head_color_2 = "#eeffee"
+        border_color = "#cccccc"
         #graph_color = "lightblue"
         #graph_width = 100
         #graph_char = "."
@@ -1028,7 +1029,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_group_disp = " ".join(cat_group_words)
                 self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
                 self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
-                html_report_lines += ['<td style="border:solid 2px #606060" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_group_disp+'</font></td>']
+                html_report_lines += ['<td style="border:solid 2px #606060" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
             html_report_lines += ['</tr><tr>']
 
         for cat in cats:
