@@ -1058,7 +1058,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 new_cat_group_words[w_i] += '<br>'
                                 sentence_len = 0
                     cat_group_words = new_cat_group_words
-                if cat_group_words == 'N/A':
+                if cat_group_words[0] == 'N/A':
                     cat_group_disp = ''
                 else:
                     cat_group_disp = " ".join(cat_group_words)
@@ -1167,7 +1167,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     cat_group_disp = cat_group
                 cat_group_words = cat_group_disp.split()
-                if cat_group_words[0] = 'N/A':
+                if cat_group_words[0] == 'N/A':
                     cat_group_disp = ''
                 else:
                     cat_group_disp = "&nbsp;<br>".join(cat_group_words)
