@@ -1126,7 +1126,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # key table
         html_report_lines += ['<p>']
-        html_report_lines += ['<table cellpadding=2 cellspacing=5 border='+border+'>']
+        html_report_lines += ['<table cellpadding=3 cellspacing=2 border='+border+'>']
         html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 4px '+border_color+'"><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
 
         if show_groups:
@@ -1137,7 +1137,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     cat_group_disp = cat_group
                 cat_group_words = cat_group_disp.split()
-                cat_group_disp = "<br>".join(cat_group_words)
+                cat_group_disp = sp+sp+sp+"<br>".join(cat_group_words)
+                cat_group_disp += sp+sp+sp
 
                 html_report_lines += ['<tr><td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
@@ -1160,6 +1161,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     desc = cat2name[namespace][first_cat]
                 if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
+                cat_disp = sp+sp+sp+cat_disp
+
                 html_report_lines += ['<tr>']
                 html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
                 html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
