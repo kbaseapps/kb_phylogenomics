@@ -1072,7 +1072,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 #        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
 
                 if cat_group_disp == '':
-                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size[cat_group])+'></td>']
+                    html_report_lines += ['<td bgcolor=white colspan='+str(group_size[cat_group])+'></td>']
                 else:
                     html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
@@ -1156,6 +1156,7 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['</tr>']
         html_report_lines += ['</table>']
 
+
         # key table
         html_report_lines += ['<p>']
         html_report_lines += ['<table cellpadding=3 cellspacing=2 border='+border+'>']
@@ -1201,7 +1202,6 @@ This module contains methods for running and visualizing results of phylogenomic
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
                 cat_disp = sp+sp+cat_disp
 
-                html_report_lines += ['<tr>']
                 html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
                 html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
                 html_report_lines += ['</tr>']
