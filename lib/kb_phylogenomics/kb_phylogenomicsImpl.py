@@ -1178,9 +1178,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 html_report_lines += ['<tr>']
                 if cat_group_disp == '':
-                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group]+1)+' style="border-right:solid 4px '+border_color+'"></td>']
+                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group])+' style="border-right:solid 4px '+border_color+'"></td>']
                 else:
-                    html_report_lines += ['<td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                    html_report_lines += ['<td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
                 # add first cat for group
                 first_cat = cats[group_cat_i]
