@@ -4,8 +4,8 @@ import sys
 # JUST CAN'T GET THIS WORKING.  Use subprocess instead
 #
 #os.environ['PATH'] = '/kb/module/anaconda_ete/bin:'+os.environ['PATH']
-sys.path.append ('/kb/module/anaconda_ete/bin')
-from ete3 import Tree
+#sys.path.append ('/kb/module/anaconda_ete/bin')
+from anaconda_ete.ete3 import Tree
 
 class PhyloPlotUtil:
 
@@ -22,6 +22,8 @@ class PhyloPlotUtil:
         newick_str = re.sub(" \t\n\r", '', newick_str)
         if not newick_str.endswith(';'):
             newick_str += ';'
+        
+
 
         if not output_file.endswith('.'+format):
             raise ValueError ("format does not match filename extension")
