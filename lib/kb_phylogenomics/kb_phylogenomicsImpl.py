@@ -426,6 +426,9 @@ This module contains methods for running and visualizing results of phylogenomic
             if 'target_fams' in params['custom_target_fams'] and params['custom_target_fams']['target_fams']:
                 for target_fam in params['custom_target_fams']['target_fams']:
                     target_fam = target_fam.strip()
+                    if target_fam == '':
+                        continue
+
                     target_fam = re.sub ("^cog", "COG", target_fam, flags=re.IGNORECASE)
                     target_fam = re.sub ("^pf", "PF", target_fam, flags=re.IGNORECASE)
                     target_fam = re.sub ("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
@@ -497,6 +500,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
             if extra_target_fam_groups:
                 for target_group in extra_target_fam_groups:
+                    target_group = target_group.strip()
+                    if target_group == '':
+                        continue
 
                     namespace = re.sub (":.*$", "", target_group)
                     namespaces_reading[namespace] = True
