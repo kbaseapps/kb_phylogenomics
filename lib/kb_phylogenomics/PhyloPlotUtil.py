@@ -1,8 +1,10 @@
 import os
 import sys
 
-#os.environ['PATH'] = '/root/anaconda_ete/bin:'+os.environ['PATH']
-sys.path.append ('~/anaconda_ete/bin')
+# JUST CAN'T GET THIS WORKING.  Use subprocess instead
+#
+#os.environ['PATH'] = '/kb/module/anaconda_ete/bin:'+os.environ['PATH']
+sys.path.append ('/kb/module/anaconda_ete/bin')
 from ete3 import Tree
 
 class PhyloPlotUtil:
@@ -16,7 +18,11 @@ class PhyloPlotUtil:
     def write_species_tree_img(self, newick_str, output_path, width=150, format='png'):
         #t = Tree("(A:1,(B:1,(E:1,D:1):0.5):0.5);" )
         #t.render("test_tree.png", w=width, units="mm")
-        
+
+        newick_str = re.sub(" \t\n\r", '', newick_str)
+        if not newick_str.endswith(';'):
+            newick_str += ';'
+
         if not output_file.endswith('.'+format):
             raise ValueError ("format does not match filename extension")
 
