@@ -267,7 +267,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     and ('extra_target_fam_groups_PFAM' not in params or not params['extra_target_fam_groups_PFAM']) \
                     and ('extra_target_fam_groups_TIGR' not in params or not params['extra_target_fam_groups_TIGR']) \
                     and ('extra_target_fam_groups_SEED' not in params or not params['extra_target_fam_groups_SEED']):
-:
+
                 raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups'")
 
         # base config
