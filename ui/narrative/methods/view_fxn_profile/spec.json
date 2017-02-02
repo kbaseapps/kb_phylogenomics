@@ -8614,6 +8614,17 @@
             }
         }
     ],
+
+    "parameter-groups": [
+        {
+              "id": "custom_target_fams",
+              "parameters": ["target_fams", "extra_target_fam_groups_COG", "extra_target_fam_groups_PFAM", "extra_target_fam_groups_TIGR", "extra_target_fam_groups_SEED"],
+              "optional": true,
+              "allow_multiple": false,
+              "with_border": true
+        }
+    ],
+
     "behavior": {
         "service-mapping": {
             "url": "",
@@ -8634,24 +8645,8 @@
 		    "target_property": "namespace"
                 },
                 {
-                    "input_parameter": "target_fams",
-		    "target_property": "target_fams"
-                },
-                {
-                    "input_parameter": "extra_target_fam_groups_COG",
-		    "target_property": "extra_target_fam_groups_COG"
-                },
-                {
-                    "input_parameter": "extra_target_fam_groups_PFAM",
-		    "target_property": "extra_target_fam_groups_PFAM"
-                },
-                {
-                    "input_parameter": "extra_target_fam_groups_TIGR",
-		    "target_property": "extra_target_fam_groups_TIGR"
-                },
-                {
-                    "input_parameter": "extra_target_fam_groups_SEED",
-		    "target_property": "extra_target_fam_groups_SEED"
+                    "input_parameter": "custom_target_fams",
+		    "target_property": "custom_target_fams"
                 },
                 {
                     "input_parameter": "count_category",

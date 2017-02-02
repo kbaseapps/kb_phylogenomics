@@ -128,6 +128,18 @@ parameters :
         long-hint  : |
             Show categories or families that have no counts
 
+#
+# Configure the display and description of parameters
+#
+parameter-groups :
+    custom_target_fams :
+        ui-name : |
+            Custom Domains (including namespace groups)
+        short-hint : |
+            Define custom domains to use
+        long-hint  : |
+            Define custom domains to use
+
 description : |
     <p>After DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for a Genome Set.</p>
 

@@ -47,7 +47,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "d0127714ef91325846e23659e6192ac66d156496"
+    GIT_COMMIT_HASH = "ff4790606e11ba2ec9ee4934a94b4137201e3c3d"
 
     #BEGIN_CLASS_HEADER
 
@@ -223,7 +223,8 @@ This module contains methods for running and visualizing results of phylogenomic
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_genomeSet_ref" of type
            "data_obj_ref", parameter "namespace" of String, parameter
-           "target_fams" of list of String, parameter
+           "custom_target_fams" of type "CustomTargetFams" (parameter groups)
+           -> structure: parameter "target_fams" of list of String, parameter
            "extra_target_fam_groups_COG" of list of String, parameter
            "extra_target_fam_groups_PFAM" of list of String, parameter
            "extra_target_fam_groups_TIGR" of list of String, parameter
@@ -262,12 +263,15 @@ This module contains methods for running and visualizing results of phylogenomic
                 raise ValueError ("Must define required param: '"+arg+"'")
 
         if params['namespace'] == 'custom':
-            if ('target_fams' not in params or not params['target_fams']) \
-                    and ('extra_target_fam_groups_COG' not in params or not params['extra_target_fam_groups_COG']) \
-                    and ('extra_target_fam_groups_PFAM' not in params or not params['extra_target_fam_groups_PFAM']) \
-                    and ('extra_target_fam_groups_TIGR' not in params or not params['extra_target_fam_groups_TIGR']) \
-                    and ('extra_target_fam_groups_SEED' not in params or not params['extra_target_fam_groups_SEED']):
-
+            if ('custom_target_fams' not in params or not params['custom_target_fams']) \
+                    or ( \
+                ('target_fams' not in params['custom_target_fams'] or not params['custom_target_fams']['target_fams']) \
+                    and ('extra_target_fam_groups_COG' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_COG']) \
+                    and ('extra_target_fam_groups_PFAM' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_PFAM']) \
+                    and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR']) \
+                    and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
+                ):
+                    
                 raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups'")
 
         # base config
@@ -1332,15 +1336,17 @@ This module contains methods for running and visualizing results of phylogenomic
            species tree) -> structure: parameter "workspace_name" of type
            "workspace_name" (** Common types), parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
-           "namespace" of String, parameter "target_fams" of list of String,
-           parameter "extra_target_fam_groups_COG" of list of String,
-           parameter "extra_target_fam_groups_PFAM" of list of String,
-           parameter "extra_target_fam_groups_TIGR" of list of String,
-           parameter "extra_target_fam_groups_SEED" of list of String,
-           parameter "count_category" of String, parameter "heatmap" of type
-           "bool", parameter "vertical" of type "bool", parameter "top_hit"
-           of type "bool", parameter "e_value" of Double, parameter
-           "log_base" of Double, parameter "show_blanks" of type "bool"
+           "namespace" of String, parameter "custom_target_fams" of type
+           "CustomTargetFams" (parameter groups) -> structure: parameter
+           "target_fams" of list of String, parameter
+           "extra_target_fam_groups_COG" of list of String, parameter
+           "extra_target_fam_groups_PFAM" of list of String, parameter
+           "extra_target_fam_groups_TIGR" of list of String, parameter
+           "extra_target_fam_groups_SEED" of list of String, parameter
+           "count_category" of String, parameter "heatmap" of type "bool",
+           parameter "vertical" of type "bool", parameter "top_hit" of type
+           "bool", parameter "e_value" of Double, parameter "log_base" of
+           Double, parameter "show_blanks" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

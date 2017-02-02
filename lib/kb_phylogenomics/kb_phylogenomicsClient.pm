@@ -226,11 +226,7 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
-	target_fams has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -240,6 +236,12 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	show_blanks has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
+CustomTargetFams is a reference to a hash where the following keys are defined:
+	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 bool is an int
 view_fxn_profile_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
@@ -257,11 +259,7 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
-	target_fams has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -271,6 +269,12 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	show_blanks has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
+CustomTargetFams is a reference to a hash where the following keys are defined:
+	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 bool is an int
 view_fxn_profile_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
@@ -352,11 +356,7 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
-	target_fams has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -366,6 +366,12 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	show_blanks has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
+CustomTargetFams is a reference to a hash where the following keys are defined:
+	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 bool is an int
 view_fxn_profile_phylo_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
@@ -383,11 +389,7 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
-	target_fams has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -397,6 +399,12 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	show_blanks has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
+CustomTargetFams is a reference to a hash where the following keys are defined:
+	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 bool is an int
 view_fxn_profile_phylo_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
@@ -1328,6 +1336,49 @@ report_ref has a value which is a string
 
 
 
+=head2 CustomTargetFams
+
+=over 4
+
+
+
+=item Description
+
+parameter groups
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+target_fams has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+target_fams has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+
+
+=end text
+
+=back
+
+
+
 =head2 view_fxn_profile_Input
 
 =over 4
@@ -1350,11 +1401,7 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
-target_fams has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -1373,11 +1420,7 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
-target_fams has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -1447,11 +1490,7 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
-target_fams has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -1470,11 +1509,7 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
-target_fams has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
-extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool

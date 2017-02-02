@@ -35,6 +35,17 @@ module kb_phylogenomics {
         authentication required;
 
 
+    /* parameter groups
+    */
+    typedef structure {
+	list<string> target_fams;
+	list<string> extra_target_fam_groups_COG;
+	list<string> extra_target_fam_groups_PFAM;
+	list<string> extra_target_fam_groups_TIGR;
+	list<string> extra_target_fam_groups_SEED;
+    } CustomTargetFams;
+
+
     /* view_fxn_profile()
     **
     ** show a table/heatmap of general categories or custom gene families for a set of Genomes
@@ -42,21 +53,17 @@ module kb_phylogenomics {
     typedef structure {
         workspace_name workspace_name;
         data_obj_ref   input_genomeSet_ref;
-	/*data_obj_ref   DomainAnnotation_Set;*/
+	/*data_obj_ref   DomainAnnotation_Set;*/ /*reads workspace to find domain annot*/
 
-	string       namespace;
-	list<string> target_fams;
-	list<string> extra_target_fam_groups_COG;
-	list<string> extra_target_fam_groups_PFAM;
-	list<string> extra_target_fam_groups_TIGR;
-	list<string> extra_target_fam_groups_SEED;
-	string       count_category;
-	bool         heatmap;
-	bool         vertical;
-	bool         top_hit;
-	float        e_value;
-	float        log_base;
-	bool         show_blanks;
+	string           namespace;
+	CustomTargetFams custom_target_fams;
+	string           count_category;
+	bool             heatmap;
+	bool             vertical;
+	bool             top_hit;
+	float            e_value;
+	float            log_base;
+	bool             show_blanks;
     } view_fxn_profile_Input;
 
     typedef structure {
@@ -79,19 +86,15 @@ module kb_phylogenomics {
 	data_obj_ref   input_speciesTree_ref;
 	/*data_obj_ref   DomainAnnotation_Set;*/
 
-	string       namespace;
-	list<string> target_fams;
-	list<string> extra_target_fam_groups_COG;
-	list<string> extra_target_fam_groups_PFAM;
-	list<string> extra_target_fam_groups_TIGR;
-	list<string> extra_target_fam_groups_SEED;
-	string       count_category;
-	bool         heatmap;
-	bool         vertical;
-	bool         top_hit;
-	float        e_value;
-	float        log_base;
-	bool         show_blanks;
+	string           namespace;
+	CustomTargetFams custom_target_fams;
+	string           count_category;
+	bool             heatmap;
+	bool             vertical;
+	bool             top_hit;
+	float            e_value;
+	float            log_base;
+	bool             show_blanks;
     } view_fxn_profile_phylo_Input;
 
     typedef structure {
