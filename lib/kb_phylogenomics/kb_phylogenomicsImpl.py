@@ -1176,10 +1176,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     cat_group_disp = "&nbsp;<br>".join(cat_group_words)
                     cat_group_disp += sp
 
+                html_report_lines += ['<tr>']
                 if cat_group_disp == '':
-                    html_report_lines += ['<tr><td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group]+1)+' style="border-right:solid 4px '+border_color+'"></td>']
+                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group]+1)+' style="border-right:solid 4px '+border_color+'"></td>']
                 else:
-                    html_report_lines += ['<tr><td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                    html_report_lines += ['<td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
                 # add first cat for group
                 first_cat = cats[group_cat_i]
@@ -1230,8 +1231,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
                     cat_disp = sp+sp+cat_disp
                         
-                    html_report_lines += ['<tr>']
-                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
                     html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
                     html_report_lines += ['</tr>']
 
@@ -1257,7 +1257,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 if len(cat_disp) > cat_disp_trunc_len+1:
                     cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
                 html_report_lines += ['<tr>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
                 html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
                 html_report_lines += ['</tr>']
 
