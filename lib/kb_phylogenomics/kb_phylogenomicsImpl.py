@@ -23,7 +23,7 @@ from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
 from KBaseReport.KBaseReportClient import KBaseReport
 
 from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
-#from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
+from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
 
 #END_HEADER
 
@@ -1396,15 +1396,16 @@ This module contains methods for running and visualizing results of phylogenomic
         output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
+        #image_subdir = 'image'
+        #image_outdir = os.path.join(output_dir,image_subdir)
+        image_outdir = output_dir
+        #if not os.path.exists(image_outdir):
+        #    os.makedirs(image_outdir)
         format = 'png'
-        output_tree_img_file_path = os.path.join(output_dir, 'tree.'+format);
+        local_output_tree_img_file_path = 'tree'.format
+        output_tree_img_file_path = os.path.join(image_outdir, local_output_tree_img_file_path);
 
-
-        # configure fams
-        fams = ['A', 'B', 'C', 'PF00007']
-        genome_ids = ['spree', 'smarties', 'skittles', 'rolos', 'butterfinger', 'milky way', 'snickers', 'skor', 'heath bar', 'starburst']
-
-        # create figures
+        # HERE
         newick_str = "(A:1,(B:1,(E:1,D:1):0.5):0.5);"
 
 
@@ -1443,41 +1444,32 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # header
         html_report_lines += ['<table cellpadding=10 cellspacing=10 border=1>']
-        html_report_lines += ['<tr><td valign=bottom><font color="'+text_color+'"><b>Species Tree</b></font></td>']
-        for cat in cats:
-            html_report_lines += ['<td valign=bottom><font color="'+text_color+'"><b>']
-            for c_i,c in enumerate(cat):
-                if c_i < len(cat)-1:
-                    html_report_lines += [c+'<br>']
-                else:
-                    html_report_lines += [c]
-            html_report_lines += ['</b></font></td>']
-        html_report_lines += ['</tr>']
-
-        # first row
-        html_report_lines += ['<tr>']
-        html_report_lines += ['<td rowspan='+str(num_rows)+'><img src="'+output_tree_img_file_path+'"></td>']
-        genome_id = genome_ids[0]
-        for cat in cats:
-            cell_color = graph_color
-            html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
-        html_report_lines += ['</tr>']
-
-        # rest of rows
-        for genome_i,genome_id in enumerate(genome_ids):
-            if genome_i == 0:
-                continue
-            html_report_lines += ['<tr>']
-            for cat in cats:
-                cell_color = graph_color
-                html_report_lines += ['<td bgcolor="'+cell_color+'"><font color="'+cell_color+'" size='+str(graph_fontsize)+'>'+graph_char+'</font></td>']
-            html_report_lines += ['</tr>']
+        html_report_lines += ['<tr><td><img src="'+local_output_tree_img_file_path+'"</td></tr>']
         
         html_report_lines += ['</table>']
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
 
-        reportObj['direct_html'] = "\n".join(html_report_lines)
+        html_report_str = "\n".join(html_report_lines)
+        reportObj['direct_html'] = html_report_str
+
+
+        # write html to file and upload
+        html_file = os.path.join (output_dir, 'domain_profile_report.html')
+        with open (html_file, 'w', 0) as html_handle:
+            html_handle.write(html_report_str)
+        dfu = DFUClient(self.callbackURL)
+        try:
+            upload_ret = dfu.file_to_shock({'file_path': html_file,
+                                            'make_handle': 0,
+                                            'pack': 'zip'})
+        except:
+            raise ValueError ('Logging exception loading html_report to shock')
+
+        reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
+                                    'name': 'domain_profile_report.html',
+                                    'label': 'Functional Domain Profile report'}
+                                   ]
 
 
         # save report object
