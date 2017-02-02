@@ -8555,12 +8555,6 @@
 					"display": "rows",
 					"id": "rows",
 					"ui-name": "rows"
-				},
-				{
-					"value": "0",
-					"display": "columns",
-					"id": "columns",
-					"ui-name": "columns"
 				}
 		]
             }
