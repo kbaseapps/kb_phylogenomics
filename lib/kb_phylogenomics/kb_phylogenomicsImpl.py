@@ -254,8 +254,6 @@ This module contains methods for running and visualizing results of phylogenomic
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
 
-        self.log (console, "HELLO KITTY")  # DEBUG
-
         # param checks
         required_params = ['input_genomeSet_ref',
                            'namespace'
@@ -494,7 +492,7 @@ This module contains methods for running and visualizing results of phylogenomic
             extra_target_fam_groups = []
             domfam2group = dict()
             for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_PFAM', 'extra_target_fam_groups_TIGR', 'extra_target_fam_groups_SEED']:
-                if target_set in params['custom_target_fams'] and params['custom_target_fams']['target_set']:
+                if target_set in params['custom_target_fams'] and params['custom_target_fams'][target_set]:
                     extra_target_fam_groups.extend (params['custom_target_fams'][target_set])
 
             if extra_target_fam_groups:
