@@ -46,7 +46,10 @@ module kb_phylogenomics {
 
 	string       namespace;
 	list<string> target_fams;
-	list<string> extra_target_fam_groups;
+	list<string> extra_target_fam_groups_COG;
+	list<string> extra_target_fam_groups_PFAM;
+	list<string> extra_target_fam_groups_TIGR;
+	list<string> extra_target_fam_groups_SEED;
 	string       count_category;
 	bool         heatmap;
 	bool         vertical;
@@ -78,6 +81,10 @@ module kb_phylogenomics {
 
 	string       namespace;
 	list<string> target_fams;
+	list<string> extra_target_fam_groups_COG;
+	list<string> extra_target_fam_groups_PFAM;
+	list<string> extra_target_fam_groups_TIGR;
+	list<string> extra_target_fam_groups_SEED;
 	string       count_category;
 	bool         heatmap;
 	bool         vertical;

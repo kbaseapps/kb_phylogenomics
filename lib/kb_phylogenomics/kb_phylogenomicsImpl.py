@@ -47,7 +47,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "3d5fa3272be3684c5a6c6262a997be61f5f7b6a1"
+    GIT_COMMIT_HASH = "27875e203c913a3b70a0b805dbc60743c90971c6"
 
     #BEGIN_CLASS_HEADER
 
@@ -224,7 +224,10 @@ This module contains methods for running and visualizing results of phylogenomic
            Common types), parameter "input_genomeSet_ref" of type
            "data_obj_ref", parameter "namespace" of String, parameter
            "target_fams" of list of String, parameter
-           "extra_target_fam_groups" of list of String, parameter
+           "extra_target_fam_groups_COG" of list of String, parameter
+           "extra_target_fam_groups_PFAM" of list of String, parameter
+           "extra_target_fam_groups_TIGR" of list of String, parameter
+           "extra_target_fam_groups_SEED" of list of String, parameter
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
@@ -260,7 +263,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
         if params['namespace'] == 'custom':
             if ('target_fams' not in params or not params['target_fams']) \
-                    and ('extra_target_fam_groups' not in params or not params['extra_target_fam_groups']):
+                    and ('extra_target_fam_groups_COG' not in params or not params['extra_target_fam_groups_COG']) \
+                    and ('extra_target_fam_groups_PFAM' not in params or not params['extra_target_fam_groups_PFAM']) \
+                    and ('extra_target_fam_groups_TIGR' not in params or not params['extra_target_fam_groups_TIGR']) \
+                    and ('extra_target_fam_groups_SEED' not in params or not params['extra_target_fam_groups_SEED']):
+:
                 raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups'")
 
         # base config
@@ -478,9 +485,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # add extra target fams
             extra_target_fams = []
+            extra_target_fam_groups = []
             domfam2group = dict()
-            if 'extra_target_fam_groups' in params and params['extra_target_fam_groups']:
-                for target_group in params['extra_target_fam_groups']:
+            for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_COG', 'extra_target_fam_groups_COG', 'extra_target_fam_groups_COG']:
+                if target_set in params and params['target_set']:
+                    extra_target_fam_groups.extend (params[target_set])
+
+            if extra_target_fam_groups:
+                for target_group in extra_target_fam_groups:
 
                     namespace = re.sub (":.*$", "", target_group)
                     namespaces_reading[namespace] = True
@@ -913,7 +925,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat in table_data[genome_ref] and table_data[genome_ref][cat] != 0:
                         cat_seen[cat] = True
                         cat_group = None
-                        if 'extra_target_fam_groups' in params:
+                        if extra_target_fam_groups:
                             if cat in domfam2group:
                                 cat_group = domfam2group[cat]
                             else:
@@ -927,7 +939,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # get group size including blanks
             for cat in cats:
                 cat_group = None
-                if 'extra_target_fam_groups' in params:
+                if extra_target_fam_groups:
                     if cat in domfam2group:
                         cat_group = domfam2group[cat]
                     else:
@@ -1317,6 +1329,10 @@ This module contains methods for running and visualizing results of phylogenomic
            "workspace_name" (** Common types), parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "namespace" of String, parameter "target_fams" of list of String,
+           parameter "extra_target_fam_groups_COG" of list of String,
+           parameter "extra_target_fam_groups_PFAM" of list of String,
+           parameter "extra_target_fam_groups_TIGR" of list of String,
+           parameter "extra_target_fam_groups_SEED" of list of String,
            parameter "count_category" of String, parameter "heatmap" of type
            "bool", parameter "vertical" of type "bool", parameter "top_hit"
            of type "bool", parameter "e_value" of Double, parameter

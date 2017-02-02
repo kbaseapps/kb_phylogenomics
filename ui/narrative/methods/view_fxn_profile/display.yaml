@@ -50,9 +50,30 @@ parameters :
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
         long-hint  : |
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
-    extra_target_fam_groups :
+    extra_target_fam_groups_COG :
         ui-name : |
-            Custom Domain Groups
+            Custom Domain Groups (COG)
+        short-hint : |
+            Domain Families from particular namespace groups to target in the analysis
+        long-hint  : |
+            Domain Families from particular namespace groups to target in the analysis
+    extra_target_fam_groups_PFAM :
+        ui-name : |
+            Custom Domain Groups (PFAM)
+        short-hint : |
+            Domain Families from particular namespace groups to target in the analysis
+        long-hint  : |
+            Domain Families from particular namespace groups to target in the analysis
+    extra_target_fam_groups_TIGR :
+        ui-name : |
+            Custom Domain Groups (TIGRFAM)
+        short-hint : |
+            Domain Families from particular namespace groups to target in the analysis
+        long-hint  : |
+            Domain Families from particular namespace groups to target in the analysis
+    extra_target_fam_groups_SEED :
+        ui-name : |
+            Custom Domain Groups (SEED)
         short-hint : |
             Domain Families from particular namespace groups to target in the analysis
         long-hint  : |

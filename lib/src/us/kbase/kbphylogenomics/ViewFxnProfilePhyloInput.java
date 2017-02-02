@@ -28,6 +28,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "input_speciesTree_ref",
     "namespace",
     "target_fams",
+    "extra_target_fam_groups_COG",
+    "extra_target_fam_groups_PFAM",
+    "extra_target_fam_groups_TIGR",
+    "extra_target_fam_groups_SEED",
     "count_category",
     "heatmap",
     "vertical",
@@ -46,6 +50,14 @@ public class ViewFxnProfilePhyloInput {
     private java.lang.String namespace;
     @JsonProperty("target_fams")
     private List<String> targetFams;
+    @JsonProperty("extra_target_fam_groups_COG")
+    private List<String> extraTargetFamGroupsCOG;
+    @JsonProperty("extra_target_fam_groups_PFAM")
+    private List<String> extraTargetFamGroupsPFAM;
+    @JsonProperty("extra_target_fam_groups_TIGR")
+    private List<String> extraTargetFamGroupsTIGR;
+    @JsonProperty("extra_target_fam_groups_SEED")
+    private List<String> extraTargetFamGroupsSEED;
     @JsonProperty("count_category")
     private java.lang.String countCategory;
     @JsonProperty("heatmap")
@@ -119,6 +131,66 @@ public class ViewFxnProfilePhyloInput {
 
     public ViewFxnProfilePhyloInput withTargetFams(List<String> targetFams) {
         this.targetFams = targetFams;
+        return this;
+    }
+
+    @JsonProperty("extra_target_fam_groups_COG")
+    public List<String> getExtraTargetFamGroupsCOG() {
+        return extraTargetFamGroupsCOG;
+    }
+
+    @JsonProperty("extra_target_fam_groups_COG")
+    public void setExtraTargetFamGroupsCOG(List<String> extraTargetFamGroupsCOG) {
+        this.extraTargetFamGroupsCOG = extraTargetFamGroupsCOG;
+    }
+
+    public ViewFxnProfilePhyloInput withExtraTargetFamGroupsCOG(List<String> extraTargetFamGroupsCOG) {
+        this.extraTargetFamGroupsCOG = extraTargetFamGroupsCOG;
+        return this;
+    }
+
+    @JsonProperty("extra_target_fam_groups_PFAM")
+    public List<String> getExtraTargetFamGroupsPFAM() {
+        return extraTargetFamGroupsPFAM;
+    }
+
+    @JsonProperty("extra_target_fam_groups_PFAM")
+    public void setExtraTargetFamGroupsPFAM(List<String> extraTargetFamGroupsPFAM) {
+        this.extraTargetFamGroupsPFAM = extraTargetFamGroupsPFAM;
+    }
+
+    public ViewFxnProfilePhyloInput withExtraTargetFamGroupsPFAM(List<String> extraTargetFamGroupsPFAM) {
+        this.extraTargetFamGroupsPFAM = extraTargetFamGroupsPFAM;
+        return this;
+    }
+
+    @JsonProperty("extra_target_fam_groups_TIGR")
+    public List<String> getExtraTargetFamGroupsTIGR() {
+        return extraTargetFamGroupsTIGR;
+    }
+
+    @JsonProperty("extra_target_fam_groups_TIGR")
+    public void setExtraTargetFamGroupsTIGR(List<String> extraTargetFamGroupsTIGR) {
+        this.extraTargetFamGroupsTIGR = extraTargetFamGroupsTIGR;
+    }
+
+    public ViewFxnProfilePhyloInput withExtraTargetFamGroupsTIGR(List<String> extraTargetFamGroupsTIGR) {
+        this.extraTargetFamGroupsTIGR = extraTargetFamGroupsTIGR;
+        return this;
+    }
+
+    @JsonProperty("extra_target_fam_groups_SEED")
+    public List<String> getExtraTargetFamGroupsSEED() {
+        return extraTargetFamGroupsSEED;
+    }
+
+    @JsonProperty("extra_target_fam_groups_SEED")
+    public void setExtraTargetFamGroupsSEED(List<String> extraTargetFamGroupsSEED) {
+        this.extraTargetFamGroupsSEED = extraTargetFamGroupsSEED;
+    }
+
+    public ViewFxnProfilePhyloInput withExtraTargetFamGroupsSEED(List<String> extraTargetFamGroupsSEED) {
+        this.extraTargetFamGroupsSEED = extraTargetFamGroupsSEED;
         return this;
     }
 
@@ -239,7 +311,7 @@ public class ViewFxnProfilePhyloInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", namespace=")+ namespace)+", targetFams=")+ targetFams)+", extraTargetFamGroupsCOG=")+ extraTargetFamGroupsCOG)+", extraTargetFamGroupsPFAM=")+ extraTargetFamGroupsPFAM)+", extraTargetFamGroupsTIGR=")+ extraTargetFamGroupsTIGR)+", extraTargetFamGroupsSEED=")+ extraTargetFamGroupsSEED)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

@@ -227,7 +227,10 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	target_fams has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -255,7 +258,10 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	target_fams has a value which is a reference to a list where each element is a string
-	extra_target_fam_groups has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -347,6 +353,10 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -374,6 +384,10 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -1337,7 +1351,10 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 target_fams has a value which is a reference to a list where each element is a string
-extra_target_fam_groups has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -1357,7 +1374,10 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 target_fams has a value which is a reference to a list where each element is a string
-extra_target_fam_groups has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -1428,6 +1448,10 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 target_fams has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -1447,6 +1471,10 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 target_fams has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool

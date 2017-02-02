@@ -57,7 +57,10 @@ class kb_phylogenomics(object):
            Common types), parameter "input_genomeSet_ref" of type
            "data_obj_ref", parameter "namespace" of String, parameter
            "target_fams" of list of String, parameter
-           "extra_target_fam_groups" of list of String, parameter
+           "extra_target_fam_groups_COG" of list of String, parameter
+           "extra_target_fam_groups_PFAM" of list of String, parameter
+           "extra_target_fam_groups_TIGR" of list of String, parameter
+           "extra_target_fam_groups_SEED" of list of String, parameter
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
@@ -78,6 +81,10 @@ class kb_phylogenomics(object):
            "workspace_name" (** Common types), parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "namespace" of String, parameter "target_fams" of list of String,
+           parameter "extra_target_fam_groups_COG" of list of String,
+           parameter "extra_target_fam_groups_PFAM" of list of String,
+           parameter "extra_target_fam_groups_TIGR" of list of String,
+           parameter "extra_target_fam_groups_SEED" of list of String,
            parameter "count_category" of String, parameter "heatmap" of type
            "bool", parameter "vertical" of type "bool", parameter "top_hit"
            of type "bool", parameter "e_value" of Double, parameter
