@@ -1176,7 +1176,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     cat_group_disp += sp
 
                 if cat_group_disp == '':
-                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group]+1)+'></td>']
+                    html_report_lines += ['<tr><td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group]+1)+' style="border-right:solid 4px '+border_color+'"></td>']
                 else:
                     html_report_lines += ['<tr><td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
