@@ -254,6 +254,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
 
+        self.log (console, "HELLO KITTY")  # DEBUG
+
         # param checks
         required_params = ['input_genomeSet_ref',
                            'namespace'
