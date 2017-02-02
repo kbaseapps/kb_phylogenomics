@@ -423,8 +423,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # add target fams
             target_fams = []
-            if 'target_fams' in params and params['target_fams']:
-                for target_fam in params['target_fams']:
+            if 'target_fams' in params['custom_target_fams'] and params['custom_target_fams']['target_fams']:
+                for target_fam in params['custom_target_fams']['target_fams']:
                     target_fam = target_fam.strip()
                     target_fam = re.sub ("^cog", "COG", target_fam, flags=re.IGNORECASE)
                     target_fam = re.sub ("^pf", "PF", target_fam, flags=re.IGNORECASE)
@@ -491,9 +491,9 @@ This module contains methods for running and visualizing results of phylogenomic
             extra_target_fams = []
             extra_target_fam_groups = []
             domfam2group = dict()
-            for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_COG', 'extra_target_fam_groups_COG', 'extra_target_fam_groups_COG']:
-                if target_set in params and params['target_set']:
-                    extra_target_fam_groups.extend (params[target_set])
+            for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_PFAM', 'extra_target_fam_groups_TIGR', 'extra_target_fam_groups_SEED']:
+                if target_set in params['custom_target_fams'] and params['custom_target_fams']['target_set']:
+                    extra_target_fam_groups.extend (params['custom_target_fams'][target_set])
 
             if extra_target_fam_groups:
                 for target_group in extra_target_fam_groups:
