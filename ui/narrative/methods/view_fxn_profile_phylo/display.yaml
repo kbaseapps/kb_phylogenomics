@@ -4,11 +4,11 @@
 name: View Fxn Profile Phylo
 
 tooltip: |
-    Examine the general functional distribution or specific functional gene families for a Genome Set using the Species Tree as context
+    Examine the general functional distribution or specific functional gene families for the Genomes in a Species Tree
 
 screenshots: []
 
-icon: domains_phylo-purple.png
+icon: domains_profile_phylo-purple.png
 
 #
 # define a set of similar methods that might be useful to the user
@@ -33,9 +33,9 @@ parameters :
         ui-name : |
             Species Tree
         short-hint : |
-            The Species Tree for which you wish to examine the functional complement
+            The Species Tree of Genomes to examine
         long-hint  : |
-            The Species Tree for which you wish to examine the functional complement
+            The Species Tree of Genomes to examine
     namespace :
         ui-name : |
             Domain Namespace
@@ -50,6 +50,34 @@ parameters :
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
         long-hint  : |
             Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
+    extra_target_fam_groups_COG :
+        ui-name : |
+            Custom Domain Groups (COG)
+        short-hint : |
+            Domain Families from particular namespace groups to target in the analysis
+        long-hint  : |
+            Domain Families from particular namespace groups to target in the analysis
+    extra_target_fam_groups_PFAM :
+        ui-name : |
+            Custom Domain Groups (PFAM)
+        short-hint : |
+            Domain Families from particular namespace groups to target in the analysis
+        long-hint  : |
+            Domain Families from particular namespace groups to target in the analysis
+    extra_target_fam_groups_TIGR :
+        ui-name : |
+            Custom Domain Groups (TIGRFAM)
+        short-hint : |
+            Domain Families from particular namespace groups to target in the analysis
+        long-hint  : |
+            Domain Families from particular namespace groups to target in the analysis
+    extra_target_fam_groups_SEED :
+        ui-name : |
+            Custom Domain Groups (SEED)
+        short-hint : |
+            Domain Families from particular namespace groups to target in the analysis
+        long-hint  : |
+            Domain Families from particular namespace groups to target in the analysis
     count_category :
         ui-name : |
             View values as
@@ -59,25 +87,18 @@ parameters :
             Calculate numbers as percentages or raw counts
     heatmap :
         ui-name : |
-            Heatmap?
+            View table as
         short-hint : |
-            Display as heatmap (default: numerical table)
+            Display as heatmap or numerical table
         long-hint  : |
-            Display as heatmap (default: numerical table)
-    vertical :
+            Display as heatmap or numerical table
+    log_base :
         ui-name : |
-            Genomes as rows?
+            Heatmap Log Base (optional)
         short-hint : |
-            Show table with genomes as rows
+            Set if you want the heatmap to show colors using a log scale
         long-hint  : |
-            Show table with genomes as rows
-    top_hit :
-        ui-name : |
-            Top hit per gene only?
-        short-hint : |
-            Count only the top hit per gene within a namespace (e.g. Pfam)
-        long-hint  : |
-            Count only the top hit per gene within a namespace (e.g. Pfam)
+            Set if you want the heatmap to show colors using a log scale
     e_value :
         ui-name : |
             E-value lower limit
@@ -85,22 +106,29 @@ parameters :
             Ignore domain hits below e-value threshold
         long-hint  : |
             Ignore domain hits below e-value threshold
-    log_base :
+    vertical :
         ui-name : |
-            Heatmap Log Base
+            View genomes as
         short-hint : |
-            Set if you want the heatmap to show colors using a log scale
+            Show table with genomes as rows
         long-hint  : |
-            Set if you want the heatmap to show colors using a log scale
+            Show table with genomes as rows
+    top_hit :
+        ui-name : |
+            Count annotated genes using
+        short-hint : |
+            Count only the top hit per gene within a namespace (e.g. Pfam)
+        long-hint  : |
+            Count only the top hit per gene within a namespace (e.g. Pfam)
     show_blanks :
         ui-name : |
-            Show blanks
+            Empty categories
         short-hint : |
             Show categories or families that have no counts
         long-hint  : |
             Show categories or families that have no counts
 
 description : |
-    <p>After DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for a Genome Set using the Species Tree as context.</p>
+    <p>After Speces Tree construction and DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for the Genomes in the Species Tree.</p>
 
     <p>View Fxn Profile Phylo App written by Dylan Chivian (DCChivian@lbl.gov) using DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov) and Species Tree Builder App by Roman Sutormin and Paramvir Dehal (PSDehal@lbl.gov).</p>
