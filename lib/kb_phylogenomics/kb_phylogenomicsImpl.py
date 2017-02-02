@@ -1043,7 +1043,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<body bgcolor="white">']
 
         # genomes as rows
-        if 'vertical' in params and params['vertical'] == 1:
+        if 'vertical' in params and params['vertical'] == "1":
             # table header
             html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
             corner_rowspan = "1"
@@ -1174,7 +1174,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # genomes as columns
         else:
-            raise ValueError ("Do not yet support Genomes as colunns")
+            raise ValueError ("Do not yet support Genomes as coluns")
 
 
         # key table
