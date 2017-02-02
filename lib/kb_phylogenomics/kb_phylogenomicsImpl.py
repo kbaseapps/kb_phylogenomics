@@ -1039,6 +1039,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 label = 'TIGRFAM'
         html_report_lines += ['<tr><td valign=bottom align=right rowspan='+rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
         
+        # group headers
         if show_groups:
             for cat_group in group_order:
                 if cat_group.startswith('SEED'):
@@ -1071,12 +1072,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 #        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
 
                 if cat_group_disp == '':
-                    html_report_lines += ['<td bgcolor=white></td>']
+                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size[cat_group])+'></td>']
                 else:
                     html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
             html_report_lines += ['</tr><tr>']
 
+        # column headers
         for cat in cats:
             if not cat_seen[cat] and not show_blanks:
                 continue
@@ -1174,7 +1176,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     cat_group_disp += sp
 
                 if cat_group_disp == '':
-                    html_report_lines += ['<td bgcolor=white></td>']
+                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group]+1)+'></td>']
                 else:
                     html_report_lines += ['<tr><td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group]+1)+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
@@ -1200,7 +1202,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_disp = sp+sp+cat_disp
 
                 html_report_lines += ['<tr>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
                 html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
                 html_report_lines += ['</tr>']
 
