@@ -1038,135 +1038,139 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
 
-        # table header
-        html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
-        rowspan = "1"
-        if show_groups:  rowspan = "2"
-        label = ''
-        if params['namespace'] != 'custom':
-            label = params['namespace']
-            if label == 'PF':
-                label = 'PFAM'
-            elif label == 'TIGR':
-                label = 'TIGRFAM'
-        html_report_lines += ['<tr><td valign=bottom align=right rowspan='+rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
+        # genomes as rows
+        if 'vertical' in params and params['vertical'] == 1:
+            # table header
+            html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
+            corner_rowspan = "1"
+            if show_groups:  corner_rowspan = "2"
+            label = ''
+            if params['namespace'] != 'custom':
+                label = params['namespace']
+                if label == 'PF':
+                    label = 'PFAM'
+                elif label == 'TIGR':
+                    label = 'TIGRFAM'
+            html_report_lines += ['<tr><td valign=bottom align=right rowspan='+corner_rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
         
-        # group headers
-        if show_groups:
-            for cat_group in group_order:
-                if cat_group.startswith('SEED'):
-                    cat_group_disp = re.sub ('_',' ',cat_group)
-                else:
-                    cat_group_disp = cat_group
-                cat_group_words = cat_group_disp.split()
-                max_group_width = 3*group_size[cat_group]
-                if len(cat_group) > max_group_width:
-                    new_cat_group_words = []
-                    sentence_len = 0
-                    for w_i,word in enumerate(cat_group_words):
-                        new_cat_group_words.append(word)
-                        sentence_len += len(word)
-                        if w_i < len(cat_group_words)-1:
-                            if sentence_len + 1 + len(cat_group_words[w_i+1]) > max_group_width:
-                                new_cat_group_words[w_i] += '<br>'
-                                sentence_len = 0
-                    cat_group_words = new_cat_group_words
-                if cat_group_words[0] == 'N/A':
-                    cat_group_disp = ''
-                else:
-                    cat_group_disp = " ".join(cat_group_words)
+            # group headers
+            if show_groups:
+                for cat_group in group_order:
+                    if cat_group.startswith('SEED'):
+                        cat_group_disp = re.sub ('_',' ',cat_group)
+                    else:
+                        cat_group_disp = cat_group
+                    cat_group_words = cat_group_disp.split()
+                    max_group_width = 3*group_size[cat_group]
+                    if len(cat_group) > max_group_width:
+                        new_cat_group_words = []
+                        sentence_len = 0
+                        for w_i,word in enumerate(cat_group_words):
+                            new_cat_group_words.append(word)
+                            sentence_len += len(word)
+                            if w_i < len(cat_group_words)-1:
+                                if sentence_len + 1 + len(cat_group_words[w_i+1]) > max_group_width:
+                                    new_cat_group_words[w_i] += '<br>'
+                                    sentence_len = 0
+                        cat_group_words = new_cat_group_words
+                    if cat_group_words[0] == 'N/A':
+                        cat_group_disp = ''
+                    else:
+                        cat_group_disp = " ".join(cat_group_words)
 
-                # DEBUG
-                #if cat_group not in group_size:
-                #    self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
-                #    self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
-                #    for cg in group_size:
-                #        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
+                    # DEBUG
+                    #if cat_group not in group_size:
+                    #    self.log(console, "CAT_GROUP: '"+str(cat_group)+"'")  # DEBUG
+                    #    self.log(console, "CAT_GROUP_DISP: '"+str(cat_group_disp)+"'")  # DEBUG
+                    #    for cg in group_size:
+                    #        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
 
-                if cat_group_disp == '':
-                    html_report_lines += ['<td bgcolor=white colspan='+str(group_size[cat_group])+'></td>']
-                else:
-                    html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                    if cat_group_disp == '':
+                        html_report_lines += ['<td bgcolor=white colspan='+str(group_size[cat_group])+'></td>']
+                    else:
+                        html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
-            html_report_lines += ['</tr><tr>']
+                html_report_lines += ['</tr><tr>']
 
-        # column headers
-        for cat in cats:
-            if not cat_seen[cat] and not show_blanks:
-                continue
-            if params['namespace'] == 'custom':
-                if cat.startswith('SEED'):
-                    namespace = 'SEED'
-                else:
-                    namespace = re.sub ("\d*$", "", cat)
-                cell_title = domfam2name[namespace][cat].strip()
-                cat_disp = cat
-                cat_disp = re.sub ('^SEED', 'SEED:', cat_disp)
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-            else:
-                cell_title = cat2name[params['namespace']][cat].strip()
-                cat_disp = cat
-                cat_disp = re.sub ("TIGR_", "", cat_disp)
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-            html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center>']
-            if params['namespace'] != 'COG':
-                html_report_lines += ['<div class="vertical-text"><div class="vertical-text__inner">']
-            html_report_lines += ['<font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
-            #for c_i,c in enumerate(cat_disp):
-            #    if c_i < len(cat_disp)-1:
-            #        html_report_lines += [c+'<br>']
-            #    else:
-            #        html_report_lines += [c]
-            html_report_lines += [cat_disp]
-            html_report_lines += ['</b></font>']
-            if params['namespace'] != 'COG':
-                html_report_lines += ['</div></div>']
-            html_report_lines += ['</td>']
-        html_report_lines += ['</tr>']
-
-        # rest of rows
-        for genome_ref in genome_refs:
-            genome_sci_name = genome_sci_name_by_ref[genome_ref]
-            html_report_lines += ['<tr>']
-            html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_sci_name+'</nobr></b></font></td>']
+            # column headers
             for cat in cats:
                 if not cat_seen[cat] and not show_blanks:
                     continue
-                val = table_data[genome_ref][cat]
-                if val == 0:
-                    cell_color = 'white'
-                else:                    
-                    if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
-                        log_base = float(params['log_base'])
-                        if log_base <= 1.0:
-                            raise ValueError ("log base must be > 1.0")
-                        val = math.log(val, log_base)
-                    cell_color_i = max_color - int(round(max_color * (val-overall_low_val) / float(overall_high_val-overall_low_val)))
-                    c = color_list[cell_color_i]
-                    cell_color = '#'+c+c+c+c+'FF'
-
-                if params['count_category'].startswith('perc'):
-                    cell_val = str("%.3f"%table_data[genome_ref][cat])
-                    cell_val += '%'
-                else:
-                    cell_val = str(table_data[genome_ref][cat])
-
-                if 'heatmap' in params and params['heatmap'] == '1':
-                    if table_data[genome_ref][cat] == 0:
-                        this_text_color = text_color
-                        #this_graph_char = "0"
-                        this_graph_char = sp
+                if params['namespace'] == 'custom':
+                    if cat.startswith('SEED'):
+                        namespace = 'SEED'
                     else:
-                        this_text_color = cell_color
-                        this_graph_char = graph_char
-                    html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" style="width:'+cell_width+'" bgcolor="'+cell_color+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
+                        namespace = re.sub ("\d*$", "", cat)
+                    cell_title = domfam2name[namespace][cat].strip()
+                    cat_disp = cat
+                    cat_disp = re.sub ('^SEED', 'SEED:', cat_disp)
                 else:
-                    html_report_lines += ['<td align=center valign=middle style="'+cell_width+'; border-right:solid 2px '+border_color+'; border-bottom:solid 2px '+border_color+'"><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
-
+                    cell_title = cat2name[params['namespace']][cat].strip()
+                    cat_disp = cat
+                    cat_disp = re.sub ("TIGR_", "", cat_disp)
+                if len(cat_disp) > cat_disp_trunc_len+1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
+                html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center>']
+                if params['namespace'] != 'COG':
+                    html_report_lines += ['<div class="vertical-text"><div class="vertical-text__inner">']
+                html_report_lines += ['<font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
+                #for c_i,c in enumerate(cat_disp):
+                #    if c_i < len(cat_disp)-1:
+                #        html_report_lines += [c+'<br>']
+                #    else:
+                #        html_report_lines += [c]
+                html_report_lines += [cat_disp]
+                html_report_lines += ['</b></font>']
+                if params['namespace'] != 'COG':
+                    html_report_lines += ['</div></div>']
+                html_report_lines += ['</td>']
             html_report_lines += ['</tr>']
-        html_report_lines += ['</table>']
+            
+            # rest of rows
+            for genome_ref in genome_refs:
+                genome_sci_name = genome_sci_name_by_ref[genome_ref]
+                html_report_lines += ['<tr>']
+                html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_sci_name+'</nobr></b></font></td>']
+                for cat in cats:
+                    if not cat_seen[cat] and not show_blanks:
+                        continue
+                    val = table_data[genome_ref][cat]
+                    if val == 0:
+                        cell_color = 'white'
+                    else:                    
+                        if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
+                            log_base = float(params['log_base'])
+                            if log_base <= 1.0:
+                                raise ValueError ("log base must be > 1.0")
+                            val = math.log(val, log_base)
+                        cell_color_i = max_color - int(round(max_color * (val-overall_low_val) / float(overall_high_val-overall_low_val)))
+                        c = color_list[cell_color_i]
+                        cell_color = '#'+c+c+c+c+'FF'
+
+                    if params['count_category'].startswith('perc'):
+                        cell_val = str("%.3f"%table_data[genome_ref][cat])
+                        cell_val += '%'
+                    else:
+                        cell_val = str(table_data[genome_ref][cat])
+
+                    if 'heatmap' in params and params['heatmap'] == '1':
+                        if table_data[genome_ref][cat] == 0:
+                            this_text_color = text_color
+                            #this_graph_char = "0"
+                            this_graph_char = sp
+                        else:
+                            this_text_color = cell_color
+                            this_graph_char = graph_char
+                        html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" style="width:'+cell_width+'" bgcolor="'+cell_color+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
+                    else:
+                        html_report_lines += ['<td align=center valign=middle style="'+cell_width+'; border-right:solid 2px '+border_color+'; border-bottom:solid 2px '+border_color+'"><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
+
+                html_report_lines += ['</tr>']
+            html_report_lines += ['</table>']
+
+        # genomes as columns
+        else:
+            raise ValueError ("Do not yet support Genomes as colunns")
 
 
         # key table
