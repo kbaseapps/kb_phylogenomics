@@ -1232,7 +1232,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     cat_disp = sp+cat_disp
                         
                     html_report_lines += ['<tr>']
-                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
                     html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
                     html_report_lines += ['</tr>']
 
