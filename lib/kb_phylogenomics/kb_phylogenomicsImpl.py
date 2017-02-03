@@ -23,7 +23,7 @@ from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
 from KBaseReport.KBaseReportClient import KBaseReport
 
 from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
-from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
+#from kb_phylogenomics.PhyloPlotUtil import PhyloPlotUtil
 
 #END_HEADER
 
