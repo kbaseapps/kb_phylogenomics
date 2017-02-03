@@ -1,12 +1,14 @@
 #
 # define display information
 #
-name: View Fxn Profile
+name: View Functional Profile
 
 tooltip: |
     Examine the general functional distribution or specific functional gene families for a Genome Set
 
-screenshots: []
+screenshots: 
+    - big_view_table.png
+    - key.png
 
 icon: domains_profile-purple.png
 
