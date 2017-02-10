@@ -202,6 +202,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
             if 'override_annot' not in params or params['override_annot'] != '1':
                 if genome_ref in domain_annot_done:
+                    self.log (console, "SKIPPING repeat domain annotation for genome: "+genome_obj_name_by_ref[genome_ref])
+
                     continue
 
             genome_obj_name = genome_obj_name_by_ref[genome_ref]
@@ -213,6 +215,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                         #'ws': params['workspace_name'],
                                         'output_result_id': domains_obj_name
                                       }
+            self.log (console, "RUNNING domain annotation for genome: "+genome_obj_name_by_ref[genome_ref])
             da_retVal = daClient.search_domains (ctx, DomainAnnotation_Params)[0]
             this_output_ref  = da_retVal['output_result_id']
             this_report_name = da_retVal['report_name']
