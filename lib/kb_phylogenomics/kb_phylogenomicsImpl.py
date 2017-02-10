@@ -213,6 +213,7 @@ This module contains methods for running and visualizing results of phylogenomic
             domains_obj_name = re.sub ('[\.\-\_\:]GenomeAnnotation$', '', genome_obj_name)
             domains_obj_name = re.sub ('[\.\-\_\:]Genome$', '', domains_obj_name)
             domains_obj_name += '.DomainAnnotation'
+            domains_obj_name = 'domains_'+domains_obj_name  # DEBUG
             DomainAnnotation_Params = { 'genome_ref': genome_ref,
                                         'dms_ref': 'KBasePublicGeneDomains/All',
                                         #'ws': params['workspace_name'],
