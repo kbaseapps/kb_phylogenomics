@@ -36,6 +36,13 @@ parameters :
             The Set of Genomes upon which to run DomainAnnotation
         long-hint  : |
             The Set of Genomes upon which to run DomainAnnotation
+    override_annot :
+        ui-name : |
+            Existing Domain Annotations
+        short-hint : |
+            Whether to redo or skip DomainAnnotations that have already been done
+        long-hint  : |
+            Whether to redo or skip DomainAnnotations that have already been done
 
 description : |
     <p>run DomainAnnotation runs the DomainAnnotation App on all the members of a Genome Set.</p>

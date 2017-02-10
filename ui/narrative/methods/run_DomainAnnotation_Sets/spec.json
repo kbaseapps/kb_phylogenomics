@@ -21,7 +21,32 @@
             "text_options": {
                 "valid_ws_types": [ "KBaseSearch.GenomeSet" ]
             }
+        },
+        {
+            "id": "override_annot",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+                "options": [
+                                {
+                                        "value": "1",
+                                        "display": "overwrite domain annotations",
+                                        "id": "override",
+                                        "ui-name": "override"
+                                },
+                                {
+                                        "value": "0",
+                                        "display": "skip repeat annotations",
+                                        "id": "skip",
+                                        "ui-name": "skip"
+                                }
+                ]
+            }
         }
+
     ],
     "behavior": {
         "service-mapping": {
