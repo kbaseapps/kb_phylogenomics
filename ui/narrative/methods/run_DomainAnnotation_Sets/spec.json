@@ -5,7 +5,7 @@
     ],
     "contact": "",
     "visible": true,
-    "categories": ["inactive", "annotation", "comparative_genomics"],
+    "categories": ["active", "annotation", "comparative_genomics"],
     "widgets": {
         "input": null,
         "output": "no-display"
