@@ -25,7 +25,7 @@
         {
             "id": "override_annot",
             "optional": true,
-            "advanced": false,
+            "advanced": true,
             "allow_multiple": false,
             "default_values": [ "0" ],
             "field_type": "dropdown",
