@@ -47,7 +47,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "ff4790606e11ba2ec9ee4934a94b4137201e3c3d"
+    GIT_COMMIT_HASH = "e555b4bc4af9730af3e2bc5c7dbc42370f265e9f"
 
     #BEGIN_CLASS_HEADER
 
@@ -85,7 +85,8 @@ This module contains methods for running and visualizing results of phylogenomic
            (run_DomainAnnotation_Sets() ** ** run the DomainAnnotation App
            against a GenomeSet) -> structure: parameter "workspace_name" of
            type "workspace_name" (** Common types), parameter
-           "input_genomeSet_ref" of type "data_obj_ref"
+           "input_genomeSet_ref" of type "data_obj_ref", parameter
+           "override_annot" of type "bool"
         :returns: instance of type "run_DomainAnnotation_Sets_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

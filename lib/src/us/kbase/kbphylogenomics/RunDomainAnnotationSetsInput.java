@@ -24,7 +24,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "workspace_name",
-    "input_genomeSet_ref"
+    "input_genomeSet_ref",
+    "override_annot"
 })
 public class RunDomainAnnotationSetsInput {
 
@@ -32,6 +33,8 @@ public class RunDomainAnnotationSetsInput {
     private String workspaceName;
     @JsonProperty("input_genomeSet_ref")
     private String inputGenomeSetRef;
+    @JsonProperty("override_annot")
+    private Long overrideAnnot;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -64,6 +67,21 @@ public class RunDomainAnnotationSetsInput {
         return this;
     }
 
+    @JsonProperty("override_annot")
+    public Long getOverrideAnnot() {
+        return overrideAnnot;
+    }
+
+    @JsonProperty("override_annot")
+    public void setOverrideAnnot(Long overrideAnnot) {
+        this.overrideAnnot = overrideAnnot;
+    }
+
+    public RunDomainAnnotationSetsInput withOverrideAnnot(Long overrideAnnot) {
+        this.overrideAnnot = overrideAnnot;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -76,7 +94,7 @@ public class RunDomainAnnotationSetsInput {
 
     @Override
     public String toString() {
-        return ((((((("RunDomainAnnotationSetsInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("RunDomainAnnotationSetsInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", overrideAnnot=")+ overrideAnnot)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

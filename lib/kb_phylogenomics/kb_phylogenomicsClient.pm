@@ -127,8 +127,10 @@ $output is a kb_phylogenomics.run_DomainAnnotation_Sets_Output
 run_DomainAnnotation_Sets_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	override_annot has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
+bool is an int
 run_DomainAnnotation_Sets_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -144,8 +146,10 @@ $output is a kb_phylogenomics.run_DomainAnnotation_Sets_Output
 run_DomainAnnotation_Sets_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	override_annot has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
+bool is an int
 run_DomainAnnotation_Sets_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -1286,6 +1290,7 @@ run_DomainAnnotation_Sets()
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+override_annot has a value which is a kb_phylogenomics.bool
 
 </pre>
 
@@ -1296,6 +1301,7 @@ input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+override_annot has a value which is a kb_phylogenomics.bool
 
 
 =end text
