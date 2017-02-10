@@ -22,6 +22,7 @@ module kb_phylogenomics {
     typedef structure {
         workspace_name workspace_name;
         data_obj_ref   input_genomeSet_ref;
+	bool           override_annot;
 	/*data_obj_name  output_name;*/
     } run_DomainAnnotation_Sets_Input;
 
