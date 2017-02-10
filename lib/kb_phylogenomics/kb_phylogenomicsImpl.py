@@ -143,6 +143,7 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
 
         genome_obj_name_by_ref = dict()
+        uniq_genome_ws_ids = dict()
         for genome_ref in genome_refs:
 
             # get genome object name
@@ -152,6 +153,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
                 input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
+                uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
 
             except Exception as e:
                 raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
@@ -162,7 +164,31 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_obj_name_by_ref[input_ref] = input_name
 
 
-        ### STEP 3: run DomainAnnotation on each genome in set
+        ### STEP 3: Determine which genomes have already got domain annotations
+        domain_annot_done = dict()
+        for ws_id in uniq_genome_ws_ids.keys():
+            try:
+                dom_annot_obj_info_list = wsClient.list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
+            except Exception as e:
+                raise ValueError ("Unable to list DomainAnnotation objects from workspace: "+str(ws_id)+" "+str(e))
+
+            for info in dom_annot_obj_info_list:
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                
+                dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
+                try:
+                    domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
+                except:
+                    raise ValueError ("unable to fetch domain annotation: "+dom_annot_ref)
+
+                # read domain data object
+                genome_ref = domain_data['genome_ref']
+                if genome_ref not in genome_refs:
+                    continue
+                domain_annot_done[genome_ref] = True
+
+
+        ### STEP 4: run DomainAnnotation on each genome in set
         try:
             daClient = DomainAnnotation (url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
             #daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
@@ -172,6 +198,11 @@ This module contains methods for running and visualizing results of phylogenomic
         # RUN DomainAnnotations
         report_text = ''
         for genome_i,genome_ref in enumerate(genome_refs):
+
+            if 'override_annot' not in params or params['override_annot'] != '1':
+                if genome_ref in domain_annot_done:
+                    continue
+
             genome_obj_name = genome_obj_name_by_ref[genome_ref]
             domains_obj_name = re.sub ('[\.\-\_\:]GenomeAnnotation$', '', genome_obj_name)
             domains_obj_name = re.sub ('[\.\-\_\:]Genome$', '', domains_obj_name)
