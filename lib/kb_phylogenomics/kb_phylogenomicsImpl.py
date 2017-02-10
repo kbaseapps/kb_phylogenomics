@@ -220,6 +220,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                         'output_result_id': domains_obj_name
                                       }
             self.log (console, "RUNNING domain annotation for genome: "+genome_obj_name_by_ref[genome_ref])
+            self.log(console, "\n"+pformat(DomainAnnotation_Params))
+
             da_retVal = daClient.search_domains (ctx, DomainAnnotation_Params)[0]
             this_output_ref  = da_retVal['output_result_id']
             this_report_name = da_retVal['report_name']
@@ -233,7 +235,7 @@ This module contains methods for running and visualizing results of phylogenomic
             report_text += "\n\n"
 
 
-        ### STEP 4: build and save the report
+        ### STEP 5: build and save the report
         reportObj = {
             'objects_created': [],
             'text_message': report_text
@@ -242,7 +244,7 @@ This module contains methods for running and visualizing results of phylogenomic
         report_info = reportClient.create({'report':reportObj, 'workspace_name':params['workspace_name']})
 
 
-        ### STEP 5: construct the output to send back
+        ### STEP 6: construct the output to send back
         output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
 
         #END run_DomainAnnotation_Sets
