@@ -145,6 +145,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         genome_obj_name_by_ref = dict()
         uniq_genome_ws_ids = dict()
+        ws_name_by_genome_ref = dict()
+
         for genome_ref in genome_refs:
 
             # get genome object name
@@ -155,6 +157,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
                 uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
+                ws_name_by_genome_ref[input_ref] = input_obj_info[WORKSPACE_I]
 
             except Exception as e:
                 raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
@@ -213,6 +216,7 @@ This module contains methods for running and visualizing results of phylogenomic
             DomainAnnotation_Params = { 'genome_ref': genome_ref,
                                         'dms_ref': 'KBasePublicGeneDomains/All',
                                         #'ws': params['workspace_name'],
+                                        'ws': ws_name_by_genome_ref[genome_ref],
                                         'output_result_id': domains_obj_name
                                       }
             self.log (console, "RUNNING domain annotation for genome: "+genome_obj_name_by_ref[genome_ref])
