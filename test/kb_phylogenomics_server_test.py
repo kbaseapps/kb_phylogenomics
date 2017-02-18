@@ -83,3 +83,52 @@ class kb_phylogenomicsTest(unittest.TestCase):
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
         pass
+
+
+    ### Annotate domains in a GenomeSet
+    def test_annotateDomains(self):
+
+        # make a simple GenomeSet that refers to two public Genomes
+        # kb|g.371 is Shewanella MR-1
+        # kb|g.3562 is DvH
+        testGS = {
+            'description': 'two genomes',
+            'elements': {
+                'so': {
+                    'ref': '4258/35060/1'
+                },
+                'dvh': {
+                    'ref': '4258/34734/1'
+                }
+            }
+        }
+
+        obj_info = self.getWsClient().save_objects({'workspace': self.getWsName(),       
+                                                    'objects': [
+                                                        {
+                                                            'type':'KBaseSearch.GenomeSet',
+                                                            'data':testGS,
+                                                            'name':'test_genomeset',
+                                                            'meta':{},
+                                                            'provenance':[
+                                                                {
+                                                                    'service':'kb_phylogenomics',
+                                                                    'method':'test_annotateDomains'
+                                                                }
+                                                            ]
+                                                        }]
+                                                })
+
+        pprint(obj_info)
+
+        # run annotateDomains
+        params = {
+            'workspace_name': self.getWsName(),
+            'input_genomeSet_ref': str(obj_info[0][6])+'/'+str(obj_info[0][0]),
+            'override_annot': 0
+        }
+
+        result = self.getImpl().run_DomainAnnotation_Sets(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
