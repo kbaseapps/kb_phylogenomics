@@ -2066,6 +2066,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     print (sci_name +" ("+genome_ref+"): COG OK")
                 except:
                     print (sci_name +" ("+genome_ref+"): COG MISSING")
+                continue
 
                 for cat in cats:
                     if params['count_category'] == 'perc_annot':
