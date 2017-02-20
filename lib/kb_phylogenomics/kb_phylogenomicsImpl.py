@@ -2058,6 +2058,15 @@ This module contains methods for running and visualizing results of phylogenomic
         # adjust to percs
         if params['count_category'].startswith('perc'):
             for genome_ref in genome_refs:
+
+                # DEBUG
+                sci_name = genome_sci_name_by_ref[genome_ref]
+                try:
+                    total_genes = genes_with_hits_cnt[genome_ref]['COG']
+                    print (sci_name +" ("+genome_ref+"): COG OK")
+                except:
+                    print (sci_name +" ("+genome_ref+"): COG MISSING")
+
                 for cat in cats:
                     if params['count_category'] == 'perc_annot':
                         if params['namespace'] == 'custom':
