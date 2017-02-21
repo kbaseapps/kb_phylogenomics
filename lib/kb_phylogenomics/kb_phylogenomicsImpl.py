@@ -1488,11 +1488,14 @@ This module contains methods for running and visualizing results of phylogenomic
         provenance[0]['input_ws_objects']=[str(params['input_speciesTree_ref'])]
 
 
-        # set the output path
+        # set the output paths
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
         output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
+        html_output_dir = os.path.join(output_dir,'html_output')
+        if not os.path.exists(html_output_dir):
+            os.makedirs(html_output_dir)
 
 
         # configure categories
@@ -1801,23 +1804,84 @@ This module contains methods for running and visualizing results of phylogenomic
         genome_ref_by_id = dict()
         for genome_id in speciesTree_obj['default_node_labels'].keys():
             genome_ref = speciesTree_obj['ws_refs'][genome_id]['g'][0]
-            genome_refs.append(genome_ref)
             genome_id_by_ref[genome_ref] = genome_id
             genome_ref_by_id[genome_id] = genome_ref
 
         species_tree = ete3.Tree(speciesTree_obj['tree'])
         species_tree.ladderize()
-
         for genome_id in species_tree.get_leaf_names():
             genome_refs.append(genome_ref_by_id[genome_id])
 
-        # get genome refs, object names, sci names, protein-coding gene counts, and SEED annot
-        #
-        #genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
-        #genome_refs = []
-        #for genome_id in genome_ids:
-        #    genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
 
+        # Draw tree now that we have ete3 tree object
+        #
+        png_file = params['output_name']+'.png'
+        pdf_file = params['output_name']+'.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file);
+        output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
+
+        # init ETE3 objects
+        ts = ete3.TreeStyle()
+
+        # customize
+        ts.show_leaf_name = True
+        ts.show_branch_length = False
+        ts.show_branch_support = True
+        #ts.scale = 50 # 50 pixels per branch length unit
+        ts.branch_vertical_margin = 5 # pixels between adjacent branches
+        ts.title.add_face(ete3.TextFace(params['output_name']+": "+params['desc'], fsize=10), column=0)
+
+        node_style = ete3.NodeStyle()
+        node_style["fgcolor"] = "#606060"  # for node balls
+        node_style["size"] = 10  # for node balls (gets reset based on support)
+        node_style["vt_line_color"] = "#606060"
+        node_style["hz_line_color"] = "#606060"
+        node_style["vt_line_width"] = 2
+        node_style["hz_line_width"] = 2
+        node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        node_style["hz_line_type"] = 0
+
+        leaf_style = ete3.NodeStyle()
+        leaf_style["fgcolor"] = "#ffffff"  # for node balls
+        leaf_style["size"] = 2  # for node balls (we're using it to add space)
+        leaf_style["vt_line_color"] = "#606060"  # unecessary
+        leaf_style["hz_line_color"] = "#606060"
+        leaf_style["vt_line_width"] = 2
+        leaf_style["hz_line_width"] = 2
+        leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        leaf_style["hz_line_type"] = 0
+
+        for n in species_tree.traverse():
+            if n.is_leaf():
+                style = leaf_style
+            else:
+                style = ete3.NodeStyle()
+                for k in node_style.keys():
+                    style[k] = node_style[k]
+
+                if n.support > 0.95:
+                    style["size"] = 6
+                elif n.support > 0.90:
+                    style["size"] = 5
+                elif n.support > 0.80:
+                    style["size"] = 4
+                else:
+                    style["size"] = 2
+
+            n.set_style(style)
+
+        # save images
+        dpi = 300
+        img_units = "in"
+        img_pix_width = 1200
+        img_in_width = round(float(img_pix_width)/float(dpi), 1)
+        img_html_width = img_pix_width // 2
+        species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
+        species_tree.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+
+
+        # get object names, sci names, protein-coding gene counts, and SEED annot
+        #
         genome_obj_name_by_ref = dict()
         genome_sci_name_by_ref = dict()
         genome_CDS_count_by_ref = dict()
