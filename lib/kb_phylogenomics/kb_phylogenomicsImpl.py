@@ -769,6 +769,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # capture domain hits to genes within each namespace
         #
         if params['namespace'] != 'SEED':
+            dom_annot_found = dict()
+
             KBASE_DOMAINHIT_GENE_ID_I        = 0
             KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
             KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
@@ -803,6 +805,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     genome_ref = domain_data['genome_ref']
                     if genome_ref not in genome_refs:
                         continue
+                    dom_annot_found[genome_ref] = True
 
                     if genome_ref not in dom_hits:
                         dom_hits[genome_ref] = dict()
@@ -878,6 +881,14 @@ This module contains methods for running and visualizing results of phylogenomic
                                         dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
                                     else:
                                         dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
+
+            # make sure we have domain annotations for all genomes
+            missing_annot = []
+            for genome_ref in genome_refs:
+                if genome_ref not in dom_annot_found:
+                    missing_annot.append('MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
+            if missing_annot:
+                raise ValueError ("\n".join(missing_annot))
                                 
         # DEBUG
         #for genome_ref in genome_refs:
@@ -1406,7 +1417,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         ### STEP 0: basic init
         console = []
-        self.log(console, 'Running view_fxn_profile(): ')
+        self.log(console, 'Running view_fxn_profile_phylo(): ')
         self.log(console, "\n"+pformat(params))
 
         token = ctx['token']
@@ -1784,9 +1795,15 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         # get genome_refs from speciesTree
+        #
         genome_refs = []
+        genome_id_by_ref = dict()
+        genome_ref_by_id = dict()
         for genome_id in speciesTree_obj['default_node_labels'].keys():
-            genome_refs.append(speciesTree_obj['ws_refs'][genome_id]['g'][0])
+            genome_ref = speciesTree_obj['ws_refs'][genome_id]['g'][0]
+            genome_refs.append(genome_ref)
+            genome_id_by_ref[genome_ref] = genome_id
+            genome_ref_by_id[genome_id] = genome_ref
         
         #
         # HERE
@@ -1899,6 +1916,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # capture domain hits to genes within each namespace
         #
         if params['namespace'] != 'SEED':
+            dom_annot_found = dict()
+
             KBASE_DOMAINHIT_GENE_ID_I        = 0
             KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
             KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
@@ -1933,6 +1952,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     genome_ref = domain_data['genome_ref']
                     if genome_ref not in genome_refs:
                         continue
+                    dom_annot_found[genome_ref] = True
 
                     if genome_ref not in dom_hits:
                         dom_hits[genome_ref] = dict()
@@ -2009,6 +2029,14 @@ This module contains methods for running and visualizing results of phylogenomic
                                     else:
                                         dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
                                 
+            # make sure we have domain annotations for all genomes
+            missing_annot = []
+            for genome_ref in genome_refs:
+                if genome_ref not in dom_annot_found:
+                    missing_annot.append('MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
+            if missing_annot:
+                raise ValueError ("\n".join(missing_annot))
+                                
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
@@ -2060,13 +2088,12 @@ This module contains methods for running and visualizing results of phylogenomic
             for genome_ref in genome_refs:
 
                 # DEBUG
-                sci_name = genome_sci_name_by_ref[genome_ref]
-                try:
-                    total_genes = genes_with_hits_cnt[genome_ref]['COG']
-                    print (sci_name +" ("+genome_ref+"): COG OK")
-                except:
-                    print (sci_name +" ("+genome_ref+"): COG MISSING")
-                continue
+                #sci_name = genome_sci_name_by_ref[genome_ref]
+                #try:
+                #    total_genes = genes_with_hits_cnt[genome_ref]['COG']
+                #    print (sci_name +" ("+genome_ref+"): COG OK")
+                #except:
+                #    print (sci_name +" ("+genome_ref+"): COG MISSING")
 
                 for cat in cats:
                     if params['count_category'] == 'perc_annot':
