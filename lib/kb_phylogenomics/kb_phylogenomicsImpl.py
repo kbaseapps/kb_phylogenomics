@@ -1804,10 +1804,12 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_refs.append(genome_ref)
             genome_id_by_ref[genome_ref] = genome_id
             genome_ref_by_id[genome_id] = genome_ref
-        
-        #
-        # HERE
-        #
+
+        species_tree = ete3.Tree(speciesTree_obj['tree'])
+        species_tree.ladderize()
+
+        for genome_id in species_tree.get_leaf_names():
+            genome_refs.append(genome_ref_by_id[genome_id])
 
         # get genome refs, object names, sci names, protein-coding gene counts, and SEED annot
         #
