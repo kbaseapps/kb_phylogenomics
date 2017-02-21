@@ -1780,10 +1780,12 @@ This module contains methods for running and visualizing results of phylogenomic
         # get speciesTree
         #
         input_ref = params['input_speciesTree_ref']
+        speciesTree_name = None
         try:
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
             input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            speciesTree_name = input_obj_info[NAME_I]
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
         accepted_input_types = ["KBaseTrees.Tree" ]
@@ -1815,8 +1817,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Draw tree now that we have ete3 tree object
         #
-        png_file = params['output_name']+'.png'
-        pdf_file = params['output_name']+'.pdf'
+        png_file = speciesTree_name+'.png'
+        pdf_file = speciesTree_name+'.pdf'
         output_png_file_path = os.path.join(html_output_dir, png_file);
         output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
 
