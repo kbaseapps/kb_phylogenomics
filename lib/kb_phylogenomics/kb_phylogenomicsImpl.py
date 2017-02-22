@@ -2294,6 +2294,8 @@ This module contains methods for running and visualizing results of phylogenomic
         max_color = len(color_list)-1
         cat_disp_trunc_len = 40
         cell_width = '10px'
+        tree_scale_factor = 30
+        tree_img_height = tree_scale_factor*len(genome_refs)
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -2329,12 +2331,6 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</style>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
-
-
-        # DEBUG
-        scale_factor = 25
-        tree_img_height = scale_factor*len(genome_refs)
-        html_report_lines += ['<img src="'+png_file+'" height='+str(tree_img_height)+'>']
 
         # genomes as rows
         if 'vertical' in params and params['vertical'] == "1":
@@ -2424,10 +2420,14 @@ This module contains methods for running and visualizing results of phylogenomic
                 html_report_lines += ['</td>']
             html_report_lines += ['</tr>']
             
+            # add tree image
+            html_report_lines += ['<tr><td rowspan='+str(len(genome_refs))+'><img src="'+png_file+'" height='+str(tree_img_height)+'></td>']
+
             # rest of rows
-            for genome_ref in genome_refs:
+            for row_i,genome_ref in enumerate(genome_refs):
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
-                html_report_lines += ['<tr>']
+                if row_i > 0:
+                    html_report_lines += ['<tr>']
                 html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_sci_name+'</nobr></b></font></td>']
                 for cat in cats:
                     if not cat_seen[cat] and not show_blanks:
