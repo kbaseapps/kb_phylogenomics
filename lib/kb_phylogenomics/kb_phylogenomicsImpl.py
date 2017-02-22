@@ -2294,7 +2294,7 @@ This module contains methods for running and visualizing results of phylogenomic
         max_color = len(color_list)-1
         cat_disp_trunc_len = 40
         cell_width = '10px'
-        tree_scale_factor = 30
+        tree_scale_factor = 35
         tree_img_height = tree_scale_factor*len(genome_refs)
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
@@ -2428,7 +2428,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
                 if row_i > 0:
                     html_report_lines += ['<tr>']
-                html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_sci_name+'</nobr></b></font></td>']
+                #html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_sci_name+'</nobr></b></font></td>']
                 for cat in cats:
                     if not cat_seen[cat] and not show_blanks:
                         continue
