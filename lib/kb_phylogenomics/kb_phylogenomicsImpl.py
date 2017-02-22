@@ -1799,7 +1799,7 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ("unable to fetch speciesTree: "+input_ref)
 
 
-        # get genome_refs from speciesTree
+        # get genome_refs from speciesTree and instantiate ETE3 tree and order
         #
         genome_refs = []
         genome_id_by_ref = dict()
@@ -1815,78 +1815,11 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_refs.append(genome_ref_by_id[genome_id])
 
 
-        # Draw tree now that we have ete3 tree object
-        #
-        png_file = speciesTree_name+'.png'
-        pdf_file = speciesTree_name+'.pdf'
-        output_png_file_path = os.path.join(html_output_dir, png_file);
-        output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
-
-        # init ETE3 objects
-        ts = ete3.TreeStyle()
-
-        # customize
-        ts.show_leaf_name = True
-        ts.show_branch_length = False
-        ts.show_branch_support = True
-        #ts.scale = 50 # 50 pixels per branch length unit
-        ts.branch_vertical_margin = 5 # pixels between adjacent branches
-        #ts.title.add_face(ete3.TextFace(params['output_name']+": "+params['desc'], fsize=10), column=0)
-
-        node_style = ete3.NodeStyle()
-        node_style["fgcolor"] = "#606060"  # for node balls
-        node_style["size"] = 10  # for node balls (gets reset based on support)
-        node_style["vt_line_color"] = "#606060"
-        node_style["hz_line_color"] = "#606060"
-        node_style["vt_line_width"] = 2
-        node_style["hz_line_width"] = 2
-        node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
-        node_style["hz_line_type"] = 0
-
-        leaf_style = ete3.NodeStyle()
-        leaf_style["fgcolor"] = "#ffffff"  # for node balls
-        leaf_style["size"] = 2  # for node balls (we're using it to add space)
-        leaf_style["vt_line_color"] = "#606060"  # unecessary
-        leaf_style["hz_line_color"] = "#606060"
-        leaf_style["vt_line_width"] = 2
-        leaf_style["hz_line_width"] = 2
-        leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
-        leaf_style["hz_line_type"] = 0
-
-        for n in species_tree.traverse():
-            if n.is_leaf():
-                style = leaf_style
-                n.name = 'foo'
-            else:
-                style = ete3.NodeStyle()
-                for k in node_style.keys():
-                    style[k] = node_style[k]
-
-                if n.support > 0.95:
-                    style["size"] = 6
-                elif n.support > 0.90:
-                    style["size"] = 5
-                elif n.support > 0.80:
-                    style["size"] = 4
-                else:
-                    style["size"] = 2
-
-            n.set_style(style)
-
-        # save images
-        dpi = 300
-        img_units = "in"
-        img_pix_width = 1200
-        img_in_width = round(float(img_pix_width)/float(dpi), 1)
-        img_html_width = img_pix_width // 2
-        species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
-        species_tree.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
-
-
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_obj_name_by_ref = dict()
         genome_sci_name_by_ref = dict()
+        genome_sci_name_by_id  = dict()
         genome_CDS_count_by_ref = dict()
         uniq_genome_ws_ids = dict()
 
@@ -1922,6 +1855,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
+            genome_sci_name_by_id[genome_id_by_ref[genome_ref]] = genome_obj['scientific_name']
             
             # CDS cnt
             cds_cnt = 0
@@ -2260,6 +2194,75 @@ This module contains methods for running and visualizing results of phylogenomic
                     group_size_with_blanks[cat_group] += 1
 
 
+        # Draw tree (we already instantiated Tree above)
+        #
+        png_file = speciesTree_name+'.png'
+        pdf_file = speciesTree_name+'.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file);
+        output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
+
+        # init ETE3 accessory objects
+        ts = ete3.TreeStyle()
+
+        # customize
+        ts.show_leaf_name = True
+        ts.show_branch_length = False
+        ts.show_branch_support = True
+        #ts.scale = 50 # 50 pixels per branch length unit
+        ts.branch_vertical_margin = 5 # pixels between adjacent branches
+        #ts.title.add_face(ete3.TextFace(params['output_name']+": "+params['desc'], fsize=10), column=0)
+
+        node_style = ete3.NodeStyle()
+        node_style["fgcolor"] = "#606060"  # for node balls
+        node_style["size"] = 10  # for node balls (gets reset based on support)
+        node_style["vt_line_color"] = "#606060"
+        node_style["hz_line_color"] = "#606060"
+        node_style["vt_line_width"] = 2
+        node_style["hz_line_width"] = 2
+        node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        node_style["hz_line_type"] = 0
+
+        leaf_style = ete3.NodeStyle()
+        leaf_style["fgcolor"] = "#ffffff"  # for node balls
+        leaf_style["size"] = 2  # for node balls (we're using it to add space)
+        leaf_style["vt_line_color"] = "#606060"  # unecessary
+        leaf_style["hz_line_color"] = "#606060"
+        leaf_style["vt_line_width"] = 2
+        leaf_style["hz_line_width"] = 2
+        leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        leaf_style["hz_line_type"] = 0
+
+        for n in species_tree.traverse():
+            if n.is_leaf():
+                style = leaf_style
+                genome_id = n.name
+                n.name = genome_sci_name[genome_id]
+            else:
+                style = ete3.NodeStyle()
+                for k in node_style.keys():
+                    style[k] = node_style[k]
+
+                if n.support > 0.95:
+                    style["size"] = 6
+                elif n.support > 0.90:
+                    style["size"] = 5
+                elif n.support > 0.80:
+                    style["size"] = 4
+                else:
+                    style["size"] = 2
+
+            n.set_style(style)
+
+        # save images
+        dpi = 300
+        img_units = "in"
+        img_pix_width = 1200
+        img_in_width = round(float(img_pix_width)/float(dpi), 1)
+        img_html_width = img_pix_width // 2
+        species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
+        species_tree.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+
+
         # build report
         #
         reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
@@ -2329,7 +2332,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         # DEBUG
-        scale_factor = 10
+        scale_factor = 25
         tree_img_height = scale_factor*len(genome_refs)
         html_report_lines += ['<img src="'+png_file+'" height='+str(tree_img_height)+'>']
 
