@@ -2294,7 +2294,7 @@ This module contains methods for running and visualizing results of phylogenomic
         max_color = len(color_list)-1
         cat_disp_trunc_len = 40
         cell_width = '10px'
-        tree_scale_factor = 35
+        tree_scale_factor = 30
         tree_img_height = tree_scale_factor*len(genome_refs)
         extra_tree_rows = 4
         if len(genome_refs) > 20:
