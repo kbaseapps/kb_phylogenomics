@@ -2318,13 +2318,17 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
-        html_report_lines += ['<title>KBase Functional Domain Profile</title>']
+        html_report_lines += ['<title>KBase Functional Domain Profile with Species Tree</title>']
         html_report_lines += ['<style>']
         html_report_lines += [".vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 0.65em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.1;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
         html_report_lines += [".vertical-text_title {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner_title {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.0;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner_title:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
         html_report_lines += ['</style>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
+
+
+        # DEBUG
+        html_report_lines += ['<img src="'+png_file+'">']
 
         # genomes as rows
         if 'vertical' in params and params['vertical'] == "1":
@@ -2574,16 +2578,17 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
         
         html_report_str = "\n".join(html_report_lines)
-        reportObj['direct_html'] = html_report_str
+        #reportObj['direct_html'] = html_report_str
 
 
         # write html to file and upload
-        html_file = os.path.join (output_dir, 'domain_profile_report.html')
+        html_file = os.path.join (html_output_dir, 'domain_profile_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
-            upload_ret = dfu.file_to_shock({'file_path': html_file,
+            #upload_ret = dfu.file_to_shock({'file_path': html_file,
+            upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
@@ -2593,6 +2598,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'name': 'domain_profile_report.html',
                                     'label': 'Functional Domain Profile report'}
                                    ]
+        reportObj['direct_html_link_index'] = 0
 
 
         # save report object
