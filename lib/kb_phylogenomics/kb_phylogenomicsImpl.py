@@ -2294,9 +2294,9 @@ This module contains methods for running and visualizing results of phylogenomic
         max_color = len(color_list)-1
         cat_disp_trunc_len = 40
         cell_width = '10px'
-        tree_scale_factor = 20
+        tree_scale_factor = 25
         tree_img_height = tree_scale_factor*len(genome_refs)
-        extra_tree_rows = 4
+        extra_tree_rows = 10
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -2314,7 +2314,7 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             cell_fontsize = graph_cat_fontsize = graph_gen_fontsize
         #graph_padding = "5"
-        graph_padding = "3"
+        graph_padding = "2"
         graph_spacing = "3"
         #border = "1"
         border = "0"
@@ -2423,7 +2423,7 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['</tr>']
             
             # add tree image
-            html_report_lines += ['<tr><td rowspan='+str(len(genome_refs)+extra_tree_rows)+'><img src="'+png_file+'" height='+str(tree_img_height)+'></td>']
+            html_report_lines += ['<tr><td align="left" valign="top" rowspan='+str(len(genome_refs)+extra_tree_rows)+'><img src="'+png_file+'" height='+str(tree_img_height)+'></td>']
 
             # rest of rows
             for row_i,genome_ref in enumerate(genome_refs):
@@ -2466,6 +2466,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         html_report_lines += ['<td align=center valign=middle style="'+cell_width+'; border-right:solid 2px '+border_color+'; border-bottom:solid 2px '+border_color+'"><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
 
                 html_report_lines += ['</tr>']
+            # add extra blank rows to extend tree rule below grid
             for row_i in range(extra_tree_rows):
                 html_report_lines += ['<tr></tr>']
 
