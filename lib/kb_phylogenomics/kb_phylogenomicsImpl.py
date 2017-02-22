@@ -217,14 +217,15 @@ This module contains methods for running and visualizing results of phylogenomic
             domains_obj_name = 'domains_'+domains_obj_name  # DEBUG
             DomainAnnotation_Params = { 'genome_ref': genome_ref,
                                         'dms_ref': 'KBasePublicGeneDomains/All',
-                                        #'ws': params['workspace_name'],
-                                        'ws': ws_name_by_genome_ref[genome_ref],
+                                        'ws': params['workspace_name'],
+                                        #'ws': ws_name_by_genome_ref[genome_ref],
                                         'output_result_id': domains_obj_name
                                       }
             self.log (console, "RUNNING domain annotation for genome: "+genome_obj_name_by_ref[genome_ref])
             self.log(console, "\n"+pformat(DomainAnnotation_Params))
+            self.log(console, str(datetime.now()))
 
-            da_retVal = daClient.search_domains (ctx, DomainAnnotation_Params)[0]
+            da_retVal = daClient.search_domains (DomainAnnotation_Params)[0]
             this_output_ref  = da_retVal['output_result_id']
             this_report_name = da_retVal['report_name']
             this_report_ref  = da_retVal['report_ref']
