@@ -1856,6 +1856,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in species_tree.traverse():
             if n.is_leaf():
                 style = leaf_style
+                n.name = 'foo'
             else:
                 style = ete3.NodeStyle()
                 for k in node_style.keys():
@@ -2328,7 +2329,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         # DEBUG
-        html_report_lines += ['<img src="'+png_file+'">']
+        scale_factor = 10
+        tree_img_height = scale_factor*len(genome_refs)
+        html_report_lines += ['<img src="'+png_file+'" height='+str(tree_img_height)+'>']
 
         # genomes as rows
         if 'vertical' in params and params['vertical'] == "1":
