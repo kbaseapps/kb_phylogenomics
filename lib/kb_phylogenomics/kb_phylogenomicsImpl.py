@@ -2236,7 +2236,9 @@ This module contains methods for running and visualizing results of phylogenomic
             if n.is_leaf():
                 style = leaf_style
                 genome_id = n.name
-                n.name = genome_sci_name_by_id[genome_id]
+                #n.name = genome_sci_name_by_id[genome_id]
+                leaf_name_disp = genome_sci_name_by_id[genome_id]
+                n.add_face(ete3.TextFace(leaf_name_disp, fsize=5), column=0, position="branch-right")
             else:
                 style = ete3.NodeStyle()
                 for k in node_style.keys():
