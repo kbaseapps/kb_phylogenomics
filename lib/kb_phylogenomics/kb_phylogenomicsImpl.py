@@ -2294,7 +2294,7 @@ This module contains methods for running and visualizing results of phylogenomic
         max_color = len(color_list)-1
         cat_disp_trunc_len = 40
         cell_width = '10px'
-        tree_scale_factor = 30
+        tree_scale_factor = 20
         tree_img_height = tree_scale_factor*len(genome_refs)
         extra_tree_rows = 4
         if len(genome_refs) > 20:
@@ -2313,7 +2313,8 @@ This module contains methods for running and visualizing results of phylogenomic
             cell_fontsize = graph_gen_fontsize = graph_cat_fontsize
         else:
             cell_fontsize = graph_cat_fontsize = graph_gen_fontsize
-        graph_padding = "5"
+        #graph_padding = "5"
+        graph_padding = "3"
         graph_spacing = "3"
         #border = "1"
         border = "0"
