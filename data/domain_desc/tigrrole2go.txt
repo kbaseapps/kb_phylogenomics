@@ -20,12 +20,12 @@ TIGR_role:12050	127	Purines, pyrimidines, nucleosides, and nucleotides	Salvage o
 TIGR_role:12050	127	Purines, pyrimidines, nucleosides, and nucleotides	Salvage of nucleosides and nucleotides > GO:purine ribonucleoside salvage ; GO:0006166
 TIGR_role:12060	128	Purines, pyrimidines, nucleosides, and nucleotides	Sugar-nucleotide biosynthesis and conversions > GO:nucleotide-sugar metabolism ; GO:0009225
 TIGR_role:12070	122	Purines, pyrimidines, nucleosides, and nucleotides	Other > GO:nucleobase, nucleoside, nucleotide and nucleic acid metabolism ; GO:0006139
-TIGR_role:13010	176	Fatty acid and phospholipid metabolism	Biosynthesis > GO:fatty acid biosynthesis ; GO:0006633
-TIGR_role:13010	176	Fatty acid and phospholipid metabolism	Biosynthesis > GO:phospholipid metabolism ; GO:0006644
-TIGR_role:13020	177	Fatty acid and phospholipid metabolism	Degradation > GO:fatty acid catabolism ; GO:0009062
-TIGR_role:13020	177	Fatty acid and phospholipid metabolism	Degradation > GO:phospholipid catabolism ; GO:0009395
-TIGR_role:13030	121	Fatty acid and phospholipid metabolism	Other > GO:fatty acid metabolism ; GO:0006631
-TIGR_role:13030	121	Fatty acid and phospholipid metabolism	Other > GO:phospholipid metabolism ; GO:0006644
+TIGR_role:13010	176	Fatty acid and phospho- lipid metabolism	Biosynthesis > GO:fatty acid biosynthesis ; GO:0006633
+TIGR_role:13010	176	Fatty acid and phospho- lipid metabolism	Biosynthesis > GO:phospholipid metabolism ; GO:0006644
+TIGR_role:13020	177	Fatty acid and phospho- lipid metabolism	Degradation > GO:fatty acid catabolism ; GO:0009062
+TIGR_role:13020	177	Fatty acid and phospho- lipid metabolism	Degradation > GO:phospholipid catabolism ; GO:0009395
+TIGR_role:13030	121	Fatty acid and phospho- lipid metabolism	Other > GO:fatty acid metabolism ; GO:0006631
+TIGR_role:13030	121	Fatty acid and phospho- lipid metabolism	Other > GO:phospholipid metabolism ; GO:0006644
 TIGR_role:14010	77	Biosynthesis of cofactors, prosthetic groups, and carriers	Biotin > GO:biotin biosynthesis ; GO:0009102
 TIGR_role:14015	78	Biosynthesis of cofactors, prosthetic groups, and carriers	Folic acid > GO:folic acid and derivative biosynthesis ; GO:0009396
 TIGR_role:14020	79	Biosynthesis of cofactors, prosthetic groups, and carriers	Heme, porphyrin, and cobalamin > GO:heme biosynthesis ; GO:0006783
@@ -132,19 +132,19 @@ TIGR_role:22020	262	Regulatory functions	RNA interactions > GO:.
 TIGR_role:22030	263	Regulatory functions	Protein interactions > GO:.
 TIGR_role:22040	264	Regulatory functions	Small molecule interactions > GO:.
 TIGR_role:22090	129	Regulatory functions	Other > GO:.
-TIGR_role:22505	199	Signal transduction	Receptors > GO:receptor activity ; GO:0004872
-TIGR_role:22510	200	Signal transduction	Kinases > GO:receptor signaling protein serine/threonine kinase activity ; GO:0004702
-TIGR_role:22510	200	Signal transduction	Kinases > GO:receptor signaling protein tyrosine kinase activity ; GO:0004716
-TIGR_role:22520	201	Signal transduction	Phosphatases > GO:receptor signaling protein serine/threonine phosphatase activity ; GO:0009400
-TIGR_role:22520	201	Signal transduction	Phosphatases > GO:receptor signaling protein tyrosine phosphatase activity ; GO:0004728
-TIGR_role:22530	202	Signal transduction	G-proteins > GO:heterotrimeric G-protein complex ; GO:0005834
-TIGR_role:22540	265	Signal transduction	Hormones, cytokines > GO:hormone activity ; GO:0005179
-TIGR_role:22540	265	Signal transduction	Hormones, cytokines > GO:cytokine activity ; GO:0005125
-TIGR_role:22550	266	Signal transduction	Channels > GO:.
-TIGR_role:22560	267	Signal transduction	Immunology > GO:immune response ; GO:0006955
-TIGR_role:22570	699	Signal transduction	Two-component systems > GO:two-component sensor molecule activity ; GO:0000155
-TIGR_role:22580	700	Signal transduction	PTS > GO:phosphoenolpyruvate-dependent sugar phosphotransferase system ; GO:0009401
-TIGR_role:22595	203	Signal transduction	Other > GO:signal transduction ; GO:0007165
+TIGR_role:22505	199	Signal trans- duction	Receptors > GO:receptor activity ; GO:0004872
+TIGR_role:22510	200	Signal trans- duction	Kinases > GO:receptor signaling protein serine/threonine kinase activity ; GO:0004702
+TIGR_role:22510	200	Signal trans- duction	Kinases > GO:receptor signaling protein tyrosine kinase activity ; GO:0004716
+TIGR_role:22520	201	Signal trans- duction	Phosphatases > GO:receptor signaling protein serine/threonine phosphatase activity ; GO:0009400
+TIGR_role:22520	201	Signal trans- duction	Phosphatases > GO:receptor signaling protein tyrosine phosphatase activity ; GO:0004728
+TIGR_role:22530	202	Signal trans- duction	G-proteins > GO:heterotrimeric G-protein complex ; GO:0005834
+TIGR_role:22540	265	Signal trans- duction	Hormones, cytokines > GO:hormone activity ; GO:0005179
+TIGR_role:22540	265	Signal trans- duction	Hormones, cytokines > GO:cytokine activity ; GO:0005125
+TIGR_role:22550	266	Signal trans- duction	Channels > GO:.
+TIGR_role:22560	267	Signal trans- duction	Immunology > GO:immune response ; GO:0006955
+TIGR_role:22570	699	Signal trans- duction	Two-component systems > GO:two-component sensor molecule activity ; GO:0000155
+TIGR_role:22580	700	Signal trans- duction	PTS > GO:phosphoenolpyruvate-dependent sugar phosphotransferase system ; GO:0009401
+TIGR_role:22595	203	Signal trans- duction	Other > GO:signal transduction ; GO:0007165
 TIGR_role:23020	91	Cell envelope	Surface structures > GO:fimbrium ; GO:0009289
 TIGR_role:23030	89	Cell envelope	Biosynthesis of murein sacculus and peptidoglycan > GO:peptidoglycan biosynthesis ; GO:0009252
 TIGR_role:23040	90	Cell envelope	Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides > GO:lipopolysaccharide biosynthesis ; GO:0009103
@@ -234,10 +234,10 @@ TIGR_role:24640	256	Environmental Response	Wounding > GO:response to wounding ; 
 TIGR_role:24645	257	Environmental Response	UV > GO:response to UV ; GO:0009411
 TIGR_role:24650	258	Environmental Response	Osmotic > GO:response to osmotic stress ; GO:0006970
 TIGR_role:24660	260	Environmental Response	Other > GO:response to external stimulus ; GO:0009605
-TIGR_role:25015	186	Other categories	Mobile and extrachromosomal element functions	Plasmid functions > GO:.
-TIGR_role:25020	152	Other categories	Mobile and extrachromosomal element functions	Prophage functions > GO:.
-TIGR_role:25030	154	Other categories	Mobile and extrachromosomal element functions	Transposon functions > GO:.
-TIGR_role:25095	708	Mobile and extrachromosomal element functions	Other > GO:.
+TIGR_role:25015	186	Other categories	Mobile and extra- chromo- somal element functions	Plasmid functions > GO:.
+TIGR_role:25020	152	Other categories	Mobile and extra- chromo- somal element functions	Prophage functions > GO:.
+TIGR_role:25030	154	Other categories	Mobile and extra- chromo- somal element functions	Transposon functions > GO:.
+TIGR_role:25095	708	Mobile and extra- chromo- somal element functions	Other > GO:.
 TIGR_role:25500	703	Unknown function	Enzymes of unknown specificity > GO:catalytic activity ; GO:0003824
 TIGR_role:25510	157	Unknown function	General > GO:molecular function unknown ; GO:0005554
 TIGR_role:25510	157	Unknown function	General > GO:molecular function unknown ; GO:0005554
