@@ -2472,7 +2472,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 html_report_lines += ['</tr>']
             # add extra blank rows to extend tree rule below grid
             for row_i in range(extra_tree_rows):
-                html_report_lines += ['<tr></tr>']
+                html_report_lines += ['<tr><td></td></tr>']
 
             html_report_lines += ['</table>']
 
