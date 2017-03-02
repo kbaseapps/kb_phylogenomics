@@ -2298,9 +2298,9 @@ This module contains methods for running and visualizing results of phylogenomic
         max_color = len(color_list)-1
         cat_disp_trunc_len = 40
         cell_width = '10px'
-        tree_scale_factor = 25
-        tree_img_height = tree_scale_factor*len(genome_refs)
-        extra_tree_rows = 10
+        tree_scale_factor = 22.625
+        tree_img_height = int(tree_scale_factor*len(genome_refs))
+        extra_tree_rows = 3
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
         elif len(genome_refs) > 10:
@@ -2472,7 +2472,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 html_report_lines += ['</tr>']
             # add extra blank rows to extend tree rule below grid
             for row_i in range(extra_tree_rows):
-                html_report_lines += ['<tr><td></td></tr>']
+                html_report_lines += ['<tr><td bgcolor="white" style="width:10px"><font color="white" size='+cell_fontsize+'>'+sp+'</font></td></tr>']
 
             html_report_lines += ['</table>']
 
