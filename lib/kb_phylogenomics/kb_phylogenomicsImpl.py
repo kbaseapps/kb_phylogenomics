@@ -2510,7 +2510,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
                 # DEBUG
-                self.log (console, "CAT GROUP: '"+cat_group+"' SIZE: '"+group_size_with_blanks[cat_group]+"'")
+                self.log (console, "CAT GROUP: '"+cat_group+"' SIZE: '"+str(group_size_with_blanks[cat_group])+"'")
 
 
                 # add first cat for group
