@@ -1266,7 +1266,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 # add first cat for group
                 first_cat = cats[group_cat_i]
                 cell_color = 'white'
-                if not cat_seen[first_cat] and not show_blanks:
+                #if not cat_seen[first_cat] and not show_blanks:
+                if not cat_seen[first_cat]:
                     cell_color = "#eeeeee"
                 if params['namespace'] == 'custom':
                     domfam = first_cat
@@ -1294,7 +1295,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 for c_i in range(group_cat_i, group_cat_i+group_size_with_blanks[cat_group]-1):
                     cat = cats[c_i]
                     cell_color = 'white'
-                    if not cat_seen[cat] and not show_blanks:
+                    #if not cat_seen[cat] and not show_blanks:
+                    if not cat_seen[cat]:
                         cell_color = "#eeeeee"
                     if params['namespace'] == 'custom':
                         domfam = cat
@@ -2506,10 +2508,16 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     html_report_lines += ['<td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
 
+
+                # DEBUG
+                self.log (console, "CAT GROUP: '"+cat_group+"' SIZE: '"+group_size_with_blanks[cat_group]+"'")
+
+
                 # add first cat for group
                 first_cat = cats[group_cat_i]
                 cell_color = 'white'
-                if not cat_seen[first_cat] and not show_blanks:
+                #if not cat_seen[first_cat] and not show_blanks:
+                if not cat_seen[first_cat]:
                     cell_color = "#eeeeee"
                 if params['namespace'] == 'custom':
                     domfam = first_cat
@@ -2537,7 +2545,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 for c_i in range(group_cat_i, group_cat_i+group_size_with_blanks[cat_group]-1):
                     cat = cats[c_i]
                     cell_color = 'white'
-                    if not cat_seen[cat] and not show_blanks:
+                    #if not cat_seen[cat] and not show_blanks:
+                    if not cat_seen[cat]:
                         cell_color = "#eeeeee"
                     if params['namespace'] == 'custom':
                         domfam = cat
