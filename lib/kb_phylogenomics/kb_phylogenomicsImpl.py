@@ -1555,6 +1555,10 @@ This module contains methods for running and visualizing results of phylogenomic
                         cat2name[namespace][cat] = cat_name
                         cat2group[namespace][cat] = cat_group
 
+                        # DEBUG
+                        self.log(console, "CAT: '"+str(cat)+"' NAME: '"+str(cat_name)+"'")
+
+
                     elif namespace == 'SEED':
                         #[cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
                         [cat_group, cat] = line.split("\t")[0:2]
@@ -2510,7 +2514,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
                 # DEBUG
-                self.log (console, "CAT GROUP: '"+cat_group+"' SIZE: '"+str(group_size_with_blanks[cat_group])+"'")
+                #self.log (console, "CAT GROUP: '"+cat_group+"' SIZE: '"+str(group_size_with_blanks[cat_group])+"'")
 
 
                 # add first cat for group
