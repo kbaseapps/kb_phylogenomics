@@ -316,7 +316,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
                 ):
                     
-                raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups'")
+                raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
 
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
@@ -1450,7 +1450,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
                 ):
                     
-                raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups'")
+                raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
 
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
