@@ -2930,6 +2930,9 @@ This module contains methods for running and visualizing results of phylogenomic
         ts = ete3.TreeStyle()
 
         # customize
+        ts.mode = "c"
+        ts.arc_start = -180 # 0 degrees = 3 o'clock
+        ts.arc_span = 180
         ts.show_leaf_name = True
         ts.show_branch_length = False
         ts.show_branch_support = True
@@ -3008,7 +3011,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # build html report
         #
-        tree_img_height = 300
+        tree_img_height = 500
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
