@@ -2921,8 +2921,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Draw tree (we already instantiated Tree above)
         #
-        png_file = speciesTree_name+'.png'
-        pdf_file = speciesTree_name+'.pdf'
+        png_file = speciesTree_name+'-pangenome.png'
+        pdf_file = speciesTree_name+'-pangenome.pdf'
         output_png_file_path = os.path.join(html_output_dir, png_file);
         output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
 
@@ -3034,6 +3034,20 @@ This module contains methods for running and visualizing results of phylogenomic
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
+            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
+                                                'make_handle': 0})
+                                            #'pack': 'zip'})
+        except:
+            raise ValueError ('Logging exception loading png_file to shock')
+
+        try:
+            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
+                                                'make_handle': 0})
+                                            #'pack': 'zip'})
+        except:
+            raise ValueError ('Logging exception loading pdf_file to shock')
+
+        try:
             #upload_ret = dfu.file_to_shock({'file_path': html_file,
             upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
                                             'make_handle': 0,
@@ -3041,9 +3055,16 @@ This module contains methods for running and visualizing results of phylogenomic
         except:
             raise ValueError ('Logging exception loading html_report to shock')
 
+        reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
+                                    'name': 'pan_phylo_report.png',
+                                    'label': 'Phylogenetic Pangenome PNG'},
+                                   {'shock_id': pdf_upload_ret['shock_id'],
+                                    'name': 'pan_phylo_report.pdf',
+                                    'label': 'Phylogenetic Pangenome PDF'}
+                                   ]
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
                                     'name': 'pan_phylo_report.html',
-                                    'label': 'Pangenome Phylogenetic report'}
+                                    'label': 'Phylogenetic Pangenome report'}
                                    ]
         reportObj['direct_html_link_index'] = 0
 
