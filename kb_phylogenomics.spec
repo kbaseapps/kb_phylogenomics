@@ -213,7 +213,6 @@ module kb_phylogenomics {
     */
     typedef structure {
         workspace_name workspace_name;
-        data_obj_ref   input_genome_ref;
 	data_obj_ref   input_pangenome_ref;
 	data_obj_ref   input_speciesTree_ref;
     } view_pan_phylo_Input;

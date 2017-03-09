@@ -29,13 +29,6 @@ suggestions:
 # Configure the display and description of parameters
 #
 parameters :
-    input_genome_ref :
-        ui-name : |
-            Base Genome
-        short-hint : |
-            The Genome to use as a base
-        long-hint  : |
-            The Genome to use as a base
     input_pangenome_ref :
         ui-name : |
             Pangenome

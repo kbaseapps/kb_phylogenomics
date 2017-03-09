@@ -986,7 +986,6 @@ $params is a kb_phylogenomics.view_pan_phylo_Input
 $output is a kb_phylogenomics.view_pan_phylo_Output
 view_pan_phylo_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
-	input_genome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 workspace_name is a string
@@ -1005,7 +1004,6 @@ $params is a kb_phylogenomics.view_pan_phylo_Input
 $output is a kb_phylogenomics.view_pan_phylo_Output
 view_pan_phylo_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
-	input_genome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 workspace_name is a string
@@ -1946,7 +1944,6 @@ view_pan_phylo()
 <pre>
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
-input_genome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 
@@ -1958,7 +1955,6 @@ input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 
 a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
-input_genome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 

@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "workspace_name",
-    "input_genome_ref",
     "input_pangenome_ref",
     "input_speciesTree_ref"
 })
@@ -32,8 +31,6 @@ public class ViewPanPhyloInput {
 
     @JsonProperty("workspace_name")
     private String workspaceName;
-    @JsonProperty("input_genome_ref")
-    private String inputGenomeRef;
     @JsonProperty("input_pangenome_ref")
     private String inputPangenomeRef;
     @JsonProperty("input_speciesTree_ref")
@@ -52,21 +49,6 @@ public class ViewPanPhyloInput {
 
     public ViewPanPhyloInput withWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
-        return this;
-    }
-
-    @JsonProperty("input_genome_ref")
-    public String getInputGenomeRef() {
-        return inputGenomeRef;
-    }
-
-    @JsonProperty("input_genome_ref")
-    public void setInputGenomeRef(String inputGenomeRef) {
-        this.inputGenomeRef = inputGenomeRef;
-    }
-
-    public ViewPanPhyloInput withInputGenomeRef(String inputGenomeRef) {
-        this.inputGenomeRef = inputGenomeRef;
         return this;
     }
 
@@ -112,7 +94,7 @@ public class ViewPanPhyloInput {
 
     @Override
     public String toString() {
-        return ((((((((((("ViewPanPhyloInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRef=")+ inputGenomeRef)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("ViewPanPhyloInput"+" [workspaceName=")+ workspaceName)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
