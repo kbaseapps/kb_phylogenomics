@@ -2784,6 +2784,275 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN view_pan_phylo
+
+        ### STEP 0: basic init
+        console = []
+        self.log(console, 'Running view_pan_phylo(): ')
+        self.log(console, "\n"+pformat(params))
+
+        token = ctx['token']
+        wsClient = workspaceService(self.workspaceURL, token=token)
+        headers = {'Authorization': 'OAuth '+token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+
+        # param checks
+        required_params = ['input_speciesTree_ref',
+                           'input_pangenome_ref'
+                          ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError ("Must define required param: '"+arg+"'")
+
+
+        # load provenance
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        provenance[0]['input_ws_objects']=[str(params['input_speciesTree_ref'])]
+
+
+        # set the output paths
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
+        output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        html_output_dir = os.path.join(output_dir,'html_output')
+        if not os.path.exists(html_output_dir):
+            os.makedirs(html_output_dir)
+
+
+        # get speciesTree
+        #
+        input_ref = params['input_speciesTree_ref']
+        speciesTree_name = None
+        try:
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            speciesTree_name = input_obj_info[NAME_I]
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+        accepted_input_types = ["KBaseTrees.Tree" ]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+        # get set obj
+        try:
+            speciesTree_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+        except:
+            raise ValueError ("unable to fetch speciesTree: "+input_ref)
+
+
+        # get genome_refs from speciesTree and instantiate ETE3 tree and order
+        #
+        genome_refs = []
+        genome_id_by_ref = dict()
+        genome_ref_by_id = dict()
+        for genome_id in speciesTree_obj['default_node_labels'].keys():
+            genome_ref = speciesTree_obj['ws_refs'][genome_id]['g'][0]
+            genome_id_by_ref[genome_ref] = genome_id
+            genome_ref_by_id[genome_id] = genome_ref
+
+        species_tree = ete3.Tree(speciesTree_obj['tree'])
+        species_tree.ladderize()
+        for genome_id in species_tree.get_leaf_names():
+            genome_refs.append(genome_ref_by_id[genome_id])
+
+
+        # get object names, sci names, protein-coding gene counts, and SEED annot
+        #
+        genome_obj_name_by_ref = dict()
+        genome_sci_name_by_ref = dict()
+        genome_sci_name_by_id  = dict()
+        genome_CDS_count_by_ref = dict()
+        uniq_genome_ws_ids = dict()
+
+        dom_hits = dict()  # initialize dom_hits here because reading SEED within genome
+        genes_with_hits_cnt = dict()
+
+        for genome_ref in genome_refs:
+
+            dom_hits[genome_ref] = dict()
+            genes_with_hits_cnt[genome_ref] = dict()
+
+            # get genome object name
+            input_ref = genome_ref
+            try:
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                input_name = input_obj_info[NAME_I]
+                uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
+
+            except Exception as e:
+                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+            accepted_input_types = ["KBaseGenomes.Genome" ]
+            if input_obj_type not in accepted_input_types:
+                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+            genome_obj_name_by_ref[genome_ref] = input_name
+
+            try:
+                genome_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            except:
+                raise ValueError ("unable to fetch genome: "+input_ref)
+
+            # sci name
+            genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
+            genome_sci_name_by_id[genome_id_by_ref[genome_ref]] = genome_obj['scientific_name']
+            
+            # CDS cnt
+            cds_cnt = 0
+            for feature in genome_obj['features']:
+                if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
+                    cds_cnt += 1
+            genome_CDS_count_by_ref[genome_ref] = cds_cnt
+
+
+        # Read pangenome
+        #
+        # HERE
+
+
+
+        # Draw tree (we already instantiated Tree above)
+        #
+        png_file = speciesTree_name+'.png'
+        pdf_file = speciesTree_name+'.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file);
+        output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
+
+        # init ETE3 accessory objects
+        ts = ete3.TreeStyle()
+
+        # customize
+        ts.show_leaf_name = True
+        ts.show_branch_length = False
+        ts.show_branch_support = True
+        #ts.scale = 50 # 50 pixels per branch length unit
+        ts.branch_vertical_margin = 5 # pixels between adjacent branches
+        #ts.title.add_face(ete3.TextFace(params['output_name']+": "+params['desc'], fsize=10), column=0)
+
+        node_style = ete3.NodeStyle()
+        node_style["fgcolor"] = "#606060"  # for node balls
+        node_style["size"] = 10  # for node balls (gets reset based on support)
+        node_style["vt_line_color"] = "#606060"
+        node_style["hz_line_color"] = "#606060"
+        node_style["vt_line_width"] = 2
+        node_style["hz_line_width"] = 2
+        node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        node_style["hz_line_type"] = 0
+
+        leaf_style = ete3.NodeStyle()
+        leaf_style["fgcolor"] = "#ffffff"  # for node balls
+        leaf_style["size"] = 2  # for node balls (we're using it to add space)
+        leaf_style["vt_line_color"] = "#606060"  # unecessary
+        leaf_style["hz_line_color"] = "#606060"
+        leaf_style["vt_line_width"] = 2
+        leaf_style["hz_line_width"] = 2
+        leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        leaf_style["hz_line_type"] = 0
+
+        for n in species_tree.traverse():
+            if n.is_leaf():
+                style = leaf_style
+                genome_id = n.name
+                #n.name = genome_sci_name_by_id[genome_id]
+                n.name = None
+                leaf_name_disp = genome_sci_name_by_id[genome_id]
+                n.add_face(ete3.TextFace(leaf_name_disp, fsize=10), column=0, position="branch-right")
+            else:
+                style = ete3.NodeStyle()
+                for k in node_style.keys():
+                    style[k] = node_style[k]
+
+                if n.support > 0.95:
+                    style["size"] = 6
+                elif n.support > 0.90:
+                    style["size"] = 5
+                elif n.support > 0.80:
+                    style["size"] = 4
+                else:
+                    style["size"] = 2
+
+            n.set_style(style)
+
+        # save images
+        dpi = 300
+        img_units = "in"
+        img_pix_width = 1200
+        img_in_width = round(float(img_pix_width)/float(dpi), 1)
+        img_html_width = img_pix_width // 2
+        species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
+        species_tree.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+
+
+        # build report object
+        #
+        reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
+        reportObj = {'objects_created': [],
+                     #'text_message': '',  # or is it 'message'?
+                     'message': '',  # or is it 'text_message'?
+                     'direct_html': '',
+                     'direct_html_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+                     }
+
+
+        # build html report
+        #
+        tree_img_height = 300
+        html_report_lines = []
+        html_report_lines += ['<html>']
+        html_report_lines += ['<head>']
+        html_report_lines += ['<title>KBase Pangenome Phylogenetic Context</title>']
+        html_report_lines += ['</head>']
+        html_report_lines += ['<body bgcolor="white">']
+        # add tree image
+        html_report_lines += ['<img src="'+png_file+'" height='+str(tree_img_height)+'></td>']
+        # close
+        html_report_lines += ['</body>']
+        html_report_lines += ['</html>']
+        
+        html_report_str = "\n".join(html_report_lines)
+        #reportObj['direct_html'] = html_report_str
+
+
+        # write html to file and upload
+        html_file = os.path.join (html_output_dir, 'pan_phylo_report.html')
+        with open (html_file, 'w', 0) as html_handle:
+            html_handle.write(html_report_str)
+        dfu = DFUClient(self.callbackURL)
+        try:
+            #upload_ret = dfu.file_to_shock({'file_path': html_file,
+            upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
+                                            'make_handle': 0,
+                                            'pack': 'zip'})
+        except:
+            raise ValueError ('Logging exception loading html_report to shock')
+
+        reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
+                                    'name': 'pan_phylo_report.html',
+                                    'label': 'Pangenome Phylogenetic report'}
+                                   ]
+        reportObj['direct_html_link_index'] = 0
+
+
+        # save report object
+        #
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
+        report_info = reportClient.create_extended_report(reportObj)
+
+        output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
+
         #END view_pan_phylo
 
         # At some point might do deeper type checking...
