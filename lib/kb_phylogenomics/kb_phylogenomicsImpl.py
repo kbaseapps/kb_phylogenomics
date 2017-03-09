@@ -2931,8 +2931,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # customize
         ts.mode = "c"
-        ts.arc_start = -180 # 0 degrees = 3 o'clock
-        ts.arc_span = 180
+        #ts.arc_start = -180 # 0 degrees = 3 o'clock
+        #ts.arc_span = 180
         ts.show_leaf_name = True
         ts.show_branch_length = False
         ts.show_branch_support = True
