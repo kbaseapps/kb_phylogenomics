@@ -1556,7 +1556,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         cat2group[namespace][cat] = cat_group
 
                         # DEBUG
-                        self.log(console, "CAT: '"+str(cat)+"' NAME: '"+str(cat_name)+"'")
+                        self.log(console, "CAT: '"+str(cat)+"' NAME: '"+str(cat_name)+"' GROUP: '"+str(cat_group)+"'")
 
 
                     elif namespace == 'SEED':
