@@ -234,9 +234,9 @@ TIGR_role:24640	256	Environmental Response	Wounding > GO:response to wounding ; 
 TIGR_role:24645	257	Environmental Response	UV > GO:response to UV ; GO:0009411
 TIGR_role:24650	258	Environmental Response	Osmotic > GO:response to osmotic stress ; GO:0006970
 TIGR_role:24660	260	Environmental Response	Other > GO:response to external stimulus ; GO:0009605
-TIGR_role:25015	186	Other categories	Mobile and extra- chromo- somal element functions	Plasmid functions > GO:.
-TIGR_role:25020	152	Other categories	Mobile and extra- chromo- somal element functions	Prophage functions > GO:.
-TIGR_role:25030	154	Other categories	Mobile and extra- chromo- somal element functions	Transposon functions > GO:.
+TIGR_role:25015	186	Mobile and extra- chromo- somal element functions	Plasmid functions > GO:.
+TIGR_role:25020	152	Mobile and extra- chromo- somal element functions	Prophage functions > GO:.
+TIGR_role:25030	154	Mobile and extra- chromo- somal element functions	Transposon functions > GO:.
 TIGR_role:25095	708	Mobile and extra- chromo- somal element functions	Other > GO:.
 TIGR_role:25500	703	Unknown function	Enzymes of unknown specificity > GO:catalytic activity ; GO:0003824
 TIGR_role:25510	157	Unknown function	General > GO:molecular function unknown ; GO:0005554
