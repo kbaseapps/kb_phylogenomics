@@ -2930,6 +2930,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ts = ete3.TreeStyle()
 
         # customize
+        leaf_font_size = 20
         ts.mode = "c"
         #ts.arc_start = -180 # 0 degrees = 3 o'clock
         #ts.arc_span = 180
@@ -2967,7 +2968,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
                 leaf_name_disp = genome_sci_name_by_id[genome_id]
-                n.add_face(ete3.TextFace(leaf_name_disp, fsize=10), column=0, position="branch-right")
+                n.add_face(ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
             else:
                 style = ete3.NodeStyle()
                 for k in node_style.keys():
@@ -3011,7 +3012,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # build html report
         #
-        tree_img_height = 500
+        tree_img_height = 600
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
