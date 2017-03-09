@@ -2930,7 +2930,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ts = ete3.TreeStyle()
 
         # customize
-        leaf_fontsize = 20
+        leaf_fontsize = 40
         ts.mode = "c"
         #ts.arc_start = -180 # 0 degrees = 3 o'clock
         #ts.arc_span = 180
@@ -2983,6 +2983,15 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     style["size"] = 2
 
+                # yum! pie!
+                pie_percs = [60,25,15]
+                pie_colors = ["IndianRed", "DodgerBlue", "Orchid"]
+                pie_line_color = "White"
+                pie_w = pie_h = 50
+                this_pieFace = ete3.faces.PieChartFace(pie_percs, pie_w, pie_h, pie_colors, pie_line_color)
+
+                ete3.faces.add_face_to_node(this_pieFace, n, column=0)
+
             n.set_style(style)
 
         # save images
@@ -3012,7 +3021,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # build html report
         #
-        tree_img_height = 600
+        tree_img_height = 800
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
@@ -3057,10 +3066,10 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ('Logging exception loading html_report to shock')
 
         reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
-                                    'name': 'pan_phylo_report.png',
+                                    'name': 'phylogenetic_pangenome.png',
                                     'label': 'Phylogenetic Pangenome PNG'},
                                    {'shock_id': pdf_upload_ret['shock_id'],
-                                    'name': 'pan_phylo_report.pdf',
+                                    'name': 'phylogenetic_pangenome.pdf',
                                     'label': 'Phylogenetic Pangenome PDF'}
                                    ]
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
