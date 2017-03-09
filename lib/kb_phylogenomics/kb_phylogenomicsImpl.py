@@ -981,10 +981,11 @@ This module contains methods for running and visualizing results of phylogenomic
         group_size = dict()
         group_size_with_blanks = dict()
         group_order = []
+        group_order_with_blanks = []
         for cat in cats:
             cat_seen[cat] = False
         if params['namespace'] == 'custom':
-            # get group size
+            # get cats seen and group size
             for cat in cats:
                 for genome_ref in genome_refs:
                     if cat in table_data[genome_ref] and table_data[genome_ref][cat] != 0:
@@ -1011,6 +1012,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         cat_group = 'N/A'
                 if cat_group != None:
                     if cat_group not in group_size_with_blanks:
+                        group_order_with_blanks.append(cat_group)
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
         else:
@@ -1032,6 +1034,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_group = cat2group[namespace][cat]
                 if cat_group != None:
                     if cat_group not in group_size_with_blanks:
+                        group_order_with_blanks.append(cat_group)
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
 
@@ -1235,7 +1238,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # genomes as columns
         else:
-            raise ValueError ("Do not yet support Genomes as coluns")
+            raise ValueError ("Do not yet support Genomes as columns")
 
 
         # key table
@@ -1245,7 +1248,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         if show_groups:
             group_cat_i = 0
-            for cat_group in group_order:
+            for cat_group in group_order_with_blanks:
                 if cat_group.startswith('SEED'):
                     cat_group_disp = re.sub ('_',' ',cat_group)
                 else:
@@ -1556,8 +1559,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         cat2group[namespace][cat] = cat_group
 
                         # DEBUG
-                        self.log(console, "CAT: '"+str(cat)+"' NAME: '"+str(cat_name)+"' GROUP: '"+str(cat_group)+"'")
-
+                        #self.log(console, "CAT: '"+str(cat)+"' NAME: '"+str(cat_name)+"' GROUP: '"+str(cat_group)+"'")
 
                     elif namespace == 'SEED':
                         #[cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
@@ -2146,6 +2148,7 @@ This module contains methods for running and visualizing results of phylogenomic
         group_size = dict()
         group_size_with_blanks = dict()
         group_order = []
+        group_order_with_blanks = []
         for cat in cats:
             cat_seen[cat] = False
         if params['namespace'] == 'custom':
@@ -2176,6 +2179,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         cat_group = 'N/A'
                 if cat_group != None:
                     if cat_group not in group_size_with_blanks:
+                        group_order_with_blanks.append(cat_group)
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
         else:
@@ -2197,6 +2201,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 cat_group = cat2group[namespace][cat]
                 if cat_group != None:
                     if cat_group not in group_size_with_blanks:
+                        group_order_with_blanks.append(cat_group)
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
 
@@ -2484,7 +2489,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # genomes as columns
         else:
-            raise ValueError ("Do not yet support Genomes as coluns")
+            raise ValueError ("Do not yet support Genomes as columns")
 
 
         # key table
@@ -2494,7 +2499,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         if show_groups:
             group_cat_i = 0
-            for cat_group in group_order:
+            for cat_group in group_order_with_blanks:
                 if cat_group.startswith('SEED'):
                     cat_group_disp = re.sub ('_',' ',cat_group)
                 else:
@@ -2515,7 +2520,6 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 # DEBUG
                 #self.log (console, "CAT GROUP: '"+cat_group+"' SIZE: '"+str(group_size_with_blanks[cat_group])+"'")
-
 
                 # add first cat for group
                 first_cat = cats[group_cat_i]
