@@ -2857,10 +2857,21 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_id_by_ref[genome_ref] = genome_id
             genome_ref_by_id[genome_id] = genome_ref
 
-        species_tree = ete3.Tree(speciesTree_obj['tree'])
+        species_tree = ete3.Tree(speciesTree_obj['tree'])  # instantiate ETE3 tree
         species_tree.ladderize()
         for genome_id in species_tree.get_leaf_names():
             genome_refs.append(genome_ref_by_id[genome_id])
+
+
+        # get internal node ids based on genome_refs of children
+        #
+        for n in species_tree.traverse():
+            if n.is_leaf():
+                continue
+# HERE            
+
+
+
 
 
         # get object names, sci names, protein-coding gene counts, and SEED annot
@@ -2913,11 +2924,32 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_CDS_count_by_ref[genome_ref] = cds_cnt
 
 
-        # Read pangenome
+        # get pangenome
         #
-        # HERE
+        input_ref = params['input_pangenome_ref']
+        pangenome_name = None
+        try:
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            pangenome_name = input_obj_info[NAME_I]
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+        accepted_input_types = ["KBaseGenomes.Pangenome" ]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+        # get obj
+        try:
+            pg_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+        except:
+            raise ValueError ("unable to fetch pangenome: "+input_ref)
 
 
+        # determine pangenome accumulations of core, partial, and singleton
+        #
+        genome_refs = pg_obj['genome_refs']
+# HERE
 
         # Draw tree (we already instantiated Tree above)
         #
@@ -2930,9 +2962,10 @@ This module contains methods for running and visualizing results of phylogenomic
         ts = ete3.TreeStyle()
 
         # customize
-        leaf_fontsize = 80
-        min_pie_size = 200
+        min_pie_size = 300
+        max_pie_size = 1200
         #leaf_fontsize = 10
+        leaf_fontsize = 80  # doesn't seem to work in circle tree mode
         ts.mode = "c"
         #ts.arc_start = -180 # 0 degrees = 3 o'clock
         #ts.arc_span = 180
@@ -2948,8 +2981,8 @@ This module contains methods for running and visualizing results of phylogenomic
         node_style["size"] = 10  # for node balls (gets reset based on support)
         node_style["vt_line_color"] = "#606060"
         node_style["hz_line_color"] = "#606060"
-        node_style["vt_line_width"] = 2
-        node_style["hz_line_width"] = 2
+        node_style["vt_line_width"] = 10  # 2
+        node_style["hz_line_width"] = 10  # 2
         node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
         node_style["hz_line_type"] = 0
 
@@ -2958,8 +2991,8 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_style["size"] = 2  # for node balls (we're using it to add space)
         leaf_style["vt_line_color"] = "#606060"  # unecessary
         leaf_style["hz_line_color"] = "#606060"
-        leaf_style["vt_line_width"] = 2
-        leaf_style["hz_line_width"] = 2
+        leaf_style["vt_line_width"] = 10  # 2
+        leaf_style["hz_line_width"] = 10  # 2
         leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
         leaf_style["hz_line_type"] = 0
 
@@ -2987,7 +3020,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 # yum! pie!
                 pie_percs = [60,25,15]
-                pie_colors = ["IndianRed", "DodgerBlue", "Orchid"]
+                pie_colors = ["IndianRed", "Orchid", "DodgerBlue"]
                 pie_line_color = "White"
                 pie_w = pie_h = min_pie_size
                 this_pieFace = ete3.PieChartFace(pie_percs, pie_w, pie_h, pie_colors, pie_line_color)
@@ -3022,7 +3055,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # build html report
         #
-        tree_img_height = 600
+        tree_img_height = 1000
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
