@@ -2930,9 +2930,9 @@ This module contains methods for running and visualizing results of phylogenomic
         ts = ete3.TreeStyle()
 
         # customize
-        #leaf_fontsize = 40
-        leaf_fontsize = 10
-        #ts.mode = "c"
+        leaf_fontsize = 40
+        #leaf_fontsize = 10
+        ts.mode = "c"
         #ts.arc_start = -180 # 0 degrees = 3 o'clock
         #ts.arc_span = 180
         ts.show_leaf_name = True
