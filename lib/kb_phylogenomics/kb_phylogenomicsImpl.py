@@ -2930,7 +2930,8 @@ This module contains methods for running and visualizing results of phylogenomic
         ts = ete3.TreeStyle()
 
         # customize
-        leaf_fontsize = 40
+        leaf_fontsize = 80
+        min_pie_size = 200
         #leaf_fontsize = 10
         ts.mode = "c"
         #ts.arc_start = -180 # 0 degrees = 3 o'clock
@@ -2988,7 +2989,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 pie_percs = [60,25,15]
                 pie_colors = ["IndianRed", "DodgerBlue", "Orchid"]
                 pie_line_color = "White"
-                pie_w = pie_h = 50
+                pie_w = pie_h = min_pie_size
                 this_pieFace = ete3.PieChartFace(pie_percs, pie_w, pie_h, pie_colors, pie_line_color)
                 n.add_face (this_pieFace, column=0)
 
