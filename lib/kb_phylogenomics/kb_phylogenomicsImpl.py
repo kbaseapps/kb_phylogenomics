@@ -2969,7 +2969,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
                 leaf_name_disp = genome_sci_name_by_id[genome_id]
-                n.add_face(ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
+                n.add_face (ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
             else:
                 style = ete3.NodeStyle()
                 for k in node_style.keys():
@@ -2989,9 +2989,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 pie_colors = ["IndianRed", "DodgerBlue", "Orchid"]
                 pie_line_color = "White"
                 pie_w = pie_h = 50
-                this_pieFace = ete3.faces.PieChartFace(pie_percs, pie_w, pie_h, pie_colors, pie_line_color)
-
-                ete3.faces.add_face_to_node(this_pieFace, n, column=0)
+                this_pieFace = ete3.PieChartFace(pie_percs, pie_w, pie_h, pie_colors, pie_line_color)
+                n.add_face (this_pieFace, column=0)
 
             n.set_style(style)
 
