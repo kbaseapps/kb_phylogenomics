@@ -3022,7 +3022,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # build html report
         #
-        tree_img_height = 800
+        tree_img_height = 600
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
