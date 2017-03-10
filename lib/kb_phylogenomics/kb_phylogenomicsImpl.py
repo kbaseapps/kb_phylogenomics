@@ -2981,8 +2981,8 @@ This module contains methods for running and visualizing results of phylogenomic
         node_style["size"] = 10  # for node balls (gets reset based on support)
         node_style["vt_line_color"] = "#606060"
         node_style["hz_line_color"] = "#606060"
-        node_style["vt_line_width"] = 10  # 2
-        node_style["hz_line_width"] = 10  # 2
+        node_style["vt_line_width"] = 50  # 2
+        node_style["hz_line_width"] = 50  # 2
         node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
         node_style["hz_line_type"] = 0
 
@@ -2991,8 +2991,8 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_style["size"] = 2  # for node balls (we're using it to add space)
         leaf_style["vt_line_color"] = "#606060"  # unecessary
         leaf_style["hz_line_color"] = "#606060"
-        leaf_style["vt_line_width"] = 10  # 2
-        leaf_style["hz_line_width"] = 10  # 2
+        leaf_style["vt_line_width"] = 50  # 2
+        leaf_style["hz_line_width"] = 50  # 2
         leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
         leaf_style["hz_line_type"] = 0
 
