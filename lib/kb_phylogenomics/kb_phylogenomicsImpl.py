@@ -2962,11 +2962,9 @@ This module contains methods for running and visualizing results of phylogenomic
         ts = ete3.TreeStyle()
 
         # customize
-        min_pie_size = 300
-        max_pie_size = 1200
-        #leaf_fontsize = 10
-        #leaf_fontsize = 80  # doesn't seem to work in circle tree mode
-        leaf_fontsize = 200  # doesn't seem to work in circle tree mode
+        min_pie_size = 1000
+        max_pie_size = 2000
+        leaf_fontsize = 400  # scale of everything is goofy in circle tree mode
         ts.mode = "c"
         #ts.arc_start = -180 # 0 degrees = 3 o'clock
         #ts.arc_span = 180
@@ -2989,7 +2987,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         leaf_style = ete3.NodeStyle()
         leaf_style["fgcolor"] = "#ffffff"  # for node balls
-        leaf_style["size"] = 2  # for node balls (we're using it to add space)
+        leaf_style["size"] = 100  # for node balls (we're using it to add space)
         leaf_style["vt_line_color"] = "#606060"  # unecessary
         leaf_style["hz_line_color"] = "#606060"
         leaf_style["vt_line_width"] = 50  # 2
