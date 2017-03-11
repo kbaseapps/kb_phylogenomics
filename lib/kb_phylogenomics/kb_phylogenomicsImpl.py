@@ -2965,7 +2965,8 @@ This module contains methods for running and visualizing results of phylogenomic
         min_pie_size = 300
         max_pie_size = 1200
         #leaf_fontsize = 10
-        leaf_fontsize = 80  # doesn't seem to work in circle tree mode
+        #leaf_fontsize = 80  # doesn't seem to work in circle tree mode
+        leaf_fontsize = 200  # doesn't seem to work in circle tree mode
         ts.mode = "c"
         #ts.arc_start = -180 # 0 degrees = 3 o'clock
         #ts.arc_span = 180
