@@ -2985,7 +2985,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 probably_gene_len_dont_need = gene[1]
                 genome_ref                  = gene[2]
 
-                if genome_ref not in genome_ref_to_node_ref_ids[genome_ref]:
+                if genome_ref not in genome_ref_to_node_ref_ids:
                     continue
                 for node_ref_id in genome_ref_to_node_ref_ids[genome_ref]:
                     if node_ref_id not in nodes_hit:
