@@ -2971,11 +2971,11 @@ This module contains methods for running and visualizing results of phylogenomic
         for node_ref_id in node_ref_ids.keys():
             cluster_hits[node_ref_id] = []
 
-        cluster_num = 0  # cluster ids themselves start from 1
+        cluster_num = -1  # cluster ids themselves start from 1
         for homolog_cluster in pg_obj['orthologs']:
             cluster_num += 1
             for node_ref_id in node_ref_ids.keys():
-                cluster_hits[node_ref_id][cluster_num] = 0
+                cluster_hits[node_ref_id].append(0)
 
             nodes_hit = dict()
             for gene in homolog_cluster['orthologs']:
