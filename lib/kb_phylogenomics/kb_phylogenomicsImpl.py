@@ -2866,6 +2866,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # get internal node ids based on sorted genome_refs of children
         #
         node_ref_ids = dict()
+        genome_ref_to_node_ref_ids = dict()
+        node_size = dict()
         node_num_id = 0
         for n in species_tree.traverse("preorder"):
             if n.is_leaf():
@@ -2874,11 +2876,18 @@ This module contains methods for running and visualizing results of phylogenomic
             leaf_refs = []
             for genome_id in n.get_leaf_names():
                 leaf_refs.append(genome_ref_by_id[genome_id])
-            node_ref_id = "+".join(sorted (leaf_refs))
+            node_ref_id = "+".join(sorted(leaf_refs))
+            node_size[node_ref_id] = len(leaf_refs)
 
             node_ref_ids[node_ref_id] = node_num_id
             node_num_id += 1
 
+            # point each genome at its nodes
+            for genome_ref in leaf_refs:
+                if genome_ref not in genome_ref_to_node_ref_ids:
+                    genome_ref_to_node_ref_ids[genome_ref] = []
+                genome_ref_to_node_ref_ids[genome_ref].append(node_ref_id)
+            
 
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
@@ -2952,10 +2961,60 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ("unable to fetch pangenome: "+input_ref)
 
 
+        # FIX: make sure species tree fits
+        genome_refs = pg_obj['genome_refs']  
+
+
         # determine pangenome accumulations of core, partial, and singleton
         #
-        genome_refs = pg_obj['genome_refs']
-# HERE
+        for node_ref_id in node_ref_ids.keys():
+            cluster_hits[node_ref_id] = []
+
+        cluster_num = 0  # cluster ids themselves start from 1
+        for homolog_cluster in pg_obj['orthologs']:
+            cluster_num += 1
+            for node_ref_id in node_ref_ids.keys():
+                cluster_hits[node_ref_id][cluster_num] = 0
+
+            nodes_hit = dict()
+            for gene in homolog_cluster['orthologs']:
+                gene_id                     = gene[0]
+                probably_gene_len_dont_need = gene[1]
+                genome_ref                  = gene[2]
+
+                for node_ref_id in genome_ref_to_node_ref_ids[genome_ref]:
+                    if node_ref_id not in nodes_hit:
+                        nodes_hit[node_ref_id] = dict()
+                    nodes_hit[node_ref_id][genome_ref] = True
+            
+            for node_ref_id in nodes_hit.keys():
+                for genome_ref in nodes_hit[node_ref_id].keys():
+                    cluster_hits[node_ref_id][cluster_num] += 1
+
+        # calc accumulations
+        for node_ref_id in node_ref_ids.keys():
+            clusters_total[node_ref_id] = 0
+            clusters_singletons[node_ref_id] = 0
+            clusters_core[node_ref_id] = 0
+
+            for cluster_num,hit_cnt in enumerate(cluster_hits[node_ref_id]):
+                if cluster_hits[node_ref_id][cluster_num] > 0:
+                    clusters_total[node_ref_id] += 1
+                    if cluster_hits[node_ref_id][cluster_num] == 1:
+                        clusters_singletons[node_ref_id] += 1
+                    elif cluster_hits[node_ref_id][cluster_num] == node_size[node_ref_id]:
+                        clusters_core[node_ref_id] += 1
+
+        # get min and max cluster cnts
+        INSANE_VALUE = 10000000000000000
+        max_clusters_cnt = -INSANE_VALUE
+        min_clusters_cnt =  INSANE_VALUE
+        for node_ref_id in node_ref_ids.keys():
+            if clusters_total[node_ref_id] > max_clusters_cnt:
+                max_clusters_cnt = clusters_total[node_ref_id]
+            if clusters_total[node_ref_id] < min_clusters_cnt:
+                min_clusters_cnt = clusters_total[node_ref_id]
+
 
         # Draw tree (we already instantiated Tree above)
         #
@@ -3034,10 +3093,16 @@ This module contains methods for running and visualizing results of phylogenomic
                     style["size"] = 2
 
                 # yum! pie!
-                pie_percs = [60,25,15]
+                pie_size = int(float(max_pie_size-min_pie_size) * float(clusters_total[node_ref_id]-min_clusters_cnt) / float(max_clusters_cnt-min_clusters_cnt) + min_pie_size)
+                singleton_perc = round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
+                core_perc = round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
+                partial_perc = round (100.0 - core_perc - singleton_perc, 1)
+
+                pie_w = pie_h = pie_size
+                pie_percs = [singleton_perc, partial_perc, core_perc]
                 pie_colors = ["IndianRed", "Orchid", "DodgerBlue"]
                 pie_line_color = "White"
-                pie_w = pie_h = min_pie_size
+
                 this_pieFace = ete3.PieChartFace(pie_percs, pie_w, pie_h, pie_colors, pie_line_color)
                 n.add_face (this_pieFace, column=0)
 
