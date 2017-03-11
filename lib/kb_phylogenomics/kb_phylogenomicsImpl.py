@@ -3006,11 +3006,11 @@ This module contains methods for running and visualizing results of phylogenomic
             clusters_core[node_ref_id] = 0
 
             for cluster_num,hit_cnt in enumerate(cluster_hits[node_ref_id]):
-                if cluster_hits[node_ref_id][cluster_num] > 0:
+                if hit_cnt > 0:
                     clusters_total[node_ref_id] += 1
-                    if cluster_hits[node_ref_id][cluster_num] == 1:
+                    if hit_cnt == 1:
                         clusters_singletons[node_ref_id] += 1
-                    elif cluster_hits[node_ref_id][cluster_num] == node_size[node_ref_id]:
+                    elif hit_cnt == node_size[node_ref_id]:
                         clusters_core[node_ref_id] += 1
 
         # get min and max cluster cnts
@@ -3022,6 +3022,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 max_clusters_cnt = clusters_total[node_ref_id]
             if clusters_total[node_ref_id] < min_clusters_cnt:
                 min_clusters_cnt = clusters_total[node_ref_id]
+
+            self.log(console, "NODE: "+node_ref_id+" MIN: "+str(min_clusters_cnt)+" MAX: "+str(max_clusters_cnt))  # DEBUg
 
 
         # Draw tree (we already instantiated Tree above)
@@ -3101,7 +3103,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     style["size"] = 2
 
                 # yum! pie!
-                pie_size = int(float(max_pie_size-min_pie_size) * float(clusters_total[node_ref_id]-min_clusters_cnt) / float(max_clusters_cnt-min_clusters_cnt) + min_pie_size)
+                pie_size = int(min_pie_size + float(max_pie_size-min_pie_size) * float(clusters_total[node_ref_id]-min_clusters_cnt) / float(max_clusters_cnt-min_clusters_cnt))
                 singleton_perc = round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
                 core_perc = round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
                 partial_perc = round (100.0 - core_perc - singleton_perc, 1)
