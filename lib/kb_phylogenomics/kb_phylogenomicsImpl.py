@@ -2868,11 +2868,12 @@ This module contains methods for running and visualizing results of phylogenomic
         node_ref_ids = dict()
         genome_ref_to_node_ref_ids = dict()
         node_size = dict()
-        node_num_id = 0
+        node_num_id = -1
         for n in species_tree.traverse("preorder"):
             if n.is_leaf():
                 continue
 
+            node_num_id += 1
             leaf_refs = []
             for genome_id in n.get_leaf_names():
                 leaf_refs.append(genome_ref_by_id[genome_id])
@@ -2880,7 +2881,6 @@ This module contains methods for running and visualizing results of phylogenomic
             node_size[node_ref_id] = len(leaf_refs)
 
             node_ref_ids[node_ref_id] = node_num_id
-            node_num_id += 1
 
             # point each genome at its nodes
             for genome_ref in leaf_refs:
@@ -2961,8 +2961,10 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ("unable to fetch pangenome: "+input_ref)
 
 
-        # FIX: make sure species tree fits
-        genome_refs = pg_obj['genome_refs']  
+        # make sure species tree genomes are found in pangenome (reverse not required)
+        for genome_ref in genome_refs:
+            if genome_ref not in pg_obj['genome_refs']:
+                raise ValueError ("genome: '"+str(genome_ref)+"' from SpeciesTree not present in Pangenome object")
 
 
         # determine pangenome accumulations of core, partial, and singleton
@@ -2983,6 +2985,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 probably_gene_len_dont_need = gene[1]
                 genome_ref                  = gene[2]
 
+                if genome_ref not in genome_ref_to_node_ref_ids[genome_ref]:
+                    continue
                 for node_ref_id in genome_ref_to_node_ref_ids[genome_ref]:
                     if node_ref_id not in nodes_hit:
                         nodes_hit[node_ref_id] = dict()
