@@ -3003,7 +3003,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
                 leaf_name_disp = genome_sci_name_by_id[genome_id]
-                n.add_face (ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
+                #n.add_face (ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
+                n.add_face (ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize))
             else:
                 style = ete3.NodeStyle()
                 for k in node_style.keys():
@@ -3031,8 +3032,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # save images
         dpi = 300
         img_units = "in"
-        #img_pix_width = 1200
-        img_pix_width = 600
+        img_pix_width = 1200
         img_in_width = round(float(img_pix_width)/float(dpi), 1)
         img_html_width = img_pix_width // 2
         species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
