@@ -3031,7 +3031,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # save images
         dpi = 300
         img_units = "in"
-        img_pix_width = 1200
+        #img_pix_width = 1200
+        img_pix_width = 600
         img_in_width = round(float(img_pix_width)/float(dpi), 1)
         img_html_width = img_pix_width // 2
         species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
