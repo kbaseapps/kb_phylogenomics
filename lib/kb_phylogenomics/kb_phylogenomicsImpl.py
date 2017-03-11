@@ -2967,6 +2967,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # determine pangenome accumulations of core, partial, and singleton
         #
+        cluster_hits = dict()
         for node_ref_id in node_ref_ids.keys():
             cluster_hits[node_ref_id] = []
 
