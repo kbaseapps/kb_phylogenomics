@@ -2867,7 +2867,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         node_ref_ids = dict()
         node_num_id = 0
-        for n in species_tree.traverse():
+        for n in species_tree.traverse("preorder"):
             if n.is_leaf():
                 continue
 
@@ -3002,7 +3002,7 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
         leaf_style["hz_line_type"] = 0
 
-        for n in species_tree.traverse():
+        for n in species_tree.traverse("preorder"):
             if n.is_leaf():
                 style = leaf_style
                 genome_id = n.name
