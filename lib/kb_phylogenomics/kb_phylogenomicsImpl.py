@@ -2863,15 +2863,21 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_refs.append(genome_ref_by_id[genome_id])
 
 
-        # get internal node ids based on genome_refs of children
+        # get internal node ids based on sorted genome_refs of children
         #
+        node_ref_ids = dict()
+        node_num_id = 0
         for n in species_tree.traverse():
             if n.is_leaf():
                 continue
-# HERE            
 
+            leaf_refs = []
+            for genome_id in n.get_leaf_names():
+                leaf_refs.append(genome_ref_by_id[genome_id])
+            node_ref_id = "+".join(sorted (leaf_refs))
 
-
+            node_ref_ids[node_ref_id] = node_num_id
+            node_num_id += 1
 
 
         # get object names, sci names, protein-coding gene counts, and SEED annot
@@ -2964,8 +2970,9 @@ This module contains methods for running and visualizing results of phylogenomic
         # customize
         min_pie_size = 1000
         max_pie_size = 2000
-        leaf_fontsize = 400  # scale of everything is goofy in circle tree mode
-        ts.mode = "c"
+        leaf_fontsize = 500  # scale of everything is goofy in circle tree mode, and pie size affects type size and line thickness.  ugh.
+        node_fontsize = 500
+        ts.mode = "c"  # circular tree graph
         #ts.arc_start = -180 # 0 degrees = 3 o'clock
         #ts.arc_span = 180
         ts.show_leaf_name = True
@@ -2980,8 +2987,8 @@ This module contains methods for running and visualizing results of phylogenomic
         node_style["size"] = 10  # for node balls (gets reset based on support)
         node_style["vt_line_color"] = "#606060"
         node_style["hz_line_color"] = "#606060"
-        node_style["vt_line_width"] = 50  # 2
-        node_style["hz_line_width"] = 50  # 2
+        node_style["vt_line_width"] = 100  # 2
+        node_style["hz_line_width"] = 100  # 2
         node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
         node_style["hz_line_type"] = 0
 
@@ -2990,8 +2997,8 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_style["size"] = 100  # for node balls (we're using it to add space)
         leaf_style["vt_line_color"] = "#606060"  # unecessary
         leaf_style["hz_line_color"] = "#606060"
-        leaf_style["vt_line_width"] = 50  # 2
-        leaf_style["hz_line_width"] = 50  # 2
+        leaf_style["vt_line_width"] = 100  # 2
+        leaf_style["hz_line_width"] = 100  # 2
         leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
         leaf_style["hz_line_type"] = 0
 
@@ -3002,9 +3009,17 @@ This module contains methods for running and visualizing results of phylogenomic
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
                 leaf_name_disp = genome_sci_name_by_id[genome_id]
-                #n.add_face (ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
-                n.add_face (ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0)
+                n.add_face (ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
+
             else:
+                leaf_refs = []
+                for genome_id in n.get_leaf_names():
+                    leaf_refs.append(genome_ref_by_id[genome_id])
+                node_ref_id = "+".join(sorted (leaf_refs))
+                node_num_id = node_ref_ids[node_ref_id]
+                node_name_disp = str(node_num_id)
+                n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0, position="branch-right")
+
                 style = ete3.NodeStyle()
                 for k in node_style.keys():
                     style[k] = node_style[k]
