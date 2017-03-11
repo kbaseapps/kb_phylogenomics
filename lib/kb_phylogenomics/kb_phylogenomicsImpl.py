@@ -2997,6 +2997,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     cluster_hits[node_ref_id][cluster_num] += 1
 
         # calc accumulations
+        clusters_total = dict()
+        clusters_singletons = dict()
+        clusters_core = dict()
         for node_ref_id in node_ref_ids.keys():
             clusters_total[node_ref_id] = 0
             clusters_singletons[node_ref_id] = 0
