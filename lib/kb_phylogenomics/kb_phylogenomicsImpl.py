@@ -3148,7 +3148,8 @@ key         :param params: instance of type "view_pan_phylo_Input"
         #
         tree_img_height = 1000
         cell_padding = 0
-        cell_spacing = 5
+        #cell_spacing = 5
+        cell_spacing = 0
         cell_border = 0
         sp = '&nbsp;'
         text_color = "#606060"
@@ -3156,7 +3157,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
         bar_char = '.'
         bar_fontsize = -2
         bar_width = 50
-        cat_order = ['TOTAL', 'singleton', 'partial', 'core']
+        cat_order = ['TOTAL', 'singleton', 'partial', 'perfect core']
         cat_colors = ['black', 'red', 'pink', 'blue']
         num_bars_per_node = len(cat_order) + 1
         
@@ -3188,28 +3189,35 @@ key         :param params: instance of type "view_pan_phylo_Input"
             # vals
             cat_cnts  = dict()
             cat_percs = dict()
-            cat_cnts['TOTAL']     = clusters_total[node_ref_id]
-            cat_cnts['singleton'] = clusters_singletons[node_ref_id]
-            cat_cnts['core']      = clusters_core[node_ref_id]
-            cat_cnts['partial']   = cat_cnts['TOTAL'] - cat_cnts['singleton'] - cat_cnts['core']
-            cat_percs['TOTAL'] = '100.0'
+            cat_cnts['TOTAL']        = clusters_total[node_ref_id]
+            cat_cnts['singleton']    = clusters_singletons[node_ref_id]
+            cat_cnts['perfect core'] = clusters_core[node_ref_id]
+            cat_cnts['partial']      = clusters_total[node_ref_id] - clusters_singletons[node_ref_id] - clusters_core[node_ref_id]
+            cat_percs['TOTAL'] = '100'
             cat_percs['singleton'] = str(round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
-            cat_percs['core'] = str(round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
-            cat_percs['partial'] = str(round (100.0 - core_perc - singleton_perc, 1))
+            cat_percs['perfect core'] = str(round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
+            cat_percs['partial'] = str(round (100.0 - cat_percs['perfect core'] - cat_percs['singleton'], 1))
 
             # node id
             node_label = 'NODE '+str(node_id)
-            html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'" valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b>'+str(node_label)+'</b></font></td>']
+            html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'" valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b><nobr>'+str(node_label)+'</nobr></b></font></td>']
+            html_report_lines += ['<td>'+sp+sp+'</td>']
 
             for cat_i,cat in enumerate(cat_order):
                 if cat_i > 0:
                     html_report_lines += ['<tr>']
                 # cat name
-                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+cat+'</font></td>']
+                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+cat+'</nobr></font></td>']
+                html_report_lines += ['<td>'+sp+sp+'</td>']
+            
                 # cnt
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_cnts[cat])+'</font></td>']
+                html_report_lines += ['<td>'+sp+sp+'</td>']
+
                 #perc
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_percs[cat])+'%'+'</font></td>']
+                html_report_lines += ['<td>'+sp+sp+'</td>']
+
                 # bar
                 this_width = int(round(float(bar_width) * (float(cat_cnts[cat])/float(max_cnt)), 0))
                 for cell_i in range(this_width):
