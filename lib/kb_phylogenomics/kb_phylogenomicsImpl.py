@@ -3662,6 +3662,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
         cell_spacing = 0
         cell_border = 0
         sp = '&nbsp;'
+        horiz_space = sp+sp+sp+sp
         text_color = "#606060"
         font_size = '2'
         space_fontsize = '1'
@@ -3715,22 +3716,22 @@ key         :param params: instance of type "view_pan_phylo_Input"
             # node id
             node_label = 'NODE '+str(node_id)
             html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'" valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b><nobr>'+str(node_label)+'</nobr></b></font></td>']
-            html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'"><font size="'+str(space_fontsize)+'">'+sp+sp+'</font></td>']
+            html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'"><font size="'+str(space_fontsize)+'">'+horiz_sp+'</font></td>']
 
             for cat_i,cat in enumerate(cat_order):
                 if cat_i > 0:
                     html_report_lines += ['<tr>']
                 # cat name
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+cat+'</nobr></font></td>']
-                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+sp+sp+sp+sp'</font></td>']
+                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+horiz_sp+'</font></td>']
             
                 # cnt
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_cnts[cat])+'</font></td>']
-                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+sp+sp+sp+sp'</font></td>']
+                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+horiz_sp+'</font></td>']
 
                 #perc
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_percs[cat])+'%'+'</font></td>']
-                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+sp+sp+sp+sp'</font></td>']
+                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+horiz_sp+'</font></td>']
 
                 # bar
                 this_width = int(round(float(bar_width) * (float(cat_cnts[cat])/float(max_cnt)), 0))
@@ -3738,8 +3739,8 @@ key         :param params: instance of type "view_pan_phylo_Input"
                     html_report_lines += ['<td bgcolor="'+str(cat_colors[cat_i])+'"><font size="'+str(bar_fontsize)+'" color="'+str(cat_colors[cat_i])+'">'+bar_char+'</font></td>']
 
                 html_report_lines += ['</tr>']
-                html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+sp+'</font></td></tr>']  # space for blank row
-            html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+sp+'</font></td></tr>']  # space for blank row
+                html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+'</font></td></tr>']  # space for blank row
+            html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+'</font></td></tr>']  # space for blank row
             
 
         # close
