@@ -3156,7 +3156,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
         bar_char = '.'
         bar_font_size = 1
         bar_max_len = 50
-        cat_order = ['TOTAL', 'SINGLETON', 'PARTIAL', 'CORE']
+        cat_order = ['TOTAL', 'singleton', 'partial', 'core']
         cat_colors = ['black', 'red', 'pink', 'blue']
         num_bars_per_node = len(cat_order) + 1
         
@@ -3199,7 +3199,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
             for cat_i,cat in enumerate(cat_order):
                 if cat_i > 0:
                     html_report_lines += ['<tr>']
-                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b>'+cat+'</b></font></td>']
+                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+cat+'</font></td>']
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_cnts[cat])+'</font></td>']
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_percs[cat])+'%'+'</font></td>']
                 html_report_lines += ['</tr>']
