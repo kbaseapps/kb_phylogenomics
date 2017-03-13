@@ -3203,7 +3203,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
             # node id
             node_label = 'NODE '+str(node_id)
             html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'" valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b><nobr>'+str(node_label)+'</nobr></b></font></td>']
-            html_report_lines += ['<td><font size="'+str(space_fontsize)+'"'+sp+sp+'</td>']
+                html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'"><font size="'+str(space_fontsize)+'"'+sp+sp+'</td>']
 
             for cat_i,cat in enumerate(cat_order):
                 if cat_i > 0:
