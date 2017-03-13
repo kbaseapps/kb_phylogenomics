@@ -3088,7 +3088,8 @@ key         :param params: instance of type "view_pan_phylo_Input"
                 node_ref_id = "+".join(sorted (leaf_refs))
                 node_num_id = node_ref_ids[node_ref_id]
                 node_name_disp = str(node_num_id)
-                n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0, position="branch-right")
+                #n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0, position="branch-right")
+                n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0)
 
                 style = ete3.NodeStyle()
                 for k in node_style.keys():
@@ -3115,7 +3116,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
                 pie_line_color = "White"
 
                 this_pieFace = ete3.PieChartFace(pie_percs, pie_w, pie_h, pie_colors, pie_line_color)
-                n.add_face (this_pieFace, column=0)
+                n.add_face (this_pieFace, column=1)
 
             n.set_style(style)
 
