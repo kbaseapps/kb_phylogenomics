@@ -2732,28 +2732,37 @@ This module contains methods for running and visualizing results of phylogenomic
             os.makedirs(html_output_dir)
 
 
-# HERE
-
-        # get speciesTree
+        # get base genome
         #
-        input_ref = params['input_speciesTree_ref']
-        speciesTree_name = None
+        input_ref = params['input_genome_ref']
+        base_genome_obj_name = None
         try:
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
             input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
-            speciesTree_name = input_obj_info[NAME_I]
+            base_genome_obj_name = input_obj_info[NAME_I]
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseTrees.Tree" ]
+        accepted_input_types = ["KBaseGenomes.Genome" ]
         if input_obj_type not in accepted_input_types:
             raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
-        # get set obj
+
+        # get pangenome
+        #
+        input_ref = params['input_pangenome_ref']
         try:
-            speciesTree_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
-        except:
-            raise ValueError ("unable to fetch speciesTree: "+input_ref)
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+        accepted_input_types = ["KBaseGenomes.Pangenome" ]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+
+# HERE
 
 
         # get genome_refs from speciesTree and instantiate ETE3 tree and order
@@ -3662,7 +3671,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
         cell_spacing = 0
         cell_border = 0
         sp = '&nbsp;'
-        horiz_space = sp+sp+sp+sp
+        horiz_sp = sp+sp+sp+sp
         text_color = "#606060"
         font_size = '2'
         space_fontsize = '1'
