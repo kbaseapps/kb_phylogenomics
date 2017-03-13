@@ -3213,7 +3213,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
                 # bar
                 this_width = int(round(float(bar_width) * (float(cat_cnts[cat])/float(max_cnt)), 0))
                 for cell_i in range(this_width):
-                    html_report_lines += ['<td bgcolor="'+str(cat_color[cat_i])+'"><font size="'+str(bar_fontsize)+'" color="'+str(cat_color[cat_i])+'">'+bar_char+'</font></tr>']
+                    html_report_lines += ['<td bgcolor="'+str(cat_colors[cat_i])+'"><font size="'+str(bar_fontsize)+'" color="'+str(cat_colors[cat_i])+'">'+bar_char+'</font></td>']
 
                 html_report_lines += ['</tr>']
             html_report_lines += ['<tr><td><font size=-2>'+sp+'</font></td></tr>']  # space with blank row
