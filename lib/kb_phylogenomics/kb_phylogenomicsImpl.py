@@ -2868,6 +2868,7 @@ This module contains methods for running and visualizing results of phylogenomic
         node_ref_ids = dict()
         genome_ref_to_node_ref_ids = dict()
         node_size = dict()
+        node_order_by_ref = []
         node_num_id = -1
         for n in species_tree.traverse("preorder"):
             if n.is_leaf():
@@ -2879,7 +2880,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 leaf_refs.append(genome_ref_by_id[genome_id])
             node_ref_id = "+".join(sorted(leaf_refs))
             node_size[node_ref_id] = len(leaf_refs)
-
+            node_order_by_ref.append(node_ref_id)
             node_ref_ids[node_ref_id] = node_num_id
 
             # point each genome at its nodes
@@ -3146,15 +3147,65 @@ This module contains methods for running and visualizing results of phylogenomic
         # build html report
         #
         tree_img_height = 1000
+        cell_padding = 10
+        cell_spacing = 10
+        cell_border = 0
+        num_bars_per_node = 4
+        sp = '&nbsp;'
+        text_color = "#606060"
+        font_size = '2'
+        bar_char = '.'
+        bar_font_size = 1
+        bar_max_len = 50
+        cat_order = ['TOTAL', 'SINGLETON', 'PARTIAL', 'CORE']
+        cat_colors = ['black', 'red', 'pink', 'blue']
+        
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
         html_report_lines += ['<title>KBase Pangenome Phylogenetic Context</title>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
+        html_report_lines += ['<table cellpadding="'+str(cell_padding)+'" cellspacing="'+str(cell_spacing)+'" border="'+str(cell_border)+'">']
+
         # add tree image
-        html_report_lines += ['<img src="'+png_file+'" height='+str(tree_img_height)+'></td>']
+        html_report_lines += ['<tr>']
+        html_report_lines += ['<td valign="top" align="left" rowspan="'+str(num_bars_per_node*len(node_ref_ids))+'">']
+        html_report_lines += ['<img src="'+png_file+'" height='+str(tree_img_height)+'>']
+        html_report_lines += ['</td>']
+
+        # add key and bar graph
+        for node_i,node_ref_id in enumerate(node_order_by_ref):
+            node_id = node_ref_ids[node_ref_id]
+            if node_i > 0:
+                html_report_lines += ['<tr>']
+
+            # vals
+            cat_cnts  = dict()
+            cal_percs = dict()
+            cat_cnts['TOTAL']      = clusters_total[node_ref_id]
+            cat_cnts['SINGLETON'] = clusters_singletons[node_ref_id]
+            cat_cnts['CORE']       = clusters_core[node_ref_id]
+            cat_cnts['PARTIAL']    = cat_cnts['TOTAL'] - cat_cnts['SINGLETONS'] - cat_cnts['CORE']
+            cat_percs['TOTAL'] = '100.0'
+            cat_percs['SINGLETON'] = str(round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
+            cat_percs['CORE'] = str(round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
+            cat_percs['PARTIAL'] = str(round (100.0 - core_perc - singleton_perc, 1))
+
+            # node id
+            html_report_lines += ['<td rowspan="4" valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b>'+str(node_id)+'</b></font></td>']
+
+            for cat_i,cat in enumerate(cat_order):
+                if cat_i > 0:
+                    html_report_lines += ['<tr>']
+                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b>'+cat+'</b></font></td>']
+                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_cnts[cat])+'</font></td>']
+                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_percs[cat])+'%'+'</font></td>']
+                html_report_lines += ['</tr>']
+            
+
         # close
+        html_report_lines += ['</table>']
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
         
