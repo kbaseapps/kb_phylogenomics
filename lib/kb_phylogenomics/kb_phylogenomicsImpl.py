@@ -3158,7 +3158,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
         bar_fontsize = -2
         bar_width = 50
         cat_order = ['TOTAL', 'singleton', 'partial', 'perfect core']
-        cat_colors = ['black', 'red', 'pink', 'blue']
+        cat_colors = [text_color] + pie_colors
         num_bars_per_node = 2*(len(cat_order) + 1)
         
         html_report_lines = []
