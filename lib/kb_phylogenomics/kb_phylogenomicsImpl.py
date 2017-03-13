@@ -3147,15 +3147,15 @@ key         :param params: instance of type "view_pan_phylo_Input"
         # build html report
         #
         tree_img_height = 1000
-        cell_padding = 5
+        cell_padding = 0
         cell_spacing = 5
-        cell_border = 1
+        cell_border = 0
         sp = '&nbsp;'
         text_color = "#606060"
         font_size = '2'
         bar_char = '.'
-        bar_font_size = 1
-        bar_max_len = 50
+        bar_fontsize = -2
+        bar_width = 50
         cat_order = ['TOTAL', 'singleton', 'partial', 'core']
         cat_colors = ['black', 'red', 'pink', 'blue']
         num_bars_per_node = len(cat_order) + 1
@@ -3175,6 +3175,11 @@ key         :param params: instance of type "view_pan_phylo_Input"
         html_report_lines += ['</td>']
 
         # add key and bar graph
+        max_cnt = 0
+        for node_ref_id in node_order_by_ref:
+            if clusters_total[node_ref_id] > max_cnt:
+                max_cnt = clusters_total[node_ref_id]
+
         for node_i,node_ref_id in enumerate(node_order_by_ref):
             node_id = node_ref_ids[node_ref_id]
             if node_i > 0:
@@ -3199,11 +3204,19 @@ key         :param params: instance of type "view_pan_phylo_Input"
             for cat_i,cat in enumerate(cat_order):
                 if cat_i > 0:
                     html_report_lines += ['<tr>']
+                # cat name
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+cat+'</font></td>']
+                # cnt
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_cnts[cat])+'</font></td>']
+                #perc
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_percs[cat])+'%'+'</font></td>']
+                # bar
+                this_width = int(round(float(bar_width) * (float(cat_cnts[cat])/float(max_cnt)), 0))
+                for cell_i in range(this_width):
+                    html_report_lines += ['<td bgcolor="'+str(cat_color[cat_i])+'"><font size="'+str(bar_fontsize)+'" color="'+str(cat_color[cat_i])+'">'+bar_char+'</font></tr>']
+
                 html_report_lines += ['</tr>']
-            html_report_lines += ['<tr><td>'+sp+'</td></tr>']  # space with blank row
+            html_report_lines += ['<tr><td><font size=-2>'+sp+'</font></td></tr>']  # space with blank row
             
 
         # close
