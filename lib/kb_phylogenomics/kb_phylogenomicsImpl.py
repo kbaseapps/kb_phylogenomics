@@ -3680,7 +3680,8 @@ key         :param params: instance of type "view_pan_phylo_Input"
         bar_width = 50
         cat_order = ['TOTAL', 'singleton', 'partial', 'perfect core']
         cat_colors = [text_color] + pie_colors
-        num_bars_per_node = 2*len(cat_order) + 1
+        #num_bars_per_node = 2*len(cat_order) + 1
+        num_bars_per_node = len(cat_order) + 1
         
         html_report_lines = []
         html_report_lines += ['<html>']
@@ -3748,7 +3749,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
                     html_report_lines += ['<td bgcolor="'+str(cat_colors[cat_i])+'"><font size="'+str(bar_fontsize)+'" color="'+str(cat_colors[cat_i])+'">'+bar_char+'</font></td>']
 
                 html_report_lines += ['</tr>']
-                html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+'</font></td></tr>']  # space for blank row
+                #html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+'</font></td></tr>']  # space for blank row
             html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+'</font></td></tr>']  # space for blank row
             
 
