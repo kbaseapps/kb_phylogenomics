@@ -3182,11 +3182,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # vals
             cat_cnts  = dict()
-            cal_percs = dict()
-            cat_cnts['TOTAL']      = clusters_total[node_ref_id]
+            cat_percs = dict()
+            cat_cnts['TOTAL']     = clusters_total[node_ref_id]
             cat_cnts['SINGLETON'] = clusters_singletons[node_ref_id]
-            cat_cnts['CORE']       = clusters_core[node_ref_id]
-            cat_cnts['PARTIAL']    = cat_cnts['TOTAL'] - cat_cnts['SINGLETON'] - cat_cnts['CORE']
+            cat_cnts['CORE']      = clusters_core[node_ref_id]
+            cat_cnts['PARTIAL']   = cat_cnts['TOTAL'] - cat_cnts['SINGLETON'] - cat_cnts['CORE']
             cat_percs['TOTAL'] = '100.0'
             cat_percs['SINGLETON'] = str(round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
             cat_percs['CORE'] = str(round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
