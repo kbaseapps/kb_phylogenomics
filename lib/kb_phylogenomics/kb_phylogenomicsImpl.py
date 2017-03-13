@@ -2772,7 +2772,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
     def view_pan_phylo(self, ctx, params):
         """
-        :param params: instance of type "view_pan_phylo_Input"
+key         :param params: instance of type "view_pan_phylo_Input"
            (view_pan_phylo() ** ** show the pangenome accumulation using a
            tree) -> structure: parameter "workspace_name" of type
            "workspace_name" (** Common types), parameter
@@ -3147,10 +3147,9 @@ This module contains methods for running and visualizing results of phylogenomic
         # build html report
         #
         tree_img_height = 1000
-        cell_padding = 10
-        cell_spacing = 10
-        cell_border = 0
-        num_bars_per_node = 4
+        cell_padding = 5
+        cell_spacing = 5
+        cell_border = 1
         sp = '&nbsp;'
         text_color = "#606060"
         font_size = '2'
@@ -3159,6 +3158,7 @@ This module contains methods for running and visualizing results of phylogenomic
         bar_max_len = 50
         cat_order = ['TOTAL', 'SINGLETON', 'PARTIAL', 'CORE']
         cat_colors = ['black', 'red', 'pink', 'blue']
+        num_bars_per_node = len(cat_order) + 1
         
         html_report_lines = []
         html_report_lines += ['<html>']
@@ -3184,16 +3184,17 @@ This module contains methods for running and visualizing results of phylogenomic
             cat_cnts  = dict()
             cat_percs = dict()
             cat_cnts['TOTAL']     = clusters_total[node_ref_id]
-            cat_cnts['SINGLETON'] = clusters_singletons[node_ref_id]
-            cat_cnts['CORE']      = clusters_core[node_ref_id]
-            cat_cnts['PARTIAL']   = cat_cnts['TOTAL'] - cat_cnts['SINGLETON'] - cat_cnts['CORE']
+            cat_cnts['singleton'] = clusters_singletons[node_ref_id]
+            cat_cnts['core']      = clusters_core[node_ref_id]
+            cat_cnts['partial']   = cat_cnts['TOTAL'] - cat_cnts['singleton'] - cat_cnts['core']
             cat_percs['TOTAL'] = '100.0'
-            cat_percs['SINGLETON'] = str(round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
-            cat_percs['CORE'] = str(round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
-            cat_percs['PARTIAL'] = str(round (100.0 - core_perc - singleton_perc, 1))
+            cat_percs['singleton'] = str(round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
+            cat_percs['core'] = str(round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
+            cat_percs['partial'] = str(round (100.0 - core_perc - singleton_perc, 1))
 
             # node id
-            html_report_lines += ['<td rowspan="4" valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b>'+str(node_id)+'</b></font></td>']
+            node_label = 'NODE '+str(node_id)
+            html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'" valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b>'+str(node_label)+'</b></font></td>']
 
             for cat_i,cat in enumerate(cat_order):
                 if cat_i > 0:
@@ -3202,6 +3203,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_cnts[cat])+'</font></td>']
                 html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_percs[cat])+'%'+'</font></td>']
                 html_report_lines += ['</tr>']
+            html_report_lines += ['<tr><td>'+sp+'</td></tr>']  # space with blank row
             
 
         # close
