@@ -3195,9 +3195,9 @@ key         :param params: instance of type "view_pan_phylo_Input"
             cat_cnts['perfect core'] = clusters_core[node_ref_id]
             cat_cnts['partial']      = clusters_total[node_ref_id] - clusters_singletons[node_ref_id] - clusters_core[node_ref_id]
             cat_percs['TOTAL'] = '100'
-            cat_percs['singleton'] = str(round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
-            cat_percs['perfect core'] = str(round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1))
-            cat_percs['partial'] = str(round (100.0 - cat_percs['perfect core'] - cat_percs['singleton'], 1))
+            cat_percs['singleton']    = round (100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
+            cat_percs['perfect core'] = round (100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
+            cat_percs['partial']      = round (100.0 - cat_percs['perfect core'] - cat_percs['singleton'], 1)
 
             # node id
             node_label = 'NODE '+str(node_id)
