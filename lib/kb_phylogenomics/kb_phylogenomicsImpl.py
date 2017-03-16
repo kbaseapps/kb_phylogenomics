@@ -2734,7 +2734,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # get base genome
         #
-        input_ref = params['input_genome_ref']
+        base_genome_ref = input_ref = params['input_genome_ref']
         base_genome_obj_name = None
         try:
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
@@ -2747,140 +2747,58 @@ This module contains methods for running and visualizing results of phylogenomic
         if input_obj_type not in accepted_input_types:
             raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
-
-        # get pangenome
-        #
-        input_ref = params['input_pangenome_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
-        except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseGenomes.Pangenome" ]
-        if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
-
-
-# HERE
-
-
-        # get genome_refs from speciesTree and instantiate ETE3 tree and order
-        #
-        genome_refs = []
-        genome_id_by_ref = dict()
-        genome_ref_by_id = dict()
-        for genome_id in speciesTree_obj['default_node_labels'].keys():
-            genome_ref = speciesTree_obj['ws_refs'][genome_id]['g'][0]
-            genome_id_by_ref[genome_ref] = genome_id
-            genome_ref_by_id[genome_id] = genome_ref
-
-        species_tree = ete3.Tree(speciesTree_obj['tree'])  # instantiate ETE3 tree
-        species_tree.ladderize()
-        for genome_id in species_tree.get_leaf_names():
-            genome_refs.append(genome_ref_by_id[genome_id])
-
-
-        # get internal node ids based on sorted genome_refs of children
-        #
-        node_ref_ids = dict()
-        genome_ref_to_node_ref_ids = dict()
-        node_size = dict()
-        node_order_by_ref = []
-        node_num_id = -1
-        for n in species_tree.traverse("preorder"):
-            if n.is_leaf():
-                continue
-
-            node_num_id += 1
-            leaf_refs = []
-            for genome_id in n.get_leaf_names():
-                leaf_refs.append(genome_ref_by_id[genome_id])
-            node_ref_id = "+".join(sorted(leaf_refs))
-            node_size[node_ref_id] = len(leaf_refs)
-            node_order_by_ref.append(node_ref_id)
-            node_ref_ids[node_ref_id] = node_num_id
-
-            # point each genome at its nodes
-            for genome_ref in leaf_refs:
-                if genome_ref not in genome_ref_to_node_ref_ids:
-                    genome_ref_to_node_ref_ids[genome_ref] = []
-                genome_ref_to_node_ref_ids[genome_ref].append(node_ref_id)
-            
-
-        # get object names, sci names, protein-coding gene counts, and SEED annot
-        #
-        genome_obj_name_by_ref = dict()
-        genome_sci_name_by_ref = dict()
-        genome_sci_name_by_id  = dict()
-        genome_CDS_count_by_ref = dict()
-        uniq_genome_ws_ids = dict()
-
-        dom_hits = dict()  # initialize dom_hits here because reading SEED within genome
-        genes_with_hits_cnt = dict()
-
-        for genome_ref in genome_refs:
-
-            dom_hits[genome_ref] = dict()
-            genes_with_hits_cnt[genome_ref] = dict()
-
-            # get genome object name
-            input_ref = genome_ref
-            try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
-                input_name = input_obj_info[NAME_I]
-                uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
-
-            except Exception as e:
-                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-            accepted_input_types = ["KBaseGenomes.Genome" ]
-            if input_obj_type not in accepted_input_types:
-                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
-
-            genome_obj_name_by_ref[genome_ref] = input_name
-
-            try:
-                genome_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
-            except:
-                raise ValueError ("unable to fetch genome: "+input_ref)
-
-            # sci name
-            genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
-            genome_sci_name_by_id[genome_id_by_ref[genome_ref]] = genome_obj['scientific_name']
-            
-            # CDS cnt
-            cds_cnt = 0
-            for feature in genome_obj['features']:
-                if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
-                    cds_cnt += 1
-            genome_CDS_count_by_ref[genome_ref] = cds_cnt
-
-
-        # get pangenome
-        #
-        input_ref = params['input_pangenome_ref']
-        pangenome_name = None
-        try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
-            pangenome_name = input_obj_info[NAME_I]
-        except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseGenomes.Pangenome" ]
-        if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
-
-        # get obj
-        try:
-            pg_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            base_genome_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
         except:
-            raise ValueError ("unable to fetch pangenome: "+input_ref)
+            raise ValueError ("unable to fetch genome: "+input_ref)
 
 
-        # make sure species tree genomes are found in pangenome (reverse not required)
+        # get pangenome
+        #
+        input_ref = params['input_pangenome_ref']
+        try:
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+        accepted_input_types = ["KBaseGenomes.Pangenome" ]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+        try:
+            pg_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
+        except:
+            raise ValueError ("unable to fetch genome: "+input_ref)
+
+
+        # get genome_refs from pangenome and make sure requested genomes are found
+        #
+        pg_genome_refs = pg_obj['genome_refs']
+        compare_genome_refs = []
+        if params['input_compare_all_flag'] == 'all':
+            for g_ref in pg_genome_refs:
+                if g_ref == base_genome_ref:
+                    continue
+                compare_genome_refs.append(g_ref)
+        else:
+            if len(params['input_compare_genome_refs']) == 0:
+                raise ValueError ("You must pick at least one genome to compare with")
+            for genome_ref in params['input_compare_genome_refs']:
+                compare_genome_refs.append(genome_ref)
+
+        missing_genomes = []
+        for genome_ref in [base_genome_ref]+compare_genome_refs:
+            if genome_ref not in pg_genome_refs:
+                missing_genomes.append(genome_ref)
+        if len(missing_genomes) != 0:
+            msg = ''
+            for genome_ref in missing_genomes:
+                msg += "genome "+genome_ref+" not found in pangenome"
+            raise ValueError (msg)
+
+
+        # make sure requested genomes are found in pangenome (reverse not required)
         for genome_ref in genome_refs:
             if genome_ref not in pg_obj['genome_refs']:
                 raise ValueError ("genome: '"+str(genome_ref)+"' from SpeciesTree not present in Pangenome object")
