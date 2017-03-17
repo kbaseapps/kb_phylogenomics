@@ -25,7 +25,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "workspace_name",
     "input_genome_ref",
-    "input_pangenome_ref"
+    "input_pangenome_ref",
+    "input_compare_all_flag",
+    "input_compare_genome_refs"
 })
 public class ViewPanCirclePlotInput {
 
@@ -35,6 +37,10 @@ public class ViewPanCirclePlotInput {
     private String inputGenomeRef;
     @JsonProperty("input_pangenome_ref")
     private String inputPangenomeRef;
+    @JsonProperty("input_compare_all_flag")
+    private String inputCompareAllFlag;
+    @JsonProperty("input_compare_genome_refs")
+    private String inputCompareGenomeRefs;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -82,6 +88,36 @@ public class ViewPanCirclePlotInput {
         return this;
     }
 
+    @JsonProperty("input_compare_all_flag")
+    public String getInputCompareAllFlag() {
+        return inputCompareAllFlag;
+    }
+
+    @JsonProperty("input_compare_all_flag")
+    public void setInputCompareAllFlag(String inputCompareAllFlag) {
+        this.inputCompareAllFlag = inputCompareAllFlag;
+    }
+
+    public ViewPanCirclePlotInput withInputCompareAllFlag(String inputCompareAllFlag) {
+        this.inputCompareAllFlag = inputCompareAllFlag;
+        return this;
+    }
+
+    @JsonProperty("input_compare_genome_refs")
+    public String getInputCompareGenomeRefs() {
+        return inputCompareGenomeRefs;
+    }
+
+    @JsonProperty("input_compare_genome_refs")
+    public void setInputCompareGenomeRefs(String inputCompareGenomeRefs) {
+        this.inputCompareGenomeRefs = inputCompareGenomeRefs;
+    }
+
+    public ViewPanCirclePlotInput withInputCompareGenomeRefs(String inputCompareGenomeRefs) {
+        this.inputCompareGenomeRefs = inputCompareGenomeRefs;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -94,7 +130,7 @@ public class ViewPanCirclePlotInput {
 
     @Override
     public String toString() {
-        return ((((((((("ViewPanCirclePlotInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRef=")+ inputGenomeRef)+", inputPangenomeRef=")+ inputPangenomeRef)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((("ViewPanCirclePlotInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRef=")+ inputGenomeRef)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputCompareAllFlag=")+ inputCompareAllFlag)+", inputCompareGenomeRefs=")+ inputCompareGenomeRefs)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

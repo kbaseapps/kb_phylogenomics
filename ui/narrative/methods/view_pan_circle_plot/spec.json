@@ -86,7 +86,7 @@
                 },
                 {
                     "input_parameter": "input_compare_all_flag",
-		    "target_property": "input_compare_all_flag",
+		    "target_property": "input_compare_all_flag"
                 },
                 {
                     "input_parameter": "input_compare_genome_refs",
