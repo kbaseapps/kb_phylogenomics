@@ -23,7 +23,9 @@ from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
 from KBaseReport.KBaseReportClient import KBaseReport
 
 from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
+
 import ete3
+import matplotlib
 
 #END_HEADER
 
@@ -2794,176 +2796,67 @@ This module contains methods for running and visualizing results of phylogenomic
         if len(missing_genomes) != 0:
             msg = ''
             for genome_ref in missing_genomes:
-                msg += "genome "+genome_ref+" not found in pangenome"
+                msg += "genome "+genome_ref+" not found in pangenome\n"
             raise ValueError (msg)
 
 
-        # make sure requested genomes are found in pangenome (reverse not required)
-        for genome_ref in genome_refs:
-            if genome_ref not in pg_obj['genome_refs']:
-                raise ValueError ("genome: '"+str(genome_ref)+"' from SpeciesTree not present in Pangenome object")
-
-
-        # determine pangenome accumulations of core, partial, and singleton
+        # Get positions of genes in base genome
         #
-        cluster_hits = dict()
-        for node_ref_id in node_ref_ids.keys():
-            cluster_hits[node_ref_id] = []
+        sorted_base_contig_ids = []
+        sorted_base_contig_lens = []
+        unsorted_contig_lens = dict()
+        sorted_contig_order = dict()
+        feature_contig_id = dict()
+        feature_pos_in_contig = dict()
+        feature_order = []
 
-        cluster_num = -1  # cluster ids themselves start from 1
-        for homolog_cluster in pg_obj['orthologs']:
-            cluster_num += 1
-            for node_ref_id in node_ref_ids.keys():
-                cluster_hits[node_ref_id].append(0)
+        for contig in base_genome_obj['contigs']:
+            unsorted_contig_lens[contig['id']] = contig['length']
+        for order_i,id_len_tup in enumerate(sorted(unsorted_contig_lens.items(), key=operator.itemgetter(1), reverse=True)):
+            (contig_id, contig_len) = id_len_tup
+            sorted_contig_order[contig_id] = order_i
+            sorted_base_contig_ids.append(contig_id)
+            sorted_base_contig_lens.append(contig_len)
 
-            nodes_hit = dict()
-            for gene in homolog_cluster['orthologs']:
-                gene_id                     = gene[0]
-                probably_gene_len_dont_need = gene[1]
-                genome_ref                  = gene[2]
+        for feature in base_genome_obj['features']:
+            if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
 
-                if genome_ref not in genome_ref_to_node_ref_ids:
-                    continue
-                for node_ref_id in genome_ref_to_node_ref_ids[genome_ref]:
-                    if node_ref_id not in nodes_hit:
-                        nodes_hit[node_ref_id] = dict()
-                    nodes_hit[node_ref_id][genome_ref] = True
-            
-            for node_ref_id in nodes_hit.keys():
-                for genome_ref in nodes_hit[node_ref_id].keys():
-                    cluster_hits[node_ref_id][cluster_num] += 1
-
-        # calc accumulations
-        clusters_total = dict()
-        clusters_singletons = dict()
-        clusters_core = dict()
-        for node_ref_id in node_ref_ids.keys():
-            clusters_total[node_ref_id] = 0
-            clusters_singletons[node_ref_id] = 0
-            clusters_core[node_ref_id] = 0
-
-            for cluster_num,hit_cnt in enumerate(cluster_hits[node_ref_id]):
-                if hit_cnt > 0:
-                    clusters_total[node_ref_id] += 1
-                    if hit_cnt == 1:
-                        clusters_singletons[node_ref_id] += 1
-                    elif hit_cnt == node_size[node_ref_id]:
-                        clusters_core[node_ref_id] += 1
-
-        # get min and max cluster cnts
-        INSANE_VALUE = 10000000000000000
-        max_clusters_cnt = -INSANE_VALUE
-        min_clusters_cnt =  INSANE_VALUE
-        for node_ref_id in node_ref_ids.keys():
-            if clusters_total[node_ref_id] > max_clusters_cnt:
-                max_clusters_cnt = clusters_total[node_ref_id]
-            if clusters_total[node_ref_id] < min_clusters_cnt:
-                min_clusters_cnt = clusters_total[node_ref_id]
-
-            self.log(console, "NODE: "+node_ref_id+" MIN: "+str(min_clusters_cnt)+" MAX: "+str(max_clusters_cnt))  # DEBUg
+                fid = feature['id']
+                feature_order.append(fid)
+                feature_contig_id[fid] = feature['location'][0]
+                beg                    = feature['location'][1]
+                strand                 = feature['location'][2]
+                len                    = feature['location'][3]
+                if strand == '-':
+                    feature_pos_in_contig[fid] = beg - int(len/2)
+                else:
+                    feature_pos_in_contig[fid] = beg + int(len/2)
 
 
-        # Draw tree (we already instantiated Tree above)
+        # Draw circle plot
         #
-        png_file = speciesTree_name+'-pangenome.png'
-        pdf_file = speciesTree_name+'-pangenome.pdf'
+        png_file = base_genome_obj_name+'-pangenome_circle.png'
+        pdf_file = base_genome_obj_name+'-pangenome_circle.pdf'
         output_png_file_path = os.path.join(html_output_dir, png_file);
         output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
 
-        # init ETE3 accessory objects
-        ts = ete3.TreeStyle()
 
-        # customize
-        min_pie_size = 1000
-        max_pie_size = 2000
-        leaf_fontsize = 500  # scale of everything is goofy in circle tree mode, and pie size affects type size and line thickness.  ugh.
-        node_fontsize = 500
-        ts.mode = "c"  # circular tree graph
-        #ts.arc_start = -180 # 0 degrees = 3 o'clock
-        #ts.arc_span = 180
-        ts.show_leaf_name = True
-        ts.show_branch_length = False
-        ts.show_branch_support = True
-        #ts.scale = 50 # 50 pixels per branch length unit
-        ts.branch_vertical_margin = 5 # pixels between adjacent branches
-        #ts.title.add_face(ete3.TextFace(params['output_name']+": "+params['desc'], fsize=10), column=0)
-
-        node_style = ete3.NodeStyle()
-        node_style["fgcolor"] = "#606060"  # for node balls
-        node_style["size"] = 10  # for node balls (gets reset based on support)
-        node_style["vt_line_color"] = "#606060"
-        node_style["hz_line_color"] = "#606060"
-        node_style["vt_line_width"] = 100  # 2
-        node_style["hz_line_width"] = 100  # 2
-        node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
-        node_style["hz_line_type"] = 0
-
-        leaf_style = ete3.NodeStyle()
-        leaf_style["fgcolor"] = "#ffffff"  # for node balls
-        leaf_style["size"] = 100  # for node balls (we're using it to add space)
-        leaf_style["vt_line_color"] = "#606060"  # unecessary
-        leaf_style["hz_line_color"] = "#606060"
-        leaf_style["vt_line_width"] = 100  # 2
-        leaf_style["hz_line_width"] = 100  # 2
-        leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
-        leaf_style["hz_line_type"] = 0
-
-        for n in species_tree.traverse("preorder"):
-            if n.is_leaf():
-                style = leaf_style
-                genome_id = n.name
-                #n.name = genome_sci_name_by_id[genome_id]
-                n.name = None
-                leaf_name_disp = genome_sci_name_by_id[genome_id]
-                n.add_face (ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
-
-            else:
-                leaf_refs = []
-                for genome_id in n.get_leaf_names():
-                    leaf_refs.append(genome_ref_by_id[genome_id])
-                node_ref_id = "+".join(sorted (leaf_refs))
-                node_num_id = node_ref_ids[node_ref_id]
-                node_name_disp = str(node_num_id)
-                #n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0, position="branch-right")
-                n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0)
-
-                style = ete3.NodeStyle()
-                for k in node_style.keys():
-                    style[k] = node_style[k]
-
-                if n.support > 0.95:
-                    style["size"] = 6
-                elif n.support > 0.90:
-                    style["size"] = 5
-                elif n.support > 0.80:
-                    style["size"] = 4
-                else:
-                    style["size"] = 2
-
-                # yum! pie!
-                pie_size = int(min_pie_size + float(max_pie_size-min_pie_size) * float(clusters_total[node_ref_id]-min_clusters_cnt) / float(max_clusters_cnt-min_clusters_cnt))
-                singleton_perc = round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
-                core_perc = round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
-                partial_perc = round (100.0 - core_perc - singleton_perc, 1)
-
-                pie_w = pie_h = pie_size
-                pie_percs = [singleton_perc, partial_perc, core_perc]
-                pie_colors = ["IndianRed", "Orchid", "DodgerBlue"]
-                pie_line_color = "White"
-
-                this_pieFace = ete3.PieChartFace(pie_percs, pie_w, pie_h, pie_colors, pie_line_color)
-                n.add_face (this_pieFace, column=1)
-
-            n.set_style(style)
-
-        # save images
+        # Init matplotlib and save image
+        #
         dpi = 300
         img_units = "in"
         img_pix_width = 1200
         img_in_width = round(float(img_pix_width)/float(dpi), 1)
         img_html_width = img_pix_width // 2
-        species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
-        species_tree.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+
+        # BEG HERE
+
+        fig = matplotlib.pyplot.gcf()
+        fig.set_size_inches(18.5, 10.5)
+        fig.savefig(output_png_file_path, dpi=100)
+        fig.savefig(output_pdf_file_path, format='pdf')
+
+        # END HERE
 
 
         # build report object
@@ -2983,7 +2876,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # build html report
         #
-        tree_img_height = 1000
+        circle_img_height = 1000
         cell_padding = 0
         #cell_spacing = 5
         cell_spacing = 0
@@ -2995,75 +2888,26 @@ This module contains methods for running and visualizing results of phylogenomic
         bar_char = '.'
         bar_fontsize = '1'
         bar_width = 50
-        cat_order = ['TOTAL', 'singleton', 'partial', 'perfect core']
-        cat_colors = [text_color] + pie_colors
-        num_bars_per_node = 2*len(cat_order) + 1
+        num_bars_per_node = 2 + 1
         
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
-        html_report_lines += ['<title>KBase Pangenome Phylogenetic Context</title>']
+        html_report_lines += ['<title>KBase Homolog Circle Plot</title>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
         html_report_lines += ['<table cellpadding="'+str(cell_padding)+'" cellspacing="'+str(cell_spacing)+'" border="'+str(cell_border)+'">']
 
-        # add tree image
+        # add circle image
+        circle_rowspan = 10  # DEBUG
         html_report_lines += ['<tr>']
-        html_report_lines += ['<td valign="top" align="left" rowspan="'+str(num_bars_per_node*len(node_ref_ids))+'">']
-        html_report_lines += ['<img src="'+png_file+'" height='+str(tree_img_height)+'>']
+        html_report_lines += ['<td valign="top" align="left" rowspan="'+str(circle_rowspan)+'">']
+#        html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
         html_report_lines += ['</td>']
 
-        # add key and bar graph
-        max_cnt = 0
-        for node_ref_id in node_order_by_ref:
-            if clusters_total[node_ref_id] > max_cnt:
-                max_cnt = clusters_total[node_ref_id]
 
-        for node_i,node_ref_id in enumerate(node_order_by_ref):
-            node_id = node_ref_ids[node_ref_id]
-            if node_i > 0:
-                html_report_lines += ['<tr>']
+        # ADD KEY HERE
 
-            # vals
-            cat_cnts  = dict()
-            cat_percs = dict()
-            cat_cnts['TOTAL']        = clusters_total[node_ref_id]
-            cat_cnts['singleton']    = clusters_singletons[node_ref_id]
-            cat_cnts['perfect core'] = clusters_core[node_ref_id]
-            cat_cnts['partial']      = clusters_total[node_ref_id] - clusters_singletons[node_ref_id] - clusters_core[node_ref_id]
-            cat_percs['TOTAL'] = '100'
-            cat_percs['singleton']    = round (100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
-            cat_percs['perfect core'] = round (100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
-            cat_percs['partial']      = round (100.0 - cat_percs['perfect core'] - cat_percs['singleton'], 1)
-
-            # node id
-            node_label = 'NODE '+str(node_id)
-            html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'" valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b><nobr>'+str(node_label)+'</nobr></b></font></td>']
-            html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'"><font size="'+str(space_fontsize)+'">'+sp+sp+'</font></td>']
-
-            for cat_i,cat in enumerate(cat_order):
-                if cat_i > 0:
-                    html_report_lines += ['<tr>']
-                # cat name
-                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+cat+'</nobr></font></td>']
-                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+sp+sp+'</font></td>']
-            
-                # cnt
-                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_cnts[cat])+'</font></td>']
-                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+sp+sp+'</font></td>']
-
-                #perc
-                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_percs[cat])+'%'+'</font></td>']
-                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+sp+sp+'</font></td>']
-
-                # bar
-                this_width = int(round(float(bar_width) * (float(cat_cnts[cat])/float(max_cnt)), 0))
-                for cell_i in range(this_width):
-                    html_report_lines += ['<td bgcolor="'+str(cat_colors[cat_i])+'"><font size="'+str(bar_fontsize)+'" color="'+str(cat_colors[cat_i])+'">'+bar_char+'</font></td>']
-
-                html_report_lines += ['</tr>']
-                html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+sp+'</font></td></tr>']  # space for blank row
-            html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+sp+'</font></td></tr>']  # space for blank row
             
         # close
         html_report_lines += ['</table>']
@@ -3075,7 +2919,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         # write html to file and upload
-        html_file = os.path.join (html_output_dir, 'pan_phylo_report.html')
+        html_file = os.path.join (html_output_dir, 'homolog_circle_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
@@ -3102,15 +2946,15 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ('Logging exception loading html_report to shock')
 
         reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
-                                    'name': 'phylogenetic_pangenome.png',
-                                    'label': 'Phylogenetic Pangenome PNG'},
+                                    'name': 'homolog_circle_plot.png',
+                                    'label': 'Homolog Circle Plot PNG'},
                                    {'shock_id': pdf_upload_ret['shock_id'],
-                                    'name': 'phylogenetic_pangenome.pdf',
-                                    'label': 'Phylogenetic Pangenome PDF'}
+                                    'name': 'homolog_circle_plot.pdf',
+                                    'label': 'Homolog Circle Plot PDF'}
                                    ]
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
-                                    'name': 'pan_phylo_report.html',
-                                    'label': 'Phylogenetic Pangenome report'}
+                                    'name': 'homolog_circle_PLOT_report.html',
+                                    'label': 'Homolog Circle Plot report'}
                                    ]
         reportObj['direct_html_link_index'] = 0
 
@@ -3525,7 +3369,7 @@ key         :param params: instance of type "view_pan_phylo_Input"
                 node_num_id = node_ref_ids[node_ref_id]
                 node_name_disp = str(node_num_id)
                 #n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0, position="branch-right")
-                n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0)
+                n.add_face (ete3.TextFace(' '+node_name_disp+' ', fsize=node_fontsize),column=0)
 
                 style = ete3.NodeStyle()
                 for k in node_style.keys():
