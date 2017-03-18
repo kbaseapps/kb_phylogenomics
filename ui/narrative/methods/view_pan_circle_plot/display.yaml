@@ -43,13 +43,6 @@ parameters :
             The Pangenome to view against the Base Genome
         long-hint  : |
             The Pangenome to view against the Base Genome
-    input_compare_all_flag :
-        ui-name : |
-            Compare Genome(s)
-        short-hint : |
-            The Genome(s) to compare against the base
-        long-hint  : |
-            The Genome(s) to compare against the base
     input_compare_genome_refs :
         ui-name : |
             Compare Genome(s)

@@ -49,7 +49,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "697551ae2ab5091609a7ff2fc76b74549f3c19f7"
+    GIT_COMMIT_HASH = "f7b44b9ffa99f06e66ecc5be3f5298088c56974b"
 
     #BEGIN_CLASS_HEADER
 
@@ -2684,7 +2684,6 @@ This module contains methods for running and visualizing results of phylogenomic
            "workspace_name" of type "workspace_name" (** Common types),
            parameter "input_genome_ref" of type "data_obj_ref", parameter
            "input_pangenome_ref" of type "data_obj_ref", parameter
-           "input_compare_all_flag" of String, parameter
            "input_compare_genome_refs" of type "data_obj_ref"
         :returns: instance of type "view_pan_circle_plot_Output" ->
            structure: parameter "report_name" of String, parameter
@@ -2780,14 +2779,12 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         pg_genome_refs = pg_obj['genome_refs']
         compare_genome_refs = []
-        if params['input_compare_all_flag'] == 'all':
+        if 'input_compare_genome_refs' not in params or not params['input_compare_genome_refs']:
             for g_ref in pg_genome_refs:
                 if g_ref == base_genome_ref:
                     continue
                 compare_genome_refs.append(g_ref)
         else:
-            if len(params['input_compare_genome_refs']) == 0:
-                raise ValueError ("You must pick at least one genome to compare with")
             for genome_ref in params['input_compare_genome_refs']:
                 compare_genome_refs.append(genome_ref)
 
@@ -2795,7 +2792,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in [base_genome_ref]+compare_genome_refs:
             if genome_ref not in pg_genome_refs:
                 missing_genomes.append(genome_ref)
-        if len(missing_genomes) != 0:
+        if missing_genomes:
             msg = ''
             for genome_ref in missing_genomes:
                 msg += "genome "+genome_ref+" not found in pangenome\n"

@@ -26,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "input_genome_ref",
     "input_pangenome_ref",
-    "input_compare_all_flag",
     "input_compare_genome_refs"
 })
 public class ViewPanCirclePlotInput {
@@ -37,8 +36,6 @@ public class ViewPanCirclePlotInput {
     private String inputGenomeRef;
     @JsonProperty("input_pangenome_ref")
     private String inputPangenomeRef;
-    @JsonProperty("input_compare_all_flag")
-    private String inputCompareAllFlag;
     @JsonProperty("input_compare_genome_refs")
     private String inputCompareGenomeRefs;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -88,21 +85,6 @@ public class ViewPanCirclePlotInput {
         return this;
     }
 
-    @JsonProperty("input_compare_all_flag")
-    public String getInputCompareAllFlag() {
-        return inputCompareAllFlag;
-    }
-
-    @JsonProperty("input_compare_all_flag")
-    public void setInputCompareAllFlag(String inputCompareAllFlag) {
-        this.inputCompareAllFlag = inputCompareAllFlag;
-    }
-
-    public ViewPanCirclePlotInput withInputCompareAllFlag(String inputCompareAllFlag) {
-        this.inputCompareAllFlag = inputCompareAllFlag;
-        return this;
-    }
-
     @JsonProperty("input_compare_genome_refs")
     public String getInputCompareGenomeRefs() {
         return inputCompareGenomeRefs;
@@ -130,7 +112,7 @@ public class ViewPanCirclePlotInput {
 
     @Override
     public String toString() {
-        return ((((((((((((("ViewPanCirclePlotInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRef=")+ inputGenomeRef)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputCompareAllFlag=")+ inputCompareAllFlag)+", inputCompareGenomeRefs=")+ inputCompareGenomeRefs)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((("ViewPanCirclePlotInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRef=")+ inputGenomeRef)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputCompareGenomeRefs=")+ inputCompareGenomeRefs)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

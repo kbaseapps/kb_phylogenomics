@@ -135,7 +135,6 @@ module kb_phylogenomics {
         workspace_name workspace_name;
         data_obj_ref   input_genome_ref;
 	data_obj_ref   input_pangenome_ref;
-	string         input_compare_all_flag;
         data_obj_ref   input_compare_genome_refs;
     } view_pan_circle_plot_Input;
 

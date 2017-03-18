@@ -34,30 +34,6 @@
             }
         },
         {
-            "id": "input_compare_all_flag",
-            "optional": false,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values": [ "all" ],
-            "field_type": "dropdown",
-            "dropdown_options": {
-                "options": [
-                                {
-                                        "value": "all",
-                                        "display": "All",
-                                        "id": "all",
-                                        "ui-name": "all"
-                                },
-                                {
-                                        "value": "custom",
-                                        "display": "Custom",
-                                        "id": "custom",
-                                        "ui-name": "custom"
-                                }
-		]
-            }
-        },
-        {
             "id": "input_compare_genome_refs",
             "optional": true,
             "advanced": true,
@@ -88,10 +64,6 @@
                     "input_parameter": "input_pangenome_ref",
 		    "target_property": "input_pangenome_ref",
 		    "target_type_transform": "resolved-ref"
-                },
-                {
-                    "input_parameter": "input_compare_all_flag",
-		    "target_property": "input_compare_all_flag"
                 },
                 {
                     "input_parameter": "input_compare_genome_refs",
