@@ -2809,7 +2809,7 @@ This module contains methods for running and visualizing results of phylogenomic
         feature_pos_in_contig = dict()
         feature_order = []
 
-        for contig_i,contig_id in enumerate(base_genome_obj['contig_ids']:
+        for contig_i,contig_id in enumerate(base_genome_obj['contig_ids']):
             unsorted_contig_lens[contig_id] = base_genome_obj['contig_lengths'][contig_i]
         for order_i,id_len_tup in enumerate(sorted(unsorted_contig_lens.items(), key=operator.itemgetter(1), reverse=True)):
             (contig_id, contig_len) = id_len_tup
