@@ -23,6 +23,17 @@
             }
         },
         {
+            "id": "input_pangenome_ref",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseGenomes.Pangenome" ]
+            }
+        },
+        {
             "id": "input_compare_all_flag",
             "optional": false,
             "advanced": true,
@@ -56,17 +67,6 @@
             "text_options": {
                 "valid_ws_types": [ "KBaseGenomes.Genome" ]
             }
-        },
-        {
-            "id": "input_pangenome_ref",
-            "optional": false,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "" ],
-            "field_type": "text",
-            "text_options": {
-                "valid_ws_types": [ "KBaseGenomes.Pangenome" ]
-            }
         }
     ],
     "behavior": {
@@ -85,17 +85,17 @@
 		    "target_type_transform": "resolved-ref"
                 },
                 {
+                    "input_parameter": "input_pangenome_ref",
+		    "target_property": "input_pangenome_ref",
+		    "target_type_transform": "resolved-ref"
+                },
+                {
                     "input_parameter": "input_compare_all_flag",
 		    "target_property": "input_compare_all_flag"
                 },
                 {
                     "input_parameter": "input_compare_genome_refs",
 		    "target_property": "input_compare_genome_refs",
-		    "target_type_transform": "resolved-ref"
-                },
-                {
-                    "input_parameter": "input_pangenome_ref",
-		    "target_property": "input_pangenome_ref",
 		    "target_type_transform": "resolved-ref"
                 }
             ],
