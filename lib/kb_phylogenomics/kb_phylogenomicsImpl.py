@@ -2821,10 +2821,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 fid = feature['id']
                 feature_order.append(fid)
-                feature_contig_id[fid] = feature['location'][0]
-                beg                    = feature['location'][1]
-                strand                 = feature['location'][2]
-                len                    = feature['location'][3]
+                feature_contig_id[fid] = feature['location'][0][0]
+                beg                    = feature['location'][0][1]
+                strand                 = feature['location'][0][2]
+                len                    = feature['location'][0][3]
                 if strand == '-':
                     feature_pos_in_contig[fid] = beg - int(len/2)
                 else:
