@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 #BEGIN_HEADER
+from __future__ import print_function
+from __future__ import division
 
 import os
 import sys
@@ -25,7 +27,7 @@ from KBaseReport.KBaseReportClient import KBaseReport
 from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
 
 import ete3
-import matplotlib
+import matplotlib.pyplot as pyplot  # use this instead
 
 #END_HEADER
 
@@ -2849,7 +2851,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # BEG HERE
 
-        fig = matplotlib.pyplot.gcf()
+        fig = pyplot.figure(1)
         fig.set_size_inches(18.5, 10.5)
         fig.savefig(output_png_file_path, dpi=100)
         fig.savefig(output_pdf_file_path, format='pdf')
