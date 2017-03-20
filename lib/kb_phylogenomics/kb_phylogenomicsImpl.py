@@ -2811,7 +2811,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         for contig_i,contig_id in enumerate(base_genome_obj['contig_ids']):
             unsorted_contig_lens[contig_id] = base_genome_obj['contig_lengths'][contig_i]
-        for order_i,id_len_tup in enumerate(sorted(unsorted_contig_lens.items(), key=operator.itemgetter(1), reverse=True)):
+        for order_i,id_len_tup in enumerate(sorted(unsorted_contig_lens, key=unsorted_contig_lens.__getitem__, reverse=True)):
             (contig_id, contig_len) = id_len_tup
             sorted_contig_order[contig_id] = order_i
             sorted_base_contig_ids.append(contig_id)
