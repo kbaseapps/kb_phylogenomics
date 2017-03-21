@@ -2854,7 +2854,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # BEG HERE
         fig = pyplot.figure()
-        #fig.set_size_inches(5, 5)
+        fig.set_size_inches(5, 5)
         ax = pyplot.subplot2grid( (1,1), (0,0), rowspan=1, colspan=1 )
 
         # Let's turn off visibility of all tic labels and boxes here
@@ -2884,8 +2884,8 @@ This module contains methods for running and visualizing results of phylogenomic
         arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
         gene_color = "blue"
         gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
-        gene_x_diameter = 1.0 * bar_diameter
-        gene_y_diameter = ellipse_to_circle_scaling * bar_diameter
+        gene_x_diameter = 1.0 * gene_bar_diameter
+        gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
         gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
                           theta1=arc_beg, theta2=arc_end, \
                           edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
