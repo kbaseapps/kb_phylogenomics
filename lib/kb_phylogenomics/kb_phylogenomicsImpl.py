@@ -2821,12 +2821,12 @@ This module contains methods for running and visualizing results of phylogenomic
             sorted_contig_order[contig_id] = order_i
             sorted_base_contig_ids.append(contig_id)
             sorted_base_contig_lens.append(unsorted_contig_lens[contig_id])
+            feature_order.append([])
 
         for feature in base_genome_obj['features']:
             if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
 
                 fid = feature['id']
-                feature_order.append(fid)
                 feature_contig_id[fid] = feature['location'][0][0]
                 beg                    = feature['location'][0][1]
                 strand                 = feature['location'][0][2]
@@ -2835,6 +2835,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     feature_pos_in_contig[fid] = beg - int(len/2)
                 else:
                     feature_pos_in_contig[fid] = beg + int(len/2)
+                contig_i = sorted_contig_order[feature_contig_id[fid]]
+                feature_order[contig_i].append(fid)
 
 
         # Draw circle plot
@@ -2844,14 +2846,21 @@ This module contains methods for running and visualizing results of phylogenomic
         output_png_file_path = os.path.join(html_output_dir, png_file);
         output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
 
-
-        # Init matplotlib and save image
-        #
-        dpi = 300
+        # Init matplotlib
+        img_dpi = 300
         img_units = "in"
         img_pix_width = 1200
-        img_in_width = round(float(img_pix_width)/float(dpi), 1)
-        img_html_width = img_pix_width // 2
+        img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
+        img_html_width = img_pix_width // 4
+
+        mark_width = 0.5
+        ellipse_to_circle_scaling = 1.0
+        ellipse_center_x = 0.50
+        ellipse_center_y = 0.50
+        ellipse_center = (ellipse_center_x, ellipse_center_y)
+        base_diameter = 0.10
+        gene_bar_lw = 10
+        lw_to_coord_scale = 0.01
 
         # Build image
         fig = pyplot.figure()
@@ -2869,31 +2878,29 @@ This module contains methods for running and visualizing results of phylogenomic
             ax.spines['left'].set_visible(False)    # left axis line
             ax.spines['right'].set_visible(False)   # right axis line
 
-        ax = fig.axes[0]
-
         # Add marks for base genome
-        mark_width = 0.5
-        ellipse_to_circle_scaling = 1.0
-        ellipse_center_x = 0.50
-        ellipse_center_y = 0.50
-        ellipse_center = (ellipse_center_x, ellipse_center_y)
-        base_diameter = 0.10
-        gene_bar_lw = 10
-        lw_to_coord_scale = 0.01
-        gene_pos = 1000000
-        arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
-        arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + mark_width
-        gene_color = "blue"
-        gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
-        gene_x_diameter = 1.0 * gene_bar_diameter
-        gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
-        gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
-                          theta1=arc_beg, theta2=arc_end, \
-                          edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
-        ax.add_patch (gene_arc)        
+        ax = fig.axes[0]
+        base_contig_pos = 0
+        for contig_i in range(feature_order):
+            if contig_i > 0:
+                base_contig_pos += sorted_base_contig_lens[contig_i-1]
+
+                for fid in feature_order[contig_i]:
+                    gene_pos = base_contig_pos + feature_pos_in_contig[fid]
+
+                    arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
+                    arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + mark_width
+                    gene_color = "blue"
+                    gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
+                    gene_x_diameter = 1.0 * gene_bar_diameter
+                    gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
+                    gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
+                                        theta1=arc_beg, theta2=arc_end, \
+                                        edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
+                    ax.add_patch (gene_arc)        
 
         # save
-        fig.savefig(output_png_file_path, dpi=200)
+        fig.savefig(output_png_file_path, dpi=img_dpi)
         fig.savefig(output_pdf_file_path, format='pdf')
 
         # END HERE
