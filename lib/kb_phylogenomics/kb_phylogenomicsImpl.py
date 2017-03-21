@@ -2867,9 +2867,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Draw Circle Plot with matplotlib
         #
-        img_dpi = 300
+        img_dpi = 200
         img_units = "in"
-        img_pix_width = 1200
+        genome_ring_scale_factor = 4
+        img_pix_width = img_dpi * len(compare_genome_refs) * genome_ring_scale_factor
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
@@ -2885,7 +2886,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Build image
         fig = pyplot.figure()
-        fig.set_size_inches(5, 5)
+        fig.set_size_inches(img_in_width, img_in_width)
         ax = pyplot.subplot2grid( (1,1), (0,0), rowspan=1, colspan=1 )
 
         # Let's turn off visibility of all tic labels and boxes here
