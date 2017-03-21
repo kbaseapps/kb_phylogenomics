@@ -2903,11 +2903,11 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<tr>']
         html_report_lines += ['<td valign="top" align="left" rowspan="'+str(circle_rowspan)+'">']
 #        html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
+        html_report_lines += ['HELLO KITTY']
         html_report_lines += ['</td>']
-
+        html_report_lines += ['</tr>']
 
         # ADD KEY HERE
-
             
         # close
         html_report_lines += ['</table>']
@@ -2953,7 +2953,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'label': 'Homolog Circle Plot PDF'}
                                    ]
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
-                                    'name': 'homolog_circle_PLOT_report.html',
+                                    'name': 'homolog_circle_plot_report.html',
                                     'label': 'Homolog Circle Plot report'}
                                    ]
         reportObj['direct_html_link_index'] = 0
