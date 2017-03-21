@@ -2957,8 +2957,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     z_level = 1
                 gene_pos = base_contig_pos + feature_pos_in_contig[fid]
                 
-                arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
-                arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + mark_width
+                arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - this_mark_width
+                arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
                 #gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
                 gene_bar_diameter = base_diameter
                 gene_x_diameter = 1.0 * gene_bar_diameter
