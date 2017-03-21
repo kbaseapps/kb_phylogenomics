@@ -2885,19 +2885,19 @@ This module contains methods for running and visualizing results of phylogenomic
             if contig_i > 0:
                 base_contig_pos += sorted_base_contig_lens[contig_i-1]
 
-                for fid in feature_order[contig_i]:
-                    gene_pos = base_contig_pos + feature_pos_in_contig[fid]
-
-                    arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
-                    arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + mark_width
-                    gene_color = "blue"
-                    gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
-                    gene_x_diameter = 1.0 * gene_bar_diameter
-                    gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
-                    gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
-                                        theta1=arc_beg, theta2=arc_end, \
-                                        edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
-                    ax.add_patch (gene_arc)        
+            for fid in feature_order[contig_i]:
+                gene_color = "blue"
+                gene_pos = base_contig_pos + feature_pos_in_contig[fid]
+                
+                arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
+                arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + mark_width
+                gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
+                gene_x_diameter = 1.0 * gene_bar_diameter
+                gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
+                gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
+                                    theta1=arc_beg, theta2=arc_end, \
+                                    edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
+                ax.add_patch (gene_arc)        
 
         # save
         fig.savefig(output_png_file_path, dpi=img_dpi)
