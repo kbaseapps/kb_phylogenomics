@@ -2881,7 +2881,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Add marks for base genome
         ax = fig.axes[0]
         base_contig_pos = 0
-        for contig_i in range(feature_order):
+        for contig_i in range(len(feature_order)):
             if contig_i > 0:
                 base_contig_pos += sorted_base_contig_lens[contig_i-1]
 
