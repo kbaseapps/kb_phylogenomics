@@ -2802,6 +2802,32 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError (msg)
 
 
+        # Get mapping of base genes to pangenome
+        #
+        base_to_compare_redundant_map = dict()
+        for cluster in pg_obj['orthologs']:
+            genomes_seen = dict()
+            base_fids = []
+            compare_genomes_seen = []
+            for cluster_member in cluster['orthologs']:
+                feature_id        = cluster_member[0]
+                feature_len_maybe = cluster_member[1]
+                genome_ref        = cluster_member[2]
+                genomes_seen[genome_ref] = True
+                if genome_ref == base_genome_ref:
+                    base_fids.append(feature_id)
+            if genomes_seen[base_genome_ref]:
+                for genome_ref in compare_genome_refs:
+                    if genomes_seen[genome_ref]:
+                        compare_genomes_seen.append(True)
+                    else:
+                        compare_genomes_seen.append(False)
+                for base_fid in base_fids:
+                    base_to_compare_redundant_map[base_fid] = compare_genomes_seen
+            else:
+                base_to_compare_redundant_map[base_fid] = []
+
+
         # Get positions of genes in base genome
         #
         sorted_base_contig_ids = []
@@ -2860,6 +2886,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center = (ellipse_center_x, ellipse_center_y)
         base_diameter = 0.35
         gene_bar_lw = 10
+        genome_ring_spacing = 0.2*gene_bar_lw
         lw_to_coord_scale = 0.01
 
         # Build image
@@ -2898,6 +2925,21 @@ This module contains methods for running and visualizing results of phylogenomic
                                     theta1=arc_beg, theta2=arc_end, \
                                     edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
                 ax.add_patch (gene_arc)        
+
+                # add homolog rings
+                for genome_i,hit_flag in enumerate(base_to_compare_redundant_map[base_fid]):
+                    if not hit_flag:
+                        continue
+                    gene_color = 'green'
+                    gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale + genome_i*(0.5*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale)
+                    gene_x_diameter = 1.0 * gene_bar_diameter
+                    gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
+                    gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
+                                        theta1=arc_beg, theta2=arc_end, \
+                                        edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
+                    ax.add_patch (gene_arc)        
+                    
+
 
         # save
         fig.savefig(output_png_file_path, dpi=img_dpi)
