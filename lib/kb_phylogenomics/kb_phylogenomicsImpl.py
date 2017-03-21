@@ -2855,7 +2855,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # BEG HERE
         fig = pyplot.figure()
-        fig.set_size_inches(5, 5)
+        fig.set_size_inches(3, 3)
         ax = pyplot.subplot2grid( (1,1), (0,0), rowspan=1, colspan=1 )
 
         # Let's turn off visibility of all tic labels and boxes here
