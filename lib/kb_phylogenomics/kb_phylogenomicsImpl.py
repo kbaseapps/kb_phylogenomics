@@ -1050,7 +1050,7 @@ This module contains methods for running and visualizing results of phylogenomic
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
                      'direct_html': '',
-                     'direct_html_index': 0,
+                     'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
                      'workspace_name': params['workspace_name'],
@@ -2289,7 +2289,7 @@ This module contains methods for running and visualizing results of phylogenomic
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
                      'direct_html': '',
-                     'direct_html_index': 0,
+                     'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
                      'workspace_name': params['workspace_name'],
@@ -2866,7 +2866,7 @@ This module contains methods for running and visualizing results of phylogenomic
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
                      'direct_html': '',
-                     'direct_html_index': 0,
+                     'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
                      'workspace_name': params['workspace_name'],
@@ -3417,7 +3417,7 @@ This module contains methods for running and visualizing results of phylogenomic
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
                      'direct_html': '',
-                     'direct_html_index': 0,
+                     'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
                      'workspace_name': params['workspace_name'],
