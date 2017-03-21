@@ -2877,12 +2877,12 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center_x = 0.50
         ellipse_center_y = 0.50
         ellipse_center = (ellipse_center_x, ellipse_center_y)
-        base_diameter = 0.55
+        base_diameter = 0.25
         gene_bar_lw = 10
         lw_to_coord_scale = 0.01
         gene_pos = 1000000
-        arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + mark_width
-        arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
+        arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
+        arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + mark_width
         gene_color = "blue"
         gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
         gene_x_diameter = 1.0 * gene_bar_diameter
