@@ -2949,7 +2949,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         continue
                     gene_color = 'green'
                     #gene_bar_diameter = base_diameter + (genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-                    gene_bar_diameter = base_diameter + (genome_i+1)*(gene_bar_lw)*lw_to_coord_scale
+                    gene_bar_diameter = base_diameter + 0.5*(genome_i+1)*(gene_bar_lw)*lw_to_coord_scale
                     #gene_bar_diameter = base_diameter+0.1
                     z_level = 5  # DEBUG
                     gene_x_diameter = 1.0 * gene_bar_diameter
