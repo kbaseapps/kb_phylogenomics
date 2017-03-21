@@ -2878,7 +2878,7 @@ This module contains methods for running and visualizing results of phylogenomic
         img_dpi = 200
         img_units = "in"
         genome_ring_scale_factor = 4
-        img_pix_width = img_dpi * len(compare_genome_refs) * genome_ring_scale_factor
+        img_pix_width = img_dpi * (len(compare_genome_refs)) * genome_ring_scale_factor
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
