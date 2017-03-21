@@ -2949,7 +2949,6 @@ This module contains methods for running and visualizing results of phylogenomic
         circle_rowspan = 10  # DEBUG
         html_report_lines += ['<tr>']
         html_report_lines += ['<td valign="top" align="left" rowspan="'+str(circle_rowspan)+'">']
-        html_report_lines += ['HELLO KITTY<p>']
         html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
         html_report_lines += ['</td>']
         html_report_lines += ['</tr>']
