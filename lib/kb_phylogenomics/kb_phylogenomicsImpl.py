@@ -2890,10 +2890,11 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center_x = 0.50
         ellipse_center_y = 0.50
         ellipse_center = (ellipse_center_x, ellipse_center_y)
-        base_diameter = 0.25
+        base_diameter = 0.15
         gene_bar_lw = genome_ring_scale_factor * 20
-        genome_ring_spacing = 0.05*gene_bar_lw / float(10*genome_ring_scale_factor)
-        lw_to_coord_scale = 0.01
+        genome_ring_spacing = 0.2*gene_bar_lw / float(genome_ring_scale_factor)
+        #lw_to_coord_scale = 0.01
+        lw_to_coord_scale = 0.1
 
         # Build image
         fig = pyplot.figure()
