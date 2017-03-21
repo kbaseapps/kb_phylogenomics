@@ -2895,7 +2895,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #genome_ring_spacing = 0.2*gene_bar_lw / float(genome_ring_scale_factor)
         genome_ring_spacing = 0.1 * gene_bar_lw
         #lw_to_coord_scale = 0.1
-        lw_to_coord_scale = 0.005
+        lw_to_coord_scale = 0.0005
 
         # Build image
         fig = pyplot.figure()
