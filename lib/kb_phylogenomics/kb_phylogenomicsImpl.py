@@ -2894,7 +2894,8 @@ This module contains methods for running and visualizing results of phylogenomic
         gene_bar_lw = genome_ring_scale_factor * 20
         #genome_ring_spacing = 0.2*gene_bar_lw / float(genome_ring_scale_factor)
         genome_ring_spacing = 0.1 * gene_bar_lw
-        lw_to_coord_scale = 0.1
+        #lw_to_coord_scale = 0.1
+        lw_to_coord_scale = 0.005
 
         # Build image
         fig = pyplot.figure()
@@ -2947,14 +2948,14 @@ This module contains methods for running and visualizing results of phylogenomic
                     if not hit_flag:
                         continue
                     gene_color = 'green'
-                    #gene_bar_diameter = base_diameter + (genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-                    gene_bar_diameter = base_diameter+0.1
+                    gene_bar_diameter = base_diameter + (genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                    #gene_bar_diameter = base_diameter+0.1
                     z_level = 5  # DEBUG
                     gene_x_diameter = 1.0 * gene_bar_diameter
                     gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
                     gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
                                         theta1=arc_beg, theta2=arc_end, \
-                                        edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
+                                        edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
                     ax.add_patch (gene_arc)        
 
 
