@@ -2945,13 +2945,13 @@ This module contains methods for running and visualizing results of phylogenomic
         except:
             raise ValueError ('Logging exception loading html_report to shock')
 
-        reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
-                                    'name': 'homolog_circle_plot.png',
-                                    'label': 'Homolog Circle Plot PNG'},
-                                   {'shock_id': pdf_upload_ret['shock_id'],
-                                    'name': 'homolog_circle_plot.pdf',
-                                    'label': 'Homolog Circle Plot PDF'}
-                                   ]
+#        reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
+#                                    'name': 'homolog_circle_plot.png',
+#                                    'label': 'Homolog Circle Plot PNG'},
+#                                   {'shock_id': pdf_upload_ret['shock_id'],
+#                                    'name': 'homolog_circle_plot.pdf',
+#                                    'label': 'Homolog Circle Plot PDF'}
+#                                   ]
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
                                     'name': 'homolog_circle_plot_report.html',
                                     'label': 'Homolog Circle Plot report'}
