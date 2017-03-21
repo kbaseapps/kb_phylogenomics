@@ -2946,7 +2946,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     if not hit_flag:
                         continue
                     gene_color = 'green'
-                    gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale + (genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                    #gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale + (genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                    gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale + (genome_i+1)*(gene_bar_lw)*lw_to_coord_scale
                     gene_x_diameter = 1.0 * gene_bar_diameter
                     gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
                     gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
