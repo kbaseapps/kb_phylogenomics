@@ -2851,10 +2851,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # BEG HERE
 
-#        fig = pyplot.figure(1)
-#        fig.set_size_inches(18.5, 10.5)
-#        fig.savefig(output_png_file_path, dpi=100)
-#        fig.savefig(output_pdf_file_path, format='pdf')
+        fig = pyplot.figure(1)
+        fig.set_size_inches(18.5, 10.5)
+        fig.savefig(output_png_file_path, dpi=100)
+        fig.savefig(output_pdf_file_path, format='pdf')
 
         # END HERE
 
@@ -2923,19 +2923,19 @@ This module contains methods for running and visualizing results of phylogenomic
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
-#        try:
-#            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
-#                                                'make_handle': 0})
-#                                            #'pack': 'zip'})
-#        except:
-#            raise ValueError ('Logging exception loading png_file to shock')
-#
-#        try:
-#            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
-#                                                'make_handle': 0})
-#                                            #'pack': 'zip'})
-#        except:
-#            raise ValueError ('Logging exception loading pdf_file to shock')
+        try:
+            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
+                                                'make_handle': 0})
+                                            #'pack': 'zip'})
+        except:
+            raise ValueError ('Logging exception loading png_file to shock')
+
+        try:
+            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
+                                                'make_handle': 0})
+                                            #'pack': 'zip'})
+        except:
+            raise ValueError ('Logging exception loading pdf_file to shock')
 
         try:
             #upload_ret = dfu.file_to_shock({'file_path': html_file,
@@ -2945,16 +2945,16 @@ This module contains methods for running and visualizing results of phylogenomic
         except:
             raise ValueError ('Logging exception loading html_report to shock')
 
-#        reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
-#                                    'name': 'phylogenetic_pangenome.png',
-#                                    'label': 'Phylogenetic Pangenome PNG'},
-#                                   {'shock_id': pdf_upload_ret['shock_id'],
-#                                    'name': 'phylogenetic_pangenome.pdf',
-#                                    'label': 'Phylogenetic Pangenome PDF'}
-#                                   ]
+        reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
+                                    'name': 'pan_circle_plot.png',
+                                    'label': 'Pangenome Circle Plot PNG'},
+                                   {'shock_id': pdf_upload_ret['shock_id'],
+                                    'name': 'pan_circle_plot.pdf',
+                                    'label': 'Pangenome Circle Plot PDF'}
+                                   ]
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
                                     'name': 'pan_circle_plot_report.html',
-                                    'label': 'Pangenome Circle Plot report'}
+                                    'label': 'Pangenome Circle Plot Report'}
                                    ]
         reportObj['direct_html_link_index'] = 0
 
