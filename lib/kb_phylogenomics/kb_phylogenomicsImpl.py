@@ -2893,8 +2893,8 @@ This module contains methods for running and visualizing results of phylogenomic
         base_diameter = 0.15
         gene_bar_lw = genome_ring_scale_factor * 20
         #genome_ring_spacing = 0.2*gene_bar_lw / float(genome_ring_scale_factor)
-        genome_ring_spacing = 0.02*gene_bar_lw
-        lw_to_coord_scale = 0.01
+        genome_ring_spacing = 0.1 * gene_bar_lw
+        lw_to_coord_scale = 0.1
 
         # Build image
         fig = pyplot.figure()
@@ -2934,7 +2934,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
                 arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + mark_width
                 #gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
-                gene_bar_diameter = 0.5*gene_bar_lw*lw_to_coord_scale
+                gene_bar_diameter = base_diameter
                 gene_x_diameter = 1.0 * gene_bar_diameter
                 gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
                 gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
@@ -2947,9 +2947,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if not hit_flag:
                         continue
                     gene_color = 'green'
-                    #gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale + (genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-                    #gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale + (genome_i+1)*(gene_bar_lw)*lw_to_coord_scale
-                    gene_bar_diameter = 0.5*gene_bar_lw*lw_to_coord_scale + (genome_i+1)*(gene_bar_lw)*lw_to_coord_scale
+                    #gene_bar_diameter = base_diameter + (genome_i+1)*(gene_bar_lw+genome_ring_spacing)
                     gene_x_diameter = 1.0 * gene_bar_diameter
                     gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
                     gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
