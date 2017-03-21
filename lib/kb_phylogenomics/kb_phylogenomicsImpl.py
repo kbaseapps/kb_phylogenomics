@@ -2816,9 +2816,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 genomes_seen[genome_ref] = True
                 if genome_ref == base_genome_ref:
                     base_fids.append(feature_id)
-            if genomes_seen[base_genome_ref]:
+            if base_genome_ref in genomes_seen:
                 for genome_ref in compare_genome_refs:
-                    if genomes_seen[genome_ref]:
+                    if genome_ref in genomes_seen:
                         compare_genomes_seen.append(True)
                     else:
                         compare_genomes_seen.append(False)
