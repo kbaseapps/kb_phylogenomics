@@ -2782,14 +2782,17 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         pg_genome_refs = pg_obj['genome_refs']
         compare_genome_refs = []
+        compare_genome_refs_cnt = 0
         if 'input_compare_genome_refs' not in params or not params['input_compare_genome_refs']:
             for g_ref in pg_genome_refs:
                 if g_ref == base_genome_ref:
                     continue
                 compare_genome_refs.append(g_ref)
+                compare_genome_refs_cnt += 1
         else:
             for genome_ref in params['input_compare_genome_refs']:
                 compare_genome_refs.append(genome_ref)
+                compare_genome_refs_cnt += 1
 
         missing_genomes = []
         for genome_ref in [base_genome_ref]+compare_genome_refs:
@@ -2878,7 +2881,7 @@ This module contains methods for running and visualizing results of phylogenomic
         img_dpi = 200
         img_units = "in"
         genome_ring_scale_factor = 4
-        img_pix_width = img_dpi * (len(compare_genome_refs)) * genome_ring_scale_factor
+        img_pix_width = img_dpi * compare_genome_refs_cnt * genome_ring_scale_factor
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
