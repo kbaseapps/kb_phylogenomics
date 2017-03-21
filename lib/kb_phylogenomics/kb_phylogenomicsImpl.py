@@ -2810,9 +2810,12 @@ This module contains methods for running and visualizing results of phylogenomic
         feature_contig_id = dict()
         feature_pos_in_contig = dict()
         feature_order = []
+        sum_contig_lens = 0
 
         for contig_i,contig_id in enumerate(base_genome_obj['contig_ids']):
             unsorted_contig_lens[contig_id] = base_genome_obj['contig_lengths'][contig_i]
+            sum_contig_lens += base_genome_obj['contig_lengths'][contig_i]
+
         for order_i,contig_id in enumerate(sorted(unsorted_contig_lens, key=unsorted_contig_lens.__getitem__, reverse=True)):
             sorted_contig_order[contig_id] = order_i
             sorted_base_contig_ids.append(contig_id)
@@ -2850,10 +2853,45 @@ This module contains methods for running and visualizing results of phylogenomic
         img_html_width = img_pix_width // 2
 
         # BEG HERE
-
         fig = pyplot.figure(1)
-        fig.set_size_inches(18.5, 10.5)
-        fig.savefig(output_png_file_path, dpi=100)
+        fig.set_size_inches(5, 5)
+
+        # Let's turn off visibility of all tic labels and boxes here
+        for ax in fig.axes:
+            ax.xaxis.set_visible(False)  # remove axis labels and tics
+            ax.yaxis.set_visible(False)
+            for t in ax.get_xticklabels()+ax.get_yticklabels():  # remove tics
+                t.set_visible(False)
+            ax.spines['top'].set_visible(False)     # Get rid of top axis line
+            ax.spines['bottom'].set_visible(False)  # bottom axis line
+            ax.spines['left'].set_visible(False)    # left axis line
+            ax.spines['right'].set_visible(False)   # right axis line
+
+        ax = fig.axes[0]
+
+        # Add marks for base genome
+        mark_width = 0.5
+        ellipse_to_circle_scaling = 1.0
+        ellipse_center_x = 0.50
+        ellipse_center_y = 0.50
+        ellipse_center = (ellipse_center_x, ellipse_center_y)
+        base_diameter = 0.55
+        gene_bar_lw = 10
+        lw_to_coord_scale = 0.01
+        gene_pos = 1000000
+        arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + mark_width
+        arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
+        gene_color = "blue"
+        gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
+        gene_x_diameter = 1.0 * bar_diameter
+        gene_y_diameter = ellipse_to_circle_scaling * bar_diameter
+        gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
+                          theta1=arc_beg, theta2=arc_end, \
+                          edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
+        ax.add_patch (gene_arc)        
+
+        # save
+        fig.savefig(output_png_file_path, dpi=200)
         fig.savefig(output_pdf_file_path, format='pdf')
 
         # END HERE
@@ -2902,8 +2940,8 @@ This module contains methods for running and visualizing results of phylogenomic
         circle_rowspan = 10  # DEBUG
         html_report_lines += ['<tr>']
         html_report_lines += ['<td valign="top" align="left" rowspan="'+str(circle_rowspan)+'">']
-#        html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
-        html_report_lines += ['HELLO KITTY']
+        html_report_lines += ['HELLO KITTY<p>']
+        html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
         html_report_lines += ['</td>']
         html_report_lines += ['</tr>']
 
