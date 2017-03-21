@@ -2805,6 +2805,28 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError (msg)
 
 
+        # Reorder compare genomes by fractional overlap to base by pangenome
+        #
+        compare_genome_cluster_overlap_cnt = dict()
+        for genome_ref in compare_genome_refs:
+            compare_genome_cluster_overlap_cnt[genome_ref] = 0
+
+        for cluster in pg_obj['orthologs']:
+            genomes_seen = dict()
+            for cluster_member in cluster['orthologs']:
+                feature_id        = cluster_member[0]
+                feature_len_maybe = cluster_member[1]
+                genome_ref        = cluster_member[2]
+                genomes_seen[genome_ref] = True
+            if base_genome_ref in genomes_seen:
+                for genome_ref in compare_genome_refs:
+                    if genome_ref in genomes_seen:
+                        compare_genome_cluster_overlap_cnt[genome_ref] += 1
+
+        sorted_compare_genome_refs = sorted(compare_genome_cluster_overlap_cnt, key=compare_genome_cluster_overlap_cnt.__getitem__, reverse=True)
+        compare_genome_refs = sorted_compare_genome_refs
+
+
         # Get mapping of base genes to pangenome
         #
         base_to_compare_redundant_map = dict()
