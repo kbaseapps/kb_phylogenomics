@@ -2865,14 +2865,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 feature_order[contig_i].append(fid)
 
 
-        # Draw circle plot
+        # Draw Circle Plot with matplotlib
         #
-        png_file = base_genome_obj_name+'-pangenome_circle.png'
-        pdf_file = base_genome_obj_name+'-pangenome_circle.pdf'
-        output_png_file_path = os.path.join(html_output_dir, png_file);
-        output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
-
-        # Init matplotlib
         img_dpi = 300
         img_units = "in"
         img_pix_width = 1200
@@ -2927,7 +2921,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 ax.add_patch (gene_arc)        
 
                 # add homolog rings
-                for genome_i,hit_flag in enumerate(base_to_compare_redundant_map[base_fid]):
+                for genome_i,hit_flag in enumerate(base_to_compare_redundant_map[fid]):
                     if not hit_flag:
                         continue
                     gene_color = 'green'
@@ -2938,14 +2932,16 @@ This module contains methods for running and visualizing results of phylogenomic
                                         theta1=arc_beg, theta2=arc_end, \
                                         edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
                     ax.add_patch (gene_arc)        
-                    
 
 
-        # save
+        # Save circle plot
+        #
+        png_file = base_genome_obj_name+'-pangenome_circle.png'
+        pdf_file = base_genome_obj_name+'-pangenome_circle.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file);
+        output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
         fig.savefig(output_png_file_path, dpi=img_dpi)
         fig.savefig(output_pdf_file_path, format='pdf')
-
-        # END HERE
 
 
         # build report object
