@@ -28,6 +28,7 @@ from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
 
 import ete3
 import matplotlib.pyplot as pyplot  # use this instead
+from matplotlib.patches import Arc
 
 #END_HEADER
 
