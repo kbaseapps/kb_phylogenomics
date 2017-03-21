@@ -2919,23 +2919,23 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         # write html to file and upload
-        html_file = os.path.join (html_output_dir, 'homolog_circle_report.html')
+        html_file = os.path.join (html_output_dir, 'pan_phylo_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
-        try:
-            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
-                                                'make_handle': 0})
-                                            #'pack': 'zip'})
-        except:
-            raise ValueError ('Logging exception loading png_file to shock')
-
-        try:
-            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
-                                                'make_handle': 0})
-                                            #'pack': 'zip'})
-        except:
-            raise ValueError ('Logging exception loading pdf_file to shock')
+#        try:
+#            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
+#                                                'make_handle': 0})
+#                                            #'pack': 'zip'})
+#        except:
+#            raise ValueError ('Logging exception loading png_file to shock')
+#
+#        try:
+#            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
+#                                                'make_handle': 0})
+#                                            #'pack': 'zip'})
+#        except:
+#            raise ValueError ('Logging exception loading pdf_file to shock')
 
         try:
             #upload_ret = dfu.file_to_shock({'file_path': html_file,
@@ -2946,15 +2946,15 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ('Logging exception loading html_report to shock')
 
 #        reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
-#                                    'name': 'homolog_circle_plot.png',
-#                                    'label': 'Homolog Circle Plot PNG'},
+#                                    'name': 'phylogenetic_pangenome.png',
+#                                    'label': 'Phylogenetic Pangenome PNG'},
 #                                   {'shock_id': pdf_upload_ret['shock_id'],
-#                                    'name': 'homolog_circle_plot.pdf',
-#                                    'label': 'Homolog Circle Plot PDF'}
+#                                    'name': 'phylogenetic_pangenome.pdf',
+#                                    'label': 'Phylogenetic Pangenome PDF'}
 #                                   ]
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
-                                    'name': 'homolog_circle_plot_report.html',
-                                    'label': 'Homolog Circle Plot report'}
+                                    'name': 'pan_phylo_report.html',
+                                    'label': 'Phylogenetic Pangenome report'}
                                    ]
         reportObj['direct_html_link_index'] = 0
 
