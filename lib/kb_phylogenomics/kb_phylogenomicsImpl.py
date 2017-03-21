@@ -2853,9 +2853,9 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_width = round(float(img_pix_width)/float(dpi), 1)
         img_html_width = img_pix_width // 2
 
-        # BEG HERE
+        # Build image
         fig = pyplot.figure()
-        fig.set_size_inches(3, 3)
+        fig.set_size_inches(5, 5)
         ax = pyplot.subplot2grid( (1,1), (0,0), rowspan=1, colspan=1 )
 
         # Let's turn off visibility of all tic labels and boxes here
@@ -2877,7 +2877,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center_x = 0.50
         ellipse_center_y = 0.50
         ellipse_center = (ellipse_center_x, ellipse_center_y)
-        base_diameter = 0.25
+        base_diameter = 0.10
         gene_bar_lw = 10
         lw_to_coord_scale = 0.01
         gene_pos = 1000000
