@@ -2919,7 +2919,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         # write html to file and upload
-        html_file = os.path.join (html_output_dir, 'pan_phylo_report.html')
+        html_file = os.path.join (html_output_dir, 'pan_circle_plot_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
@@ -2953,8 +2953,8 @@ This module contains methods for running and visualizing results of phylogenomic
 #                                    'label': 'Phylogenetic Pangenome PDF'}
 #                                   ]
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
-                                    'name': 'pan_phylo_report.html',
-                                    'label': 'Phylogenetic Pangenome report'}
+                                    'name': 'pan_circle_plot_report.html',
+                                    'label': 'Pangenome Circle Plot report'}
                                    ]
         reportObj['direct_html_link_index'] = 0
 
