@@ -2914,8 +2914,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center = (ellipse_center_x, ellipse_center_y)
         base_diameter = 0.20
         gene_bar_lw = genome_ring_scale_factor * 20
-        #genome_ring_spacing = 0.2*gene_bar_lw / float(genome_ring_scale_factor)
-        genome_ring_spacing = 0.1 * gene_bar_lw
+        genome_ring_spacing = 0.05 * gene_bar_lw
         #lw_to_coord_scale = 0.1
         lw_to_coord_scale = 0.005
 
@@ -2973,16 +2972,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     if not hit_flag:
                         continue
                     if fid in base_cores:
-                        #gene_color = "blueviolet"
                         gene_color = "darkblue"
                         z_level = 2
                     else:
-                        #gene_color = 'darkcyan'
                         gene_color = "deepskyblue"
                         z_level = 1
-                    #gene_bar_diameter = base_diameter + (genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-                    gene_bar_diameter = base_diameter + 0.5*(genome_i+1)*(gene_bar_lw)*lw_to_coord_scale
-                    #gene_bar_diameter = base_diameter+0.1
+                    gene_bar_diameter = base_diameter + 0.5*(genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
                     gene_x_diameter = 1.0 * gene_bar_diameter
                     gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
                     gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
