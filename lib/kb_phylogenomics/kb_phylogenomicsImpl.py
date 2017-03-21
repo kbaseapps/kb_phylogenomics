@@ -2945,7 +2945,7 @@ This module contains methods for running and visualizing results of phylogenomic
             for fid in contig_feature_order:
                 if fid in base_singletons:
                     gene_color = "red"
-                    this_mark_width = 4 * mark_width
+                    this_mark_width = 2 * mark_width
                     z_level = 3
                 elif fid in base_cores:
                     gene_color = "blue"
@@ -2973,10 +2973,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     if not hit_flag:
                         continue
                     if fid in base_cores:
-                        gene_color = "blueviolet"
+                        #gene_color = "blueviolet"
+                        gene_color = "deepskyblue"
                         z_level = 2
                     else:
-                        gene_color = 'darkcyan'
+                        #gene_color = 'darkcyan'
+                        gene_color = 'lightskyblue'
                         z_level = 1
                     #gene_bar_diameter = base_diameter + (genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
                     gene_bar_diameter = base_diameter + 0.5*(genome_i+1)*(gene_bar_lw)*lw_to_coord_scale
