@@ -2880,7 +2880,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         img_dpi = 200
         img_units = "in"
-        genome_ring_scale_factor = 2
+        genome_ring_scale_factor = 4
         img_pix_width = img_dpi * compare_genome_refs_cnt * genome_ring_scale_factor
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
@@ -2893,8 +2893,7 @@ This module contains methods for running and visualizing results of phylogenomic
         base_diameter = 0.15
         gene_bar_lw = genome_ring_scale_factor * 20
         genome_ring_spacing = 0.2*gene_bar_lw / float(genome_ring_scale_factor)
-        #lw_to_coord_scale = 0.01
-        lw_to_coord_scale = 0.1
+        lw_to_coord_scale = 0.01
 
         # Build image
         fig = pyplot.figure()
