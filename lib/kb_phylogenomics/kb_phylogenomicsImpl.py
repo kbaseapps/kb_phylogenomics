@@ -2806,7 +2806,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         base_to_compare_redundant_map = dict()
         base_singletons = dict()
-        base_core = dict()
+        base_cores = dict()
         for cluster in pg_obj['orthologs']:
             genomes_seen = dict()
             base_fids = []
@@ -2831,9 +2831,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 for base_fid in base_fids:
                     base_to_compare_redundant_map[base_fid] = compare_genomes_seen
                     if core:
-                        base_core[base_fid] = True
+                        base_cores[base_fid] = True
                     if singleton:
-                        base_singleton[base_fid] = True
+                        base_singletons[base_fid] = True
                     
 
         # Get positions of genes in base genome
@@ -2916,10 +2916,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 base_contig_pos += sorted_base_contig_lens[contig_i-1]
 
             for fid in contig_feature_order:
-                if fid in base_singleton:
+                if fid in base_singletons:
                     gene_color = "red"
                     z_level = 3
-                elif fid in base_core:
+                elif fid in base_cores:
                     gene_color = "blue"
                     z_level = 2
                 else:
