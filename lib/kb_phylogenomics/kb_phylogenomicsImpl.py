@@ -2851,10 +2851,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # BEG HERE
 
-        fig = pyplot.figure(1)
-        fig.set_size_inches(18.5, 10.5)
-        fig.savefig(output_png_file_path, dpi=100)
-        fig.savefig(output_pdf_file_path, format='pdf')
+#        fig = pyplot.figure(1)
+#        fig.set_size_inches(18.5, 10.5)
+#        fig.savefig(output_png_file_path, dpi=100)
+#        fig.savefig(output_pdf_file_path, format='pdf')
 
         # END HERE
 
