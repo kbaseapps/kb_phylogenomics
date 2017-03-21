@@ -2805,6 +2805,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # Get mapping of base genes to pangenome
         #
         base_to_compare_redundant_map = dict()
+        base_singletons = dict()
+        base_core = dict()
         for cluster in pg_obj['orthologs']:
             genomes_seen = dict()
             base_fids = []
@@ -2817,16 +2819,22 @@ This module contains methods for running and visualizing results of phylogenomic
                 if genome_ref == base_genome_ref:
                     base_fids.append(feature_id)
             if base_genome_ref in genomes_seen:
+                core = True
+                singleton = True
                 for genome_ref in compare_genome_refs:
                     if genome_ref in genomes_seen:
+                        singleton = False
                         compare_genomes_seen.append(True)
                     else:
+                        core = False
                         compare_genomes_seen.append(False)
                 for base_fid in base_fids:
                     base_to_compare_redundant_map[base_fid] = compare_genomes_seen
-            else:
-                base_to_compare_redundant_map[base_fid] = []
-
+                    if core:
+                        base_core[base_fid] = True
+                    if singleton:
+                        base_singleton[base_fid] = True
+                    
 
         # Get positions of genes in base genome
         #
@@ -2908,7 +2916,15 @@ This module contains methods for running and visualizing results of phylogenomic
                 base_contig_pos += sorted_base_contig_lens[contig_i-1]
 
             for fid in contig_feature_order:
-                gene_color = "blue"
+                if fid in base_singleton:
+                    gene_color = "red"
+                    z_level = 3
+                elif fid in base_core:
+                    gene_color = "blue"
+                    z_level = 2
+                else:
+                    gene_color = "cyan"
+                    z_level = 1
                 gene_pos = base_contig_pos + feature_pos_in_contig[fid]
                 
                 arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - mark_width
@@ -2918,7 +2934,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
                 gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
                                     theta1=arc_beg, theta2=arc_end, \
-                                    edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=1)  # facecolor does nothing (no fill for Arc)
+                                    edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
                 ax.add_patch (gene_arc)        
 
                 # add homolog rings
