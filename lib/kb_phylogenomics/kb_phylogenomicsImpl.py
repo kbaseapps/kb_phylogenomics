@@ -2853,7 +2853,7 @@ This module contains methods for running and visualizing results of phylogenomic
         img_html_width = img_pix_width // 2
 
         # BEG HERE
-        fig = pyplot.figure(1, 1)
+        fig = pyplot.figure()
         #fig.set_size_inches(5, 5)
         ax = pyplot.subplot2grid( (1,1), (0,0), rowspan=1, colspan=1 )
 
