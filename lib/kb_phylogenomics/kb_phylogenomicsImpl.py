@@ -2853,12 +2853,12 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
-        mark_width = 0.5
+        mark_width = 0.25
         ellipse_to_circle_scaling = 1.0
         ellipse_center_x = 0.50
         ellipse_center_y = 0.50
         ellipse_center = (ellipse_center_x, ellipse_center_y)
-        base_diameter = 0.10
+        base_diameter = 0.25
         gene_bar_lw = 10
         lw_to_coord_scale = 0.01
 
