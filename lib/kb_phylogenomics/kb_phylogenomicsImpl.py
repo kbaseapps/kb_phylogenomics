@@ -3005,11 +3005,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
         for genome_i,genome_ref in enumerate(compare_genome_refs):
             label_radius = base_diameter + 0.5*gene_bar_lw + 0.5*(genome_i+2)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-            x_shift = label_radius * cos(label_angle)
-            y_shift = label_radius * sin(label_angle)
+            x_shift = label_radius * math.cos(label_angle)
+            y_shift = label_radius * math.sin(label_angle)
             label_x_pos = ellipse_center_x + x_shift + label_margin
             label_y_pos = ellipse_center_y + y_shift + label_margin
-            label = str(0)
+            label = str(genome_i+1)
             ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
             
 
