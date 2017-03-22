@@ -3055,12 +3055,12 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         circle_img_height = 1000
         cell_padding = 0
-        #cell_spacing = 5
-        cell_spacing = 0
+        cell_spacing = 10
+        #cell_spacing = 0
         cell_border = 0
         sp = '&nbsp;'
         text_color = "#606060"
-        font_size = '2'
+        font_size = '3'
         space_fontsize = '1'
         bar_char = '.'
         bar_fontsize = '1'
@@ -3091,7 +3091,8 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"genome "+str(genome_i+1)+'</nobr></font></td>']
             html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[genome_ref])+'</nobr></font></td>']
             html_report_lines += ['</tr>']
-
+        for filler_line_i in range(len(compare_genome_refs)+1):
+            html_report_lines += ['<tr><td>'+sp+'</td></tr>']
 
         # close
         html_report_lines += ['</table>']
