@@ -3054,7 +3054,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<table cellpadding="'+str(cell_padding)+'" cellspacing="'+str(cell_spacing)+'" border="'+str(cell_border)+'">']
 
         # add circle image
-        circle_rowspan = 2 * 
+        circle_rowspan = 2 * (compare_genome_refs_cnt+1)
         html_report_lines += ['<tr>']
         html_report_lines += ['<td valign="top" align="left" rowspan="'+str(circle_rowspan)+'">']
         html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
