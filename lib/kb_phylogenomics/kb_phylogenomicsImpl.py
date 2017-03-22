@@ -2907,9 +2907,6 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
-        text_fontsize = 10
-        text_color = "#606060"
-        label_margin = 1.0
         origin_gap_angle = 20
         mark_width = 0.1
         ellipse_to_circle_scaling = 1.0
@@ -2991,30 +2988,28 @@ This module contains methods for running and visualizing results of phylogenomic
                     ax.add_patch (gene_arc)        
 
         # Add labels
-        ellipse_center_x = 0.50
-        ellipse_center_y = 0.50
-        base_diameter = 0.20
+        text_fontsize = 10
+        text_color = "#606060"
+        label_margin = 0.01
+        y_downshift = 0.01 * ellipse_to_circle_scaling
+        text_y_delta = 0.25
+
         label_angle = (math.pi/180) * (90 - origin_gap_angle/2.0 - (360-origin_gap_angle))
         #label_radius = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
         label_radius = 0.5*base_diameter
         x_shift = label_radius * math.cos(label_angle)
         y_shift = label_radius * math.sin(label_angle)
-        #label_x_pos = ellipse_center_x + x_shift + label_margin
-        #label_y_pos = ellipse_center_y + y_shift + label_margin
-        label_x_pos = ellipse_center_x + x_shift
-        label_y_pos = ellipse_center_y + y_shift
+        label_x_pos = ellipse_center_x + x_shift + label_margin
+        label_y_pos = ellipse_center_y + y_shift - y_downshift
         label = str(0)
         ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         for genome_i,genome_ref in enumerate(compare_genome_refs):
-            #label_radius = base_diameter + 0.5*gene_bar_lw + 0.5*(genome_i+2)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-            label_radius = 0.5*base_diameter + 0.5*(genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+            label_radius = 0.5*base_diameter + text_y_delta*(genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
             x_shift = label_radius * math.cos(label_angle)
             y_shift = label_radius * math.sin(label_angle)
-            #label_x_pos = ellipse_center_x + x_shift + label_margin
-            #label_y_pos = ellipse_center_y + y_shift + label_margin
-            label_x_pos = ellipse_center_x + x_shift
-            label_y_pos = ellipse_center_y + y_shift
+            label_x_pos = ellipse_center_x + x_shift + label_margin
+            label_y_pos = ellipse_center_y + y_shift - y_downshift
             label = str(genome_i+1)
             ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
             
