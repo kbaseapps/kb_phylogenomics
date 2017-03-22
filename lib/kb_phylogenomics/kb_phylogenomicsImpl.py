@@ -2907,7 +2907,7 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
-        origin_gap_angle = 5
+        origin_gap_angle = 20
         mark_width = 0.1
         ellipse_to_circle_scaling = 1.0
         ellipse_center_x = 0.50
@@ -2915,7 +2915,8 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center = (ellipse_center_x, ellipse_center_y)
         base_diameter = 0.20
         gene_bar_lw = genome_ring_scale_factor * 20
-        genome_ring_spacing = 0.05 * gene_bar_lw
+        #genome_ring_spacing = 0.05 * gene_bar_lw
+        genome_ring_spacing = 0.2 * gene_bar_lw
         #lw_to_coord_scale = 0.1
         lw_to_coord_scale = 0.005
 
