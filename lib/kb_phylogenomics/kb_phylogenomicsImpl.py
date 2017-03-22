@@ -2907,6 +2907,9 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
+        text_fontsize = 20
+        text_color = "#606060"
+        label_margin = 1.0
         origin_gap_angle = 20
         mark_width = 0.1
         ellipse_to_circle_scaling = 1.0
@@ -2916,7 +2919,7 @@ This module contains methods for running and visualizing results of phylogenomic
         base_diameter = 0.20
         gene_bar_lw = genome_ring_scale_factor * 20
         #genome_ring_spacing = 0.05 * gene_bar_lw
-        genome_ring_spacing = 0.2 * gene_bar_lw
+        genome_ring_spacing = 0.3 * gene_bar_lw
         #lw_to_coord_scale = 0.1
         lw_to_coord_scale = 0.005
 
@@ -2987,6 +2990,19 @@ This module contains methods for running and visualizing results of phylogenomic
                                         edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
                     ax.add_patch (gene_arc)        
 
+        # Add labels
+        ellipse_center_x = 0.50
+        ellipse_center_y = 0.50
+        base_diameter = 0.20
+        label_angle = 90 - origin_gap_angle/2.0 - (360-orgin_gap_angle)
+        label_radius = base_diameter + 0.5*gene_bar_lw
+        x_shift = label_radius * cos(label_angle)
+        y_shift = label_radius * sin(label_angle)
+        label_x_pos = ellipse_center_x + x_shift + label_margin
+        label_y_pos = ellipse_center_y + y_shift + label_margin
+        label = str(0)
+        ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+
 
         # Save circle plot
         #
@@ -3038,7 +3054,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<table cellpadding="'+str(cell_padding)+'" cellspacing="'+str(cell_spacing)+'" border="'+str(cell_border)+'">']
 
         # add circle image
-        circle_rowspan = 10  # DEBUG
+        circle_rowspan = 2 * 
         html_report_lines += ['<tr>']
         html_report_lines += ['<td valign="top" align="left" rowspan="'+str(circle_rowspan)+'">']
         html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
