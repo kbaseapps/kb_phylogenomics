@@ -20,7 +20,7 @@ from kb_phylogenomics.authclient import KBaseAuth as _KBaseAuth
 
 DEPLOY = 'KB_DEPLOYMENT_CONFIG'
 SERVICE = 'KB_SERVICE_NAME'
-AUTH = 'auth-server-url'
+AUTH = 'auth-service-url'
 
 # Note that the error fields do not match the 2.0 JSONRPC spec
 
@@ -109,7 +109,11 @@ class JSONRPCServiceCustom(JSONRPCService):
             # Exception was raised inside the method.
             newerr = JSONServerError()
             newerr.trace = traceback.format_exc()
-            newerr.data = e.message
+            if isinstance(e.message, basestring):
+                newerr.data = e.message
+            else:
+                # Some exceptions embed other exceptions as the message
+                newerr.data = repr(e.message)
             raise newerr
         return result
 
@@ -332,39 +336,39 @@ class Application(object):
         self.rpc_service.add(impl_kb_phylogenomics.run_DomainAnnotation_Sets,
                              name='kb_phylogenomics.run_DomainAnnotation_Sets',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.run_DomainAnnotation_Sets'] = 'required' # noqa
+        self.method_authentication['kb_phylogenomics.run_DomainAnnotation_Sets'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_fxn_profile,
                              name='kb_phylogenomics.view_fxn_profile',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.view_fxn_profile'] = 'required' # noqa
+        self.method_authentication['kb_phylogenomics.view_fxn_profile'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_fxn_profile_phylo,
                              name='kb_phylogenomics.view_fxn_profile_phylo',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.view_fxn_profile_phylo'] = 'required' # noqa
+        self.method_authentication['kb_phylogenomics.view_fxn_profile_phylo'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_genome_circle_plot,
                              name='kb_phylogenomics.view_genome_circle_plot',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.view_genome_circle_plot'] = 'required' # noqa
+        self.method_authentication['kb_phylogenomics.view_genome_circle_plot'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_pan_circle_plot,
                              name='kb_phylogenomics.view_pan_circle_plot',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.view_pan_circle_plot'] = 'required' # noqa
+        self.method_authentication['kb_phylogenomics.view_pan_circle_plot'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_pan_accumulation_plot,
                              name='kb_phylogenomics.view_pan_accumulation_plot',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.view_pan_accumulation_plot'] = 'required' # noqa
+        self.method_authentication['kb_phylogenomics.view_pan_accumulation_plot'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_pan_flower_venn,
                              name='kb_phylogenomics.view_pan_flower_venn',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.view_pan_flower_venn'] = 'required' # noqa
+        self.method_authentication['kb_phylogenomics.view_pan_flower_venn'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_pan_pairwise_overlap,
                              name='kb_phylogenomics.view_pan_pairwise_overlap',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.view_pan_pairwise_overlap'] = 'required' # noqa
+        self.method_authentication['kb_phylogenomics.view_pan_pairwise_overlap'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_pan_phylo,
                              name='kb_phylogenomics.view_pan_phylo',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.view_pan_phylo'] = 'required' # noqa
+        self.method_authentication['kb_phylogenomics.view_pan_phylo'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.status,
                              name='kb_phylogenomics.status',
                              types=[dict])

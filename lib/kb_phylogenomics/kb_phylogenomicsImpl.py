@@ -50,9 +50,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "0.0.1"
-    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "f7b44b9ffa99f06e66ecc5be3f5298088c56974b"
+    VERSION = "0.0.2"
+    GIT_URL = "https://github.com/rsutormin/kb_phylogenomics"
+    GIT_COMMIT_HASH = "063ee6908b7568290b8c4af98ba69cb7264112dc"
 
     #BEGIN_CLASS_HEADER
 
