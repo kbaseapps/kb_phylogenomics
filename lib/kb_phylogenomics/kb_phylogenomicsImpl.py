@@ -2990,8 +2990,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # Add labels
         text_fontsize = 10
         text_color = "#606060"
-        label_margin = 0.01
-        y_downshift = 0.01 * ellipse_to_circle_scaling
+        label_margin = 0.005
+        y_downshift = 0.075 * ellipse_to_circle_scaling
         text_y_delta = 0.25
 
         label_angle = (math.pi/180) * (90 - origin_gap_angle/2.0 - (360-origin_gap_angle))
