@@ -3003,7 +3003,7 @@ This module contains methods for running and visualizing results of phylogenomic
         text_fontsize = 10
         text_color = "#606060"
         label_margin = 0.005
-        y_downshift = 0.075 * ellipse_to_circle_scaling
+        y_downshift = 0.0075 * ellipse_to_circle_scaling
         text_y_delta = 0.25
 
         label_angle = (math.pi/180) * (90 - origin_gap_angle/2.0 - (360-origin_gap_angle))
@@ -3083,13 +3083,13 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</td>']
 
         # add labels
-        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(text_fontsize)+'">'+"genome "+str(0)+'</font></td>']
-        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(text_fontsize)+'">'+str(genome_sci_name_by_ref[base_genome_ref])+'</font></td>']
+        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"genome "+str(0)+'</nobr></font></td>']
+        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[base_genome_ref])+'</nobr></font></td>']
         html_report_lines += ['</tr>']
         for genome_i,genome_ref in enumerate(compare_genome_refs):
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(text_fontsize)+'">'+"genome "+str(genome_i+1)+'</font></td>']
-            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(text_fontsize)+'">'+str(genome_sci_name_by_ref[genome_ref])+'</font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"genome "+str(genome_i+1)+'</nobr></font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[genome_ref])+'</nobr></font></td>']
             html_report_lines += ['</tr>']
 
 
