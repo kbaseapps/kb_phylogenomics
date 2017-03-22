@@ -3091,7 +3091,7 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"genome "+str(genome_i+1)+'</nobr></font></td>']
             html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[genome_ref])+'</nobr></font></td>']
             html_report_lines += ['</tr>']
-        for filler_line_i in range(compare_genome_refs_cnt+1):
+        for filler_line_i in range(2*(compare_genome_refs_cnt+1)):
             html_report_lines += ['<tr><td>'+sp+'</td></tr>']
 
         # close
