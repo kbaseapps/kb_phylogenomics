@@ -2907,6 +2907,7 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
+        origin_gap_angle = 5
         mark_width = 0.1
         ellipse_to_circle_scaling = 1.0
         ellipse_center_x = 0.50
@@ -2956,8 +2957,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     z_level = 1
                 gene_pos = base_contig_pos + feature_pos_in_contig[fid]
                 
-                arc_beg = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) - this_mark_width
-                arc_end = 90 - 360 * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
+                arc_beg = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) - this_mark_width
+                arc_end = 90 + origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
                 #gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
                 gene_bar_diameter = base_diameter
                 gene_x_diameter = 1.0 * gene_bar_diameter
