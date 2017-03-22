@@ -2958,7 +2958,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 gene_pos = base_contig_pos + feature_pos_in_contig[fid]
                 
                 arc_beg = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) - this_mark_width
-                arc_end = 90 + origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
+                arc_end = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
                 #gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
                 gene_bar_diameter = base_diameter
                 gene_x_diameter = 1.0 * gene_bar_diameter
