@@ -2740,6 +2740,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # get base genome
         #
+        genome_sci_name_by_ref = dict()
         base_genome_ref = input_ref = params['input_genome_ref']
         base_genome_obj_name = None
         try:
@@ -2755,6 +2756,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         try:
             base_genome_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            genome_sci_name_by_ref[base_genome_ref] = base_genome_obj['scientific_name']
         except:
             raise ValueError ("unable to fetch genome: "+input_ref)
 
@@ -2825,6 +2827,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
         sorted_compare_genome_refs = sorted(compare_genome_cluster_overlap_cnt, key=compare_genome_cluster_overlap_cnt.__getitem__, reverse=True)
         compare_genome_refs = sorted_compare_genome_refs
+
+
+        # Get genome sci names
+        #
+        for genome_ref in compare_genome_refs:
+            try:
+                genome_obj =  wsClient.get_objects([{'ref':genome_ref}])[0]['data']
+                genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
+            except:
+                raise ValueError ("unable to fetch genome: "+genome_ref)
 
 
         # Get mapping of base genes to pangenome
@@ -3069,10 +3081,18 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<td valign="top" align="left" rowspan="'+str(circle_rowspan)+'">']
         html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
         html_report_lines += ['</td>']
-        html_report_lines += ['</tr>']
 
-        # ADD KEY HERE
-            
+        # add labels
+        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(text_fontsize)+'">'+"genome "+str(0)+'</font></td>']
+        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(text_fontsize)+'">'+str(genome_sci_name_by_ref[base_genome_ref])+'</font></td>']
+        html_report_lines += ['</tr>']
+        for genome_i,genome_ref in enumerate(compare_genome_refs):
+            html_report_lines += ['<tr>']
+            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(text_fontsize)+'">'+"genome "+str(genome_i+1)+'</font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(text_fontsize)+'">'+str(genome_sci_name_by_ref[genome_ref])+'</font></td>']
+            html_report_lines += ['</tr>']
+
+
         # close
         html_report_lines += ['</table>']
         html_report_lines += ['</body>']
