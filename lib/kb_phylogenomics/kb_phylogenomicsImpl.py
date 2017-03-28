@@ -2965,6 +2965,14 @@ This module contains methods for running and visualizing results of phylogenomic
         genome_ring_spacing = 0.3 * gene_bar_lw
         #lw_to_coord_scale = 0.1
         lw_to_coord_scale = 0.005
+        base_singleton_color = "red"
+        base_core_color = "magenta"
+        #hit_core_color = "darkmagenta"
+        hit_core_color = "magenta"
+        base_univ_color = "blue"
+        hit_univ_color = "darkblue"
+        base_partial_color = "cyan"
+        hit_partial_color = "deepskyblue"
 
         # Build image
         fig = pyplot.figure()
@@ -2991,23 +2999,22 @@ This module contains methods for running and visualizing results of phylogenomic
 
             for fid in contig_feature_order:
                 if fid in base_singletons:
-                    gene_color = "red"
+                    gene_color = base_singleton_color
                     this_mark_width = 2* mark_width
                     z_level = 4
                 elif fid in base_cores:
-                    gene_color = "magenta"
-                    #hit_gene_color = "darkmagenta"
-                    hit_gene_color = "magenta"
+                    gene_color = base_core_color
+                    hit_gene_color = hit_core_color
                     this_mark_width = mark_width
                     z_level = 3
                 elif fid in base_universals:
-                    gene_color = "blue"
-                    hit_gene_color = "darkblue"
+                    gene_color = base_univ_color
+                    hit_gene_color = hit_univ_color
                     this_mark_width = mark_width
                     z_level = 2
                 else:
-                    gene_color = "cyan"
-                    hit_gene_color = "deepskyblue"
+                    gene_color = base_partial_color
+                    hit_gene_color = hit_partial_color
                     this_mark_width = mark_width
                     z_level = 1
                 gene_pos = base_contig_pos + feature_pos_in_contig[fid]
@@ -3070,6 +3077,32 @@ This module contains methods for running and visualizing results of phylogenomic
             label_y_pos = ellipse_center_y + y_shift - y_downshift
             label = str(genome_i+1)
             ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+
+        # Add color key
+        key_x_margin = 0.1
+        key_y_margin = 0.1
+        key_line_spacing = 0.1
+        key_x_label_offset = 0.1
+        ax.text (key_x_margin, key_y_margin, genome_sci_name_by_ref[base_genome_ref], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, key_y_margin+1*key_line_spacing, "core + outgroup", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, key_y_margin+2*key_line_spacing, "clade-specific core", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, key_y_margin+3*key_line_spacing, "non-core pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, key_y_margin+4*key_line_spacing, "base singletons", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+
+        ax.text (key_x_margin, key_y_margin+6*key_line_spacing, "Pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, key_y_margin+7*key_line_spacing, "core + outgroup", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, key_y_margin+8*key_line_spacing, "clade-specific core", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, key_y_margin+9*key_line_spacing, "non-core pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+
+
+        base_singleton_color = "red"
+        base_core_color = "magenta"
+        hit_core_color = "magenta"
+        base_univ_color = "blue"
+        hit_univ_color = "darkblue"
+        base_partial_color = "cyan"
+        hit_partial_color = "deepskyblue"
+        
             
 
         # Save circle plot
