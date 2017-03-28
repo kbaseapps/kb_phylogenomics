@@ -3122,14 +3122,14 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<table cellpadding="'+str(cell_padding)+'" cellspacing="'+str(cell_spacing)+'" border="'+str(cell_border)+'">']
 
         # add circle image
-        circle_rowspan = 2 * (compare_genome_refs_cnt+1)
+        circle_rowspan = 2 * (compare_genome_refs_cnt+outgroup_genome_refs_cnt+1)
         html_report_lines += ['<tr>']
-        html_report_lines += ['<td valign="top" align="left" rowspan="'+str(circle_rowspan)+'">']
+        html_report_lines += ['<td valign="middle" align="left" rowspan="'+str(circle_rowspan)+'">']
         html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
         html_report_lines += ['</td>']
 
         # add labels
-        for filler_line_i in range((compare_genome_refs_cnt+1)//2):
+        for filler_line_i in range((compare_genome_refs_cnt+outgroup_genome_refs_cnt+1)//2):
             if filler_line_i > 0:
                 html_report_lines += ['<tr>']
             html_report_lines += ['<td>'+sp+'</td></tr>']
@@ -3141,7 +3141,12 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"genome "+str(genome_i+1)+'</nobr></font></td>']
             html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[genome_ref])+'</nobr></font></td>']
             html_report_lines += ['</tr>']
-        for filler_line_i in range((compare_genome_refs_cnt+1)//2):
+        for genome_i,genome_ref in enumerate(outgroup_genome_refs):
+            html_report_lines += ['<tr>']
+            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"outgroup genome"+'</nobr></font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[genome_ref])+'</nobr></font></td>']
+            html_report_lines += ['</tr>']
+        for filler_line_i in range((compare_genome_refs_cnt+outgroup_genome_refs_cnt+1)//2):
             html_report_lines += ['<tr><td>'+sp+'</td></tr>']
 
         # close
