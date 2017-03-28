@@ -2797,8 +2797,21 @@ This module contains methods for running and visualizing results of phylogenomic
                 compare_genome_refs.append(genome_ref)
                 compare_genome_refs_cnt += 1
 
+
+        # get outgroup genomes
+        #
+        outgroup_genome_refs = []
+        outgroup_genome_refs_cnt = 0
+        if 'input_outgroup_genome_refs' in params and params['input_outgroup_genome_refs']:
+            for genome_ref in params['input_outgroup_genome_refs']:
+                outgroup_genome_refs.append(genome_ref)
+                outgroup_genome_refs_cnt += 1
+
+
+        # Make sure all requested genomes are in pangenome
+        #
         missing_genomes = []
-        for genome_ref in [base_genome_ref]+compare_genome_refs:
+        for genome_ref in [base_genome_ref] + compare_genome_refs + outgroup_genome_refs:
             if genome_ref not in pg_genome_refs:
                 missing_genomes.append(genome_ref)
         if missing_genomes:
@@ -2832,7 +2845,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Get genome sci names
         #
-        for genome_ref in compare_genome_refs:
+        for genome_ref in compare_genome_refs + outgroup_genome_refs:
             try:
                 genome_obj =  wsClient.get_objects([{'ref':genome_ref}])[0]['data']
                 genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
@@ -2845,10 +2858,12 @@ This module contains methods for running and visualizing results of phylogenomic
         base_to_compare_redundant_map = dict()
         base_singletons = dict()
         base_cores = dict()
+        base_universals = dict()
         for cluster in pg_obj['orthologs']:
             genomes_seen = dict()
             base_fids = []
             compare_genomes_seen = []
+            outgroup_genomes_seen = []
             for cluster_member in cluster['orthologs']:
                 feature_id        = cluster_member[0]
                 feature_len_maybe = cluster_member[1]
@@ -2857,6 +2872,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 if genome_ref == base_genome_ref:
                     base_fids.append(feature_id)
             if base_genome_ref in genomes_seen:
+                universal = True
                 core = True
                 singleton = True
                 for genome_ref in compare_genome_refs:
@@ -2864,13 +2880,22 @@ This module contains methods for running and visualizing results of phylogenomic
                         singleton = False
                         compare_genomes_seen.append(True)
                     else:
+                        universal = False
                         core = False
                         compare_genomes_seen.append(False)
+                for genome_ref in outgroup_genome_refs:
+                    if genome_ref in genomes_seen:
+                        singleton = False
+                        core = False
+                    else:
+                        universal = False
                 for base_fid in base_fids:
                     base_to_compare_redundant_map[base_fid] = compare_genomes_seen
-                    if core:
+                    if universal:
+                        base_universals[base_fid] = True
+                    elif core:
                         base_cores[base_fid] = True
-                    if singleton:
+                    elif singleton:
                         base_singletons[base_fid] = True
                     
 
@@ -2961,9 +2986,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 if fid in base_singletons:
                     gene_color = "red"
                     this_mark_width = 2 * mark_width
-                    z_level = 3
+                    z_level = 4
                 elif fid in base_cores:
                     gene_color = "blue"
+                    this_mark_width = mark_width
+                    z_level = 3
+                elif fid in base_cores:
+                    gene_color = "green"
                     this_mark_width = mark_width
                     z_level = 2
                 else:
@@ -2989,6 +3018,9 @@ This module contains methods for running and visualizing results of phylogenomic
                         continue
                     if fid in base_cores:
                         gene_color = "darkblue"
+                        z_level = 3
+                    if fid in base_universals:
+                        gene_color = "green"
                         z_level = 2
                     else:
                         gene_color = "deepskyblue"
