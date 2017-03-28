@@ -589,6 +589,7 @@ view_pan_circle_plot_Input is a reference to a hash where the following keys are
 	input_genome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
+	input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 workspace_name is a string
 data_obj_ref is a string
 view_pan_circle_plot_Output is a reference to a hash where the following keys are defined:
@@ -608,6 +609,7 @@ view_pan_circle_plot_Input is a reference to a hash where the following keys are
 	input_genome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
+	input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 workspace_name is a string
 data_obj_ref is a string
 view_pan_circle_plot_Output is a reference to a hash where the following keys are defined:
@@ -1657,6 +1659,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
+input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 
 </pre>
 
@@ -1669,6 +1672,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
+input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 
 
 =end text

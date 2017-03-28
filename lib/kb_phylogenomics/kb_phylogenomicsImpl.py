@@ -52,7 +52,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "f7b44b9ffa99f06e66ecc5be3f5298088c56974b"
+    GIT_COMMIT_HASH = "1cd4b9c63be2b484fb0f0dba0f358b731a8e86e4"
 
     #BEGIN_CLASS_HEADER
 
@@ -2687,7 +2687,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "workspace_name" of type "workspace_name" (** Common types),
            parameter "input_genome_ref" of type "data_obj_ref", parameter
            "input_pangenome_ref" of type "data_obj_ref", parameter
-           "input_compare_genome_refs" of type "data_obj_ref"
+           "input_compare_genome_refs" of type "data_obj_ref", parameter
+           "input_outgroup_genome_refs" of type "data_obj_ref"
         :returns: instance of type "view_pan_circle_plot_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

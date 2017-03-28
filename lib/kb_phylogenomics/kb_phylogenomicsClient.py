@@ -124,7 +124,8 @@ class kb_phylogenomics(object):
            "workspace_name" of type "workspace_name" (** Common types),
            parameter "input_genome_ref" of type "data_obj_ref", parameter
            "input_pangenome_ref" of type "data_obj_ref", parameter
-           "input_compare_genome_refs" of type "data_obj_ref"
+           "input_compare_genome_refs" of type "data_obj_ref", parameter
+           "input_outgroup_genome_refs" of type "data_obj_ref"
         :returns: instance of type "view_pan_circle_plot_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

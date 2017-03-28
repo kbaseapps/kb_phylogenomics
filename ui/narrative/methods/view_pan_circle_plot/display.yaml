@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: View Pangenome Circle Plot
+name: Pangenome Circle Plot
 
 tooltip: |
     View a Microbial Pangenome as a Circle Plot
@@ -50,6 +50,13 @@ parameters :
             The Genome(s) to compare against the base
         long-hint  : |
             The Genome(s) to compare against the base
+    input_outgroup_genome_refs :
+        ui-name : |
+            Outgroup Genome(s)
+        short-hint : |
+            The Genome(s) to use as outgroup to distinguish clade-specific core
+        long-hint  : |
+            The Genome(s) to use as outgroup to distinguish clade-specific core
 
 description : |
     <p>After Pangenome calculation, you can use this method to view the overlapping membership of genes against a base genome.</p>

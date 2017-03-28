@@ -136,6 +136,7 @@ module kb_phylogenomics {
         data_obj_ref   input_genome_ref;
 	data_obj_ref   input_pangenome_ref;
         data_obj_ref   input_compare_genome_refs;
+        data_obj_ref   input_outgroup_genome_refs;
     } view_pan_circle_plot_Input;
 
     typedef structure {

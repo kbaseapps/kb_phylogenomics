@@ -43,6 +43,17 @@
             "text_options": {
                 "valid_ws_types": [ "KBaseGenomes.Genome" ]
             }
+        },
+        {
+            "id": "input_outgroup_genome_refs",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": true,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseGenomes.Genome" ]
+            }
         }
     ],
     "behavior": {
@@ -68,6 +79,11 @@
                 {
                     "input_parameter": "input_compare_genome_refs",
 		    "target_property": "input_compare_genome_refs",
+		    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter": "input_outgroup_genome_refs",
+		    "target_property": "input_outgroup_genome_refs",
 		    "target_type_transform": "resolved-ref"
                 }
             ],
