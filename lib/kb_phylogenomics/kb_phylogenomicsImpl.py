@@ -2996,8 +2996,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     z_level = 4
                 elif fid in base_cores:
                     gene_color = "magenta"
-                    hit_gene_color = "darkmagenta"
-                    #hit_gene_color = "magenta"
+                    #hit_gene_color = "darkmagenta"
+                    hit_gene_color = "magenta"
                     this_mark_width = mark_width
                     z_level = 3
                 elif fid in base_universals:
