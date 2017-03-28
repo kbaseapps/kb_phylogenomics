@@ -2798,7 +2798,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 compare_genome_refs_cnt += 1
 
 
-        # get outgroup genomes
+        # get outgroup genomes and remove from compare_genomes
         #
         outgroup_genome_refs = []
         outgroup_genome_refs_cnt = 0
@@ -2806,6 +2806,13 @@ This module contains methods for running and visualizing results of phylogenomic
             for genome_ref in params['input_outgroup_genome_refs']:
                 outgroup_genome_refs.append(genome_ref)
                 outgroup_genome_refs_cnt += 1
+            new_compare_genome_refs = []
+            compare_genome_refs_cnt = 0
+            for genome_ref in compare_genome_refs:
+                if genome_ref not in outgroup_genome_refs:
+                    new_compare_genome_refs.append(genome_ref)
+                    compare_genome_refs_cnt += 1
+            compare_genome_refs = new_compare_genome_refs
 
 
         # Make sure all requested genomes are in pangenome
