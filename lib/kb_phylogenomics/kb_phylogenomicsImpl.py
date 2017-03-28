@@ -3143,7 +3143,7 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['</tr>']
         for genome_i,genome_ref in enumerate(outgroup_genome_refs):
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"outgroup genome"+'</nobr></font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"outgroup"+'</nobr></font></td>']
             html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[genome_ref])+'</nobr></font></td>']
             html_report_lines += ['</tr>']
         for filler_line_i in range((compare_genome_refs_cnt+outgroup_genome_refs_cnt+1)//2):
