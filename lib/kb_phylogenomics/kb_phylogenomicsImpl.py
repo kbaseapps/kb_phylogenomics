@@ -2988,11 +2988,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     this_mark_width = 2 * mark_width
                     z_level = 4
                 elif fid in base_cores:
-                    gene_color = "blue"
+                    gene_color = "magenta"
                     this_mark_width = mark_width
                     z_level = 3
-                elif fid in base_cores:
-                    gene_color = "green"
+                elif fid in base_universals:
+                    gene_color = "blue"
                     this_mark_width = mark_width
                     z_level = 2
                 else:
@@ -3017,10 +3017,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     if not hit_flag:
                         continue
                     if fid in base_cores:
-                        gene_color = "darkblue"
+                        gene_color = "darkmagenta"
                         z_level = 3
                     if fid in base_universals:
-                        gene_color = "green"
+                        gene_color = "darkblue"
                         z_level = 2
                     else:
                         gene_color = "deepskyblue"
