@@ -3079,20 +3079,20 @@ This module contains methods for running and visualizing results of phylogenomic
             ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         # Add color key
-        key_x_margin = 0.1
-        key_y_margin = 0.1
-        key_line_spacing = 0.1
-        key_x_label_offset = 0.1
-        ax.text (key_x_margin, key_y_margin, genome_sci_name_by_ref[base_genome_ref], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-        ax.text (key_x_margin+key_x_label_offset, key_y_margin+1*key_line_spacing, "core + outgroup", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-        ax.text (key_x_margin+key_x_label_offset, key_y_margin+2*key_line_spacing, "clade-specific core", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-        ax.text (key_x_margin+key_x_label_offset, key_y_margin+3*key_line_spacing, "non-core pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-        ax.text (key_x_margin+key_x_label_offset, key_y_margin+4*key_line_spacing, "base singletons", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        key_x_margin = 0.01
+        key_y_margin = 0.01
+        key_line_spacing = 0.01
+        key_x_label_offset = 0.01
+        ax.text (key_x_margin, 1.0-key_y_margin, genome_sci_name_by_ref[base_genome_ref], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+1*key_line_spacing), "core + outgroup", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+2*key_line_spacing), "clade-specific core", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+3*key_line_spacing), "non-core pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+4*key_line_spacing), "base singletons", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
-        ax.text (key_x_margin, key_y_margin+6*key_line_spacing, "Pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-        ax.text (key_x_margin+key_x_label_offset, key_y_margin+7*key_line_spacing, "core + outgroup", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-        ax.text (key_x_margin+key_x_label_offset, key_y_margin+8*key_line_spacing, "clade-specific core", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-        ax.text (key_x_margin+key_x_label_offset, key_y_margin+9*key_line_spacing, "non-core pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin, 1.0-(key_y_margin+6*key_line_spacing), "Pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+7*key_line_spacing), "core + outgroup", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+8*key_line_spacing), "clade-specific core", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+9*key_line_spacing), "non-core pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
 
         base_singleton_color = "red"
@@ -3149,7 +3149,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
-        html_report_lines += ['<title>KBase Homolog Circle Plot</title>']
+        html_report_lines += ['<title>KBase Pangenome Homolog Circle Plot</title>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
         html_report_lines += ['<table cellpadding="'+str(cell_padding)+'" cellspacing="'+str(cell_spacing)+'" border="'+str(cell_border)+'">']
