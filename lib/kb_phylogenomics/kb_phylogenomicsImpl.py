@@ -2992,11 +2992,11 @@ This module contains methods for running and visualizing results of phylogenomic
             for fid in contig_feature_order:
                 if fid in base_singletons:
                     gene_color = "red"
-                    this_mark_width = 2 * mark_width
+                    this_mark_width = 2* mark_width
                     z_level = 4
                 elif fid in base_cores:
                     gene_color = "magenta"
-                    this_mark_width = mark_width
+                    this_mark_width = 2* mark_width
                     z_level = 3
                 elif fid in base_universals:
                     gene_color = "blue"
