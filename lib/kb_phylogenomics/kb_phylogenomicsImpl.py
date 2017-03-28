@@ -2996,14 +2996,18 @@ This module contains methods for running and visualizing results of phylogenomic
                     z_level = 4
                 elif fid in base_cores:
                     gene_color = "magenta"
+                    #hit_gene_color = "darkmagenta"
+                    hit_gene_color = "magenta"
                     this_mark_width = 2* mark_width
                     z_level = 3
                 elif fid in base_universals:
                     gene_color = "blue"
+                    hit_gene_color = "darkblue"
                     this_mark_width = mark_width
                     z_level = 2
                 else:
                     gene_color = "cyan"
+                    hit_gene_color = "deepskyblue"
                     this_mark_width = mark_width
                     z_level = 1
                 gene_pos = base_contig_pos + feature_pos_in_contig[fid]
@@ -3023,21 +3027,22 @@ This module contains methods for running and visualizing results of phylogenomic
                 for genome_i,hit_flag in enumerate(base_to_compare_redundant_map[fid]):
                     if not hit_flag:
                         continue
-                    if fid in base_cores:
-                        gene_color = "darkmagenta"
-                        z_level = 3
-                    if fid in base_universals:
-                        gene_color = "darkblue"
-                        z_level = 2
-                    else:
-                        gene_color = "deepskyblue"
-                        z_level = 1
+#                    if fid in base_cores:
+#                        #gene_color = "darkmagenta"
+#                        gene_color = "magenta"
+#                        z_level = 3
+#                    elif fid in base_universals:
+#                        gene_color = "darkblue"
+#                        z_level = 2
+#                    else:
+#                        gene_color = "deepskyblue"
+#                        z_level = 1
                     gene_bar_diameter = base_diameter + 0.5*(genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
                     gene_x_diameter = 1.0 * gene_bar_diameter
                     gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
                     gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
                                         theta1=arc_beg, theta2=arc_end, \
-                                        edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
+                                        edgecolor=hit_gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
                     ax.add_patch (gene_arc)        
 
         # Add labels
