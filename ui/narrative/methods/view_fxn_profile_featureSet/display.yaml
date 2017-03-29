@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: View Function Profile
+name: View Function Profile for FeatureSet
 
 tooltip: |
     Examine the general functional distribution or specific functional gene families for a Genome Set
