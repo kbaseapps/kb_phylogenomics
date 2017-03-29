@@ -3083,7 +3083,7 @@ This module contains methods for running and visualizing results of phylogenomic
         key_x_margin = 0.01
         key_y_margin = 0.01
         key_line_spacing = 0.015
-        key_x_label_offset = 0.015
+        key_x_label_offset = 0.018
         box_gap = key_line_spacing/6.0
         box_h = key_line_spacing - box_gap
         box_w = box_h
@@ -3110,8 +3110,8 @@ This module contains methods for running and visualizing results of phylogenomic
                        ]
         for k_config in key_config:
             key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing)), box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
-        ax.add_patch(key_box)
-        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+box_gap+k_config['y_shift']*key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+            ax.add_patch(key_box)
+            ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+box_gap+k_config['y_shift']*key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         # rest of pangenome key
         ax.text (key_x_margin/2.0, 1.0-(key_y_margin+5.5*key_line_spacing), "Pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
@@ -3131,8 +3131,8 @@ This module contains methods for running and visualizing results of phylogenomic
                        ]
         for k_config in key_config:
             key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing)), box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
-        ax.add_patch(key_box)
-        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+            ax.add_patch(key_box)
+            ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+box_gap+k_config['y_shift']*key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
 
         # Save circle plot
