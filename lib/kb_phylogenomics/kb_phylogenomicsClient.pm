@@ -343,6 +343,136 @@ view_fxn_profile_Output is a reference to a hash where the following keys are de
  
 
 
+=head2 view_fxn_profile_featureSet
+
+  $output = $obj->view_fxn_profile_featureSet($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_phylogenomics.view_fxn_profile_featureSet_Input
+$output is a kb_phylogenomics.view_fxn_profile_featureSet_Output
+view_fxn_profile_featureSet_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	namespace has a value which is a string
+	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	count_category has a value which is a string
+	heatmap has a value which is a kb_phylogenomics.bool
+	vertical has a value which is a kb_phylogenomics.bool
+	top_hit has a value which is a kb_phylogenomics.bool
+	e_value has a value which is a float
+	log_base has a value which is a float
+	show_blanks has a value which is a kb_phylogenomics.bool
+workspace_name is a string
+data_obj_ref is a string
+CustomTargetFams is a reference to a hash where the following keys are defined:
+	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+bool is an int
+view_fxn_profile_featureSet_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_phylogenomics.view_fxn_profile_featureSet_Input
+$output is a kb_phylogenomics.view_fxn_profile_featureSet_Output
+view_fxn_profile_featureSet_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	namespace has a value which is a string
+	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	count_category has a value which is a string
+	heatmap has a value which is a kb_phylogenomics.bool
+	vertical has a value which is a kb_phylogenomics.bool
+	top_hit has a value which is a kb_phylogenomics.bool
+	e_value has a value which is a float
+	log_base has a value which is a float
+	show_blanks has a value which is a kb_phylogenomics.bool
+workspace_name is a string
+data_obj_ref is a string
+CustomTargetFams is a reference to a hash where the following keys are defined:
+	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+bool is an int
+view_fxn_profile_featureSet_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub view_fxn_profile_featureSet
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function view_fxn_profile_featureSet (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to view_fxn_profile_featureSet:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'view_fxn_profile_featureSet');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_phylogenomics.view_fxn_profile_featureSet",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'view_fxn_profile_featureSet',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method view_fxn_profile_featureSet",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'view_fxn_profile_featureSet',
+				       );
+    }
+}
+ 
+
+
 =head2 view_fxn_profile_phylo
 
   $output = $obj->view_fxn_profile_phylo($params)
@@ -1445,6 +1575,95 @@ show_blanks has a value which is a kb_phylogenomics.bool
 
 
 =head2 view_fxn_profile_Output
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 view_fxn_profile_featureSet_Input
+
+=over 4
+
+
+
+=item Description
+
+view_fxn_profile_featureSet()
+**
+** show a table/heatmap of general categories or custom gene families for a set of Genomes
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+namespace has a value which is a string
+custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+count_category has a value which is a string
+heatmap has a value which is a kb_phylogenomics.bool
+vertical has a value which is a kb_phylogenomics.bool
+top_hit has a value which is a kb_phylogenomics.bool
+e_value has a value which is a float
+log_base has a value which is a float
+show_blanks has a value which is a kb_phylogenomics.bool
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+namespace has a value which is a string
+custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+count_category has a value which is a string
+heatmap has a value which is a kb_phylogenomics.bool
+vertical has a value which is a kb_phylogenomics.bool
+top_hit has a value which is a kb_phylogenomics.bool
+e_value has a value which is a float
+log_base has a value which is a float
+show_blanks has a value which is a kb_phylogenomics.bool
+
+
+=end text
+
+=back
+
+
+
+=head2 view_fxn_profile_featureSet_Output
 
 =over 4
 

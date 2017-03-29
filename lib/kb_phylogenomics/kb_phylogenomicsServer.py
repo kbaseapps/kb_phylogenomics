@@ -337,6 +337,10 @@ class Application(object):
                              name='kb_phylogenomics.view_fxn_profile',
                              types=[dict])
         self.method_authentication['kb_phylogenomics.view_fxn_profile'] = 'required' # noqa
+        self.rpc_service.add(impl_kb_phylogenomics.view_fxn_profile_featureSet,
+                             name='kb_phylogenomics.view_fxn_profile_featureSet',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.view_fxn_profile_featureSet'] = 'required' # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_fxn_profile_phylo,
                              name='kb_phylogenomics.view_fxn_profile_phylo',
                              types=[dict])

@@ -74,6 +74,32 @@ class kb_phylogenomics(object):
             'kb_phylogenomics.view_fxn_profile',
             [params], self._service_ver, context)
 
+    def view_fxn_profile_featureSet(self, params, context=None):
+        """
+        :param params: instance of type "view_fxn_profile_featureSet_Input"
+           (view_fxn_profile_featureSet() ** ** show a table/heatmap of
+           general categories or custom gene families for a set of Genomes)
+           -> structure: parameter "workspace_name" of type "workspace_name"
+           (** Common types), parameter "input_featureSet_ref" of type
+           "data_obj_ref", parameter "namespace" of String, parameter
+           "custom_target_fams" of type "CustomTargetFams" (parameter groups)
+           -> structure: parameter "target_fams" of list of String, parameter
+           "extra_target_fam_groups_COG" of list of String, parameter
+           "extra_target_fam_groups_PFAM" of list of String, parameter
+           "extra_target_fam_groups_TIGR" of list of String, parameter
+           "extra_target_fam_groups_SEED" of list of String, parameter
+           "count_category" of String, parameter "heatmap" of type "bool",
+           parameter "vertical" of type "bool", parameter "top_hit" of type
+           "bool", parameter "e_value" of Double, parameter "log_base" of
+           Double, parameter "show_blanks" of type "bool"
+        :returns: instance of type "view_fxn_profile_featureSet_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        return self._client.call_method(
+            'kb_phylogenomics.view_fxn_profile_featureSet',
+            [params], self._service_ver, context)
+
     def view_fxn_profile_phylo(self, params, context=None):
         """
         :param params: instance of type "view_fxn_profile_phylo_Input"

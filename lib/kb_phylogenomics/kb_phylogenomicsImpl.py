@@ -53,7 +53,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "0.0.2"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "960393da7aae57c7e94283b9554bfd4e60d4614c"
+    GIT_COMMIT_HASH = "16009656edcc479aaeb38df7d4392bb86a6ddf90"
 
     #BEGIN_CLASS_HEADER
 
@@ -1396,6 +1396,40 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method view_fxn_profile return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def view_fxn_profile_featureSet(self, ctx, params):
+        """
+        :param params: instance of type "view_fxn_profile_featureSet_Input"
+           (view_fxn_profile_featureSet() ** ** show a table/heatmap of
+           general categories or custom gene families for a set of Genomes)
+           -> structure: parameter "workspace_name" of type "workspace_name"
+           (** Common types), parameter "input_featureSet_ref" of type
+           "data_obj_ref", parameter "namespace" of String, parameter
+           "custom_target_fams" of type "CustomTargetFams" (parameter groups)
+           -> structure: parameter "target_fams" of list of String, parameter
+           "extra_target_fam_groups_COG" of list of String, parameter
+           "extra_target_fam_groups_PFAM" of list of String, parameter
+           "extra_target_fam_groups_TIGR" of list of String, parameter
+           "extra_target_fam_groups_SEED" of list of String, parameter
+           "count_category" of String, parameter "heatmap" of type "bool",
+           parameter "vertical" of type "bool", parameter "top_hit" of type
+           "bool", parameter "e_value" of Double, parameter "log_base" of
+           Double, parameter "show_blanks" of type "bool"
+        :returns: instance of type "view_fxn_profile_featureSet_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_fxn_profile_featureSet
+        #END view_fxn_profile_featureSet
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_fxn_profile_featureSet return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]

@@ -8623,7 +8623,7 @@
         "service-mapping": {
             "url": "",
             "name": "kb_phylogenomics",
-            "method": "view_fxn_profile",
+            "method": "view_fxn_profile_featureSet",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",

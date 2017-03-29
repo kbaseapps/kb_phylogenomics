@@ -77,6 +77,36 @@ module kb_phylogenomics {
         authentication required;
 
 
+    /* view_fxn_profile_featureSet()
+    **
+    ** show a table/heatmap of general categories or custom gene families for a set of Genomes
+    */
+    typedef structure {
+        workspace_name workspace_name;
+        data_obj_ref   input_featureSet_ref;
+	/*data_obj_ref   DomainAnnotation_Set;*/ /*reads workspace to find domain annot*/
+
+	string           namespace;
+	CustomTargetFams custom_target_fams;
+	string           count_category;
+	bool             heatmap;
+	bool             vertical;
+	bool             top_hit;
+	float            e_value;
+	float            log_base;
+	bool             show_blanks;
+    } view_fxn_profile_featureSet_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } view_fxn_profile_featureSet_Output;
+
+    funcdef view_fxn_profile_featureSet(view_fxn_profile_featureSet_Input params) 
+        returns (view_fxn_profile_featureSet_Output output) 
+        authentication required;
+
+
     /* view_fxn_profile_phylo()
     **
     ** show a table/heatmap of general categories or custom gene families for a set of Genomes using the species tree

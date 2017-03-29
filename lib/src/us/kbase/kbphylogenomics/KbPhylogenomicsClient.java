@@ -198,6 +198,23 @@ public class KbPhylogenomicsClient {
     }
 
     /**
+     * <p>Original spec-file function name: view_fxn_profile_featureSet</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.ViewFxnProfileFeatureSetInput ViewFxnProfileFeatureSetInput} (original type "view_fxn_profile_featureSet_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.ViewFxnProfileFeatureSetOutput ViewFxnProfileFeatureSetOutput} (original type "view_fxn_profile_featureSet_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public ViewFxnProfileFeatureSetOutput viewFxnProfileFeatureSet(ViewFxnProfileFeatureSetInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<ViewFxnProfileFeatureSetOutput>> retType = new TypeReference<List<ViewFxnProfileFeatureSetOutput>>() {};
+        List<ViewFxnProfileFeatureSetOutput> res = caller.jsonrpcCall("kb_phylogenomics.view_fxn_profile_featureSet", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
      * <p>Original spec-file function name: view_fxn_profile_phylo</p>
      * <pre>
      * </pre>
