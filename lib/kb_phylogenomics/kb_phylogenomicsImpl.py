@@ -2742,6 +2742,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # get base genome
         #
+        self.log(console, "GETTING BASE GENOME OBJECT")
         genome_sci_name_by_ref = dict()
         base_genome_ref = input_ref = params['input_genome_ref']
         base_genome_obj_name = None
@@ -2765,6 +2766,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # get pangenome
         #
+        self.log(console, "GETTING PANGENOME OBJECT")
         input_ref = params['input_pangenome_ref']
         try:
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
@@ -2784,6 +2786,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # get genome_refs from pangenome and make sure requested genomes are found
         #
+        self.log(console, "READING GENOME REFS IN PANGENOME")
         pg_genome_refs = pg_obj['genome_refs']
         compare_genome_refs = []
         compare_genome_refs_cnt = 0
@@ -2801,6 +2804,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # get outgroup genomes and remove from compare_genomes
         #
+        self.log(console, "REMOVING OUTGROUP GENOME(s) FROM TARGETS")
         outgroup_genome_refs = []
         outgroup_genome_refs_cnt = 0
         if 'input_outgroup_genome_refs' in params and params['input_outgroup_genome_refs']:
@@ -2818,6 +2822,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Make sure all requested genomes are in pangenome
         #
+        self.log(console, "CHECKING FOR REQUESTED GENOMES IN PANGENOME")
         missing_genomes = []
         for genome_ref in [base_genome_ref] + compare_genome_refs + outgroup_genome_refs:
             if genome_ref not in pg_genome_refs:
@@ -2831,6 +2836,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Reorder compare genomes by fractional overlap to base by pangenome
         #
+        self.log(console, "ORDERING TARGET GENOMES BY OVERLAP WITH BASE")
         compare_genome_cluster_overlap_cnt = dict()
         for genome_ref in compare_genome_refs:
             compare_genome_cluster_overlap_cnt[genome_ref] = 0
@@ -2853,6 +2859,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Get genome sci names
         #
+        self.log(console, "GETTING GENOME SCIENTIFIC NAMES")
         for genome_ref in compare_genome_refs + outgroup_genome_refs:
             try:
                 genome_obj =  wsClient.get_objects([{'ref':genome_ref}])[0]['data']
@@ -2865,6 +2872,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #   feature sets for base+compare genome set
         #   (but not including outgroup genome features)
         #
+        self.log(console, "DETERMINING PANGENOME CATEGORIES OF FEATURES")
         genome_feature_delim = '.f:'
         singleton_featureSet_elements = dict()
         partial_featureSet_elements   = dict()
@@ -2925,6 +2933,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Create and save featureSets
         #
+        self.log(console, "SAVING FEATURESETS")
         objects_created = []
         if singleton_featureSet_elements:
             fs_name = pg_obj['name']+".singleton_pangenome.FeatureSet"
@@ -3009,6 +3018,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Get mapping of base genes to pangenome
         #
+        self.log(console, "DETERMINING MAPPING OF BASE GENES TO PANGENOME")
         base_to_compare_redundant_map = dict()
         base_singletons = dict()
         base_cores = dict()
@@ -3055,6 +3065,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Get positions of genes in base genome
         #
+        self.log(console, "READING BASE GENOME COORDS")
         sorted_base_contig_ids = []
         sorted_base_contig_lens = []
         unsorted_contig_lens = dict()
@@ -3092,6 +3103,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Draw Circle Plot with matplotlib
         #
+        self.log(console, "CREATING CIRCLE PLOT")
         img_dpi = 200
         img_units = "in"
         #genome_ring_scale_factor = 0.8
@@ -3283,6 +3295,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Save circle plot
         #
+        self.log(console, "SAVING CIRCLE PLOT")
         png_file = base_genome_obj_name+'-pangenome_circle.png'
         pdf_file = base_genome_obj_name+'-pangenome_circle.pdf'
         output_png_file_path = os.path.join(html_output_dir, png_file);
@@ -3293,6 +3306,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # build report object
         #
+        self.log(console, "CREATING HTML REPORT")
         reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
@@ -3369,6 +3383,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         # write html to file and upload
+        self.log(console, "SAVING AND UPLOADING HTML REPORT")
         html_file = os.path.join (html_output_dir, 'pan_circle_plot_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
