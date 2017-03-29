@@ -2941,7 +2941,7 @@ This module contains methods for running and visualizing results of phylogenomic
             singleton_obj = { 'description': fs_desc,
                               'elements': singleton_featureSet_elements
                               }
-            new_obj_info = wsClient({
+            new_obj_info = wsClient.save_objects({
                     'workspace':params['workspace_name'],
                     'objects':[
                         { 'type': 'KBaseCollections.FeatureSet',
@@ -2961,7 +2961,7 @@ This module contains methods for running and visualizing results of phylogenomic
             partial_obj = { 'description': fs_desc,
                             'elements': partial_featureSet_elements
                             }
-            new_obj_info = wsClient({
+            new_obj_info = wsClient.save_objects({
                     'workspace':params['workspace_name'],
                     'objects':[
                         { 'type': 'KBaseCollections.FeatureSet',
@@ -2981,7 +2981,7 @@ This module contains methods for running and visualizing results of phylogenomic
             core_obj = { 'description': fs_desc,
                          'elements': core_featureSet_elements
                          }
-            new_obj_info = wsClient({
+            new_obj_info = wsClient.save_objects({
                     'workspace':params['workspace_name'],
                     'objects':[
                         { 'type': 'KBaseCollections.FeatureSet',
@@ -3001,7 +3001,7 @@ This module contains methods for running and visualizing results of phylogenomic
             univ_obj = { 'description': fs_desc,
                          'elements': univ_featureSet_elements
                          }
-            new_obj_info = wsClient({
+            new_obj_info = wsClient.save_objects({
                     'workspace':params['workspace_name'],
                     'objects':[
                         { 'type': 'KBaseCollections.FeatureSet',
