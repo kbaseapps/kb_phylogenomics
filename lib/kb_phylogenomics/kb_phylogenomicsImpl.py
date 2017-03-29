@@ -2861,6 +2861,152 @@ This module contains methods for running and visualizing results of phylogenomic
                 raise ValueError ("unable to fetch genome: "+genome_ref)
 
 
+        # Determine singleton, clade-core, universal, and partial pangenome
+        #   feature sets for base+compare genome set
+        #   (but not including outgroup genome features)
+        #
+        genome_feature_delim = '.f:'
+        singleton_featureSet_elements = dict()
+        partial_featureSet_elements   = dict()
+        core_featureSet_elements      = dict()
+        univ_featureSet_elements      = dict()
+        for cluster in pg_obj['orthologs']:
+            genomes_seen = dict()
+            fids_by_genome_ref = dict()
+            for cluster_member in cluster['orthologs']:
+                feature_id        = cluster_member[0]
+                feature_len_maybe = cluster_member[1]
+                genome_ref        = cluster_member[2]
+                genomes_seen[genome_ref] = True
+                try:
+                    fid_list = fids_by_genome_ref[genome_ref]
+                except:
+                    fids_by_genome_ref[genome_ref] = []
+                fids_by_genome_ref[genome_ref].append(feature_id)
+
+            # determine categorization
+            hit_cnt = 0
+            for genome_ref in base_genome_ref+compare_genome_refs:
+                if genome_ref in genomes_seen:
+                    hit_cnt += 1
+            if hit_cnt == 0:  # nothing within requested genome set
+                continue
+            elif hit_cnt == 1:  # singleton
+                for genome_ref in base_genome_ref+compare_genome_refs:
+                    if genome_ref in genomes_seen:
+                        for fid in fids_by_genome_ref[genome_ref]:
+                            featureSet_element_id = genome_ref + genome_feature_delim + fid
+                            singleton_featureSet_elements[featureSet_element_id] = [genome_ref]
+            elif hit_cnt < compare_genome_refs_cnt + 1:  # +1: include base genome
+                for genome_ref in base_genome_ref+compare_genome_refs:
+                    if genome_ref in genomes_seen:
+                        for fid in fids_by_genome_ref[genome_ref]:
+                            featureSet_element_id = genome_ref + genome_feature_delim + fid
+                            partial_featureSet_elements[featureSet_element_id] = [genome_ref]
+            else:  # core
+                outgroup_hit = False
+                for genome_ref in outgroup_genome_refs:
+                    if genome_ref in genomes_seen:
+                        outgroup_hit = True
+                        break
+                if outgroup_hit:  # universal core
+                    for genome_ref in base_genome_ref+compare_genome_refs:
+                        #if genome_ref in genomes_seen:  # implicit
+                        for fid in fids_by_genome_ref[genome_ref]:
+                            featureSet_element_id = genome_ref + genome_feature_delim + fid
+                            univ_featureSet_elements[featureSet_element_id] = [genome_ref]
+                else:  # clade-specific core
+                    for genome_ref in base_genome_ref+compare_genome_refs:
+                        #if genome_ref in genomes_seen:  # implicit
+                        for fid in fids_by_genome_ref[genome_ref]:
+                            featureSet_element_id = genome_ref + genome_feature_delim + fid
+                            core_featureSet_elements[featureSet_element_id] = [genome_ref]
+
+
+        # Create and save featureSets
+        #
+        objects_created = []
+        if singleton_featureSet_elements:
+            fs_name = pg_obj['name']+".singleton_pangenome.FeatureSet"
+            fs_desc = pg_obj['name']+" singleton pangenome features"
+            singleton_obj = { 'description': fs_desc,
+                              'elements': singleton_featureSet_elements
+                              }
+            new_obj_info = wsClient({
+                    'workspace':params['workspace_name'],
+                    'objects':[
+                        { 'type': 'KBaseCollections.FeatureSet',
+                          'data': singleton_obj,
+                          'name': fs_name,
+                          'meta': {},
+                          'provenance': provenance
+                          }]
+                    })[0]
+            objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+            singleton_featureSet_elements = {}  # free memory
+            singleton_obj = {}  # free memory
+
+        if partial_featureSet_elements:
+            fs_name = pg_obj['name']+".non-core_pangenome.FeatureSet"
+            fs_desc = pg_obj['name']+" non-core pangenome features"
+            partial_obj = { 'description': fs_desc,
+                            'elements': partial_featureSet_elements
+                            }
+            new_obj_info = wsClient({
+                    'workspace':params['workspace_name'],
+                    'objects':[
+                        { 'type': 'KBaseCollections.FeatureSet',
+                          'data': partial_obj,
+                          'name': fs_name,
+                          'meta': {},
+                          'provenance': provenance
+                          }]
+                    })[0]
+            objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+            partial_featureSet_elements = {}  # free memory
+            partial_obj = {}  # free memory
+
+        if core_featureSet_elements:
+            fs_name = pg_obj['name']+".clade-specific_core_pangenome.FeatureSet"
+            fs_desc = pg_obj['name']+" clade-specific core pangenome features"
+            core_obj = { 'description': fs_desc,
+                         'elements': core_featureSet_elements
+                         }
+            new_obj_info = wsClient({
+                    'workspace':params['workspace_name'],
+                    'objects':[
+                        { 'type': 'KBaseCollections.FeatureSet',
+                          'data': core_obj,
+                          'name': fs_name,
+                          'meta': {},
+                          'provenance': provenance
+                          }]
+                    })[0]
+            objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+            core_featureSet_elements = {}  # free memory
+            core_obj = {}  # free memory
+
+        if univ_featureSet_elements:
+            fs_name = pg_obj['name']+".clade-non-specific_core_pangenome.FeatureSet"
+            fs_desc = pg_obj['name']+" clade-non-specific core pangenome features"
+            univ_obj = { 'description': fs_desc,
+                         'elements': univ_featureSet_elements
+                         }
+            new_obj_info = wsClient({
+                    'workspace':params['workspace_name'],
+                    'objects':[
+                        { 'type': 'KBaseCollections.FeatureSet',
+                          'data': univ_obj,
+                          'name': fs_name,
+                          'meta': {},
+                          'provenance': provenance
+                          }]
+                    })[0]
+            objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+            univ_featureSet_elements = {}  # free memory
+            univ_obj = {}  # free memory
+
+
         # Get mapping of base genes to pangenome
         #
         base_to_compare_redundant_map = dict()
@@ -3196,8 +3342,8 @@ This module contains methods for running and visualizing results of phylogenomic
             if filler_line_i > 0:
                 html_report_lines += ['<tr>']
             html_report_lines += ['<td>'+sp+'</td></tr>']
-        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"genome "+str(0)+'</nobr></font></td>']
-        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[base_genome_ref])+'</nobr></font></td>']
+        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><b>'+"genome "+str(0)+'</b></nobr></font></td>']
+        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><b>'+str(genome_sci_name_by_ref[base_genome_ref])+'</b></nobr></font></td>']
         html_report_lines += ['</tr>']
         for genome_i,genome_ref in enumerate(compare_genome_refs):
             html_report_lines += ['<tr>']
@@ -3206,8 +3352,8 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['</tr>']
         for genome_i,genome_ref in enumerate(outgroup_genome_refs):
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"outgroup"+'</nobr></font></td>']
-            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[genome_ref])+'</nobr></font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><i>'+"outgroup"+'</i></nobr></font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><i>'+str(genome_sci_name_by_ref[genome_ref])+'</i></nobr></font></td>']
             html_report_lines += ['</tr>']
         for filler_line_i in range((compare_genome_refs_cnt+outgroup_genome_refs_cnt+1)//2):
             html_report_lines += ['<tr><td>'+sp+'</td></tr>']
