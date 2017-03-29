@@ -3304,6 +3304,7 @@ This module contains methods for running and visualizing results of phylogenomic
                      'workspace_name': params['workspace_name'],
                      'report_object_name': reportName
                      }
+        reportObj['objects_created'] = objects_created
 
 
         # build html report
