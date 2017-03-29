@@ -2886,19 +2886,19 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # determine categorization
             hit_cnt = 0
-            for genome_ref in base_genome_ref+compare_genome_refs:
+            for genome_ref in [base_genome_ref]+compare_genome_refs:
                 if genome_ref in genomes_seen:
                     hit_cnt += 1
             if hit_cnt == 0:  # nothing within requested genome set
                 continue
             elif hit_cnt == 1:  # singleton
-                for genome_ref in base_genome_ref+compare_genome_refs:
+                for genome_ref in [base_genome_ref]+compare_genome_refs:
                     if genome_ref in genomes_seen:
                         for fid in fids_by_genome_ref[genome_ref]:
                             featureSet_element_id = genome_ref + genome_feature_delim + fid
                             singleton_featureSet_elements[featureSet_element_id] = [genome_ref]
             elif hit_cnt < compare_genome_refs_cnt + 1:  # +1: include base genome
-                for genome_ref in base_genome_ref+compare_genome_refs:
+                for genome_ref in [base_genome_ref]+compare_genome_refs:
                     if genome_ref in genomes_seen:
                         for fid in fids_by_genome_ref[genome_ref]:
                             featureSet_element_id = genome_ref + genome_feature_delim + fid
@@ -2910,13 +2910,13 @@ This module contains methods for running and visualizing results of phylogenomic
                         outgroup_hit = True
                         break
                 if outgroup_hit:  # universal core
-                    for genome_ref in base_genome_ref+compare_genome_refs:
+                    for genome_ref in [base_genome_ref]+compare_genome_refs:
                         #if genome_ref in genomes_seen:  # implicit
                         for fid in fids_by_genome_ref[genome_ref]:
                             featureSet_element_id = genome_ref + genome_feature_delim + fid
                             univ_featureSet_elements[featureSet_element_id] = [genome_ref]
                 else:  # clade-specific core
-                    for genome_ref in base_genome_ref+compare_genome_refs:
+                    for genome_ref in [base_genome_ref]+compare_genome_refs:
                         #if genome_ref in genomes_seen:  # implicit
                         for fid in fids_by_genome_ref[genome_ref]:
                             featureSet_element_id = genome_ref + genome_feature_delim + fid
@@ -2987,8 +2987,8 @@ This module contains methods for running and visualizing results of phylogenomic
             core_obj = {}  # free memory
 
         if univ_featureSet_elements:
-            fs_name = pg_obj['name']+".clade-non-specific_core_pangenome.FeatureSet"
-            fs_desc = pg_obj['name']+" clade-non-specific core pangenome features"
+            fs_name = pg_obj['name']+".non-specific_core_pangenome.FeatureSet"
+            fs_desc = pg_obj['name']+" non-specific core pangenome features"
             univ_obj = { 'description': fs_desc,
                          'elements': univ_featureSet_elements
                          }
