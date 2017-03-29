@@ -3080,54 +3080,59 @@ This module contains methods for running and visualizing results of phylogenomic
             ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         # Add color key
-        #
         key_x_margin = 0.01
         key_y_margin = 0.01
         key_line_spacing = 0.015
-        key_x_label_offset = 0.01
-        box_h = key_line_spacing - key_line_spacing/6.0
+        key_x_label_offset = 0.015
+        box_gap = key_line_spacing/6.0
+        box_h = key_line_spacing - box_gap
         box_w = box_h
 
-        # base genome
-        ax.text (key_x_margin, 1.0-key_y_margin, genome_sci_name_by_ref[base_genome_ref], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        # base genome key
+        ax.text (key_x_margin/2.0, 1.0-key_y_margin, genome_sci_name_by_ref[base_genome_ref], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
-        # base core + outgroup
-        key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+1*key_line_spacing)), box_w, box_h, facecolor=base_univ_color, edgecolor=text_color, alpha=1.0, zorder=1)
+        key_config = [ { 'name': 'base singletons',
+                         'y_shift': 1,
+                         'color': base_singleton_color
+                         },
+                       { 'name': 'non-core pangenome',
+                         'y_shift': 2,
+                         'color': base_partial_color
+                         },
+                       { 'name': 'clade-specific core',
+                         'y_shift': 3,
+                         'color': base_core_color
+                         },
+                       { 'name': 'core + outgroup',
+                         'y_shift': 4,
+                         'color': base_univ_color
+                         }
+                       ]
+        for k_config in key_config:
+            key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing)), box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
         ax.add_patch(key_box)
-        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+1*key_line_spacing), "core + outgroup", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+box_gap+k_config['y_shift']*key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
-        # base clade-specific core
-        key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+2*key_line_spacing)), box_w, box_h, facecolor=base_core_color, edgecolor=text_color, alpha=1.0, zorder=1)
+        # rest of pangenome key
+        ax.text (key_x_margin/2.0, 1.0-(key_y_margin+5.5*key_line_spacing), "Pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+
+        key_config = [ { 'name': 'non-core pangenome',
+                         'y_shift': 6.5,
+                         'color': hit_partial_color
+                         },
+                       { 'name': 'clade-specific core',
+                         'y_shift': 7.5,
+                         'color': hit_core_color
+                         },
+                       { 'name': 'core + outgroup',
+                         'y_shift': 8.5,
+                         'color': hit_univ_color
+                         }
+                       ]
+        for k_config in key_config:
+            key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing)), box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
         ax.add_patch(key_box)
-        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+2*key_line_spacing), "clade-specific core", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-
-        # base non-core pangenome
-        key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+3*key_line_spacing)), box_w, box_h, facecolor=base_partial_color, edgecolor=text_color, alpha=1.0, zorder=1)
-        ax.add_patch(key_box)
-        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+3*key_line_spacing), "non-core pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-
-        # base singletons
-        key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+4*key_line_spacing)), box_w, box_h, facecolor=base_singleton_color, edgecolor=text_color, alpha=1.0, zorder=1)
-        ax.add_patch(key_box)
-        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+4*key_line_spacing), "base singletons", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-
-        # pangenome
-        ax.text (key_x_margin, 1.0-(key_y_margin+5.5*key_line_spacing), "Pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-
-        # pan core + outgroup
-        key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+6.5*key_line_spacing)), box_w, box_h, facecolor=hit_univ_color, edgecolor=text_color, alpha=1.0, zorder=1)
-        ax.add_patch(key_box)
-        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+6.5*key_line_spacing), "core + outgroup", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-
-        # pan clade-specific core
-        key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+7.5*key_line_spacing)), box_w, box_h, facecolor=hit_core_color, edgecolor=text_color, alpha=1.0, zorder=1)
-        ax.add_patch(key_box)
-        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+7.5*key_line_spacing), "clade-specific core", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-
-        # pan non-core pangenome
-        key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+8.5*key_line_spacing)), box_w, box_h, facecolor=hit_partial_color, edgecolor=text_color, alpha=1.0, zorder=1)
-        ax.add_patch(key_box)
-        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+8.5*key_line_spacing), "non-core pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
 
         # Save circle plot
