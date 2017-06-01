@@ -7,13 +7,15 @@ The KBase Phylogenomics module offers tools for comparative phylogenomic and pan
 
 <br><br>
 <A NAME="func_profile_phylo"></A>
-### Phylogenetic Functional Profiler (offers Pfam, COG, TIGRFAM, and SEED namespaces)
+### Phylogenetic Functional Profiler
+(offers Pfam, COG, TIGRFAM, and SEED namespaces)
 ![Phylogenetic Functional Profiler](https://raw.github.com/kbaseapps/kb_phylogenomics/master/img/func_profile_phylo.png "Phylogenetic Functional Profiler")
 
 
 <br><br>
 <A NAME="func_profile_featureset_clade-specific_core"></A>
 ### Custom FeatureSet Functional Profiler
+(offers Pfam, COG, TIGRFAM, and SEED namespaces)
 ![Custom FeatureSet Functional Profiler](https://raw.github.com/kbaseapps/kb_phylogenomics/master/img/func_profile_featureset_clade-specific_core.png "Custom FeatureSet Functional Profiler")
 
 
