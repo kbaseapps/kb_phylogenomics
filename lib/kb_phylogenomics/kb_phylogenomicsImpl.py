@@ -53,7 +53,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.0.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "b528336c30e0e4e4cb339b6e6231ee300a7f5c6a"
+    GIT_COMMIT_HASH = "8691d141480478b16331da0fb8708211d9f0034a"
 
     #BEGIN_CLASS_HEADER
 
