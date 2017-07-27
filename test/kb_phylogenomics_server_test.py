@@ -73,34 +73,25 @@ class kb_phylogenomicsTest(unittest.TestCase):
     def getContext(self):
         return self.__class__.ctx
 
-    # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
-    def test_your_method(self):
-        # Prepare test objects in workspace if needed using
-        # self.getWsClient().save_objects({'workspace': self.getWsName(),
-        #                                  'objects': []})
-        #
-        # Run your method by
-        # ret = self.getImpl().your_method(self.getContext(), parameters...)
-        #
-        # Check returned data with
-        # self.assertEqual(ret[...], ...) or other unittest methods
-        pass
-
 
     ### Annotate domains in a GenomeSet
     def test_annotateDomains(self):
 
         # make a simple GenomeSet that refers to two public Genomes
-        # kb|g.371 is Shewanella MR-1
-        # kb|g.3562 is DvH
+        reference_prok_genomes_WS = 'ReferenceDataManager'  # PROD and CI
+        #reference_prok_genomes_WS = '19217'  # PROD
+        #reference_prok_genomes_WS = '15792'  # CI
+        genome_ref_1 = reference_prok_genomes_WS+'/GCF_001566335.1/1'  # E. coli K-12 MG1655
+        genome_ref_2 = reference_prok_genomes_WS+'/GCF_000021385.1/1'  # D. vulgaris str. 'Miyazaki F'        
+
         testGS = {
             'description': 'two genomes',
             'elements': {
-                'so': {
-                    'ref': 'KBasePublicGenomesV5/kb|g.371'
+                'Ecoli_MG1655': {
+                    'ref': genome_ref_1
                 },
-                'dvh': {
-                    'ref': 'KBasePublicGenomesV5/kb|g.3562'
+                'Dvulgaris_Miyazaki': {
+                    'ref': genome_ref_2
                 }
             }
         }
