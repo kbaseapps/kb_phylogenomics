@@ -75,7 +75,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
 
     ### Annotate domains in a GenomeSet
-    def test_annotateDomains(self):
+    def HIDE_annotateDomains_Set(self):
 
         # make a simple GenomeSet that refers to two public Genomes
         reference_prok_genomes_WS = 'ReferenceDataManager'  # PROD and CI
@@ -110,14 +110,14 @@ class kb_phylogenomicsTest(unittest.TestCase):
                                                                 }
                                                             ]
                                                         }]
-                                                })
+                                                })[0]
 
         pprint(obj_info)
 
         # run annotateDomains
         params = {
             'workspace_name': self.getWsName(),
-            'input_genomeSet_ref': str(obj_info[0][6])+'/'+str(obj_info[0][0]),
+            'input_genomeSet_ref': str(obj_info[6])+'/'+str(obj_info[0]),
             'override_annot': 0
         }
 
