@@ -62,6 +62,10 @@
                     "input_parameter": "input_genomeSet_ref",
 		    "target_property": "input_genomeSet_ref",
 		    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter": "override_annot",
+		    "target_property": "override_annot"
                 }
             ],
             "output_mapping": [
