@@ -71,7 +71,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN_CONSTRUCTOR
         self.workspaceURL = config['workspace-url']
         self.shockURL = config['shock-url']
-        self.handleURL = config['handle-service-url']
+        #self.handleURL = config['handle-service-url']
         self.serviceWizardURL = config['service-wizard-url']
         self.callbackURL = os.environ['SDK_CALLBACK_URL']
         self.scratch = os.path.abspath(config['scratch'])
