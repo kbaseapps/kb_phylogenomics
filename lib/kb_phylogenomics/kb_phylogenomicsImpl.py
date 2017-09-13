@@ -233,7 +233,8 @@ This module contains methods for running and visualizing results of phylogenomic
             self.log(console, "\n"+pformat(DomainAnnotation_Params))
             self.log(console, str(datetime.now()))
 
-            da_retVal = daClient.search_domains (DomainAnnotation_Params)[0]
+            #da_retVal = daClient.search_domains (DomainAnnotation_Params)[0]
+            da_retVal = daClient.search_domains (DomainAnnotation_Params)
             this_output_ref  = da_retVal['output_result_id']
             this_report_name = da_retVal['report_name']
             this_report_ref  = da_retVal['report_ref']
