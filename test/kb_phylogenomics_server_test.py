@@ -189,6 +189,142 @@ class kb_phylogenomicsTest(unittest.TestCase):
         return new_obj_info
 
 
+    # call this method to get the WS object info of a Tree
+    #   (will upload the example data if this is the first time the method is called during tests)
+    def getTreeInfo(self, tree_basename, lib_i=0, genome_ref_map=None):
+        if hasattr(self.__class__, 'treeInfo_list'):
+            try:
+                info = self.__class__.treeInfo_list[lib_i]
+                name = self.__class__.treeName_list[lib_i]
+                if info != None:
+                    if name != tree_basename:
+                        self.__class__.treeInfo_list[lib_i] = None
+                        self.__class__.treeName_list[lib_i] = None
+                    else:
+                        return info
+            except:
+                pass
+
+        # 1) transform json to kbase Tree object and upload to ws
+        shared_dir = "/kb/module/work/tmp"
+        tree_data_file = 'data/trees/'+tree_basename+'.json'
+        tree_file = os.path.join(shared_dir, os.path.basename(tree_data_file))
+        shutil.copy(tree_data_file, tree_file)
+
+        # create object
+        with open (tree_file, 'r', 0) as tree_fh:
+            tree_obj = json.load(tree_fh)
+
+        # update genome_refs
+        if genome_ref_map != None:
+            for label_id in tree_obj['default_node_labels']:
+                for old_genome_ref in genome_ref_map.keys():
+                    tree_obj['default_node_labels'][label_id] = tree_obj['default_node_labels'][label_id].replace(old_genome_ref, genome_ref_map[old_genome_ref])
+            for label_id in tree_obj['ws_refs'].keys():
+                new_genome_refs = []
+                for old_genome_ref in tree_obj['ws_refs'][label_id]['g']:
+                    new_genome_refs.append(genome_ref_map[old_genome_ref])
+                tree_obj['ws_refs'][label_id]['g'] = new_genome_refs
+
+        provenance = [{}]
+        new_obj_info = self.getWsClient().save_objects({
+            'workspace': self.getWsName(), 
+            'objects': [
+                {
+                    'type': 'KBaseTrees.Tree',
+                    'data': tree_obj,
+                    'name': tree_basename+'.test_TREE',
+                    'meta': {},
+                    'provenance': provenance
+                }
+            ]})[0]
+
+        # 2) store it
+        if not hasattr(self.__class__, 'treeInfo_list'):
+            self.__class__.treeInfo_list = []
+            self.__class__.treeName_list = []
+        for i in range(lib_i+1):
+            try:
+                assigned = self.__class__.treeInfo_list[i]
+            except:
+                self.__class__.treeInfo_list.append(None)
+                self.__class__.treeName_list.append(None)
+
+        self.__class__.treeInfo_list[lib_i] = new_obj_info
+        self.__class__.treeName_list[lib_i] = tree_basename
+        return new_obj_info
+
+
+    # call this method to get the WS object info of a Pangenome obj
+    #   (will upload the example data if this is the first time the method is called during tests)
+    def getPangenomeInfo(self, pan_basename, lib_i=0, genome_ref_map=None):
+        if hasattr(self.__class__, 'panInfo_list'):
+            try:
+                info = self.__class__.panInfo_list[lib_i]
+                name = self.__class__.panName_list[lib_i]
+                if info != None:
+                    if name != pan_basename:
+                        self.__class__.panInfo_list[lib_i] = None
+                        self.__class__.panName_list[lib_i] = None
+                    else:
+                        return info
+            except:
+                pass
+
+        # 1) transform json to kbase Pangenome object and upload to ws
+        shared_dir = "/kb/module/work/tmp"
+        pan_data_file = 'data/pangenomes/'+pan_basename+'.json'
+        pan_file = os.path.join(shared_dir, os.path.basename(pan_data_file))
+        shutil.copy(pan_data_file, pan_file)
+
+        # create object
+        with open (pan_file, 'r', 0) as pan_fh:
+            pan_obj = json.load(pan_fh)
+
+        # update genome_refs
+        if genome_ref_map != None:
+            # basic list of genome_refs
+            new_genome_refs = []
+            for old_genome_ref in pan_obj['genome_refs']:
+                new_genome_refs.append(genome_ref_map[old_genome_ref])
+            pan_obj['genome_refs'] = new_genome_refs
+
+            # fix genome refs embedded in ortholog clusters
+            GENOME_REF_I = 2
+            for clust_i, clust in enumerate(pan_obj['orthologs']):
+                for ortholog_i,ortholog in enumerate(pan_obj['orthologs'][clust_i]['orthologs']):
+                    old_genome_ref = pan_obj['orthologs'][clust_i]['orthologs'][ortholog_i][GENOME_REF_I]
+                    pan_obj['orthologs'][clust_i]['orthologs'][ortholog_i][GENOME_REF_I] = genome_ref_map[old_genome_ref]
+
+        provenance = [{}]
+        new_obj_info = self.getWsClient().save_objects({
+            'workspace': self.getWsName(), 
+            'objects': [
+                {
+                    'type': 'KBaseGenomes.Pangenome',
+                    'data': pan_obj,
+                    'name': pan_basename+'.test_PANGENOME',
+                    'meta': {},
+                    'provenance': provenance
+                }
+            ]})[0]
+
+        # 2) store it
+        if not hasattr(self.__class__, 'panInfo_list'):
+            self.__class__.panInfo_list = []
+            self.__class__.panName_list = []
+        for i in range(lib_i+1):
+            try:
+                assigned = self.__class__.panInfo_list[i]
+            except:
+                self.__class__.panInfo_list.append(None)
+                self.__class__.panName_list.append(None)
+
+        self.__class__.panInfo_list[lib_i] = new_obj_info
+        self.__class__.panName_list[lib_i] = pan_basename
+        return new_obj_info
+
+
     ##############
     # UNIT TESTS #
     ##############
@@ -298,7 +434,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for GenomeSet
     ##
-    def test_view_fxn_profile_01(self):
+    def HIDE_view_fxn_profile_01(self):
         method = 'view_fxn_profile'
 
         print ("\n\nRUNNING: test_"+method+"_01()")
@@ -354,7 +490,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                                                             'provenance':[
                                                                 {
                                                                     'service':'kb_phylogenomics',
-                                                                    'method':'test_annotateDomains'
+                                                                    'method':'test_view_fxn_profile'
                                                                 }
                                                             ]
                                                         }]
@@ -400,3 +536,242 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
         #self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
         #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
+    #### View Fxn Profile for FeatureSet
+    ##
+    def HIDE_view_fxn_profile_featureSet_01(self):
+        method = 'view_fxn_profile_featureSet'
+
+        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("==================================================\n\n")
+
+        # input_data
+        genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+#        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+#        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+
+        genome_ref_0 = self.getWsName() + '/' + str(genomeInfo_0[0]) + '/' + str(genomeInfo_0[4])
+        genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
+#        genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
+#        genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
+
+        feature_id_0_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
+        feature_id_0_1 = 'A355_RS00035'
+        feature_id_0_2 = 'A355_RS00040'
+        feature_id_0_3 = 'A355_RS00125'
+        feature_id_0_4 = 'A355_RS00130'
+        feature_id_1_0 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
+        feature_id_1_1 = 'WOO_RS00200'
+        feature_id_1_2 = 'WOO_RS03660'
+        feature_id_1_3 = 'WOO_RS03665'
+        feature_id_1_4 = 'WOO_RS00250'
+        #feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
+        #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
+
+        # build FeatureSet obj
+        testFS = {
+            'description': 'a few features',
+            'elements': { feature_id_0_0: [genome_ref_0],
+                          feature_id_0_1: [genome_ref_0],
+                          feature_id_0_2: [genome_ref_0],
+                          feature_id_0_3: [genome_ref_0],
+                          feature_id_0_4: [genome_ref_0],
+                          feature_id_1_0: [genome_ref_1],
+                          feature_id_1_1: [genome_ref_1],
+                          feature_id_1_2: [genome_ref_1],
+                          feature_id_1_3: [genome_ref_1],
+                          feature_id_1_4: [genome_ref_1]
+                      }
+        }
+        
+        obj_info = self.getWsClient().save_objects({'workspace': self.getWsName(),       
+                                                    'objects': [
+                                                        {
+                                                            'type':'KBaseCollections.FeatureSet',
+                                                            'data':testFS,
+                                                            'name':method+'.test_FeatureSet',
+                                                            'meta':{},
+                                                            'provenance':[
+                                                                {
+                                                                    'service':'kb_phylogenomics',
+                                                                    'method':'test_view_fxn_profile_featureSet'
+                                                                }
+                                                            ]
+                                                        }]
+                                                })[0]
+
+        pprint(obj_info)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        featureSet_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        # get annotated domains
+        domain_info_0 = self.getDomainInfo('Carsonella.Domains', 0, genome_ref_0)
+        domain_info_1 = self.getDomainInfo('Wolbachia_ochengi.Domains', 1, genome_ref_1)
+#        domain_info_2 = self.getDomainInfo('Wolbachia_pretiosum.Domains', 2, genome_ref_2)
+#        domain_info_3 = self.getDomainInfo('Wolbachia_sp.wRi.Domains', 3, genome_ref_3)
+
+
+        # run that sucker
+        params = { 'workspace_name': self.getWsName(),
+                   'custom_target_fams': { 'target_fams': [],
+                                           'extra_target_fam_groups_COG':  [],
+                                           'extra_target_fam_groups_PFAM': [],
+                                           'extra_target_fam_groups_TIGR': [],
+                                           'extra_target_fam_groups_SEED': []
+                                       },
+                   'input_featureSet_ref': featureSet_ref,
+                   'namespace': 'COG',
+                   #'count_category': "perc_annot",
+                   'count_category': "raw_count",
+                   'heatmap': "1",
+                   'vertical': "1",
+                   'top_hit': "1",
+                   'e_value': "0.001",
+                   'log_base': "",
+                   'show_blanks': "0"
+               }
+        ret = self.getImpl().view_fxn_profile_featureSet(self.getContext(),params)[0]
+        self.assertIsNotNone(ret['report_ref'])
+
+        # check created obj
+        #report_obj = self.getWsClient().get_objects2({'objects':[{'ref':ret['report_ref']}]})['data'][0]['data']
+        #report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
+        #self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
+
+        #created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        #self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
+        #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
+    #### View Fxn Profile for Tree
+    ##
+    def HIDE_view_fxn_profile_phylo_01(self):
+        method = 'view_fxn_profile_phylo'
+
+        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("==================================================\n\n")
+
+        # input_data
+        genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+
+        genome_ref_0 = self.getWsName() + '/' + str(genomeInfo_0[0]) + '/' + str(genomeInfo_0[4])
+        genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
+        genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
+        genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
+
+        #feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
+        #feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
+        #feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
+        #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
+
+        # upload Tree
+        genome_refs_map = { '23880/3/1': genome_ref_0,
+                            '23880/4/1': genome_ref_1,
+                            '23880/5/1': genome_ref_2,
+                            '23880/6/1': genome_ref_3
+                        }
+        obj_info = self.getTreeInfo('Tiny_things.SpeciesTree', 0, genome_refs_map)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        tree_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        # get annotated domains
+        domain_info_0 = self.getDomainInfo('Carsonella.Domains', 0, genome_ref_0)
+        domain_info_1 = self.getDomainInfo('Wolbachia_ochengi.Domains', 1, genome_ref_1)
+        domain_info_2 = self.getDomainInfo('Wolbachia_pretiosum.Domains', 2, genome_ref_2)
+        domain_info_3 = self.getDomainInfo('Wolbachia_sp.wRi.Domains', 3, genome_ref_3)
+
+
+        # run that sucker
+        params = { 'workspace_name': self.getWsName(),
+                   'custom_target_fams': { 'target_fams': ['COG0001','COG0002'],
+                                           'extra_target_fam_groups_COG':  ["COG: N: Cell motility"],
+                                           'extra_target_fam_groups_PFAM': ["PF: Clan CL0003: SAM"],
+                                           'extra_target_fam_groups_TIGR': ["TIGR: role:11010: Aromatic amino acid family "],
+                                           'extra_target_fam_groups_SEED': ["SEED: Alanine_biosynthesis"]
+                                       },
+                   'input_speciesTree_ref': tree_ref,
+                   'namespace': 'custom',
+                   'count_category': "perc_annot",
+                   'heatmap': "1",
+                   'vertical': "1",
+                   'top_hit': "1",
+                   'e_value': "0.001",
+                   'log_base': "",
+                   'show_blanks': "0"
+               }
+        ret = self.getImpl().view_fxn_profile_phylo(self.getContext(),params)[0]
+        self.assertIsNotNone(ret['report_ref'])
+
+        # check created obj
+        #report_obj = self.getWsClient().get_objects2({'objects':[{'ref':ret['report_ref']}]})['data'][0]['data']
+        #report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
+        #self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
+
+        #created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        #self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
+        #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
+    #### View Pangenome Circle Plot
+    ##
+    def test_view_pan_circle_plot_01(self):
+        method = 'view_pan_circle_plot'
+
+        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("==================================================\n\n")
+
+        # input_data
+        genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        genome_ref_0 = str(genomeInfo_0[WSID_I]) + '/' + str(genomeInfo_0[OBJID_I]) + '/' + str(genomeInfo_0[VERSION_I])
+        genome_ref_1 = str(genomeInfo_1[WSID_I]) + '/' + str(genomeInfo_1[OBJID_I]) + '/' + str(genomeInfo_1[VERSION_I])
+        genome_ref_2 = str(genomeInfo_2[WSID_I]) + '/' + str(genomeInfo_2[OBJID_I]) + '/' + str(genomeInfo_2[VERSION_I])
+        genome_ref_3 = str(genomeInfo_3[WSID_I]) + '/' + str(genomeInfo_3[OBJID_I]) + '/' + str(genomeInfo_3[VERSION_I])
+
+        #feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
+        #feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
+        #feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
+        #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
+
+        # upload Pangenome
+        genome_refs_map = { '23880/3/1': genome_ref_0,
+                            '23880/4/1': genome_ref_1,
+                            '23880/5/1': genome_ref_2,
+                            '23880/6/1': genome_ref_3
+                        }
+        obj_info = self.getPangenomeInfo('Tiny_things.OrthoMCL_pangenome', 0, genome_refs_map)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        pangenome_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        # run that sucker
+        base_genome_ref = genome_ref_1
+        compare_genome_refs = [genome_ref_1, genome_ref_2, genome_ref_3]  # Wolbachia
+        outgroup_genome_refs = [genome_ref_0]  # Carsonella
+        params = { 'workspace_name': self.getWsName(),
+                   'input_genome_ref': base_genome_ref,
+                   'input_pangenome_ref': pangenome_ref,
+                   'input_compare_genome_refs': compare_genome_refs,
+                   'input_outgroup_genome_refs': outgroup_genome_refs
+               }
+        ret = self.getImpl().view_pan_circle_plot(self.getContext(),params)[0]
+        self.assertIsNotNone(ret['report_ref'])
+
+        # check created obj
+        #report_obj = self.getWsClient().get_objects2({'objects':[{'ref':ret['report_ref']}]})['data'][0]['data']
+        #report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
+        #self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
+
+        #created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        #self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
+        #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
