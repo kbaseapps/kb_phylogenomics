@@ -21,6 +21,7 @@ import math
 from Bio import SeqIO
 
 from biokbase.workspace.client import Workspace as workspaceService
+#from Workspace.WorkspaceClient import Workspace as workspaceService
 from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
 from KBaseReport.KBaseReportClient import KBaseReport
 
@@ -51,9 +52,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "0.0.2"
-    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics.git"
-    GIT_COMMIT_HASH = "16009656edcc479aaeb38df7d4392bb86a6ddf90"
+    VERSION = "1.0.0"
+    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
+    GIT_COMMIT_HASH = "8691d141480478b16331da0fb8708211d9f0034a"
 
     #BEGIN_CLASS_HEADER
 
@@ -71,7 +72,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN_CONSTRUCTOR
         self.workspaceURL = config['workspace-url']
         self.shockURL = config['shock-url']
-        self.handleURL = config['handle-service-url']
+        #self.handleURL = config['handle-service-url']
         self.serviceWizardURL = config['service-wizard-url']
         self.callbackURL = os.environ['SDK_CALLBACK_URL']
         self.scratch = os.path.abspath(config['scratch'])
@@ -233,7 +234,8 @@ This module contains methods for running and visualizing results of phylogenomic
             self.log(console, "\n"+pformat(DomainAnnotation_Params))
             self.log(console, str(datetime.now()))
 
-            da_retVal = daClient.search_domains (DomainAnnotation_Params)[0]
+            #da_retVal = daClient.search_domains (DomainAnnotation_Params)[0]
+            da_retVal = daClient.search_domains (DomainAnnotation_Params)
             this_output_ref  = da_retVal['output_result_id']
             this_report_name = da_retVal['report_name']
             this_report_ref  = da_retVal['report_ref']
@@ -3859,6 +3861,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         ### STEP 0: basic init
         console = []
+        invalid_msgs = []
         self.log(console, 'Running view_pan_circle_plot(): ')
         self.log(console, "\n"+pformat(params))
 
@@ -4233,11 +4236,61 @@ This module contains methods for running and visualizing results of phylogenomic
         feature_order = []
         sum_contig_lens = 0
 
-        for contig_i,contig_id in enumerate(base_genome_obj['contig_ids']):
-            unsorted_contig_lens[contig_id] = base_genome_obj['contig_lengths'][contig_i]
-            sum_contig_lens += base_genome_obj['contig_lengths'][contig_i]
+        # hopefully info sitting in Genome obj
+        if 'contig_ids' in base_genome_obj and base_genome_obj['contig_ids'] != None:
+            for contig_i,contig_id in enumerate(base_genome_obj['contig_ids']):
+                contig_len = base_genome_obj['contig_lengths'][contig_i]
+                unsorted_contig_lens[contig_id] = contig_len
+                sum_contig_lens += contig_len
 
+        # otherwise have to get contig ids from Assembly or ContigSet obj
+        else:  
+            # Get genome_assembly_refs
+            base_genome_assemby_ref = None
+            base_genome_assembly_type = None
+            if ('contigset_ref' not in base_genome_obj or base_genome_obj['contigset_ref'] == None) \
+               and ('assembly_ref' not in base_genome_obj or base_genome_obj['assembly_ref'] == None):
+                msg = "Genome "+base_genome_obj_name+" (ref:"+base_genome_ref+") "+genome_sci_name_by_ref[base_genome_ref]+" MISSING BOTH contigset_ref AND assembly_ref.  Cannot process.  Exiting."
+                self.log(console, msg)
+                #self.log(invalid_msgs, msg)
+                #continue
+                raise ValueError (msg)
+            elif 'assembly_ref' in base_genome_obj and base_genome_obj['assembly_ref'] != None:
+                msg = "Genome "+base_genome_obj_name+" (ref:"+base_genome_ref+") "+genome_sci_name_by_ref[base_genome_ref]+" USING assembly_ref: "+str(base_genome_obj['assembly_ref'])
+                self.log (console, msg)
+                base_genome_assembly_ref = base_genome_obj['assembly_ref']
+                base_genome_assembly_type = 'assembly'
+            elif 'contigset_ref' in base_genome_obj and base_genome_obj['contigset_ref'] != None:
+                msg = "Genome "+base_genome_obj_name+" (ref:"+base_genome_ref+") "+genome_sci_name_by_ref[base_genome_ref]+" USING contigset_ref: "+str(base_genome_obj['contigset_ref'])
+                self.log (console, msg)
+                base_genome_assembly_ref = base_genome_obj['contigset_ref']
+                base_genome_assembly_type = 'contigset'
+
+            # get assembly obj and read contig ids and lengths (both contigset obj and assembly obj have list of contigs that 
+            try:
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                #objects_list = wsClient.get_objects2({'objects':[{'ref':input_ref}]})['data']
+                ass_obj = wsClient.get_objects([{'ref':base_genome_assembly_ref}])[0]['data']
+            except:
+                raise ValueError ("unable to fetch assembly: "+base_genome_assembly_ref)
+
+            if base_genome_assembly_type == 'assembly':
+                for contig_key in ass_obj['contigs'].keys():
+                    contig_id = ass_obj['contigs'][contig_key]['contig_id']
+                    contig_len = ass_obj['contigs'][contig_key]['length']
+                    print ("CONTIG_ID: '"+str(contig_id)+"' CONTIG_LEN: '"+str(contig_len)+"'\n")  # DEBUG
+                    unsorted_contig_lens[contig_id] = contig_len
+                    sum_contig_lens += contig_len
+            else:  # contigset obj
+                for contig in ass_obj['contigs']:
+                    contig_id = contig['id']
+                    contig_len = contig['length']
+                    unsorted_contig_lens[contig_id] = contig_len
+                    sum_contig_lens += contig_len
+            
+        # order contigs by length and store by contig_id
         for order_i,contig_id in enumerate(sorted(unsorted_contig_lens, key=unsorted_contig_lens.__getitem__, reverse=True)):
+            print ("STORING CONTIG ORDER: '"+str(order_i)+"' for CONTIG_ID: '"+str(contig_id)+"'\n")  # DEBUG
             sorted_contig_order[contig_id] = order_i
             sorted_base_contig_ids.append(contig_id)
             sorted_base_contig_lens.append(unsorted_contig_lens[contig_id])
@@ -4245,8 +4298,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         for feature in base_genome_obj['features']:
             if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
-
                 fid = feature['id']
+                print ("FEATURE_ID: '"+str(fid)+"'\n")  # DEBUG
                 feature_contig_id[fid] = feature['location'][0][0]
                 beg                    = feature['location'][0][1]
                 strand                 = feature['location'][0][2]

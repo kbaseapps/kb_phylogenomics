@@ -38,7 +38,7 @@ parameters :
             The Set of Genomes upon which to run DomainAnnotation
     override_annot :
         ui-name : |
-            Existing Domain Annotations
+            Override Existing Domain Annotations
         short-hint : |
             Whether to redo or skip DomainAnnotations that have already been done
         long-hint  : |

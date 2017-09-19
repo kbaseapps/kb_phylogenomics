@@ -2,7 +2,10 @@ import sys
 import os
 import os.path
 from jinja2 import Template
-from ConfigParser import ConfigParser
+try:
+    from ConfigParser import ConfigParser  # py2
+except:
+    from configparser import ConfigParser  # py3
 import StringIO
 
 if __name__ == "__main__":
