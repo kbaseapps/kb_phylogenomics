@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Phylogenetic Pangenome 
+name: Phylogenetic Pangenome Accumulation - v1.0.0
 
 tooltip: |
     View the Pangenome in a Phylogenetic context
