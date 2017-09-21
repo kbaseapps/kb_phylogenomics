@@ -3959,8 +3959,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 compare_genome_refs.append(g_ref)
                 compare_genome_refs_cnt += 1
         else:
-            for genome_ref in params['input_compare_genome_refs']:
-                compare_genome_refs.append(genome_ref)
+            for g_ref in params['input_compare_genome_refs']:
+                if g_ref == base_genome_ref:
+                    continue
+                compare_genome_refs.append(g_ref)
                 compare_genome_refs_cnt += 1
 
 
@@ -4330,7 +4332,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center_y = 0.50
         ellipse_center = (ellipse_center_x, ellipse_center_y)
         #base_diameter = 0.20
-        base_diameter = 0.30
+        base_diameter = 1.0 / compare_genome_refs_cnt  # because marks are inverse scaled in length, shrinking central donut hole
         #gene_bar_lw = genome_ring_scale_factor * 20
         gene_bar_lw = genome_ring_scale_factor * 15 # / compare_genome_refs_cnt
         #genome_ring_spacing = 0.05 * gene_bar_lw
