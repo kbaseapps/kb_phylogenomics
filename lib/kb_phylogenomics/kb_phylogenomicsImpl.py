@@ -4322,7 +4322,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #genome_ring_scale_factor = 0.8
         genome_ring_scale_factor = 1.0 / compare_genome_refs_cnt
         #img_pix_width = img_dpi * compare_genome_refs_cnt * genome_ring_scale_factor
-        img_pix_width = 800
+        img_pix_width = 2000
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
