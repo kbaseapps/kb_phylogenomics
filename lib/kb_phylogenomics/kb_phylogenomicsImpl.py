@@ -4301,7 +4301,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for feature in base_genome_obj['features']:
             if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
                 fid = feature['id']
-                print ("FEATURE_ID: '"+str(fid)+"'\n")  # DEBUG
+                #print ("FEATURE_ID: '"+str(fid)+"'\n")  # DEBUG
                 feature_contig_id[fid] = feature['location'][0][0]
                 beg                    = feature['location'][0][1]
                 strand                 = feature['location'][0][2]
@@ -4319,12 +4319,13 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "CREATING CIRCLE PLOT")
         img_dpi = 200
         img_units = "in"
-        #genome_ring_scale_factor = 0.8
-        genome_ring_scale_factor = 1.0 / compare_genome_refs_cnt
-        #img_pix_width = img_dpi * compare_genome_refs_cnt * genome_ring_scale_factor
         img_pix_width = 2000
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
+
+        #genome_ring_scale_factor = 0.8
+        genome_ring_scale_factor = 1.0 / compare_genome_refs_cnt
+        #img_pix_width = img_dpi * compare_genome_refs_cnt * genome_ring_scale_factor
 
         origin_gap_angle = 20
         mark_width = 0.1
@@ -4333,13 +4334,13 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center_y = 0.50
         ellipse_center = (ellipse_center_x, ellipse_center_y)
         #base_diameter = 0.20
-        base_diameter = 0.3
+        base_diameter = 0.5 / compare_genome_refs_cnt
         #base_diameter = 1.0 / compare_genome_refs_cnt  # because marks are inverse scaled in length, shrinking central donut hole
         #gene_bar_lw = genome_ring_scale_factor * 20
-        gene_bar_lw = 15 * genome_ring_scale_factor
+        gene_bar_lw = 10 * genome_ring_scale_factor
         #genome_ring_spacing = 0.05 * gene_bar_lw
         #genome_ring_spacing = 0.3 * gene_bar_lw
-        genome_ring_spacing = 0.1 * gene_bar_lw
+        genome_ring_spacing = 0.2 * gene_bar_lw
         #lw_to_coord_scale = 0.1
         lw_to_coord_scale = 0.005
         base_singleton_color = "red"
