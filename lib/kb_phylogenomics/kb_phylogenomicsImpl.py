@@ -4372,13 +4372,15 @@ This module contains methods for running and visualizing results of phylogenomic
             ax.spines['left'].set_visible(False)    # left axis line
             ax.spines['right'].set_visible(False)   # right axis line
 
-        # Add marks for base genome
+        # Add marks for genomes
         ax = fig.axes[0]
         base_contig_pos = 0
         for contig_i,contig_feature_order in enumerate(feature_order):
             if contig_i > 0:
                 base_contig_pos += sorted_base_contig_lens[contig_i-1]
 
+            # base genome
+            #
             for fid in contig_feature_order:
                 if fid in base_singletons:
                     gene_color = base_singleton_color
@@ -4404,9 +4406,14 @@ This module contains methods for running and visualizing results of phylogenomic
                 arc_beg = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) - this_mark_width
                 arc_end = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
                 #gene_bar_diameter = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
-                gene_bar_diameter = base_diameter
+
+                # old (with base in center)
+                #gene_bar_diameter = base_diameter
+                # new (with base on outside)
+                gene_bar_diameter = base_diameter + 0.5*(compare_genome_refs_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
                 gene_x_diameter = 1.0 * gene_bar_diameter
                 gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
+
                 gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
                                     theta1=arc_beg, theta2=arc_end, \
                                     edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
@@ -4426,7 +4433,7 @@ This module contains methods for running and visualizing results of phylogenomic
 #                    else:
 #                        gene_color = "deepskyblue"
 #                        z_level = 1
-                    gene_bar_diameter = base_diameter + 0.5*(genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                    gene_bar_diameter = base_diameter + 0.5*(compare_genome_refs_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
                     gene_x_diameter = 1.0 * gene_bar_diameter
                     gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
                     gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
@@ -4443,7 +4450,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         label_angle = (math.pi/180) * (90 - origin_gap_angle/2.0 - (360-origin_gap_angle))
         #label_radius = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
-        label_radius = 0.5*base_diameter
+        #label_radius = 0.5*base_diameter
+        label_radius = 0.5*base_diameter + text_y_delta*compare_genome_refs_cnt*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
         x_shift = label_radius * math.cos(label_angle)
         y_shift = label_radius * math.sin(label_angle)
         label_x_pos = ellipse_center_x + x_shift + label_margin
@@ -4452,7 +4460,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         for genome_i,genome_ref in enumerate(compare_genome_refs):
-            label_radius = 0.5*base_diameter + text_y_delta*(genome_i+1)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+            label_radius = 0.5*base_diameter + text_y_delta*(compare_genome_refs_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
             x_shift = label_radius * math.cos(label_angle)
             y_shift = label_radius * math.sin(label_angle)
             label_x_pos = ellipse_center_x + x_shift + label_margin
