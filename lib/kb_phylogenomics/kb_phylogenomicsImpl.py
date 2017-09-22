@@ -4337,8 +4337,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #base_diameter = 1.0 / compare_genome_refs_cnt  # because marks are inverse scaled in length, shrinking central donut hole
         #gene_bar_lw = genome_ring_scale_factor * 20
         gene_bar_lw = 30 * genome_ring_scale_factor
-        genome_ring_spacing = 0.5 * gene_bar_lw
-        base_diameter = 2.0 - compare_genome_refs_cnt*(gene_bar_lw + genome_ring_spacing)
+        genome_ring_spacing = 0.2 * gene_bar_lw
+        base_diameter = 0.8 # - compare_genome_refs_cnt*(gene_bar_lw + genome_ring_spacing)
         #genome_ring_spacing = 0.05 * gene_bar_lw
         #genome_ring_spacing = 0.3 * gene_bar_lw
         #lw_to_coord_scale = 0.1
