@@ -4320,8 +4320,9 @@ This module contains methods for running and visualizing results of phylogenomic
         img_dpi = 200
         img_units = "in"
         #genome_ring_scale_factor = 0.8
-        genome_ring_scale_factor = 10.0 / compare_genome_refs_cnt
-        img_pix_width = img_dpi * compare_genome_refs_cnt * genome_ring_scale_factor
+        genome_ring_scale_factor = 1.0 / compare_genome_refs_cnt
+        #img_pix_width = img_dpi * compare_genome_refs_cnt * genome_ring_scale_factor
+        img_pix_width = 800
         img_in_width = round(float(img_pix_width) / float(img_dpi), 2)
         img_html_width = img_pix_width // 4
 
@@ -4332,12 +4333,13 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center_y = 0.50
         ellipse_center = (ellipse_center_x, ellipse_center_y)
         #base_diameter = 0.20
-        base_diameter = 1.0 / compare_genome_refs_cnt  # because marks are inverse scaled in length, shrinking central donut hole
+        base_diameter = 0.3
+        #base_diameter = 1.0 / compare_genome_refs_cnt  # because marks are inverse scaled in length, shrinking central donut hole
         #gene_bar_lw = genome_ring_scale_factor * 20
-        gene_bar_lw = genome_ring_scale_factor * 15 # / compare_genome_refs_cnt
+        gene_bar_lw = 15 * genome_ring_scale_factor
         #genome_ring_spacing = 0.05 * gene_bar_lw
         #genome_ring_spacing = 0.3 * gene_bar_lw
-        genome_ring_spacing = 0.5 * gene_bar_lw
+        genome_ring_spacing = 0.1 * gene_bar_lw
         #lw_to_coord_scale = 0.1
         lw_to_coord_scale = 0.005
         base_singleton_color = "red"
