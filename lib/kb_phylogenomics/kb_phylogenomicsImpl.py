@@ -4342,7 +4342,7 @@ This module contains methods for running and visualizing results of phylogenomic
             gene_bar_lw = 30
         else:
             gene_bar_lw = 30 * (genome_ring_scale_factor**0.25)
-        genome_ring_spacing = 0.2 * gene_bar_lw
+        genome_ring_spacing = 0.5 * gene_bar_lw
         base_diameter = 1.0 - lw_to_coord_scale * compare_genome_refs_cnt*(gene_bar_lw + genome_ring_spacing)
         #genome_ring_spacing = 0.05 * gene_bar_lw
         #genome_ring_spacing = 0.3 * gene_bar_lw
