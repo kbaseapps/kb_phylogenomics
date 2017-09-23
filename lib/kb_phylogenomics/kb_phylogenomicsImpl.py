@@ -4345,7 +4345,8 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             #gene_bar_lw = 30 * (genome_ring_scale_factor**0.25)
             gene_bar_lw = max_unscaled_rings * unscaled_rings_lw * genome_ring_scale_factor
-        genome_ring_spacing = 0.05 * gene_bar_lw
+        #genome_ring_spacing = 0.05 * gene_bar_lw
+        genome_ring_spacing = 0.005 * gene_bar_lw
         outer_ring_radius = 0.8
         base_radius = outer_ring_radius - lw_to_coord_scale * compare_genomes_cnt*(gene_bar_lw + genome_ring_spacing)
         #self.log(console, "gene_bar_lw: "+str(gene_bar_lw))  # DEBUG
@@ -4466,7 +4467,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #label_radius = base_radius + 0.5*gene_bar_lw*lw_to_coord_scale
         #label_radius = 0.5*base_radius
         #label_radius = 0.5*base_radius + text_y_delta*compare_genomes_cnt*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-        label_radius = text_y_delta + base_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
+        label_radius = base_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
         x_shift = label_radius * math.cos(label_angle)
         y_shift = label_radius * math.sin(label_angle)
         label_x_pos = ellipse_center_x + x_shift + label_margin
@@ -4476,7 +4477,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         for genome_i,genome_ref in enumerate(compare_genome_refs):
             #label_radius = 0.5*base_radius + text_y_delta*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-            label_radius = text_y_delta + base_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
+            label_radius = base_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
             x_shift = label_radius * math.cos(label_angle)
             y_shift = label_radius * math.sin(label_angle)
             label_x_pos = ellipse_center_x + x_shift + label_margin
