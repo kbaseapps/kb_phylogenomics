@@ -4422,7 +4422,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 #gene_bar_radius = base_radius
                 # new (with base on outside)
                 #gene_bar_radius = base_radius + 0.5*(compare_genomes_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-                gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
+                #gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
+                gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt) * (gene_bar_lw+genome_ring_spacing)
                 #self.log(console, str('BASE')+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                 gene_x_radius = 1.0 * gene_bar_radius
                 gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
@@ -4447,7 +4448,8 @@ This module contains methods for running and visualizing results of phylogenomic
 #                        gene_color = "deepskyblue"
 #                        z_level = 1
                     #gene_bar_radius = base_radius + 0.5*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-                    gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
+                    #gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
+                    gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1)) * (gene_bar_lw+genome_ring_spacing)
                     #self.log(console, str(genome_i)+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                     gene_x_radius = 1.0 * gene_bar_radius
                     gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
