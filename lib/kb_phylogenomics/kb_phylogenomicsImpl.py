@@ -4467,7 +4467,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #label_radius = base_radius + 0.5*gene_bar_lw*lw_to_coord_scale
         #label_radius = 0.5*base_radius
         #label_radius = 0.5*base_radius + text_y_delta*compare_genomes_cnt*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-        label_radius = base_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
+        #label_radius = base_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
+        label_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
         x_shift = label_radius * math.cos(label_angle)
         y_shift = label_radius * math.sin(label_angle)
         label_x_pos = ellipse_center_x + x_shift + label_margin
@@ -4477,7 +4478,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         for genome_i,genome_ref in enumerate(compare_genome_refs):
             #label_radius = 0.5*base_radius + text_y_delta*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-            label_radius = base_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
+            #label_radius = base_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
+            label_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
             x_shift = label_radius * math.cos(label_angle)
             y_shift = label_radius * math.sin(label_angle)
             label_x_pos = ellipse_center_x + x_shift + label_margin
