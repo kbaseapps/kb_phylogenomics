@@ -4338,15 +4338,18 @@ This module contains methods for running and visualizing results of phylogenomic
         #base_diameter = 1.0 / compare_genomes_cnt  # because marks are inverse scaled in length, shrinking central donut hole
         #gene_bar_lw = genome_ring_scale_factor * 20
         lw_to_coord_scale = 0.005
-        if compare_genomes_cnt <= 5:
-            gene_bar_lw = 30
+        max_unscaled_rings = 5
+        unscaled_rings_lw = 30
+        if compare_genomes_cnt <= max_unscaled_rings:
+            gene_bar_lw = unscaled_rings_lw
         else:
-            gene_bar_lw = 30 * (genome_ring_scale_factor**0.25)
-        genome_ring_spacing = 0.5 * gene_bar_lw
+            #gene_bar_lw = 30 * (genome_ring_scale_factor**0.25)
+            gene_bar_lw = max_unscaled_rings * unscaled_rings_lw * genome_ring_scale_factor
+        genome_ring_spacing = 0.2 * gene_bar_lw
         base_diameter = 1.0 - lw_to_coord_scale * compare_genomes_cnt*(gene_bar_lw + genome_ring_spacing)
-        self.log(console, "gene_bar_lw: "+str(gene_bar_lw))
-        self.log(console, "genome_ring_spacing: "+str(genome_ring_spacing))
-        self.log(console, "base_diameter: "+str(base_diameter))
+        self.log(console, "gene_bar_lw: "+str(gene_bar_lw))  # DEBUG
+        self.log(console, "genome_ring_spacing: "+str(genome_ring_spacing))  # DEBUG
+        self.log(console, "base_diameter: "+str(base_diameter))  # DEBUG
         #genome_ring_spacing = 0.05 * gene_bar_lw
         #genome_ring_spacing = 0.3 * gene_bar_lw
         #lw_to_coord_scale = 0.1
@@ -4354,10 +4357,13 @@ This module contains methods for running and visualizing results of phylogenomic
         base_core_color = "magenta"
         #hit_core_color = "darkmagenta"
         hit_core_color = "magenta"
-        base_univ_color = "blue"
+        #base_univ_color = "blue"
+        base_univ_color = "darkblue"
         hit_univ_color = "darkblue"
-        base_partial_color = "cyan"
-        hit_partial_color = "deepskyblue"
+        #base_partial_color = "cyan"
+        #hit_partial_color = "deepskyblue"
+        base_partial_color = "deepskyblue"
+        hit_partial_color = "lightgray"
 
         # Build image
         fig = pyplot.figure()
@@ -4413,7 +4419,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 # old (with base in center)
                 #gene_bar_diameter = base_diameter
                 # new (with base on outside)
-                gene_bar_diameter = base_diameter + 0.5*(compare_genomes_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                #gene_bar_diameter = base_diameter + 0.5*(compare_genomes_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                gene_bar_diameter = base_diameter + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
                 self.log(console, str('BASE')+" gene_bar_diameter: "+str(gene_bar_diameter))  # DEBUG
                 gene_x_diameter = 1.0 * gene_bar_diameter
                 gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
@@ -4437,7 +4444,8 @@ This module contains methods for running and visualizing results of phylogenomic
 #                    else:
 #                        gene_color = "deepskyblue"
 #                        z_level = 1
-                    gene_bar_diameter = base_diameter + 0.5*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                    #gene_bar_diameter = base_diameter + 0.5*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                    gene_bar_diameter = base_diameter + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
                     self.log(console, str(genome_i)+" gene_bar_diameter: "+str(gene_bar_diameter))  # DEBUG
                     gene_x_diameter = 1.0 * gene_bar_diameter
                     gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
