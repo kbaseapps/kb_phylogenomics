@@ -4338,7 +4338,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #base_radius = 1.0 / compare_genomes_cnt  # because marks are inverse scaled in length, shrinking central donut hole
         #gene_bar_lw = genome_ring_scale_factor * 20
         lw_to_coord_scale = 0.005
-        max_unscaled_rings = 5
+        max_unscaled_rings = 4
         unscaled_rings_lw = 30
         if compare_genomes_cnt <= max_unscaled_rings:
             gene_bar_lw = unscaled_rings_lw
@@ -4346,9 +4346,12 @@ This module contains methods for running and visualizing results of phylogenomic
             #gene_bar_lw = 30 * (genome_ring_scale_factor**0.25)
             gene_bar_lw = max_unscaled_rings * unscaled_rings_lw * genome_ring_scale_factor
         #genome_ring_spacing = 0.05 * gene_bar_lw
-        genome_ring_spacing = 0.005 * gene_bar_lw
+        #genome_ring_spacing = 0.005 * gene_bar_lw
+        genome_ring_spacing = 0.0
         outer_ring_radius = 0.8
         base_radius = outer_ring_radius - lw_to_coord_scale * compare_genomes_cnt*(gene_bar_lw + genome_ring_spacing)
+        if base_radius <= 0:
+            raise ValueError ("BASE RADIUS < 0.  Too many genomes in comparison")
         #self.log(console, "gene_bar_lw: "+str(gene_bar_lw))  # DEBUG
         #self.log(console, "genome_ring_spacing: "+str(genome_ring_spacing))  # DEBUG
         #self.log(console, "base_radius: "+str(base_radius))  # DEBUG
