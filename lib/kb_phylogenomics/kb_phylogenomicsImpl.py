@@ -3952,19 +3952,19 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "READING GENOME REFS IN PANGENOME")
         pg_genome_refs = pg_obj['genome_refs']
         compare_genome_refs = []
-        compare_genome_refs_cnt = 0
+        compare_genomes_cnt = 0
         if 'input_compare_genome_refs' not in params or not params['input_compare_genome_refs']:
             for g_ref in pg_genome_refs:
                 if g_ref == base_genome_ref:
                     continue
                 compare_genome_refs.append(g_ref)
-                compare_genome_refs_cnt += 1
+                compare_genomes_cnt += 1
         else:
             for g_ref in params['input_compare_genome_refs']:
                 if g_ref == base_genome_ref:
                     continue
                 compare_genome_refs.append(g_ref)
-                compare_genome_refs_cnt += 1
+                compare_genomes_cnt += 1
 
 
         # get outgroup genomes and remove from compare_genomes
@@ -3977,11 +3977,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 outgroup_genome_refs.append(genome_ref)
                 outgroup_genome_refs_cnt += 1
             new_compare_genome_refs = []
-            compare_genome_refs_cnt = 0
+            compare_genomes_cnt = 0
             for genome_ref in compare_genome_refs:
                 if genome_ref not in outgroup_genome_refs:
                     new_compare_genome_refs.append(genome_ref)
-                    compare_genome_refs_cnt += 1
+                    compare_genomes_cnt += 1
             compare_genome_refs = new_compare_genome_refs
 
 
@@ -4069,7 +4069,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         for fid in fids_by_genome_ref[genome_ref]:
                             featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
                             singleton_featureSet_elements[featureSet_element_id] = [genome_ref]
-            elif hit_cnt < compare_genome_refs_cnt + 1:  # +1: include base genome
+            elif hit_cnt < compare_genomes_cnt + 1:  # +1: include base genome
                 for genome_ref in [base_genome_ref]+compare_genome_refs:
                     if genome_ref in genomes_seen:
                         for fid in fids_by_genome_ref[genome_ref]:
@@ -4325,8 +4325,8 @@ This module contains methods for running and visualizing results of phylogenomic
         img_html_width = img_pix_width // 4
 
         #genome_ring_scale_factor = 0.8
-        genome_ring_scale_factor = 1.0 / compare_genome_refs_cnt
-        #img_pix_width = img_dpi * compare_genome_refs_cnt * genome_ring_scale_factor
+        genome_ring_scale_factor = 1.0 / compare_genomes_cnt
+        #img_pix_width = img_dpi * compare_genomes_cnt * genome_ring_scale_factor
 
         origin_gap_angle = 20
         mark_width = 0.1
@@ -4335,15 +4335,18 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center_y = 0.50
         ellipse_center = (ellipse_center_x, ellipse_center_y)
         #base_diameter = 0.20
-        #base_diameter = 1.0 / compare_genome_refs_cnt  # because marks are inverse scaled in length, shrinking central donut hole
+        #base_diameter = 1.0 / compare_genomes_cnt  # because marks are inverse scaled in length, shrinking central donut hole
         #gene_bar_lw = genome_ring_scale_factor * 20
         lw_to_coord_scale = 0.005
-        if compare_genome_refs_cnt <= 5:
+        if compare_genomes_cnt <= 5:
             gene_bar_lw = 30
         else:
             gene_bar_lw = 30 * (genome_ring_scale_factor**0.25)
         genome_ring_spacing = 0.5 * gene_bar_lw
-        base_diameter = 1.0 - lw_to_coord_scale * compare_genome_refs_cnt*(gene_bar_lw + genome_ring_spacing)
+        base_diameter = 1.0 - lw_to_coord_scale * compare_genomes_cnt*(gene_bar_lw + genome_ring_spacing)
+        self.log(console, "gene_bar_lw: "+str(gene_bar_lw))
+        self.log(console, "genome_ring_spacing: "+str(genome_ring_spacing))
+        self.log(console, "base_diameter: "+str(base_diameter))
         #genome_ring_spacing = 0.05 * gene_bar_lw
         #genome_ring_spacing = 0.3 * gene_bar_lw
         #lw_to_coord_scale = 0.1
@@ -4410,7 +4413,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 # old (with base in center)
                 #gene_bar_diameter = base_diameter
                 # new (with base on outside)
-                gene_bar_diameter = base_diameter + 0.5*(compare_genome_refs_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                gene_bar_diameter = base_diameter + 0.5*(compare_genomes_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                self.log(console, str('BASE')+" gene_bar_diameter: "+str(gene_bar_diameter))  # DEBUG
                 gene_x_diameter = 1.0 * gene_bar_diameter
                 gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
 
@@ -4433,7 +4437,8 @@ This module contains methods for running and visualizing results of phylogenomic
 #                    else:
 #                        gene_color = "deepskyblue"
 #                        z_level = 1
-                    gene_bar_diameter = base_diameter + 0.5*(compare_genome_refs_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                    gene_bar_diameter = base_diameter + 0.5*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                    self.log(console, str(genome_i)+" gene_bar_diameter: "+str(gene_bar_diameter))  # DEBUG
                     gene_x_diameter = 1.0 * gene_bar_diameter
                     gene_y_diameter = ellipse_to_circle_scaling * gene_bar_diameter
                     gene_arc = Arc (ellipse_center, gene_x_diameter, gene_y_diameter, \
@@ -4451,7 +4456,7 @@ This module contains methods for running and visualizing results of phylogenomic
         label_angle = (math.pi/180) * (90 - origin_gap_angle/2.0 - (360-origin_gap_angle))
         #label_radius = base_diameter + 0.5*gene_bar_lw*lw_to_coord_scale
         #label_radius = 0.5*base_diameter
-        label_radius = 0.5*base_diameter + text_y_delta*compare_genome_refs_cnt*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+        label_radius = 0.5*base_diameter + text_y_delta*compare_genomes_cnt*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
         x_shift = label_radius * math.cos(label_angle)
         y_shift = label_radius * math.sin(label_angle)
         label_x_pos = ellipse_center_x + x_shift + label_margin
@@ -4460,7 +4465,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         for genome_i,genome_ref in enumerate(compare_genome_refs):
-            label_radius = 0.5*base_diameter + text_y_delta*(compare_genome_refs_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+            label_radius = 0.5*base_diameter + text_y_delta*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
             x_shift = label_radius * math.cos(label_angle)
             y_shift = label_radius * math.sin(label_angle)
             label_x_pos = ellipse_center_x + x_shift + label_margin
@@ -4577,14 +4582,14 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<table cellpadding="'+str(cell_padding)+'" cellspacing="'+str(cell_spacing)+'" border="'+str(cell_border)+'">']
 
         # add circle image
-        circle_rowspan = 2 * (compare_genome_refs_cnt+outgroup_genome_refs_cnt+1)
+        circle_rowspan = 2 * (compare_genomes_cnt+outgroup_genome_refs_cnt+1)
         html_report_lines += ['<tr>']
         html_report_lines += ['<td valign="middle" align="left" rowspan="'+str(circle_rowspan)+'">']
         html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
         html_report_lines += ['</td>']
 
         # add labels
-        for filler_line_i in range((compare_genome_refs_cnt+outgroup_genome_refs_cnt+1)//2):
+        for filler_line_i in range((compare_genomes_cnt+outgroup_genome_refs_cnt+1)//2):
             if filler_line_i > 0:
                 html_report_lines += ['<tr>']
             html_report_lines += ['<td>'+sp+'</td></tr>']
@@ -4601,7 +4606,7 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><i>'+"outgroup"+'</i></nobr></font></td>']
             html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><i>'+str(genome_sci_name_by_ref[genome_ref])+'</i></nobr></font></td>']
             html_report_lines += ['</tr>']
-        for filler_line_i in range((compare_genome_refs_cnt+outgroup_genome_refs_cnt+1)//2):
+        for filler_line_i in range((compare_genomes_cnt+outgroup_genome_refs_cnt+1)//2):
             html_report_lines += ['<tr><td>'+sp+'</td></tr>']
 
         # close
