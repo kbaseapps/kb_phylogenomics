@@ -4365,8 +4365,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #base_partial_color = "cyan"
         #hit_partial_color = "deepskyblue"
         base_partial_color = "deepskyblue"
-        #hit_partial_color = "lightgray"
-        hit_partial_color = "gray"
+        #hit_partial_color = "gray"  # too dark
+        hit_partial_color = "lightgray"
 
         # Build image
         fig = pyplot.figure()
@@ -4431,7 +4431,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 #gene_bar_radius = inner_radius + 0.5*(compare_genomes_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
                 #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
                 #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
-                gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt) * (gene_bar_lw+genome_ring_spacing)
+                gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + 0.5 * lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
                 #self.log(console, str('BASE')+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                 gene_x_radius = 1.0 * gene_bar_radius
                 gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
