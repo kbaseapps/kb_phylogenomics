@@ -3913,6 +3913,7 @@ This module contains methods for running and visualizing results of phylogenomic
             input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
             input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             base_genome_obj_name = input_obj_info[NAME_I]
+            base_genome_obj_name = base_genome_obj_name.replace(" ","_")
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
         accepted_input_types = ["KBaseGenomes.Genome" ]
@@ -3935,6 +3936,7 @@ This module contains methods for running and visualizing results of phylogenomic
             input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
             input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             pg_obj_name = input_obj_info[NAME_I]
+            pg_obj_name = pg_obj_name.replace(" ", "_")
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
         accepted_input_types = ["KBaseGenomes.Pangenome" ]
@@ -4100,8 +4102,8 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "SAVING FEATURESETS")
         objects_created = []
         if singleton_featureSet_elements:
-            fs_name = pg_obj_name+".singleton_pangenome.FeatureSet"
-            fs_desc = pg_obj_name+" singleton pangenome features"
+            fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".singleton_pangenome.FeatureSet"
+            fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" singleton pangenome features"
             singleton_obj = { 'description': fs_desc,
                               'elements': singleton_featureSet_elements
                               }
@@ -4120,8 +4122,8 @@ This module contains methods for running and visualizing results of phylogenomic
             singleton_obj = {}  # free memory
 
         if partial_featureSet_elements:
-            fs_name = pg_obj_name+".non-core_pangenome.FeatureSet"
-            fs_desc = pg_obj_name+" non-core pangenome features"
+            fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".non-core_pangenome.FeatureSet"
+            fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" non-core pangenome features"
             partial_obj = { 'description': fs_desc,
                             'elements': partial_featureSet_elements
                             }
@@ -4141,11 +4143,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
         if core_featureSet_elements:
             if outgroup_genome_refs_cnt == 0:
-                fs_name = pg_obj_name+".core_pangenome.FeatureSet"
-                fs_desc = pg_obj_name+" core pangenome features"
+                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".core_pangenome.FeatureSet"
+                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" core pangenome features"
             else:
-                fs_name = pg_obj_name+".clade-specific_core_pangenome.FeatureSet"
-                fs_desc = pg_obj_name+" clade-specific core pangenome features"
+                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".clade-specific_core_pangenome.FeatureSet"
+                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" clade-specific core pangenome features"
             core_obj = { 'description': fs_desc,
                          'elements': core_featureSet_elements
                          }
@@ -4164,8 +4166,8 @@ This module contains methods for running and visualizing results of phylogenomic
             core_obj = {}  # free memory
 
         if univ_featureSet_elements:
-            fs_name = pg_obj_name+".non-specific_core_pangenome.FeatureSet"
-            fs_desc = pg_obj_name+" non-specific core pangenome features"
+            fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".non-specific_core_pangenome.FeatureSet"
+            fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" non-specific core pangenome features"
             univ_obj = { 'description': fs_desc,
                          'elements': univ_featureSet_elements
                          }
