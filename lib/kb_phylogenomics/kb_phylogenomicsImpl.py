@@ -4407,17 +4407,17 @@ This module contains methods for running and visualizing results of phylogenomic
                     this_mark_width = 2* mark_width
                     z_level = 4
                 elif fid in base_cores:
+                    gene_color = base_core_color
+                    hit_gene_color = hit_core_color
+                    this_mark_width = mark_width
+                    z_level = 3
+                elif fid in base_universals:
                     if outgroup_genome_refs_cnt == 0:
                         gene_color = base_nonspecific_core_color
                         hit_gene_color = hit_nonspecific_core_color
                     else:
-                        gene_color = base_core_color
-                        hit_gene_color = hit_core_color
-                    this_mark_width = mark_width
-                    z_level = 3
-                elif fid in base_universals:
-                    gene_color = base_univ_color
-                    hit_gene_color = hit_univ_color
+                        gene_color = base_univ_color
+                        hit_gene_color = hit_univ_color
                     this_mark_width = mark_width
                     z_level = 2
                 else:
@@ -4432,7 +4432,6 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
                 # draw base genome gene
-                this_gene_bar_lw = unscaled_ring_lw
                 #gene_bar_radius = inner_radius + 0.5*gene_bar_lw*lw_to_coord_scale
 
                 # old (with base in center)
@@ -4441,7 +4440,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 #gene_bar_radius = inner_radius + 0.5*(compare_genomes_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
                 #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
                 #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
-                gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + 0.5 * lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
+                if gene_bar_lw == unscaled_ring_lw:
+                    gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt) * (gene_bar_lw+genome_ring_spacing)
+                else:
+                    this_gene_bar_lw = unscaled_ring_lw
+                    gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + 0.5 * lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
+
                 #self.log(console, str('BASE')+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                 gene_x_radius = 1.0 * gene_bar_radius
                 gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
@@ -4506,8 +4510,7 @@ This module contains methods for running and visualizing results of phylogenomic
         label_x_pos = ellipse_center_x + x_shift + label_margin
         label_y_pos = ellipse_center_y + y_shift - y_downshift
         label = str(0)
-        #ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-        ax.text (label_x_pos, label_y_pos, label, verticalalignment="center", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         for genome_i,genome_ref in enumerate(compare_genome_refs):
             #label_radius = 0.5*inner_radius + text_y_delta*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
@@ -4521,7 +4524,7 @@ This module contains methods for running and visualizing results of phylogenomic
             label_x_pos = ellipse_center_x + x_shift + label_margin
             label_y_pos = ellipse_center_y + y_shift - y_downshift
             label = str(genome_i+1)
-            ax.text (label_x_pos, label_y_pos, label, verticalalignment="center", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+            ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         # Add color key
         key_x_margin = 0.01
@@ -4539,7 +4542,7 @@ This module contains methods for running and visualizing results of phylogenomic
                          'y_shift': 1,
                          'color': base_singleton_color
                      },
-                       { 'name': 'non-core pangenome',
+                       { 'name': 'non-core',
                          'y_shift': 2,
                          'color': base_partial_color
                      }
@@ -4570,7 +4573,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # rest of pangenome key
         ax.text (key_x_margin/2.0, 1.0-(key_y_margin+5.5*key_line_spacing), "Pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
-        key_config = [ { 'name': 'non-core pangenome',
+        key_config = [ { 'name': 'non-core',
                          'y_shift': 6.5,
                          'color': hit_partial_color
                          }
