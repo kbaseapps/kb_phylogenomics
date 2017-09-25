@@ -4365,7 +4365,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #base_partial_color = "cyan"
         #hit_partial_color = "deepskyblue"
         base_partial_color = "deepskyblue"
-        hit_partial_color = "lightgray"
+        #hit_partial_color = "lightgray"
+        hit_partial_color = "gray"
 
         # Build image
         fig = pyplot.figure()
@@ -4429,7 +4430,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 # new (with base on outside)
                 #gene_bar_radius = inner_radius + 0.5*(compare_genomes_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
                 #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
-                gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
+                #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
+                gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt) * (gene_bar_lw+genome_ring_spacing)
                 #self.log(console, str('BASE')+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                 gene_x_radius = 1.0 * gene_bar_radius
                 gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
@@ -4465,11 +4467,20 @@ This module contains methods for running and visualizing results of phylogenomic
                     ax.add_patch (gene_arc)        
 
         # Add labels
-        text_fontsize = 10
+        base_text_fontsize = 10
+        if gene_bar_lw < unscaled_ring_lw:
+            text_fontsize = int(max_unscaled_rings * base_text_fontsize * gene_bar_lw / unscaled_ring_lw)
+            if text_fontsize > base_text_fontsize:
+                text_fontsize = base_text_fontsize
+        else:
+            text_fontsize = base_text_fontsize
         text_color = "#606060"
-        label_margin = 0.005
-        y_downshift = 0.0075 * ellipse_to_circle_scaling
-        text_y_delta = 0.25
+        #label_margin = 0.005
+        #y_downshift = 0.0075 * ellipse_to_circle_scaling
+        #text_y_delta = 0.25
+        label_margin = 0.0
+        y_downshift = 0.0
+        text_y_delta = 0.0
 
         label_angle = (math.pi/180) * (90 - origin_gap_angle/2.0 - (360-origin_gap_angle))
         #label_radius = inner_radius + 0.5*gene_bar_lw*lw_to_coord_scale
@@ -4484,7 +4495,8 @@ This module contains methods for running and visualizing results of phylogenomic
         label_x_pos = ellipse_center_x + x_shift + label_margin
         label_y_pos = ellipse_center_y + y_shift - y_downshift
         label = str(0)
-        ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        #ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text (label_x_pos, label_y_pos, label, verticalalignment="center", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         for genome_i,genome_ref in enumerate(compare_genome_refs):
             #label_radius = 0.5*inner_radius + text_y_delta*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
@@ -4496,7 +4508,8 @@ This module contains methods for running and visualizing results of phylogenomic
             label_x_pos = ellipse_center_x + x_shift + label_margin
             label_y_pos = ellipse_center_y + y_shift - y_downshift
             label = str(genome_i+1)
-            ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+#            ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+            ax.text (label_x_pos, label_y_pos, label, verticalalignment="center", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         # Add color key
         key_x_margin = 0.01
