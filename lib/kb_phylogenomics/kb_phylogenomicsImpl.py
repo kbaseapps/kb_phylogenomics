@@ -4339,7 +4339,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #gene_bar_lw = genome_ring_scale_factor * 20
         lw_to_coord_scale = 0.005
         max_unscaled_rings = 4
-        unscaled_rings_lw = 30
+        #unscaled_rings_lw = 30
+        unscaled_rings_lw = 100
         if compare_genomes_cnt <= max_unscaled_rings:
             gene_bar_lw = unscaled_rings_lw
         else:
