@@ -4490,6 +4490,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
         this_gene_bar_lw = unscaled_ring_lw
         label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1)*(gene_bar_lw+genome_ring_spacing) + 0.5*lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
+        label_radius *= 0.5  # why is this necessary?
         x_shift = label_radius * math.cos(label_angle)
         y_shift = label_radius * math.sin(label_angle)
         label_x_pos = ellipse_center_x + x_shift + label_margin
@@ -4503,6 +4504,7 @@ This module contains methods for running and visualizing results of phylogenomic
             #label_radius = inner_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
             #label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
             label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-(genome_i+1+1))*(gene_bar_lw+genome_ring_spacing) + 0.5*lw_to_coord_scale * (gene_bar_lw+genome_ring_spacing)
+            label_radius *= 0.5  # why is this necessary?
             x_shift = label_radius * math.cos(label_angle)
             y_shift = label_radius * math.sin(label_angle)
             label_x_pos = ellipse_center_x + x_shift + label_margin
