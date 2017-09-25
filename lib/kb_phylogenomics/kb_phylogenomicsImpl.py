@@ -4336,22 +4336,22 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center = (ellipse_center_x, ellipse_center_y)
         lw_to_coord_scale = 0.005
         max_unscaled_rings = 4
-        unscaled_rings_lw = 30
+        unscaled_ring_lw = 30
         outer_ring_radius = 0.8
-        min_base_radius = 0.3
+        min_inner_radius = 0.3
 
         if compare_genomes_cnt <= max_unscaled_rings:
-            gene_bar_lw = unscaled_rings_lw
-            base_radius = outer_ring_radius - lw_to_coord_scale * compare_genomes_cnt * gene_bar_lw
+            gene_bar_lw = unscaled_ring_lw
+            inner_radius = outer_ring_radius - lw_to_coord_scale * compare_genomes_cnt * gene_bar_lw
         else:
-            base_radius = min_base_radius
-            gene_bar_lw = genome_ring_scale_factor * (outer_ring_radius - min_base_radius) / lw_to_coord_scale
+            inner_radius = min_inner_radius
+            gene_bar_lw = genome_ring_scale_factor * (outer_ring_radius - min_inner_radius) / lw_to_coord_scale
         #genome_ring_spacing = 0.05 * gene_bar_lw
         genome_ring_spacing = 0.0
         gene_bar_lw -= genome_ring_spacing
         #self.log(console, "gene_bar_lw: "+str(gene_bar_lw))  # DEBUG
         #self.log(console, "genome_ring_spacing: "+str(genome_ring_spacing))  # DEBUG
-        #self.log(console, "base_radius: "+str(base_radius))  # DEBUG
+        #self.log(console, "inner_radius: "+str(inner_radius))  # DEBUG
         #genome_ring_spacing = 0.05 * gene_bar_lw
         #genome_ring_spacing = 0.3 * gene_bar_lw
         #lw_to_coord_scale = 0.1
@@ -4390,9 +4390,11 @@ This module contains methods for running and visualizing results of phylogenomic
             if contig_i > 0:
                 base_contig_pos += sorted_base_contig_lens[contig_i-1]
 
-            # base genome
+            # use base genome for angle
             #
             for fid in contig_feature_order:
+
+                # base genome ring color
                 if fid in base_singletons:
                     gene_color = base_singleton_color
                     this_mark_width = 2* mark_width
@@ -4416,21 +4418,25 @@ This module contains methods for running and visualizing results of phylogenomic
                 
                 arc_beg = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) - this_mark_width
                 arc_end = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
-                #gene_bar_radius = base_radius + 0.5*gene_bar_lw*lw_to_coord_scale
+
+
+                # draw base genome gene
+                this_gene_bar_lw = unscaled_ring_lw
+                #gene_bar_radius = inner_radius + 0.5*gene_bar_lw*lw_to_coord_scale
 
                 # old (with base in center)
-                #gene_bar_radius = base_radius
+                #gene_bar_radius = inner_radius
                 # new (with base on outside)
-                #gene_bar_radius = base_radius + 0.5*(compare_genomes_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-                #gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
-                gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt) * (gene_bar_lw+genome_ring_spacing)
+                #gene_bar_radius = inner_radius + 0.5*(compare_genomes_cnt)*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
+                gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
                 #self.log(console, str('BASE')+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                 gene_x_radius = 1.0 * gene_bar_radius
                 gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
-
+                
                 gene_arc = Arc (ellipse_center, gene_x_radius, gene_y_radius, \
-                                    theta1=arc_beg, theta2=arc_end, \
-                                    edgecolor=gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
+                                theta1=arc_beg, theta2=arc_end, \
+                                edgecolor=gene_color, lw=this_gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
                 ax.add_patch (gene_arc)        
 
                 # add homolog rings
@@ -4447,15 +4453,15 @@ This module contains methods for running and visualizing results of phylogenomic
 #                    else:
 #                        gene_color = "deepskyblue"
 #                        z_level = 1
-                    #gene_bar_radius = base_radius + 0.5*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-                    #gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
-                    gene_bar_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1)) * (gene_bar_lw+genome_ring_spacing)
+                    #gene_bar_radius = inner_radius + 0.5*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+                    #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
+                    gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1)) * (gene_bar_lw+genome_ring_spacing)
                     #self.log(console, str(genome_i)+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                     gene_x_radius = 1.0 * gene_bar_radius
                     gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
                     gene_arc = Arc (ellipse_center, gene_x_radius, gene_y_radius, \
-                                        theta1=arc_beg, theta2=arc_end, \
-                                        edgecolor=hit_gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
+                                    theta1=arc_beg, theta2=arc_end, \
+                                    edgecolor=hit_gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
                     ax.add_patch (gene_arc)        
 
         # Add labels
@@ -4466,11 +4472,13 @@ This module contains methods for running and visualizing results of phylogenomic
         text_y_delta = 0.25
 
         label_angle = (math.pi/180) * (90 - origin_gap_angle/2.0 - (360-origin_gap_angle))
-        #label_radius = base_radius + 0.5*gene_bar_lw*lw_to_coord_scale
-        #label_radius = 0.5*base_radius
-        #label_radius = 0.5*base_radius + text_y_delta*compare_genomes_cnt*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-        #label_radius = base_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
-        label_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
+        #label_radius = inner_radius + 0.5*gene_bar_lw*lw_to_coord_scale
+        #label_radius = 0.5*inner_radius
+        #label_radius = 0.5*inner_radius + text_y_delta*compare_genomes_cnt*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+        #label_radius = inner_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
+        #label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
+        this_gene_bar_lw = unscaled_ring_lw
+        label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1)*(gene_bar_lw+genome_ring_spacing) + 0.5*lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
         x_shift = label_radius * math.cos(label_angle)
         y_shift = label_radius * math.sin(label_angle)
         label_x_pos = ellipse_center_x + x_shift + label_margin
@@ -4479,9 +4487,10 @@ This module contains methods for running and visualizing results of phylogenomic
         ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         for genome_i,genome_ref in enumerate(compare_genome_refs):
-            #label_radius = 0.5*base_radius + text_y_delta*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
-            #label_radius = base_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
-            label_radius = base_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
+            #label_radius = 0.5*inner_radius + text_y_delta*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
+            #label_radius = inner_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
+            #label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
+            label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-(genome_i+1+1))*(gene_bar_lw+genome_ring_spacing) + 0.5*lw_to_coord_scale * (gene_bar_lw+genome_ring_spacing)
             x_shift = label_radius * math.cos(label_angle)
             y_shift = label_radius * math.sin(label_angle)
             label_x_pos = ellipse_center_x + x_shift + label_margin
