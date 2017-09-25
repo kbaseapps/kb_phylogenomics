@@ -4334,33 +4334,21 @@ This module contains methods for running and visualizing results of phylogenomic
         ellipse_center_x = 0.50
         ellipse_center_y = 0.50
         ellipse_center = (ellipse_center_x, ellipse_center_y)
-        #base_radius = 0.20
-        #base_radius = 1.0 / compare_genomes_cnt  # because marks are inverse scaled in length, shrinking central donut hole
-        #gene_bar_lw = genome_ring_scale_factor * 20
         lw_to_coord_scale = 0.005
         max_unscaled_rings = 4
-        #unscaled_rings_lw = 30
-        unscaled_rings_lw = 50
-        if compare_genomes_cnt <= max_unscaled_rings:
-            gene_bar_lw = unscaled_rings_lw
-        else:
-            #gene_bar_lw = 30 * (genome_ring_scale_factor**0.25)
-            gene_bar_lw = max_unscaled_rings * unscaled_rings_lw * genome_ring_scale_factor
-        #genome_ring_spacing = 0.05 * gene_bar_lw
-        #genome_ring_spacing = 0.005 * gene_bar_lw
-        genome_ring_spacing = 0.0
+        unscaled_rings_lw = 30
         outer_ring_radius = 0.8
         min_base_radius = 0.3
-        base_radius = outer_ring_radius - lw_to_coord_scale * compare_genomes_cnt*(gene_bar_lw + genome_ring_spacing)
-        if base_radius <= min_base_radius:
-            #raise ValueError ("BASE RADIUS < "+str(min_base_radius)+".  Too many genomes in comparison")
-            self.log (console, "BASE RADIUS < "+str(min_base_radius)+".  Too many genomes in comparison")
-            base_radius = 0.3
-            gene_bar_lw = genome_ring_scale_factor * (outer_ring_radius - min_base_radius) / lw_to_coord_scale
-            #genome_ring_spacing = 0.05 * gene_bar_lw
-            genome_ring_spacing = 0.0
-            gene_bar_lw -= genome_ring_spacing
 
+        if compare_genomes_cnt <= max_unscaled_rings:
+            gene_bar_lw = unscaled_rings_lw
+            base_radius = outer_ring_radius - lw_to_coord_scale * compare_genomes_cnt * gene_bar_lw
+        else:
+            base_radius = min_base_radius
+            gene_bar_lw = genome_ring_scale_factor * (outer_ring_radius - min_base_radius) / lw_to_coord_scale
+        #genome_ring_spacing = 0.05 * gene_bar_lw
+        genome_ring_spacing = 0.0
+        gene_bar_lw -= genome_ring_spacing
         #self.log(console, "gene_bar_lw: "+str(gene_bar_lw))  # DEBUG
         #self.log(console, "genome_ring_spacing: "+str(genome_ring_spacing))  # DEBUG
         #self.log(console, "base_radius: "+str(base_radius))  # DEBUG
