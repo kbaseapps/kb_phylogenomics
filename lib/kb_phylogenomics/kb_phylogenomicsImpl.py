@@ -4140,8 +4140,12 @@ This module contains methods for running and visualizing results of phylogenomic
             partial_obj = {}  # free memory
 
         if core_featureSet_elements:
-            fs_name = pg_obj_name+".clade-specific_core_pangenome.FeatureSet"
-            fs_desc = pg_obj_name+" clade-specific core pangenome features"
+            if outgroup_genome_refs_cnt == 0:
+                fs_name = pg_obj_name+".core_pangenome.FeatureSet"
+                fs_desc = pg_obj_name+" core pangenome features"
+            else:
+                fs_name = pg_obj_name+".clade-specific_core_pangenome.FeatureSet"
+                fs_desc = pg_obj_name+" clade-specific core pangenome features"
             core_obj = { 'description': fs_desc,
                          'elements': core_featureSet_elements
                          }
@@ -4362,6 +4366,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #base_univ_color = "blue"
         base_univ_color = "darkblue"
         hit_univ_color = "darkblue"
+        base_nonspecific_core_color = "purple"
+        hit_nonspecific_core_color = "purple"
         #base_partial_color = "cyan"
         #hit_partial_color = "deepskyblue"
         base_partial_color = "deepskyblue"
@@ -4401,8 +4407,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     this_mark_width = 2* mark_width
                     z_level = 4
                 elif fid in base_cores:
-                    gene_color = base_core_color
-                    hit_gene_color = hit_core_color
+                    if outgroup_genome_refs_cnt == 0:
+                        gene_color = base_nonspecific_core_color
+                        hit_gene_color = hit_nonspecific_core_color
+                    else:
+                        gene_color = base_core_color
+                        hit_gene_color = hit_core_color
                     this_mark_width = mark_width
                     z_level = 3
                 elif fid in base_universals:
@@ -4475,12 +4485,12 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             text_fontsize = base_text_fontsize
         text_color = "#606060"
-        #label_margin = 0.005
-        #y_downshift = 0.0075 * ellipse_to_circle_scaling
+        label_margin = 0.005
+        y_downshift = 0.0075 * ellipse_to_circle_scaling
         #text_y_delta = 0.25
-        label_margin = 0.0
-        y_downshift = 0.0
-        text_y_delta = 0.0
+        #label_margin = 0.0
+        #y_downshift = 0.0
+        #text_y_delta = 0.0
 
         label_angle = (math.pi/180) * (90 - origin_gap_angle/2.0 - (360-origin_gap_angle))
         #label_radius = inner_radius + 0.5*gene_bar_lw*lw_to_coord_scale
@@ -4503,14 +4513,14 @@ This module contains methods for running and visualizing results of phylogenomic
             #label_radius = 0.5*inner_radius + text_y_delta*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
             #label_radius = inner_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
             #label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
-            label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-(genome_i+1+1))*(gene_bar_lw+genome_ring_spacing) + 0.5*lw_to_coord_scale * (gene_bar_lw+genome_ring_spacing)
+            #label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-(genome_i+1+1))*(gene_bar_lw+genome_ring_spacing) + 0.5*lw_to_coord_scale * (gene_bar_lw+genome_ring_spacing)
+            label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)
             label_radius *= 0.5  # why is this necessary?
             x_shift = label_radius * math.cos(label_angle)
             y_shift = label_radius * math.sin(label_angle)
             label_x_pos = ellipse_center_x + x_shift + label_margin
             label_y_pos = ellipse_center_y + y_shift - y_downshift
             label = str(genome_i+1)
-#            ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
             ax.text (label_x_pos, label_y_pos, label, verticalalignment="center", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         # Add color key
@@ -4528,20 +4538,30 @@ This module contains methods for running and visualizing results of phylogenomic
         key_config = [ { 'name': 'base singletons',
                          'y_shift': 1,
                          'color': base_singleton_color
-                         },
+                     },
                        { 'name': 'non-core pangenome',
                          'y_shift': 2,
                          'color': base_partial_color
-                         },
-                       { 'name': 'clade-specific core',
-                         'y_shift': 3,
-                         'color': base_core_color
-                         },
-                       { 'name': 'core + outgroup',
-                         'y_shift': 4,
-                         'color': base_univ_color
-                         }
-                       ]
+                     }
+                   ]
+        if outgroup_genome_refs_cnt == 0:
+            key_config.extend(
+                [ { 'name': 'core',
+                    'y_shift': 3,
+                    'color': base_nonspecific_core_color
+                }
+              ])
+        else:
+            key_config.extend(
+                [ { 'name': 'clade-specific core',
+                    'y_shift': 3,
+                    'color': base_core_color
+                },
+                  { 'name': 'core + outgroup',
+                    'y_shift': 4,
+                    'color': base_univ_color
+                }
+              ])
         for k_config in key_config:
             key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing)), box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
             ax.add_patch(key_box)
@@ -4553,7 +4573,17 @@ This module contains methods for running and visualizing results of phylogenomic
         key_config = [ { 'name': 'non-core pangenome',
                          'y_shift': 6.5,
                          'color': hit_partial_color
-                         },
+                         }
+                   ]
+        if outgroup_genome_refs_cnt == 0:
+            key_config.extend ([
+                       { 'name': 'core',
+                         'y_shift': 7.5,
+                         'color': hit_nonspecific_core_color
+                         }
+                       ])
+        else:
+            key_config.extend ([
                        { 'name': 'clade-specific core',
                          'y_shift': 7.5,
                          'color': hit_core_color
@@ -4562,7 +4592,7 @@ This module contains methods for running and visualizing results of phylogenomic
                          'y_shift': 8.5,
                          'color': hit_univ_color
                          }
-                       ]
+                       ])
         for k_config in key_config:
             key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing)), box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
             ax.add_patch(key_box)
