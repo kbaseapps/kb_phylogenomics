@@ -82,7 +82,7 @@ This module contains methods for running and visualizing results of phylogenomic
         if not os.path.exists(self.scratch):
             os.makedirs(self.scratch)
 
-        self.genome_feature_id_delim = '.f:'
+            #self.genome_feature_id_delim = '.f:'
 
         #END_CONSTRUCTOR
         pass
@@ -1875,7 +1875,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # filter out genes that aren't in featureSet
                     target_feature = False
-                    featureSet_element_id = genome_ref+self.genome_feature_id_delim+feature['id']
+                    #featureSet_element_id = genome_ref+self.genome_feature_id_delim+feature['id']
+                    featureSet_element_id = feature['id']
                     if featureSet_element_id in featureSet_obj['elements']:
                         target_feature = True
 
@@ -2038,7 +2039,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                     genes_with_hits_cnt[genome_ref][namespace] += 1
 
                                     # filter out genes that aren't in featureSet
-                                    featureSet_element_id = genome_ref+self.genome_feature_id_delim+gene_ID
+                                    #featureSet_element_id = genome_ref+self.genome_feature_id_delim+gene_ID
+                                    featureSet_element_id = gene_ID
                                     if featureSet_element_id not in featureSet_obj['elements']:
                                         continue
                                     
@@ -4069,14 +4071,22 @@ This module contains methods for running and visualizing results of phylogenomic
                 for genome_ref in [base_genome_ref]+compare_genome_refs:
                     if genome_ref in genomes_seen:
                         for fid in fids_by_genome_ref[genome_ref]:
-                            featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
-                            singleton_featureSet_elements[featureSet_element_id] = [genome_ref]
+                            #featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
+                            #singleton_featureSet_elements[featureSet_element_id] = [genome_ref]
+                            if fid in singleton_featureSet_elements:
+                                singleton_featureSet_elements[fid].append(genome_ref)
+                            else:
+                                singleton_featureSet_elements[fid] = [genome_ref]
             elif hit_cnt < compare_genomes_cnt + 1:  # +1: include base genome
                 for genome_ref in [base_genome_ref]+compare_genome_refs:
                     if genome_ref in genomes_seen:
                         for fid in fids_by_genome_ref[genome_ref]:
-                            featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
-                            partial_featureSet_elements[featureSet_element_id] = [genome_ref]
+                            #featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
+                            #partial_featureSet_elements[featureSet_element_id] = [genome_ref]
+                            if fid in partial_featureSet_elements:
+                                partial_featureSet_elements[fid].append(genome_ref)
+                            else:
+                                partial_featureSet_elements[fid] = [genome_ref]
             else:  # core
                 outgroup_hit = False
                 for genome_ref in outgroup_genome_refs:
@@ -4087,14 +4097,22 @@ This module contains methods for running and visualizing results of phylogenomic
                     for genome_ref in [base_genome_ref]+compare_genome_refs:
                         #if genome_ref in genomes_seen:  # implicit
                         for fid in fids_by_genome_ref[genome_ref]:
-                            featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
-                            univ_featureSet_elements[featureSet_element_id] = [genome_ref]
+                            #featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
+                            #univ_featureSet_elements[featureSet_element_id] = [genome_ref]
+                            if fid in univ_featureSet_elements:
+                                univ_featureSet_elements[fid].append(genome_ref)
+                            else:
+                                univ_featureSet_elements[fid] = [genome_ref]
                 else:  # clade-specific core
                     for genome_ref in [base_genome_ref]+compare_genome_refs:
                         #if genome_ref in genomes_seen:  # implicit
                         for fid in fids_by_genome_ref[genome_ref]:
-                            featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
-                            core_featureSet_elements[featureSet_element_id] = [genome_ref]
+                            #featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
+                            #core_featureSet_elements[featureSet_element_id] = [genome_ref]
+                            if fid in core_featureSet_elements:
+                                core_featureSet_elements[fid].append(genome_ref)
+                            else:
+                                core_featureSet_elements[fid] = [genome_ref]
 
 
         # Create and save featureSets
