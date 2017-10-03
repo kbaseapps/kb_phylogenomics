@@ -1,0 +1,1 @@
+1.0.1 - Fixed FeatureSet ids to stop appending genome_ref.  Applies to "Pangenome Circle Plot" and "View Functional Profile for FeatureSet" 
