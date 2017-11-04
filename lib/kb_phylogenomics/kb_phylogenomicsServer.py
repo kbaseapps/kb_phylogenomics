@@ -333,6 +333,14 @@ class Application(object):
         self.serverlog.set_log_level(6)
         self.rpc_service = JSONRPCServiceCustom()
         self.method_authentication = dict()
+        self.rpc_service.add(impl_kb_phylogenomics.view_tree,
+                             name='kb_phylogenomics.view_tree',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.view_tree'] = 'required'  # noqa
+        self.rpc_service.add(impl_kb_phylogenomics.trim_tree_to_genomeSet,
+                             name='kb_phylogenomics.trim_tree_to_genomeSet',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.trim_tree_to_genomeSet'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.run_DomainAnnotation_Sets,
                              name='kb_phylogenomics.run_DomainAnnotation_Sets',
                              types=[dict])

@@ -52,9 +52,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.0.0"
+    VERSION = "1.1.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "8691d141480478b16331da0fb8708211d9f0034a"
+    GIT_COMMIT_HASH = "8711b86107b0dcb238701b7ebbd2a14cd4d4a6b8"
 
     #BEGIN_CLASS_HEADER
 
@@ -87,6 +87,51 @@ This module contains methods for running and visualizing results of phylogenomic
         #END_CONSTRUCTOR
         pass
 
+
+    def view_tree(self, ctx, params):
+        """
+        :param params: instance of type "view_tree_Input" (view_tree() ** **
+           show a KBase Tree and make newick and images downloadable) ->
+           structure: parameter "workspace_name" of type "workspace_name" (**
+           Common types), parameter "input_tree_ref" of type "data_obj_ref"
+        :returns: instance of type "view_tree_Output" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_tree
+        #END view_tree
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_tree return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def trim_tree_to_genomeSet(self, ctx, params):
+        """
+        :param params: instance of type "trim_tree_to_genomeSet_Input"
+           (trim_tree_to_genomeSet() ** ** trim a KBase Tree to match
+           genomeset, and make newick and images downloadable) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
+           parameter "input_tree_ref" of type "data_obj_ref"
+        :returns: instance of type "trim_tree_to_genomeSet_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN trim_tree_to_genomeSet
+        #END trim_tree_to_genomeSet
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method trim_tree_to_genomeSet return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
 
     def run_DomainAnnotation_Sets(self, ctx, params):
         """

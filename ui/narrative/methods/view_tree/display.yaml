@@ -1,0 +1,41 @@
+#
+# define display information
+#
+name: View Tree - v1.1.0
+
+tooltip: |
+    View a Species Tree or Gene Tree
+
+screenshots: []
+
+icon: tree-purple.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_tree_ref :
+        ui-name : |
+            Tree
+        short-hint : |
+            The Tree to view
+
+description : |
+    <p>View a Species Tree or Gene Tree as an image and download images and NEWICK representations.</p>
+
+    <p><i>View Tree</i> App written by Dylan Chivian (DCChivian@lbl.gov)</p>

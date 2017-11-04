@@ -110,6 +110,204 @@ sub new
 
 
 
+=head2 view_tree
+
+  $output = $obj->view_tree($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_phylogenomics.view_tree_Input
+$output is a kb_phylogenomics.view_tree_Output
+view_tree_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+workspace_name is a string
+data_obj_ref is a string
+view_tree_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_phylogenomics.view_tree_Input
+$output is a kb_phylogenomics.view_tree_Output
+view_tree_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+workspace_name is a string
+data_obj_ref is a string
+view_tree_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub view_tree
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function view_tree (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to view_tree:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'view_tree');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_phylogenomics.view_tree",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'view_tree',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method view_tree",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'view_tree',
+				       );
+    }
+}
+ 
+
+
+=head2 trim_tree_to_genomeSet
+
+  $output = $obj->trim_tree_to_genomeSet($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_phylogenomics.trim_tree_to_genomeSet_Input
+$output is a kb_phylogenomics.trim_tree_to_genomeSet_Output
+trim_tree_to_genomeSet_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+workspace_name is a string
+data_obj_ref is a string
+trim_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_phylogenomics.trim_tree_to_genomeSet_Input
+$output is a kb_phylogenomics.trim_tree_to_genomeSet_Output
+trim_tree_to_genomeSet_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+workspace_name is a string
+data_obj_ref is a string
+trim_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub trim_tree_to_genomeSet
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function trim_tree_to_genomeSet (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to trim_tree_to_genomeSet:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'trim_tree_to_genomeSet');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_phylogenomics.trim_tree_to_genomeSet",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'trim_tree_to_genomeSet',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method trim_tree_to_genomeSet",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'trim_tree_to_genomeSet',
+				       );
+    }
+}
+ 
+
+
 =head2 run_DomainAnnotation_Sets
 
   $output = $obj->run_DomainAnnotation_Sets($params)
@@ -1393,6 +1591,150 @@ an int
 =begin text
 
 an int
+
+=end text
+
+=back
+
+
+
+=head2 view_tree_Input
+
+=over 4
+
+
+
+=item Description
+
+view_tree()
+**
+** show a KBase Tree and make newick and images downloadable
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+
+
+=end text
+
+=back
+
+
+
+=head2 view_tree_Output
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 trim_tree_to_genomeSet_Input
+
+=over 4
+
+
+
+=item Description
+
+trim_tree_to_genomeSet()
+**
+** trim a KBase Tree to match genomeset, and make newick and images downloadable
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+
+
+=end text
+
+=back
+
+
+
+=head2 trim_tree_to_genomeSet_Output
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
 
 =end text
 

@@ -33,6 +33,35 @@ class kb_phylogenomics(object):
             trust_all_ssl_certificates=trust_all_ssl_certificates,
             auth_svc=auth_svc)
 
+    def view_tree(self, params, context=None):
+        """
+        :param params: instance of type "view_tree_Input" (view_tree() ** **
+           show a KBase Tree and make newick and images downloadable) ->
+           structure: parameter "workspace_name" of type "workspace_name" (**
+           Common types), parameter "input_tree_ref" of type "data_obj_ref"
+        :returns: instance of type "view_tree_Output" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
+        return self._client.call_method(
+            'kb_phylogenomics.view_tree',
+            [params], self._service_ver, context)
+
+    def trim_tree_to_genomeSet(self, params, context=None):
+        """
+        :param params: instance of type "trim_tree_to_genomeSet_Input"
+           (trim_tree_to_genomeSet() ** ** trim a KBase Tree to match
+           genomeset, and make newick and images downloadable) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
+           parameter "input_tree_ref" of type "data_obj_ref"
+        :returns: instance of type "trim_tree_to_genomeSet_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        return self._client.call_method(
+            'kb_phylogenomics.trim_tree_to_genomeSet',
+            [params], self._service_ver, context)
+
     def run_DomainAnnotation_Sets(self, params, context=None):
         """
         :param params: instance of type "run_DomainAnnotation_Sets_Input"
