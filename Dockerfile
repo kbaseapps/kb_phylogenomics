@@ -30,8 +30,6 @@ RUN pip install --disable-pip-version-check requests requests_toolbelt pyopenssl
 RUN pip install coverage
 
 
-
-
 # Install ETE3
 RUN apt-get update && \
     apt-get -y install xvfb python-qt4 && \
