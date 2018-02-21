@@ -434,7 +434,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for GenomeSet
     ##
-    def HIDE_view_fxn_profile_01(self):
+    def test_view_fxn_profile_01(self):
         method = 'view_fxn_profile'
 
         print ("\n\nRUNNING: test_"+method+"_01()")
@@ -540,7 +540,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for FeatureSet
     ##
-    def HIDE_view_fxn_profile_featureSet_01(self):
+    def test_view_fxn_profile_featureSet_01(self):
         method = 'view_fxn_profile_featureSet'
 
         print ("\n\nRUNNING: test_"+method+"_01()")
@@ -647,7 +647,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for Tree
     ##
-    def HIDE_view_fxn_profile_phylo_01(self):
+    def test_view_fxn_profile_phylo_01(self):
         method = 'view_fxn_profile_phylo'
 
         print ("\n\nRUNNING: test_"+method+"_01()")
