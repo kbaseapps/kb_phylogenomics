@@ -1,11 +1,11 @@
 ### Version 1.1.2
-- got view_tree() and trim_tree_to_genomeSet() Apps working
+- got view_tree() App working (trim_tree_to_genomeSet() has to wait)
 
 ### Version 1.1.1
 - Dockerfile updates to handle python SSL and cert issues
 
 ### Version 1.1.0
-- Added view_tree() and trim_tree_to_genomeSet() Apps
+- Added view_tree() App
 
 ### Version 1.0.1
 __Changes__
