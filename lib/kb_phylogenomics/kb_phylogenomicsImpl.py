@@ -191,12 +191,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
                 label = re.sub(' \([^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
                 label = re.sub('\s','_',label)
-                label = re.sub('\/','%'+'/'.encode("hex"), label)
-                label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
+                #label = re.sub('\/','%'+'/'.encode("hex"), label)
+                #label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
                 label = re.sub('\(','%'+'('.encode("hex"), label)
                 label = re.sub('\)','%'+')'.encode("hex"), label)
-                label = re.sub('\[','%'+'['.encode("hex"), label)
-                label = re.sub('\]','%'+']'.encode("hex"), label)
+                #label = re.sub('\[','%'+'['.encode("hex"), label)
+                #label = re.sub('\]','%'+']'.encode("hex"), label)
                 label = re.sub('\:','%'+':'.encode("hex"), label)
                 label = re.sub('\;','%'+';'.encode("hex"), label)
                 label = re.sub('\|','%'+'|'.encode("hex"), label)
@@ -249,7 +249,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #ts.scale = 50 # 50 pixels per branch length unit
         ts.branch_vertical_margin = 5 # pixels between adjacent branches
         title_disp = intree_name
-        if 'desc' in params:
+        if 'desc' in params and params['desc'] != None and params['desc'] != '':
             title_disp += ': '+params['desc']
         ts.title.add_face(ete3.TextFace(title_disp, fsize=10), column=0)
 
