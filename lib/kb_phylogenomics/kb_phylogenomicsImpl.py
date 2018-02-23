@@ -187,7 +187,9 @@ This module contains methods for running and visualizing results of phylogenomic
             #for row_id in new_ids.keys():
             for node_id in tree_in['default_node_labels'].keys():
                 label = tree_in['default_node_labels'][node_id]
+                self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
                 label = re.sub('\([^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
+                self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
                 label = re.sub('\s','_',label)
                 label = re.sub('\/','%'+'/'.encode("hex"), label)
                 label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
