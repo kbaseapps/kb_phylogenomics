@@ -188,8 +188,7 @@ This module contains methods for running and visualizing results of phylogenomic
             for node_id in tree_in['default_node_labels'].keys():
                 label = tree_in['default_node_labels'][node_id]
                 self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
-                label = re.sub('\([^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
-                self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
+                label = re.sub(' \([^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
                 label = re.sub('\s','_',label)
                 label = re.sub('\/','%'+'/'.encode("hex"), label)
                 label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
@@ -200,8 +199,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 label = re.sub('\:','%'+':'.encode("hex"), label)
                 label = re.sub('\;','%'+';'.encode("hex"), label)
                 label = re.sub('\|','%'+';'.encode("hex"), label)
+                self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
+                self.log (console, "NEWICK B4: '"+mod_newick_buf+"'")  # DEBUG
                 mod_newick_buf = re.sub ('\('+node_id+'\:', '('+label+':', mod_newick_buf)
                 mod_newick_buf = re.sub ('\,'+node_id+'\:', ','+label+':', mod_newick_buf)
+                self.log (console, "NEWICK AF: '"+mod_newick_buf+"'")  # DEBUG
 
                 #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
         
