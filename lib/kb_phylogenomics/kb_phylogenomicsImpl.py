@@ -52,9 +52,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.0.0"
+    VERSION = "1.1.2"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "8691d141480478b16331da0fb8708211d9f0034a"
+    GIT_COMMIT_HASH = "7c7aae5ca3a94ca750681d6a5d85925427d4bbad"
 
     #BEGIN_CLASS_HEADER
 
@@ -77,16 +77,344 @@ This module contains methods for running and visualizing results of phylogenomic
         self.callbackURL = os.environ['SDK_CALLBACK_URL']
         self.scratch = os.path.abspath(config['scratch'])
 
-        pprint(config)
+        #pprint(config)
 
         if not os.path.exists(self.scratch):
             os.makedirs(self.scratch)
 
-            #self.genome_feature_id_delim = '.f:'
+        #self.genome_feature_id_delim = '.f:'
 
         #END_CONSTRUCTOR
         pass
 
+
+    def view_tree(self, ctx, params):
+        """
+        :param params: instance of type "view_tree_Input" (view_tree() ** **
+           show a KBase Tree and make newick and images downloadable) ->
+           structure: parameter "workspace_name" of type "workspace_name" (**
+           Common types), parameter "input_tree_ref" of type "data_obj_ref",
+           parameter "desc" of String
+        :returns: instance of type "view_tree_Output" -> structure: parameter
+           "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN view_tree
+
+        #### STEP 0: init
+        ##
+        dfu = DFUClient(self.callbackURL)
+        console = []
+        invalid_msgs = []
+        self.log(console,'Running view_tree() with params=')
+        self.log(console, "\n"+pformat(params))
+        report = ''
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
+        output_dir = os.path.join (self.scratch, 'output_'+str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+
+        #### STEP 1: do some basic checks
+        ##
+        if 'workspace_name' not in params:
+            raise ValueError('workspace_name parameter is required')
+        if 'input_tree_ref' not in params:
+            raise ValueError('input_tree_ref parameter is required')
+        #if 'output_name' not in params:
+        #    raise ValueError('output_name parameter is required')
+
+
+        #### STEP 2: load the method provenance from the context object
+        ##
+        self.log(console,"SETTING PROVENANCE")  # DEBUG
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects'] = []
+        provenance[0]['input_ws_objects'].append(params['input_tree_ref'])
+        provenance[0]['service'] = 'kb_phylogenomics'
+        provenance[0]['method'] = 'view_tree'
+
+
+        #### STEP 3: Get tree and save as newick file
+        ##
+        try:
+            ws = workspaceService(self.workspaceURL, token=ctx['token'])
+            objects = ws.get_objects([{'ref': params['input_tree_ref']}])
+            data = objects[0]['data']
+            info = objects[0]['info']
+            intree_name = info[1]
+            intree_type_name = info[2].split('.')[1].split('-')[0]
+
+        except Exception as e:
+            raise ValueError('Unable to fetch input_tree_ref object from workspace: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+            
+        if intree_type_name == 'Tree':
+            tree_in = data
+        else:
+            raise ValueError('Cannot yet handle input_tree type of: '+type_name)
+
+        intree_newick_file_path = os.path.join(output_dir, intree_name+".newick")
+        self.log(console, 'writing intree file: '+intree_newick_file_path)
+        with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
+            intree_newick_file_handle.write(tree_in['tree'])
+
+        # upload
+        try:
+            newick_upload_ret = dfu.file_to_shock({'file_path': intree_newick_file_path,
+                                                   #'pack': 'zip'})
+                                                   'make_handle': 0})
+        except:
+            raise ValueError ('error uploading newick file to shock')
+
+
+        #### STEP 4: if labels defined, make separate newick-labels file
+        ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
+        ##
+        if 'default_node_labels' in tree_in:
+            newick_labels_file = intree_name+'-labels.newick'
+            output_newick_labels_file_path = os.path.join(output_dir, newick_labels_file);
+            #default_row_ids = tree_in['default_row_labels']
+            #new_ids = dict()
+            #for row_id in default_row_ids.keys():
+            #    new_ids[row_id] = default_row_ids[row_id]
+
+            mod_newick_buf = tree_in['tree']
+            #for row_id in new_ids.keys():
+            for node_id in tree_in['default_node_labels'].keys():
+                label = tree_in['default_node_labels'][node_id]
+                label = re.sub('\s','_',label)
+                label = re.sub('\/','%'+'/'.encode("hex"), label)
+                label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
+                label = re.sub('\(','%'+'('.encode("hex"), label)
+                label = re.sub('\)','%'+')'.encode("hex"), label)
+                label = re.sub('\[','%'+'['.encode("hex"), label)
+                label = re.sub('\]','%'+']'.encode("hex"), label)
+                label = re.sub('\:','%'+':'.encode("hex"), label)
+                label = re.sub('\;','%'+';'.encode("hex"), label)
+                label = re.sub('\|','%'+';'.encode("hex"), label)
+                mod_newick_buf = re.sub ('\('+node_id+'\:', '('+label+':', mod_newick_buf)
+                mod_newick_buf = re.sub ('\,'+node_id+'\:', ','+label+':', mod_newick_buf)
+
+                #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
+        
+            mod_newick_buf = re.sub ('_', ' ', mod_newick_buf)
+            with open (output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
+                output_newick_labels_file_handle.write(mod_newick_buf)
+
+            # upload
+            try:
+                newick_labels_upload_ret = dfu.file_to_shock({'file_path': output_newick_labels_file_path,
+                                                              #'pack': 'zip'})
+                                                              'make_handle': 0})
+            except:
+                raise ValueError ('error uploading newick labels file to shock')
+
+
+        #### STEP 5: Create html with tree image
+        ##
+        html_output_dir = os.path.join(output_dir, 'output_html.'+str(timestamp))
+        if not os.path.exists(html_output_dir):
+            os.makedirs(html_output_dir)
+        html_file = intree_name+'.html'
+        png_file = intree_name+'.png'
+        pdf_file = intree_name+'.pdf'
+        output_html_file_path = os.path.join(html_output_dir, html_file);
+        output_png_file_path = os.path.join(html_output_dir, png_file);
+        output_pdf_file_path = os.path.join(output_dir, pdf_file);
+        if 'default_node_labels' in tree_in:
+            newick_buf = mod_newick_buf
+        else:
+            newick_buf = tree_in['tree']
+
+        # init ETE3 objects
+        t = ete3.Tree(newick_buf)
+        ts = ete3.TreeStyle()
+
+        # customize
+        ts.show_leaf_name = True
+        ts.show_branch_length = False
+        ts.show_branch_support = True
+        #ts.scale = 50 # 50 pixels per branch length unit
+        ts.branch_vertical_margin = 5 # pixels between adjacent branches
+        title_disp = intree_name
+        if 'desc' in params:
+            title_disp += ': '+params['desc']
+        ts.title.add_face(ete3.TextFace(title_disp, fsize=10), column=0)
+
+        node_style = ete3.NodeStyle()
+        node_style["fgcolor"] = "#606060"  # for node balls
+        node_style["size"] = 10  # for node balls (gets reset based on support)
+        node_style["vt_line_color"] = "#606060"
+        node_style["hz_line_color"] = "#606060"
+        node_style["vt_line_width"] = 2
+        node_style["hz_line_width"] = 2
+        node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        node_style["hz_line_type"] = 0
+
+        leaf_style = ete3.NodeStyle()
+        leaf_style["fgcolor"] = "#ffffff"  # for node balls
+        leaf_style["size"] = 2  # for node balls (we're using it to add space)
+        leaf_style["vt_line_color"] = "#606060"  # unecessary
+        leaf_style["hz_line_color"] = "#606060"
+        leaf_style["vt_line_width"] = 2
+        leaf_style["hz_line_width"] = 2
+        leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        leaf_style["hz_line_type"] = 0
+
+        for n in t.traverse():
+            if n.is_leaf():
+                style = leaf_style
+            else:
+                style = ete3.NodeStyle()
+                for k in node_style.keys():
+                    style[k] = node_style[k]
+
+                if n.support > 0.95:
+                    style["size"] = 6
+                elif n.support > 0.90:
+                    style["size"] = 5
+                elif n.support > 0.80:
+                    style["size"] = 4
+                else:
+                    style["size"] = 2
+
+            n.set_style(style)
+
+        # save images
+        dpi = 300
+        img_units = "in"
+        img_pix_width = 1200
+        img_in_width = round(float(img_pix_width)/float(dpi), 1)
+        img_html_width = img_pix_width // 2
+        t.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
+        t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+
+        # make html
+        html_report_lines = []
+        html_report_lines += ['<html>']
+        html_report_lines += ['<head><title>KBase Tree: '+intree_name+'</title></head>']
+        html_report_lines += ['<body bgcolor="white">']
+        html_report_lines += ['<img width='+str(img_html_width)+' src="'+png_file+'">']
+        html_report_lines += ['</body>']
+        html_report_lines += ['</html>']
+
+        html_report_str = "\n".join(html_report_lines)
+        with open (output_html_file_path, 'w', 0) as html_handle:
+            html_handle.write(html_report_str)
+
+
+        # upload images and html
+        try:
+            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
+                                                #'pack': 'zip'})
+                                                'make_handle': 0})
+        except:
+            raise ValueError ('error uploading png file to shock')
+        try:
+            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
+                                                #'pack': 'zip'})
+                                                'make_handle': 0})
+        except:
+            raise ValueError ('error uploading pdf file to shock')
+        try:
+            html_upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
+                                                 'make_handle': 0,
+                                                 'pack': 'zip'})
+        except:
+            raise ValueError ('error uploading png file to shock')
+
+
+        # Create report obj
+        #
+        reportName = 'blast_report_'+str(uuid.uuid4())
+        #report += output_newick_buf+"\n"
+        reportObj = {'objects_created': [],
+                     #'text_message': '',  # or is it 'message'?
+                     'message': '',  # or is it 'text_message'?
+                     'direct_html': None,
+                     'direct_html_link_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+                     }
+        #reportObj['objects_created'].append({'ref': str(params['workspace_name'])+'/'+str(params['output_name']),'description': params['output_name']+' Tree'})
+        reportObj['html_links'] = [{'shock_id': html_upload_ret['shock_id'],
+                                    'name': html_file,
+                                    'label': intree_name+' HTML'
+                                    }
+                                   ]
+        reportObj['file_links'] = [{'shock_id': newick_upload_ret['shock_id'],
+                                    'name': intree_name+'.newick',
+                                    'label': intree_name+' NEWICK'
+                                    }
+                                   ]
+        if 'default_node_labels' in tree_in:
+            reportObj['file_links'].append({'shock_id': newick_labels_upload_ret['shock_id'],
+                                            'name': intree_name+'-labels.newick',
+                                            'label': intree_name+' NEWICK (with labels)'
+                                        })
+
+        reportObj['file_links'].extend([{'shock_id': png_upload_ret['shock_id'],
+                                         'name': intree_name+'.png',
+                                         'label': intree_name+' PNG'
+                                     },
+                                        {'shock_id': pdf_upload_ret['shock_id'],
+                                         'name': intree_name+'.pdf',
+                                         'label': intree_name+' PDF'
+                                     }])
+
+        SERVICE_VER = 'release'
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        report_info = reportClient.create_extended_report(reportObj)
+
+
+        # Done
+        #
+        self.log(console,"BUILDING RETURN OBJECT")
+        output = { 'report_name': report_info['name'],
+                   'report_ref': report_info['ref']
+        }
+
+        self.log(console,"view_tree() DONE")
+        #END view_tree
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method view_tree return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def trim_tree_to_genomeSet(self, ctx, params):
+        """
+        :param params: instance of type "trim_tree_to_genomeSet_Input"
+           (trim_tree_to_genomeSet() ** ** trim a KBase Tree to match
+           genomeset, and make newick and images downloadable) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
+           parameter "input_tree_ref" of type "data_obj_ref", parameter
+           "desc" of String
+        :returns: instance of type "trim_tree_to_genomeSet_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN trim_tree_to_genomeSet
+        #END trim_tree_to_genomeSet
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method trim_tree_to_genomeSet return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
 
     def run_DomainAnnotation_Sets(self, ctx, params):
         """
@@ -1055,7 +1383,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -1366,7 +1694,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
         
         html_report_str = "\n".join(html_report_lines)
-        reportObj['direct_html'] = html_report_str
+        #reportObj['direct_html'] = html_report_str
 
 
         # write html to file and upload
@@ -2214,7 +2542,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -2525,7 +2853,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
         
         html_report_str = "\n".join(html_report_lines)
-        reportObj['direct_html'] = html_report_str
+        #reportObj['direct_html'] = html_report_str
 
 
         # write html to file and upload
@@ -3453,7 +3781,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -3800,7 +4128,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'name': 'domain_profile_report.html',
                                     'label': 'Functional Domain Profile report'}
                                    ]
-        reportObj['direct_html_link_index'] = 0
 
 
         # save report object
@@ -4645,7 +4972,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -4755,7 +5082,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'name': 'pan_circle_plot_report.html',
                                     'label': 'Pangenome Circle Plot Report'}
                                    ]
-        reportObj['direct_html_link_index'] = 0
 
 
         # save report object
@@ -5215,7 +5541,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -5361,7 +5687,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'name': 'pan_phylo_report.html',
                                     'label': 'Phylogenetic Pangenome report'}
                                    ]
-        reportObj['direct_html_link_index'] = 0
 
 
         # save report object
