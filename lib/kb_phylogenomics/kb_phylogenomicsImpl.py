@@ -109,6 +109,8 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console,'Running view_tree() with params=')
         self.log(console, "\n"+pformat(params))
         report = ''
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
+        output_dir = os.path.join (self.scratch, 'output_'+str(timestamp))
 
 
         #### STEP 1: do some basic checks
@@ -117,8 +119,8 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError('workspace_name parameter is required')
         if 'input_tree_ref' not in params:
             raise ValueError('input_tree_ref parameter is required')
-        if 'output_name' not in params:
-            raise ValueError('output_name parameter is required')
+        #if 'output_name' not in params:
+        #    raise ValueError('output_name parameter is required')
 
 
         #### STEP 2: load the method provenance from the context object
@@ -153,81 +155,81 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             raise ValueError('Cannot yet handle input_tree type of: '+type_name)
 
-
-        #### STEP 4: adjust IDs so ETE3 parse doesn't choke on conflicting chars
-        ##
-        
-
-        intree_newick_file_path = os.path.join(self.scratch, intree_name+".newick")
+        intree_newick_file_path = os.path.join(output_dir, intree_name+".newick")
         self.log(console, 'writing intree file: '+intree_newick_file_path)
         with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
             intree_newick_file_handle.write(tree_in['tree'])
 
-
-        #### STEP 4: if labels defined, make separate newick-labels file
-        ##
-        viz_newick_tree_file_path = intree_newick_file_path
-        if 'default_node_labels' in tree_in:
-            newick_labels_file = params['output_name']+'-labels.newick'
-            viz_newick_tree_file_path = os.path.join(output_dir, newick_labels_file);
-            default_row_ids = tree_in['default_row_labels']
-            new_ids = dict()
-            for row_id in default_row_ids.keys():
-                new_ids[row_id]
-
-        mod_newick_buf = tree_in['tree']
-        for row_id in new_ids.keys():
-            new_id = new_ids[row_id]
-            label = default_node_labels[new_id]
-            label = re.sub('\s','_',label)
-            label = re.sub('\/','%'+'/'.encode("hex"), label)
-            label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
-            label = re.sub('\(','%'+'('.encode("hex"), label)
-            label = re.sub('\)','%'+')'.encode("hex"), label)
-            label = re.sub('\[','%'+'['.encode("hex"), label)
-            label = re.sub('\]','%'+']'.encode("hex"), label)
-            label = re.sub('\:','%'+':'.encode("hex"), label)
-            label = re.sub('\;','%'+';'.encode("hex"), label)
-            label = re.sub('\|','%'+';'.encode("hex"), label)
-            mod_newick_buf = re.sub ('\('+new_id+'\:', '('+label+':', mod_newick_buf)
-            mod_newick_buf = re.sub ('\,'+new_id+'\:', ','+label+':', mod_newick_buf)
-
-            #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
-        
-        mod_newick_buf = re.sub ('_', ' ', mod_newick_buf)
-        with open (output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
-            output_newick_labels_file_handle.write(mod_newick_buf)
-
         # upload
         try:
-            newick_upload_ret = dfu.file_to_shock({'file_path': output_newick_file_path,
+            newick_upload_ret = dfu.file_to_shock({'file_path': intree_newick_file_path,
                                                    #'pack': 'zip'})
                                                    'make_handle': 0})
         except:
             raise ValueError ('error uploading newick file to shock')
-        try:
-            newick_labels_upload_ret = dfu.file_to_shock({'file_path': output_newick_labels_file_path,
-                                                   #'pack': 'zip'})
-                                                   'make_handle': 0})
-        except:
-            raise ValueError ('error uploading newick labels file to shock')
 
 
-        # Create html with tree image
-        #
-        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
-        html_output_dir = os.path.join(self.scratch,'output_html.'+str(timestamp))
+        #### STEP 4: if labels defined, make separate newick-labels file
+        ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
+        ##
+        if 'default_node_labels' in tree_in:
+            newick_labels_file = intree_name+'-labels.newick'
+            output_newick_labels_file_path = os.path.join(output_dir, newick_labels_file);
+            #default_row_ids = tree_in['default_row_labels']
+            #new_ids = dict()
+            #for row_id in default_row_ids.keys():
+            #    new_ids[row_id] = default_row_ids[row_id]
+
+            mod_newick_buf = tree_in['tree']
+            #for row_id in new_ids.keys():
+            for node_id in tree_in['default_node_labels'].keys():
+                label = default_node_labels[node_id]
+                label = re.sub('\s','_',label)
+                label = re.sub('\/','%'+'/'.encode("hex"), label)
+                label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
+                label = re.sub('\(','%'+'('.encode("hex"), label)
+                label = re.sub('\)','%'+')'.encode("hex"), label)
+                label = re.sub('\[','%'+'['.encode("hex"), label)
+                label = re.sub('\]','%'+']'.encode("hex"), label)
+                label = re.sub('\:','%'+':'.encode("hex"), label)
+                label = re.sub('\;','%'+';'.encode("hex"), label)
+                label = re.sub('\|','%'+';'.encode("hex"), label)
+                mod_newick_buf = re.sub ('\('+node_id+'\:', '('+label+':', mod_newick_buf)
+                mod_newick_buf = re.sub ('\,'+node_id+'\:', ','+label+':', mod_newick_buf)
+
+                #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
+        
+            mod_newick_buf = re.sub ('_', ' ', mod_newick_buf)
+            with open (output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
+                output_newick_labels_file_handle.write(mod_newick_buf)
+
+            # upload
+            try:
+                newick_labels_upload_ret = dfu.file_to_shock({'file_path': output_newick_labels_file_path,
+                                                              #'pack': 'zip'})
+                                                              'make_handle': 0})
+            except:
+                raise ValueError ('error uploading newick labels file to shock')
+
+
+        #### STEP 5: Create html with tree image
+        ##
+        html_output_dir = os.path.join(output_dir, 'output_html.'+str(timestamp))
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
-        html_file = params['output_name']+'.html'
-        png_file = params['output_name']+'.png'
-        pdf_file = params['output_name']+'.pdf'
+        html_file = intree_name+'.html'
+        png_file = intree_name+'.png'
+        pdf_file = intree_name+'.pdf'
         output_html_file_path = os.path.join(html_output_dir, html_file);
         output_png_file_path = os.path.join(html_output_dir, png_file);
         output_pdf_file_path = os.path.join(output_dir, pdf_file);
+        if 'default_node_labels' in tree_in:
+            newick_buf = mode_newick_buf
+        else:
+            newick_buf = tree_in['tree']
 
         # init ETE3 objects
-        t = ete3.Tree(mod_newick_buf)
+        t = ete3.Tree(newick_buf)
         ts = ete3.TreeStyle()
 
         # customize
@@ -236,7 +238,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
         ts.branch_vertical_margin = 5 # pixels between adjacent branches
-        ts.title.add_face(ete3.TextFace(params['output_name']+": "+params['desc'], fsize=10), column=0)
+        ts.title.add_face(ete3.TextFace(intree_name+": "+params['desc'], fsize=10), column=0)
 
         node_style = ete3.NodeStyle()
         node_style["fgcolor"] = "#606060"  # for node balls
@@ -289,7 +291,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # make html
         html_report_lines = []
         html_report_lines += ['<html>']
-        html_report_lines += ['<head><title>KBase FastTree-2: '+params['output_name']+'</title></head>']
+        html_report_lines += ['<head><title>KBase Tree: '+intree_name+'</title></head>']
         html_report_lines += ['<body bgcolor="white">']
         html_report_lines += ['<img width='+str(img_html_width)+' src="'+png_file+'">']
         html_report_lines += ['</body>']
@@ -328,37 +330,38 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
-                     'direct_html_link_index': None,
+                     'direct_html': None,
+                     'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
                      'workspace_name': params['workspace_name'],
                      'report_object_name': reportName
                      }
-        reportObj['objects_created'].append({'ref': str(params['workspace_name'])+'/'+str(params['output_name']),'description': params['output_name']+' Tree'})
-        reportObj['direct_html_link_index'] = 0
+        #reportObj['objects_created'].append({'ref': str(params['workspace_name'])+'/'+str(params['output_name']),'description': params['output_name']+' Tree'})
         reportObj['html_links'] = [{'shock_id': html_upload_ret['shock_id'],
                                     'name': html_file,
-                                    'label': params['output_name']+' HTML'
+                                    'label': intree_name+' HTML'
                                     }
                                    ]
         reportObj['file_links'] = [{'shock_id': newick_upload_ret['shock_id'],
-                                    'name': params['output_name']+'.newick',
-                                    'label': params['output_name']+' NEWICK'
-                                    },
-                                   {'shock_id': newick_labels_upload_ret['shock_id'],
-                                    'name': params['output_name']+'-labels.newick',
-                                    'label': params['output_name']+' NEWICK (with labels)'
-                                    },
-                                   {'shock_id': png_upload_ret['shock_id'],
-                                    'name': params['output_name']+'.png',
-                                    'label': params['output_name']+' PNG'
-                                    },
-                                   {'shock_id': pdf_upload_ret['shock_id'],
-                                    'name': params['output_name']+'.pdf',
-                                    'label': params['output_name']+' PDF'
+                                    'name': intree_name+'.newick',
+                                    'label': intree_name+' NEWICK'
                                     }
                                    ]
+        if 'default_node_labels' in tree_in:
+            reportObj['file_links'].append({'shock_id': newick_labels_upload_ret['shock_id'],
+                                            'name': intree_name+'-labels.newick',
+                                            'label': intree_name+' NEWICK (with labels)'
+                                        })
+
+        reportObj['file_links'].extend([{'shock_id': png_upload_ret['shock_id'],
+                                         'name': intree_name+'.png',
+                                         'label': intree_name+' PNG'
+                                     },
+                                        {'shock_id': pdf_upload_ret['shock_id'],
+                                         'name': intree_name+'.pdf',
+                                         'label': intree_name+' PDF'
+                                     }])
 
         SERVICE_VER = 'release'
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
@@ -372,7 +375,7 @@ This module contains methods for running and visualizing results of phylogenomic
                    'report_ref': report_info['ref']
         }
 
-        self.log(console,"run_FastTree DONE")
+        self.log(console,"view_tree() DONE")
         #END view_tree
 
         # At some point might do deeper type checking...
@@ -1373,7 +1376,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -1684,7 +1687,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
         
         html_report_str = "\n".join(html_report_lines)
-        reportObj['direct_html'] = html_report_str
+        #reportObj['direct_html'] = html_report_str
 
 
         # write html to file and upload
@@ -2532,7 +2535,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -2843,7 +2846,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
         
         html_report_str = "\n".join(html_report_lines)
-        reportObj['direct_html'] = html_report_str
+        #reportObj['direct_html'] = html_report_str
 
 
         # write html to file and upload
@@ -3771,7 +3774,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -4118,7 +4121,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'name': 'domain_profile_report.html',
                                     'label': 'Functional Domain Profile report'}
                                    ]
-        reportObj['direct_html_link_index'] = 0
 
 
         # save report object
@@ -4963,7 +4965,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -5073,7 +5075,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'name': 'pan_circle_plot_report.html',
                                     'label': 'Pangenome Circle Plot Report'}
                                    ]
-        reportObj['direct_html_link_index'] = 0
 
 
         # save report object
@@ -5533,7 +5534,7 @@ This module contains methods for running and visualizing results of phylogenomic
         reportObj = {'objects_created': [],
                      #'text_message': '',  # or is it 'message'?
                      'message': '',  # or is it 'text_message'?
-                     'direct_html': '',
+                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -5679,7 +5680,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'name': 'pan_phylo_report.html',
                                     'label': 'Phylogenetic Pangenome report'}
                                    ]
-        reportObj['direct_html_link_index'] = 0
 
 
         # save report object
