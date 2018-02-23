@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: View Function Profile Phylo - v1.0.0
+name: View Function Profile Phylo - v1.1.2
 
 tooltip: |
     Examine the general functional distribution or specific functional gene families for the Genomes in a Species Tree
