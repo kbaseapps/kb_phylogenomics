@@ -226,10 +226,10 @@ This module contains methods for running and visualizing results of phylogenomic
         output_html_file_path = os.path.join(html_output_dir, html_file);
         output_png_file_path = os.path.join(html_output_dir, png_file);
         output_pdf_file_path = os.path.join(output_dir, pdf_file);
-        if 'default_node_labels' in tree_in:
-            newick_buf = mod_newick_buf
-        else:
-            newick_buf = tree_in['tree']
+        newick_buf = tree_in['tree']
+        #if 'default_node_labels' in tree_in:
+        #    newick_buf = mod_newick_buf
+        self.log(console, "NEWICK_BUF: '"+newick_buf+"'")
 
         # init ETE3 objects
         t = ete3.Tree(newick_buf)
