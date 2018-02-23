@@ -23,6 +23,7 @@ module kb_phylogenomics {
         workspace_name workspace_name;
         /*data_obj_ref   input_genomeSet_ref;*/
 	data_obj_ref   input_tree_ref;
+	string         desc;
     } view_tree_Input;
 
     typedef structure {
@@ -43,6 +44,7 @@ module kb_phylogenomics {
         workspace_name workspace_name;
         data_obj_ref   input_genomeSet_ref;
 	data_obj_ref   input_tree_ref;
+	string         desc;
     } trim_tree_to_genomeSet_Input;
 
     typedef structure {

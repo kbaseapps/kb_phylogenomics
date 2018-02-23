@@ -21,6 +21,14 @@
             "text_options": {
                 "valid_ws_types": [ "KBaseTrees.Tree" ]
             }
+        },
+        {
+            "id": "desc",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text"
         }
     ],
     "behavior": {
@@ -37,6 +45,10 @@
                     "input_parameter": "input_tree_ref",
 		    "target_property": "input_tree_ref",
 		    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter": "desc",
+		    "target_property": "desc"
                 }
             ],
             "output_mapping": [

@@ -34,6 +34,11 @@ parameters :
             Tree
         short-hint : |
             The Tree to view
+    desc :
+        ui-name : |
+            Description
+        short-hint : |
+            A Description of the Tree
 
 description : |
     <p>View a Species Tree or Gene Tree as an image and download images and NEWICK representations.</p>

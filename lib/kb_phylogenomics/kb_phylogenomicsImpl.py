@@ -52,9 +52,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.1.1"
+    VERSION = "1.1.2"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "27710fae4119440f21cf2ccbca9794e45dda5b0a"
+    GIT_COMMIT_HASH = "7c7aae5ca3a94ca750681d6a5d85925427d4bbad"
 
     #BEGIN_CLASS_HEADER
 
@@ -93,7 +93,8 @@ This module contains methods for running and visualizing results of phylogenomic
         :param params: instance of type "view_tree_Input" (view_tree() ** **
            show a KBase Tree and make newick and images downloadable) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
-           Common types), parameter "input_tree_ref" of type "data_obj_ref"
+           Common types), parameter "input_tree_ref" of type "data_obj_ref",
+           parameter "desc" of String
         :returns: instance of type "view_tree_Output" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """
@@ -185,7 +186,7 @@ This module contains methods for running and visualizing results of phylogenomic
             mod_newick_buf = tree_in['tree']
             #for row_id in new_ids.keys():
             for node_id in tree_in['default_node_labels'].keys():
-                label = default_node_labels[node_id]
+                label = tree_in['default_node_labels'][node_id]
                 label = re.sub('\s','_',label)
                 label = re.sub('\/','%'+'/'.encode("hex"), label)
                 label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
@@ -226,7 +227,7 @@ This module contains methods for running and visualizing results of phylogenomic
         output_png_file_path = os.path.join(html_output_dir, png_file);
         output_pdf_file_path = os.path.join(output_dir, pdf_file);
         if 'default_node_labels' in tree_in:
-            newick_buf = mode_newick_buf
+            newick_buf = mod_newick_buf
         else:
             newick_buf = tree_in['tree']
 
@@ -240,7 +241,10 @@ This module contains methods for running and visualizing results of phylogenomic
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
         ts.branch_vertical_margin = 5 # pixels between adjacent branches
-        ts.title.add_face(ete3.TextFace(intree_name+": "+params['desc'], fsize=10), column=0)
+        title_disp = intree_name
+        if 'desc' in params:
+            title_disp += ': '+params['desc']
+        ts.title.add_face(ete3.TextFace(title_disp, fsize=10), column=0)
 
         node_style = ete3.NodeStyle()
         node_style["fgcolor"] = "#606060"  # for node balls
@@ -394,7 +398,8 @@ This module contains methods for running and visualizing results of phylogenomic
            genomeset, and make newick and images downloadable) -> structure:
            parameter "workspace_name" of type "workspace_name" (** Common
            types), parameter "input_genomeSet_ref" of type "data_obj_ref",
-           parameter "input_tree_ref" of type "data_obj_ref"
+           parameter "input_tree_ref" of type "data_obj_ref", parameter
+           "desc" of String
         :returns: instance of type "trim_tree_to_genomeSet_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

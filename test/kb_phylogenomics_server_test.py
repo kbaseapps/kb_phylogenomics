@@ -817,7 +817,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
         # run that sucker
         params = { 'workspace_name': self.getWsName(),
-                   'input_tree_ref': tree_ref
+                   'input_tree_ref': tree_ref,
+                   'desc':           'test tree'
                }
         ret = self.getImpl().view_tree(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])

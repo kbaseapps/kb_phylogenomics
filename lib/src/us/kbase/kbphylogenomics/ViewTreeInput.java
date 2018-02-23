@@ -24,7 +24,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "workspace_name",
-    "input_tree_ref"
+    "input_tree_ref",
+    "desc"
 })
 public class ViewTreeInput {
 
@@ -32,6 +33,8 @@ public class ViewTreeInput {
     private String workspaceName;
     @JsonProperty("input_tree_ref")
     private String inputTreeRef;
+    @JsonProperty("desc")
+    private String desc;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -64,6 +67,21 @@ public class ViewTreeInput {
         return this;
     }
 
+    @JsonProperty("desc")
+    public String getDesc() {
+        return desc;
+    }
+
+    @JsonProperty("desc")
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public ViewTreeInput withDesc(String desc) {
+        this.desc = desc;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -76,7 +94,7 @@ public class ViewTreeInput {
 
     @Override
     public String toString() {
-        return ((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

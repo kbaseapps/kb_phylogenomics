@@ -39,6 +39,11 @@ parameters :
             GenomeSet
         short-hint : |
             The GenomeSet that the Species Tree should collapse to match
+    desc :
+        ui-name : |
+            Description
+        short-hint : |
+            A description of the trimmed tree
 
 description : |
     <p>Trim a Species Tree to only contain leaves corresponding to members of a GenomeSet.</p>
