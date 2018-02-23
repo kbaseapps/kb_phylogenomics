@@ -77,12 +77,12 @@ This module contains methods for running and visualizing results of phylogenomic
         self.callbackURL = os.environ['SDK_CALLBACK_URL']
         self.scratch = os.path.abspath(config['scratch'])
 
-        pprint(config)
+        #pprint(config)
 
         if not os.path.exists(self.scratch):
             os.makedirs(self.scratch)
 
-            #self.genome_feature_id_delim = '.f:'
+        #self.genome_feature_id_delim = '.f:'
 
         #END_CONSTRUCTOR
         pass
@@ -111,6 +111,8 @@ This module contains methods for running and visualizing results of phylogenomic
         report = ''
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
         output_dir = os.path.join (self.scratch, 'output_'+str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
 
         #### STEP 1: do some basic checks
