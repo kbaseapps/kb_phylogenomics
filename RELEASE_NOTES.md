@@ -1,10 +1,18 @@
+### Version 1.2.0
+__Changes__
+- Added trim_tree_to_genomeSet()
+- Create FeatureSet output objects for each node in species tree from view_pan_phylo()
+
 ### Version 1.1.2
-- got view_tree() App working (trim_tree_to_genomeSet() has to wait)
+__Changes__
+- Got view_tree() App working (trim_tree_to_genomeSet() has to wait)
 
 ### Version 1.1.1
+__Changes__
 - Dockerfile updates to handle python SSL and cert issues
 
 ### Version 1.1.0
+__Changes__
 - Added view_tree() App
 
 ### Version 1.0.1

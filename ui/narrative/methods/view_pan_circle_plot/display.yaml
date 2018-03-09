@@ -57,6 +57,13 @@ parameters :
             The Genome(s) to use as outgroup to distinguish clade-specific core
         long-hint  : |
             The Genome(s) to use as outgroup to distinguish clade-specific core
+    save_featuresets :
+        ui-name : |
+            Save pangenome feature sets
+        short-hint : |
+            The Pangenome Core, Singleton, and Partial Pangenome FeatureSet objects
+        long-hint  : |
+            The Pangenome Core, Singleton, and Partial Pangenome FeatureSet objects
 
 description : |
     <p>After Pangenome calculation, you can use this method to view the overlapping membership of genes against a base genome.</p>

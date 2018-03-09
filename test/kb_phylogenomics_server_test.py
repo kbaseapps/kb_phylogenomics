@@ -723,7 +723,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome Circle Plot
     ##
-    @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
     def test_view_pan_circle_plot_01(self):
         method = 'view_pan_circle_plot'
 
@@ -780,9 +780,68 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
 
 
+    #### View Pangenome on Tree
+    ##
+    # HIDE @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
+    def test_view_pan_phylo_01(self):
+        method = 'view_pan_phylo'
+
+        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("==================================================\n\n")
+
+        # input_data
+        genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        genome_ref_0 = str(genomeInfo_0[WSID_I]) + '/' + str(genomeInfo_0[OBJID_I]) + '/' + str(genomeInfo_0[VERSION_I])
+        genome_ref_1 = str(genomeInfo_1[WSID_I]) + '/' + str(genomeInfo_1[OBJID_I]) + '/' + str(genomeInfo_1[VERSION_I])
+        genome_ref_2 = str(genomeInfo_2[WSID_I]) + '/' + str(genomeInfo_2[OBJID_I]) + '/' + str(genomeInfo_2[VERSION_I])
+        genome_ref_3 = str(genomeInfo_3[WSID_I]) + '/' + str(genomeInfo_3[OBJID_I]) + '/' + str(genomeInfo_3[VERSION_I])
+
+        #feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
+        #feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
+        #feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
+        #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
+
+        # upload Pangenome
+        genome_refs_map = { '23880/3/1': genome_ref_0,
+                            '23880/4/1': genome_ref_1,
+                            '23880/5/1': genome_ref_2,
+                            '23880/6/1': genome_ref_3
+                        }
+        obj_info = self.getPangenomeInfo('Tiny_things.OrthoMCL_pangenome', 0, genome_refs_map)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        pangenome_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        # upload Species Tree
+        obj_info = self.getTreeInfo('Tiny_things.SpeciesTree', 0, genome_refs_map)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        tree_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        # run that sucker
+        params = { 'workspace_name': self.getWsName(),
+                   'input_pangenome_ref': pangenome_ref,
+                   'input_speciesTree_ref': tree_ref
+               }
+        ret = self.getImpl().view_pan_phylo(self.getContext(),params)[0]
+        self.assertIsNotNone(ret['report_ref'])
+
+        # check created obj
+        #report_obj = self.getWsClient().get_objects2({'objects':[{'ref':ret['report_ref']}]})['data'][0]['data']
+        #report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
+        #self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
+
+        #created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        #self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
+        #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
     #### View Tree
     ##
-    # HIDE @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
     def test_view_tree_01(self):
         method = 'view_tree'
 
