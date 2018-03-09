@@ -43,6 +43,13 @@ parameters :
             The Species Tree of the Pangenome members
         long-hint  : |
             The Species Tree of the Pangenome members
+    save_featuresets :
+        ui-name : |
+            Save pangenome feature sets
+        short-hint : |
+            The Pangenome Core, Singleton, and Partial Pangenome FeatureSet objects
+        long-hint  : |
+            The Pangenome Core, Singleton, and Partial Pangenome FeatureSet objects
 
 description : |
     <p>View the Pangenome in a Phylogenetic Context.</p>

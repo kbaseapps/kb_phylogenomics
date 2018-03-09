@@ -52,9 +52,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.1.2"
-    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "7c7aae5ca3a94ca750681d6a5d85925427d4bbad"
+    VERSION = "1.2.0"
+    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
+    GIT_COMMIT_HASH = "43733230d3f70a2eccc123b3867e99775b0d9f4c"
 
     #BEGIN_CLASS_HEADER
 
@@ -1232,9 +1232,11 @@ This module contains methods for running and visualizing results of phylogenomic
             missing_annot = []
             for genome_ref in genome_refs:
                 if genome_ref not in dom_annot_found:
-                    missing_annot.append('MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
+                    missing_annot.append("\t"+'MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
             if missing_annot:
-                raise ValueError ("\n".join(missing_annot))
+                error_msg = "ABORT: You must run the DomainAnnotation App first\n"
+                error_msg += "\n".join(missing_annot)
+                raise ValueError (error_msg)
                                 
         # DEBUG
         #for genome_ref in genome_refs:
@@ -2391,9 +2393,11 @@ This module contains methods for running and visualizing results of phylogenomic
             missing_annot = []
             for genome_ref in genome_refs:
                 if genome_ref not in dom_annot_found:
-                    missing_annot.append('MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
+                    missing_annot.append("\t"+'MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
             if missing_annot:
-                raise ValueError ("\n".join(missing_annot))
+                error_msg = "ABORT: You must run the DomainAnnotation App first\n"
+                error_msg += "\n".join(missing_annot)
+                raise ValueError (error_msg)
                                 
         # DEBUG
         #for genome_ref in genome_refs:
@@ -3549,9 +3553,11 @@ This module contains methods for running and visualizing results of phylogenomic
             missing_annot = []
             for genome_ref in genome_refs:
                 if genome_ref not in dom_annot_found:
-                    missing_annot.append('MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
+                    missing_annot.append("\t"+'MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
             if missing_annot:
-                raise ValueError ("\n".join(missing_annot))
+                error_msg = "ABORT: You must run the DomainAnnotation App first\n"
+                error_msg += "\n".join(missing_annot)
+                raise ValueError (error_msg)
                                 
         # DEBUG
         #for genome_ref in genome_refs:
@@ -4186,7 +4192,8 @@ This module contains methods for running and visualizing results of phylogenomic
            parameter "input_genome_ref" of type "data_obj_ref", parameter
            "input_pangenome_ref" of type "data_obj_ref", parameter
            "input_compare_genome_refs" of type "data_obj_ref", parameter
-           "input_outgroup_genome_refs" of type "data_obj_ref"
+           "input_outgroup_genome_refs" of type "data_obj_ref", parameter
+           "save_featuresets" of type "bool"
         :returns: instance of type "view_pan_circle_plot_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -4451,15 +4458,19 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Create and save featureSets
         #
-        self.log(console, "SAVING FEATURESETS")
         objects_created = []
-        if singleton_featureSet_elements:
-            fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".singleton_pangenome.FeatureSet"
-            fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" singleton pangenome features"
-            singleton_obj = { 'description': fs_desc,
-                              'elements': singleton_featureSet_elements
+        if 'save_featuresets' not in params or params['save_featuresets'] == None or params['save_featuresets'] == '' or int(params['save_featuresets']) != 1:
+            self.log(console, "SKIPPING FEATURESETS")
+        else:
+            self.log(console, "SAVING FEATURESETS")
+
+            if singleton_featureSet_elements:
+                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".singleton_pangenome.FeatureSet"
+                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" singleton pangenome features"
+                singleton_obj = { 'description': fs_desc,
+                                  'elements': singleton_featureSet_elements
                               }
-            new_obj_info = wsClient.save_objects({
+                new_obj_info = wsClient.save_objects({
                     'workspace':params['workspace_name'],
                     'objects':[
                         { 'type': 'KBaseCollections.FeatureSet',
@@ -4467,19 +4478,19 @@ This module contains methods for running and visualizing results of phylogenomic
                           'name': fs_name,
                           'meta': {},
                           'provenance': provenance
-                          }]
-                    })[0]
-            objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
-            singleton_featureSet_elements = {}  # free memory
-            singleton_obj = {}  # free memory
-
-        if partial_featureSet_elements:
-            fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".non-core_pangenome.FeatureSet"
-            fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" non-core pangenome features"
-            partial_obj = { 'description': fs_desc,
-                            'elements': partial_featureSet_elements
+                      }]
+                })[0]
+                objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                singleton_featureSet_elements = {}  # free memory
+                singleton_obj = {}  # free memory
+                
+            if partial_featureSet_elements:
+                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".non-core_pangenome.FeatureSet"
+                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" non-core pangenome features"
+                partial_obj = { 'description': fs_desc,
+                                'elements': partial_featureSet_elements
                             }
-            new_obj_info = wsClient.save_objects({
+                new_obj_info = wsClient.save_objects({
                     'workspace':params['workspace_name'],
                     'objects':[
                         { 'type': 'KBaseCollections.FeatureSet',
@@ -4487,23 +4498,23 @@ This module contains methods for running and visualizing results of phylogenomic
                           'name': fs_name,
                           'meta': {},
                           'provenance': provenance
-                          }]
-                    })[0]
-            objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
-            partial_featureSet_elements = {}  # free memory
-            partial_obj = {}  # free memory
+                      }]
+                })[0]
+                objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                partial_featureSet_elements = {}  # free memory
+                partial_obj = {}  # free memory
 
-        if core_featureSet_elements:
-            if outgroup_genome_refs_cnt == 0:
-                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".core_pangenome.FeatureSet"
-                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" core pangenome features"
-            else:
-                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".clade-specific_core_pangenome.FeatureSet"
-                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" clade-specific core pangenome features"
-            core_obj = { 'description': fs_desc,
-                         'elements': core_featureSet_elements
-                         }
-            new_obj_info = wsClient.save_objects({
+            if core_featureSet_elements:
+                if outgroup_genome_refs_cnt == 0:
+                    fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" core pangenome features"
+                else:
+                    fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".clade-specific_core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" clade-specific core pangenome features"
+                core_obj = { 'description': fs_desc,
+                             'elements': core_featureSet_elements
+                }
+                new_obj_info = wsClient.save_objects({
                     'workspace':params['workspace_name'],
                     'objects':[
                         { 'type': 'KBaseCollections.FeatureSet',
@@ -4511,19 +4522,19 @@ This module contains methods for running and visualizing results of phylogenomic
                           'name': fs_name,
                           'meta': {},
                           'provenance': provenance
-                          }]
-                    })[0]
-            objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
-            core_featureSet_elements = {}  # free memory
-            core_obj = {}  # free memory
+                      }]
+                })[0]
+                objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                core_featureSet_elements = {}  # free memory
+                core_obj = {}  # free memory
 
-        if univ_featureSet_elements:
-            fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".non-specific_core_pangenome.FeatureSet"
-            fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" non-specific core pangenome features"
-            univ_obj = { 'description': fs_desc,
-                         'elements': univ_featureSet_elements
+            if univ_featureSet_elements:
+                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".non-specific_core_pangenome.FeatureSet"
+                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" non-specific core pangenome features"
+                univ_obj = { 'description': fs_desc,
+                             'elements': univ_featureSet_elements
                          }
-            new_obj_info = wsClient.save_objects({
+                new_obj_info = wsClient.save_objects({
                     'workspace':params['workspace_name'],
                     'objects':[
                         { 'type': 'KBaseCollections.FeatureSet',
@@ -4531,11 +4542,11 @@ This module contains methods for running and visualizing results of phylogenomic
                           'name': fs_name,
                           'meta': {},
                           'provenance': provenance
-                          }]
-                    })[0]
-            objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
-            univ_featureSet_elements = {}  # free memory
-            univ_obj = {}  # free memory
+                      }]
+                })[0]
+                objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                univ_featureSet_elements = {}  # free memory
+                univ_obj = {}  # free memory
 
 
         # Get mapping of base genes to pangenome
@@ -5187,7 +5198,8 @@ This module contains methods for running and visualizing results of phylogenomic
            tree) -> structure: parameter "workspace_name" of type
            "workspace_name" (** Common types), parameter
            "input_pangenome_ref" of type "data_obj_ref", parameter
-           "input_speciesTree_ref" of type "data_obj_ref"
+           "input_speciesTree_ref" of type "data_obj_ref", parameter
+           "save_featuresets" of type "bool"
         :returns: instance of type "view_pan_phylo_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -5383,6 +5395,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # determine pangenome accumulations of core, partial, and singleton
         #
         cluster_hits = dict()
+        nodes_hit_by_gene = dict()
         for node_ref_id in node_ref_ids.keys():
             cluster_hits[node_ref_id] = []
 
@@ -5404,7 +5417,18 @@ This module contains methods for running and visualizing results of phylogenomic
                     if node_ref_id not in nodes_hit:
                         nodes_hit[node_ref_id] = dict()
                     nodes_hit[node_ref_id][genome_ref] = True
-            
+
+                    # store features
+                    if node_ref_id not in nodes_hit_by_gene:
+                        nodes_hit_by_gene[node_ref_id] = dict()
+                    if cluster_num not in nodes_hit_by_gene[node_ref_id]:
+                        nodes_hit_by_gene[node_ref_id][cluster_num] = dict()
+                    if genome_ref not in nodes_hit_by_gene[node_ref_id][cluster_num]:
+                        nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref] = []
+
+                    nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref].append(gene_id)
+                
+            # sum counts
             for node_ref_id in nodes_hit.keys():
                 for genome_ref in nodes_hit[node_ref_id].keys():
                     cluster_hits[node_ref_id][cluster_num] += 1
@@ -5413,18 +5437,32 @@ This module contains methods for running and visualizing results of phylogenomic
         clusters_total = dict()
         clusters_singletons = dict()
         clusters_core = dict()
+        clusters_partial = dict()
+        clusters_singletons_by_node_and_cluster_flag = dict()
+        clusters_core_by_node_and_cluster_flag = dict()
+        clusters_partial_by_node_and_cluster_flag = dict()
         for node_ref_id in node_ref_ids.keys():
             clusters_total[node_ref_id] = 0
             clusters_singletons[node_ref_id] = 0
             clusters_core[node_ref_id] = 0
+            clusters_partial[node_ref_id] = 0
+            clusters_singletons_by_node_and_cluster_flag[node_ref_id] = dict()
+            clusters_core_by_node_and_cluster_flag[node_ref_id] = dict()
+            clusters_partial_by_node_and_cluster_flag[node_ref_id] = dict()
 
             for cluster_num,hit_cnt in enumerate(cluster_hits[node_ref_id]):
                 if hit_cnt > 0:
                     clusters_total[node_ref_id] += 1
                     if hit_cnt == 1:
                         clusters_singletons[node_ref_id] += 1
+                        clusters_singletons_by_node_and_cluster_flag[node_ref_id][cluster_num] = True
+                        
                     elif hit_cnt == node_size[node_ref_id]:
                         clusters_core[node_ref_id] += 1
+                        clusters_core_by_node_and_cluster_flag[node_ref_id][cluster_num] = True
+                    else:
+                        clusters_partial[node_ref_id] += 1
+                        clusters_partial_by_node_and_cluster_flag[node_ref_id][cluster_num] = True
 
         # get min and max cluster cnts
         INSANE_VALUE = 10000000000000000
@@ -5436,7 +5474,119 @@ This module contains methods for running and visualizing results of phylogenomic
             if clusters_total[node_ref_id] < min_clusters_cnt:
                 min_clusters_cnt = clusters_total[node_ref_id]
 
-            self.log(console, "NODE: "+node_ref_id+" MIN: "+str(min_clusters_cnt)+" MAX: "+str(max_clusters_cnt))  # DEBUg
+            self.log(console, "NODE: "+node_ref_id+" MIN: "+str(min_clusters_cnt)+" MAX: "+str(max_clusters_cnt))  # DEBUG
+
+
+        # Create FeatureSet objects for nodes
+        #
+        objects_created = []
+        if 'save_featuresets' not in params or params['save_featuresets'] == None or params['save_featuresets'] == '' or int(params['save_featuresets']) != 1:
+            self.log(console, "SKIPPING FEATURESETS")
+        else:
+            self.log(console, "SAVING FEATURESETS")
+
+            for node_ref_id in node_ref_ids.keys().sort():
+
+                # Core
+                if clusters_core[node_ref_id] > 0:
+
+                    # build core featureset elements
+                    core_featureSet_elements = {}
+                    for cluster_num in clusters_core_by_node_and_cluster_flag[node_ref_id].keys().sort():
+                        for genome_ref in nodes_hit_by_gene[node_ref_id][cluster_num].keys():
+                            for gene_id in nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref]:
+                                if gene_id in core_featureSet_elements:
+                                    core_featureSet_elements[gene_id].append(genome_ref)
+                                else:
+                                    core_featureSet_elements[gene_id] = [genome_ref]
+
+                    # build object
+                    fs_name = pg_obj_name+".node-"+str(node_ref_id)+".core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name+".node-"+str(node_ref_id)+" core pangenome features"
+                    core_obj = { 'description': fs_desc,
+                                 'elements': core_featureSet_elements
+                             }
+                    new_obj_info = wsClient.save_objects({
+                        'workspace':params['workspace_name'],
+                        'objects':[
+                            { 'type': 'KBaseCollections.FeatureSet',
+                              'data': core_obj,
+                              'name': fs_name,
+                              'meta': {},
+                              'provenance': provenance
+                          }]
+                    })[0]
+                    objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                    core_featureSet_elements = {}  # free memory
+                    core_obj = {}  # free memory
+
+
+                # Singletons
+                if clusters_singletons[node_ref_id] > 0:
+
+                    # build singleton featureset elements
+                    singleton_featureSet_elements = {}
+                    for cluster_num in clusters_singletons_by_node_and_cluster_flag[node_ref_id].keys().sort():
+                        for genome_ref in nodes_hit_by_gene[node_ref_id][cluster_num].keys():
+                            for gene_id in nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref]:
+                                if gene_id in singleton_featureSet_elements:
+                                    singleton_featureSet_elements[gene_id].append(genome_ref)
+                                else:
+                                    singleton_featureSet_elements[gene_id] = [genome_ref]
+
+                    # build object
+                    fs_name = pg_obj_name+".node-"+str(node_ref_id)+".singleton_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name+".node-"+str(node_ref_id)+" singleton pangenome features"
+                    singleton_obj = { 'description': fs_desc,
+                                      'elements': singleton_featureSet_elements
+                                  }
+                    new_obj_info = wsClient.save_objects({
+                        'workspace':params['workspace_name'],
+                        'objects':[
+                            { 'type': 'KBaseCollections.FeatureSet',
+                              'data': singleton_obj,
+                              'name': fs_name,
+                              'meta': {},
+                              'provenance': provenance
+                          }]
+                    })[0]
+                    objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                    singleton_featureSet_elements = {}  # free memory
+                    singleton_obj = {}  # free memory
+
+
+                # Partial pangenome
+                if cluster_partial[node_ref_id] > 0:
+
+                    # build partial featureset elements
+                    partial_featureSet_elements = {}
+                    for cluster_num in clusters_partial_by_node_and_cluster_flag[node_ref_id].keys().sort():
+                        for genome_ref in nodes_hit_by_gene[node_ref_id][cluster_num].keys():
+                            for gene_id in nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref]:
+                                if gene_id in partial_featureSet_elements:
+                                    partial_featureSet_elements[gene_id].append(genome_ref)
+                                else:
+                                    partial_featureSet_elements[gene_id] = [genome_ref]
+
+                    # build object
+                    fs_name = pg_obj_name+".node-"+str(node_ref_id)+".non-core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name+".node-"+str(node_ref_id)+" non-core pangenome features"
+                    partial_obj = { 'description': fs_desc,
+                                    'elements': partial_featureSet_elements
+                                }
+                    new_obj_info = wsClient.save_objects({
+                        'workspace':params['workspace_name'],
+                        'objects':[
+                            { 'type': 'KBaseCollections.FeatureSet',
+                              'data': partial_obj,
+                              'name': fs_name,
+                              'meta': {},
+                              'provenance': provenance
+                          }]
+                    })[0]
+                    objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                    partial_featureSet_elements = {}  # free memory
+                    partial_obj = {}  # free memory
 
 
         # Draw tree (we already instantiated Tree above)
@@ -5694,6 +5844,9 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'name': 'pan_phylo_report.html',
                                     'label': 'Phylogenetic Pangenome report'}
                                    ]
+
+        # attach any created objects
+        reportObj['objects_created'] = objects_created
 
 
         # save report object

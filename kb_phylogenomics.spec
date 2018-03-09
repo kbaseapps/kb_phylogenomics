@@ -209,6 +209,7 @@ module kb_phylogenomics {
 	data_obj_ref   input_pangenome_ref;
         data_obj_ref   input_compare_genome_refs;
         data_obj_ref   input_outgroup_genome_refs;
+	bool           save_featuresets;
     } view_pan_circle_plot_Input;
 
     typedef structure {
@@ -289,6 +290,7 @@ module kb_phylogenomics {
         workspace_name workspace_name;
 	data_obj_ref   input_pangenome_ref;
 	data_obj_ref   input_speciesTree_ref;
+	bool           save_featuresets;
     } view_pan_phylo_Input;
 
     typedef structure {

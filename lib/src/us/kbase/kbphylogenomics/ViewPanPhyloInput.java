@@ -25,7 +25,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "workspace_name",
     "input_pangenome_ref",
-    "input_speciesTree_ref"
+    "input_speciesTree_ref",
+    "save_featuresets"
 })
 public class ViewPanPhyloInput {
 
@@ -35,6 +36,8 @@ public class ViewPanPhyloInput {
     private String inputPangenomeRef;
     @JsonProperty("input_speciesTree_ref")
     private String inputSpeciesTreeRef;
+    @JsonProperty("save_featuresets")
+    private Long saveFeaturesets;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -82,6 +85,21 @@ public class ViewPanPhyloInput {
         return this;
     }
 
+    @JsonProperty("save_featuresets")
+    public Long getSaveFeaturesets() {
+        return saveFeaturesets;
+    }
+
+    @JsonProperty("save_featuresets")
+    public void setSaveFeaturesets(Long saveFeaturesets) {
+        this.saveFeaturesets = saveFeaturesets;
+    }
+
+    public ViewPanPhyloInput withSaveFeaturesets(Long saveFeaturesets) {
+        this.saveFeaturesets = saveFeaturesets;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -94,7 +112,7 @@ public class ViewPanPhyloInput {
 
     @Override
     public String toString() {
-        return ((((((((("ViewPanPhyloInput"+" [workspaceName=")+ workspaceName)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((("ViewPanPhyloInput"+" [workspaceName=")+ workspaceName)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", saveFeaturesets=")+ saveFeaturesets)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
