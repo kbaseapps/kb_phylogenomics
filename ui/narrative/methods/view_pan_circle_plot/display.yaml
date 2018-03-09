@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Pangenome Circle Plot - v1.1.2
+name: Pangenome Circle Plot - v1.2.0
 
 tooltip: |
     View a Microbial Pangenome as a Circle Plot
