@@ -5490,8 +5490,12 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 node_num_id = str(node_ids_by_refs[node_ref_id])
 
+                self.log(console, "calculating feature sets for node "+str(node_num_id))
+
                 # Core
                 if clusters_core[node_ref_id] > 0:
+
+                    self.log(console, "\t"+"adding CORE.  Num clusters: "+str(clusters_core[node_ref_id]))
 
                     # build core featureset elements
                     core_featureSet_elements = {}
@@ -5527,6 +5531,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 # Singletons
                 if clusters_singletons[node_ref_id] > 0:
 
+                    self.log(console, "\t"+"adding SINGLETON.  Num clusters: "+str(clusters_singletons[node_ref_id]))
+
                     # build singleton featureset elements
                     singleton_featureSet_elements = {}
                     for cluster_num in sorted(clusters_singletons_by_node_and_cluster_flag[node_ref_id].keys()):
@@ -5560,6 +5566,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 # Partial pangenome
                 if clusters_partial[node_ref_id] > 0:
+
+                    self.log(console, "\t"+"adding PARTIAL.  Num clusters: "+str(clusters_partial[node_ref_id]))
 
                     # build partial featureset elements
                     partial_featureSet_elements = {}
