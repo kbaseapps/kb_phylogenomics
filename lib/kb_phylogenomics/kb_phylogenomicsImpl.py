@@ -5366,24 +5366,25 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # get pangenome
         #
+        self.log(console, "GETTING PANGENOME OBJECT")
         input_ref = params['input_pangenome_ref']
-        pangenome_name = None
         try:
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
             input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
-            pangenome_name = input_obj_info[NAME_I]
+            pg_obj_name = input_obj_info[NAME_I]
+            pg_obj_name = pg_obj_name.replace(" ", "_")
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
         accepted_input_types = ["KBaseGenomes.Pangenome" ]
         if input_obj_type not in accepted_input_types:
             raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
 
-        # get obj
         try:
-            pg_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            pg_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
         except:
-            raise ValueError ("unable to fetch pangenome: "+input_ref)
+            raise ValueError ("unable to fetch genome: "+input_ref)
+
 
 
         # make sure species tree genomes are found in pangenome (reverse not required)
