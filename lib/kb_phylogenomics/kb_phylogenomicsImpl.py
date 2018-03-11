@@ -5485,7 +5485,7 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             self.log(console, "SAVING FEATURESETS")
 
-            for node_ref_id in node_ids_by_refs.keys():
+            for node_ref_id in sorted(node_ids_by_refs.keys()):
 
                 node_num_id = str(node_ids_by_refs[node_ref_id])
 
@@ -5494,7 +5494,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # build core featureset elements
                     core_featureSet_elements = {}
-                    for cluster_num in clusters_core_by_node_and_cluster_flag[node_ref_id].keys().sort():
+                    for cluster_num in sorted(clusters_core_by_node_and_cluster_flag[node_ref_id].keys()):
                         for genome_ref in nodes_hit_by_gene[node_ref_id][cluster_num].keys():
                             for gene_id in nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref]:
                                 if gene_id in core_featureSet_elements:
@@ -5528,7 +5528,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # build singleton featureset elements
                     singleton_featureSet_elements = {}
-                    for cluster_num in clusters_singletons_by_node_and_cluster_flag[node_ref_id].keys().sort():
+                    for cluster_num in sorted(clusters_singletons_by_node_and_cluster_flag[node_ref_id].keys()):
                         for genome_ref in nodes_hit_by_gene[node_ref_id][cluster_num].keys():
                             for gene_id in nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref]:
                                 if gene_id in singleton_featureSet_elements:
@@ -5562,7 +5562,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # build partial featureset elements
                     partial_featureSet_elements = {}
-                    for cluster_num in clusters_partial_by_node_and_cluster_flag[node_ref_id].keys().sort():
+                    for cluster_num in sorted(clusters_partial_by_node_and_cluster_flag[node_ref_id].keys()):
                         for genome_ref in nodes_hit_by_gene[node_ref_id][cluster_num].keys():
                             for gene_id in nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref]:
                                 if gene_id in partial_featureSet_elements:
