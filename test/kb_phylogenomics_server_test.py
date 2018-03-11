@@ -761,11 +761,13 @@ class kb_phylogenomicsTest(unittest.TestCase):
         base_genome_ref = genome_ref_1
         compare_genome_refs = [genome_ref_1, genome_ref_2, genome_ref_3]  # Wolbachia
         outgroup_genome_refs = [genome_ref_0]  # Carsonella
-        params = { 'workspace_name': self.getWsName(),
-                   'input_genome_ref': base_genome_ref,
-                   'input_pangenome_ref': pangenome_ref,
-                   'input_compare_genome_refs': compare_genome_refs,
-                   'input_outgroup_genome_refs': outgroup_genome_refs
+        params = { 'workspace_name':             self.getWsName(),
+                   'input_genome_ref':           base_genome_ref,
+                   'input_pangenome_ref':        pangenome_ref,
+                   'input_compare_genome_refs':  compare_genome_refs,
+                   'input_outgroup_genome_refs': outgroup_genome_refs,
+                   'save_featuresets':           1
+
                }
         ret = self.getImpl().view_pan_circle_plot(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])
@@ -822,9 +824,10 @@ class kb_phylogenomicsTest(unittest.TestCase):
         tree_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
 
         # run that sucker
-        params = { 'workspace_name': self.getWsName(),
-                   'input_pangenome_ref': pangenome_ref,
-                   'input_speciesTree_ref': tree_ref
+        params = { 'workspace_name':        self.getWsName(),
+                   'input_pangenome_ref':   pangenome_ref,
+                   'input_speciesTree_ref': tree_ref,
+                   'save_featuresets':      1
                }
         ret = self.getImpl().view_pan_phylo(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])
