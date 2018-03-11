@@ -5289,8 +5289,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # get internal node ids based on sorted genome_refs of children
         #
-        node_ref_ids = dict()
-        genome_ref_to_node_ref_ids = dict()
+        node_ids_by_refs = dict()
+        genome_ref_to_node_ids_by_refs = dict()
         node_size = dict()
         node_order_by_ref = []
         node_num_id = -1
@@ -5305,13 +5305,13 @@ This module contains methods for running and visualizing results of phylogenomic
             node_ref_id = "+".join(sorted(leaf_refs))
             node_size[node_ref_id] = len(leaf_refs)
             node_order_by_ref.append(node_ref_id)
-            node_ref_ids[node_ref_id] = node_num_id
+            node_ids_by_refs[node_ref_id] = node_num_id
 
             # point each genome at its nodes
             for genome_ref in leaf_refs:
-                if genome_ref not in genome_ref_to_node_ref_ids:
-                    genome_ref_to_node_ref_ids[genome_ref] = []
-                genome_ref_to_node_ref_ids[genome_ref].append(node_ref_id)
+                if genome_ref not in genome_ref_to_node_ids_by_refs:
+                    genome_ref_to_node_ids_by_refs[genome_ref] = []
+                genome_ref_to_node_ids_by_refs[genome_ref].append(node_ref_id)
             
 
         # get object names, sci names, protein-coding gene counts, and SEED annot
@@ -5396,13 +5396,13 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         cluster_hits = dict()
         nodes_hit_by_gene = dict()
-        for node_ref_id in node_ref_ids.keys():
+        for node_ref_id in node_ids_by_refs.keys():
             cluster_hits[node_ref_id] = []
 
         cluster_num = -1  # cluster ids themselves start from 1
         for homolog_cluster in pg_obj['orthologs']:
             cluster_num += 1
-            for node_ref_id in node_ref_ids.keys():
+            for node_ref_id in node_ids_by_refs.keys():
                 cluster_hits[node_ref_id].append(0)
 
             nodes_hit = dict()
@@ -5411,9 +5411,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 probably_gene_len_dont_need = gene[1]
                 genome_ref                  = gene[2]
 
-                if genome_ref not in genome_ref_to_node_ref_ids:
+                if genome_ref not in genome_ref_to_node_ids_by_refs:
                     continue
-                for node_ref_id in genome_ref_to_node_ref_ids[genome_ref]:
+                for node_ref_id in genome_ref_to_node_ids_by_refs[genome_ref]:
                     if node_ref_id not in nodes_hit:
                         nodes_hit[node_ref_id] = dict()
                     nodes_hit[node_ref_id][genome_ref] = True
@@ -5441,7 +5441,7 @@ This module contains methods for running and visualizing results of phylogenomic
         clusters_singletons_by_node_and_cluster_flag = dict()
         clusters_core_by_node_and_cluster_flag = dict()
         clusters_partial_by_node_and_cluster_flag = dict()
-        for node_ref_id in node_ref_ids.keys():
+        for node_ref_id in node_ids_by_refs.keys():
             clusters_total[node_ref_id] = 0
             clusters_singletons[node_ref_id] = 0
             clusters_core[node_ref_id] = 0
@@ -5468,7 +5468,7 @@ This module contains methods for running and visualizing results of phylogenomic
         INSANE_VALUE = 10000000000000000
         max_clusters_cnt = -INSANE_VALUE
         min_clusters_cnt =  INSANE_VALUE
-        for node_ref_id in node_ref_ids.keys():
+        for node_ref_id in node_ids_by_refs.keys():
             if clusters_total[node_ref_id] > max_clusters_cnt:
                 max_clusters_cnt = clusters_total[node_ref_id]
             if clusters_total[node_ref_id] < min_clusters_cnt:
@@ -5485,7 +5485,9 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             self.log(console, "SAVING FEATURESETS")
 
-            for node_ref_id in node_ref_ids.keys().sort():
+            for node_ref_id in node_ids_by_refs.keys():
+
+                node_num_id = str(node_ids_by_refs[node_ref_id])
 
                 # Core
                 if clusters_core[node_ref_id] > 0:
@@ -5501,8 +5503,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                     core_featureSet_elements[gene_id] = [genome_ref]
 
                     # build object
-                    fs_name = pg_obj_name+".node-"+str(node_ref_id)+".core_pangenome.FeatureSet"
-                    fs_desc = pg_obj_name+".node-"+str(node_ref_id)+" core pangenome features"
+                    fs_name = pg_obj_name+".node-"+str(node_num_id)+".core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name+".node-"+str(node_num_id)+" core pangenome features"
                     core_obj = { 'description': fs_desc,
                                  'elements': core_featureSet_elements
                              }
@@ -5535,8 +5537,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                     singleton_featureSet_elements[gene_id] = [genome_ref]
 
                     # build object
-                    fs_name = pg_obj_name+".node-"+str(node_ref_id)+".singleton_pangenome.FeatureSet"
-                    fs_desc = pg_obj_name+".node-"+str(node_ref_id)+" singleton pangenome features"
+                    fs_name = pg_obj_name+".node-"+str(node_num_id)+".singleton_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name+".node-"+str(node_num_id)+" singleton pangenome features"
                     singleton_obj = { 'description': fs_desc,
                                       'elements': singleton_featureSet_elements
                                   }
@@ -5569,8 +5571,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                     partial_featureSet_elements[gene_id] = [genome_ref]
 
                     # build object
-                    fs_name = pg_obj_name+".node-"+str(node_ref_id)+".non-core_pangenome.FeatureSet"
-                    fs_desc = pg_obj_name+".node-"+str(node_ref_id)+" non-core pangenome features"
+                    fs_name = pg_obj_name+".node-"+str(node_num_id)+".non-core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name+".node-"+str(node_num_id)+" non-core pangenome features"
                     partial_obj = { 'description': fs_desc,
                                     'elements': partial_featureSet_elements
                                 }
@@ -5648,7 +5650,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 for genome_id in n.get_leaf_names():
                     leaf_refs.append(genome_ref_by_id[genome_id])
                 node_ref_id = "+".join(sorted (leaf_refs))
-                node_num_id = node_ref_ids[node_ref_id]
+                node_num_id = node_ids_by_refs[node_ref_id]
                 node_name_disp = str(node_num_id)
                 #n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0, position="branch-right")
                 n.add_face (ete3.TextFace(' '+node_name_disp+' ', fsize=node_fontsize),column=0)
@@ -5737,7 +5739,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # add tree image
         html_report_lines += ['<tr>']
-        html_report_lines += ['<td valign="top" align="left" rowspan="'+str(num_bars_per_node*len(node_ref_ids))+'">']
+        html_report_lines += ['<td valign="top" align="left" rowspan="'+str(num_bars_per_node*len(node_ids_by_refs))+'">']
         html_report_lines += ['<img src="'+png_file+'" height='+str(tree_img_height)+'>']
         html_report_lines += ['</td>']
 
@@ -5748,7 +5750,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 max_cnt = clusters_total[node_ref_id]
 
         for node_i,node_ref_id in enumerate(node_order_by_ref):
-            node_id = node_ref_ids[node_ref_id]
+            node_id = node_ids_by_refs[node_ref_id]
             if node_i > 0:
                 html_report_lines += ['<tr>']
 
