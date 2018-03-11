@@ -5559,7 +5559,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
                 # Partial pangenome
-                if cluster_partial[node_ref_id] > 0:
+                if clusters_partial[node_ref_id] > 0:
 
                     # build partial featureset elements
                     partial_featureSet_elements = {}
