@@ -5486,7 +5486,7 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             self.log(console, "SAVING FEATURESETS")
 
-            for node_ref_id in sorted(node_ids_by_refs.keys()):
+            for node_ref_id in sorted(node_ids_by_refs, key=node_ids_by_refs.get):
 
                 node_num_id = str(node_ids_by_refs[node_ref_id])
 
