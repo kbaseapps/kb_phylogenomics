@@ -26,7 +26,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "input_genomeSet_ref",
     "input_tree_ref",
-    "desc"
+    "desc",
+    "output_name"
 })
 public class TrimTreeToGenomeSetInput {
 
@@ -38,6 +39,8 @@ public class TrimTreeToGenomeSetInput {
     private String inputTreeRef;
     @JsonProperty("desc")
     private String desc;
+    @JsonProperty("output_name")
+    private String outputName;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -100,6 +103,21 @@ public class TrimTreeToGenomeSetInput {
         return this;
     }
 
+    @JsonProperty("output_name")
+    public String getOutputName() {
+        return outputName;
+    }
+
+    @JsonProperty("output_name")
+    public void setOutputName(String outputName) {
+        this.outputName = outputName;
+    }
+
+    public TrimTreeToGenomeSetInput withOutputName(String outputName) {
+        this.outputName = outputName;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -112,7 +130,7 @@ public class TrimTreeToGenomeSetInput {
 
     @Override
     public String toString() {
-        return ((((((((((("TrimTreeToGenomeSetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((("TrimTreeToGenomeSetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", outputName=")+ outputName)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

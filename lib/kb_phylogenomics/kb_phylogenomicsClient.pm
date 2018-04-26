@@ -228,8 +228,10 @@ trim_tree_to_genomeSet_Input is a reference to a hash where the following keys a
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	desc has a value which is a string
+	output_name has a value which is a kb_phylogenomics.data_obj_name
 workspace_name is a string
 data_obj_ref is a string
+data_obj_name is a string
 trim_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -247,8 +249,10 @@ trim_tree_to_genomeSet_Input is a reference to a hash where the following keys a
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	desc has a value which is a string
+	output_name has a value which is a kb_phylogenomics.data_obj_name
 workspace_name is a string
 data_obj_ref is a string
+data_obj_name is a string
 trim_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -1706,6 +1710,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
+output_name has a value which is a kb_phylogenomics.data_obj_name
 
 </pre>
 
@@ -1718,6 +1723,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
+output_name has a value which is a kb_phylogenomics.data_obj_name
 
 
 =end text

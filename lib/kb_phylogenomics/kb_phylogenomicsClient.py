@@ -55,7 +55,7 @@ class kb_phylogenomics(object):
            parameter "workspace_name" of type "workspace_name" (** Common
            types), parameter "input_genomeSet_ref" of type "data_obj_ref",
            parameter "input_tree_ref" of type "data_obj_ref", parameter
-           "desc" of String
+           "desc" of String, parameter "output_name" of type "data_obj_name"
         :returns: instance of type "trim_tree_to_genomeSet_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

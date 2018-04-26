@@ -45,6 +45,7 @@ module kb_phylogenomics {
         data_obj_ref   input_genomeSet_ref;
 	data_obj_ref   input_tree_ref;
 	string         desc;
+	data_obj_name  output_name;
     } trim_tree_to_genomeSet_Input;
 
     typedef structure {

@@ -1,11 +1,11 @@
 {
-    "ver": "1.1.0",
+    "ver": "1.2.0",
     "authors": [
         "dylan"
     ],
     "contact": "http://kbase.us/contact-us/",
     "visible": true,
-    "categories": ["inactive", "comparative_genomics"],
+    "categories": ["active", "comparative_genomics"],
     "widgets": {
         "input": null,
         "output": "no-display"
@@ -19,7 +19,8 @@
             "default_values": [ "" ],
             "field_type": "text",
             "text_options": {
-                "valid_ws_types": [ "KBaseTrees.Tree" ]
+                "valid_ws_types": [ "KBaseTrees.Tree" ],
+		"is_output_name": false
             }
         },
         {
@@ -30,7 +31,8 @@
             "default_values": [ "" ],
             "field_type": "text",
             "text_options": {
-                "valid_ws_types": [ "KBaseSearch.GenomeSet" ]
+                "valid_ws_types": [ "KBaseSearch.GenomeSet" ],
+		"is_output_name": false
             }
         },
         {
@@ -40,6 +42,18 @@
             "allow_multiple": false,
             "default_values": [ "" ],
             "field_type": "text"
+        },
+        {
+            "id": "output_name",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "trimmed_tree.Tree" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseTrees.Tree" ],
+		"is_output_name": true
+            }
         }
     ],
     "behavior": {
@@ -65,6 +79,10 @@
                 {
                     "input_parameter": "desc",
 		    "target_property": "desc"
+                },
+                {
+                    "input_parameter": "output_name",
+		    "target_property": "output_name"
                 }
             ],
             "output_mapping": [
