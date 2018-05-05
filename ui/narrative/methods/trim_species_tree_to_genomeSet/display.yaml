@@ -1,0 +1,57 @@
+#
+# define display information
+#
+name: Trim Species Tree to GenomeSet - v1.2.0
+
+tooltip: |
+    Trim a Species Tree to match a GenomeSet
+
+screenshots: []
+
+icon: tree-purple.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_tree_ref :
+        ui-name : |
+            Species Tree
+        short-hint : |
+            The Speicies Tree (with additional members)
+    input_genomeSet_ref :
+        ui-name : |
+            GenomeSet
+        short-hint : |
+            The GenomeSet that the Species Tree should be trimmed to match
+    desc :
+        ui-name : |
+            Description
+        short-hint : |
+            A description of the trimmed tree
+    output_name :
+        ui-name : |
+            Output Tree
+        short-hint : |
+            The name for the trimmed tree output object
+
+description : |
+    <p>Trim a Species Tree to only contain leaves corresponding to members of a GenomeSet.</p>
+
+    <p><i>Trim Species Tree to GenomeSet</i> App written by Dylan Chivian (DCChivian@lbl.gov)</p>
+    <p>App will collapse a Species Tree object to only contain leaves correspondng to members of a GenomeSet.  Any extra genomes in the GenomeSet that are not found in the tree will be ignored.  Essentially this App represents an intersection of the SpeciesTree and the GenomeSet.</p>
