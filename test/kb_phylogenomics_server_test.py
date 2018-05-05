@@ -895,10 +895,10 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
 
 
-    #### Trim Tree to GenomeSet
+    #### Trim Species Tree to GenomeSet
     ##
-    # HIDE @unittest.skip("skipped test_trim_tree_to_genomeSet_01()")  # uncomment to skip
-    def test_trim_tree_to_genomeSet_01(self):
+    # HIDE @unittest.skip("skipped test_trim_species_tree_to_genomeSet_01()")  # uncomment to skip
+    def test_trim_species_tree_to_genomeSet_01(self):
         method = 'test_trim_tree_to_genomeSet_01'
         msg = "RUNNING: "+method+"()"
         print ("\n\n"+msg)

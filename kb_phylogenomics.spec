@@ -36,9 +36,9 @@ module kb_phylogenomics {
         authentication required;
 
 
-    /* trim_tree_to_genomeSet()
+    /* trim_species_tree_to_genomeSet()
     **
-    ** trim a KBase Tree to match genomeset, and make newick and images downloadable
+    ** trim a KBase Species Tree to match genomeset, and make newick and images downloadable
     */
     typedef structure {
         workspace_name workspace_name;
@@ -46,15 +46,15 @@ module kb_phylogenomics {
 	data_obj_ref   input_tree_ref;
 	string         desc;
 	data_obj_name  output_name;
-    } trim_tree_to_genomeSet_Input;
+    } trim_species_tree_to_genomeSet_Input;
 
     typedef structure {
         string report_name;
         string report_ref;
-    } trim_tree_to_genomeSet_Output;
+    } trim_species_tree_to_genomeSet_Output;
 
-    funcdef trim_tree_to_genomeSet(trim_tree_to_genomeSet_Input params) 
-        returns (trim_tree_to_genomeSet_Output output)
+    funcdef trim_species_tree_to_genomeSet(trim_species_tree_to_genomeSet_Input params) 
+        returns (trim_species_tree_to_genomeSet_Output output)
         authentication required;
 
 

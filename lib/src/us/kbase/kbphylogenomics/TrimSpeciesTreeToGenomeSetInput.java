@@ -12,11 +12,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: trim_tree_to_genomeSet_Input</p>
+ * <p>Original spec-file type: trim_species_tree_to_genomeSet_Input</p>
  * <pre>
- * trim_tree_to_genomeSet()
+ * trim_species_tree_to_genomeSet()
  * **
- * ** trim a KBase Tree to match genomeset, and make newick and images downloadable
+ * ** trim a KBase Species Tree to match genomeset, and make newick and images downloadable
  * </pre>
  * 
  */
@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "desc",
     "output_name"
 })
-public class TrimTreeToGenomeSetInput {
+public class TrimSpeciesTreeToGenomeSetInput {
 
     @JsonProperty("workspace_name")
     private String workspaceName;
@@ -53,7 +53,7 @@ public class TrimTreeToGenomeSetInput {
         this.workspaceName = workspaceName;
     }
 
-    public TrimTreeToGenomeSetInput withWorkspaceName(String workspaceName) {
+    public TrimSpeciesTreeToGenomeSetInput withWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
@@ -68,7 +68,7 @@ public class TrimTreeToGenomeSetInput {
         this.inputGenomeSetRef = inputGenomeSetRef;
     }
 
-    public TrimTreeToGenomeSetInput withInputGenomeSetRef(String inputGenomeSetRef) {
+    public TrimSpeciesTreeToGenomeSetInput withInputGenomeSetRef(String inputGenomeSetRef) {
         this.inputGenomeSetRef = inputGenomeSetRef;
         return this;
     }
@@ -83,7 +83,7 @@ public class TrimTreeToGenomeSetInput {
         this.inputTreeRef = inputTreeRef;
     }
 
-    public TrimTreeToGenomeSetInput withInputTreeRef(String inputTreeRef) {
+    public TrimSpeciesTreeToGenomeSetInput withInputTreeRef(String inputTreeRef) {
         this.inputTreeRef = inputTreeRef;
         return this;
     }
@@ -98,7 +98,7 @@ public class TrimTreeToGenomeSetInput {
         this.desc = desc;
     }
 
-    public TrimTreeToGenomeSetInput withDesc(String desc) {
+    public TrimSpeciesTreeToGenomeSetInput withDesc(String desc) {
         this.desc = desc;
         return this;
     }
@@ -113,7 +113,7 @@ public class TrimTreeToGenomeSetInput {
         this.outputName = outputName;
     }
 
-    public TrimTreeToGenomeSetInput withOutputName(String outputName) {
+    public TrimSpeciesTreeToGenomeSetInput withOutputName(String outputName) {
         this.outputName = outputName;
         return this;
     }
@@ -130,7 +130,7 @@ public class TrimTreeToGenomeSetInput {
 
     @Override
     public String toString() {
-        return ((((((((((((("TrimTreeToGenomeSetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", outputName=")+ outputName)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((("TrimSpeciesTreeToGenomeSetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", outputName=")+ outputName)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

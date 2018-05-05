@@ -337,10 +337,10 @@ class Application(object):
                              name='kb_phylogenomics.view_tree',
                              types=[dict])
         self.method_authentication['kb_phylogenomics.view_tree'] = 'required'  # noqa
-        self.rpc_service.add(impl_kb_phylogenomics.trim_tree_to_genomeSet,
-                             name='kb_phylogenomics.trim_tree_to_genomeSet',
+        self.rpc_service.add(impl_kb_phylogenomics.trim_species_tree_to_genomeSet,
+                             name='kb_phylogenomics.trim_species_tree_to_genomeSet',
                              types=[dict])
-        self.method_authentication['kb_phylogenomics.trim_tree_to_genomeSet'] = 'required'  # noqa
+        self.method_authentication['kb_phylogenomics.trim_species_tree_to_genomeSet'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.run_DomainAnnotation_Sets,
                              name='kb_phylogenomics.run_DomainAnnotation_Sets',
                              types=[dict])

@@ -53,8 +53,8 @@ This module contains methods for running and visualizing results of phylogenomic
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.2.0"
-    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "cb818c27bc59757a6f81dc157d324018da0eec6d"
+    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
+    GIT_COMMIT_HASH = "029243d5bc3a9b279662f6bb0e0ab83c2e9d1fee"
 
     #BEGIN_CLASS_HEADER
 
@@ -403,22 +403,24 @@ This module contains methods for running and visualizing results of phylogenomic
         # return the results
         return [output]
 
-    def trim_tree_to_genomeSet(self, ctx, params):
+    def trim_species_tree_to_genomeSet(self, ctx, params):
         """
-        :param params: instance of type "trim_tree_to_genomeSet_Input"
-           (trim_tree_to_genomeSet() ** ** trim a KBase Tree to match
-           genomeset, and make newick and images downloadable) -> structure:
-           parameter "workspace_name" of type "workspace_name" (** Common
-           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
-           parameter "input_tree_ref" of type "data_obj_ref", parameter
-           "desc" of String, parameter "output_name" of type "data_obj_name"
-        :returns: instance of type "trim_tree_to_genomeSet_Output" ->
+        :param params: instance of type
+           "trim_species_tree_to_genomeSet_Input"
+           (trim_species_tree_to_genomeSet() ** ** trim a KBase Species Tree
+           to match genomeset, and make newick and images downloadable) ->
+           structure: parameter "workspace_name" of type "workspace_name" (**
+           Common types), parameter "input_genomeSet_ref" of type
+           "data_obj_ref", parameter "input_tree_ref" of type "data_obj_ref",
+           parameter "desc" of String, parameter "output_name" of type
+           "data_obj_name"
+        :returns: instance of type "trim_species_tree_to_genomeSet_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
         # ctx is the context object
         # return variables are: output
-        #BEGIN trim_tree_to_genomeSet
+        #BEGIN trim_species_tree_to_genomeSet
 
         #### STEP 0: init
         try:
@@ -436,7 +438,7 @@ This module contains methods for running and visualizing results of phylogenomic
         console = []
         invalid_msgs = []
         report = ''
-        self.log(console,'Running trim_tree_to_genomeSet() with params=')
+        self.log(console,'Running trim_species_tree_to_genomeSet() with params=')
         self.log(console, "\n"+pformat(params))
 
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
@@ -466,7 +468,7 @@ This module contains methods for running and visualizing results of phylogenomic
         provenance[0]['input_ws_objects'].append(params['input_genomeSet_ref'])
         provenance[0]['input_ws_objects'].append(params['input_tree_ref'])
         provenance[0]['service'] = 'kb_phylogenomics'
-        provenance[0]['method'] = 'trim_tree_to_genomeSet'
+        provenance[0]['method'] = 'trim_species_tree_to_genomeSet'
 
 
         #### STEP 3: Get genomeSet
@@ -492,9 +494,9 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_id in genome_ids:
             genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
 
-        genome_obj_name_by_ref = dict()
-        uniq_genome_ws_ids = dict()
-        ws_name_by_genome_ref = dict()
+        #genome_obj_name_by_ref = dict()
+        #uniq_genome_ws_ids = dict()
+        #ws_name_by_genome_ref = dict()
 
         for genome_ref in genome_refs:
 
@@ -770,12 +772,12 @@ This module contains methods for running and visualizing results of phylogenomic
                    'report_ref': report_info['ref']
         }
 
-        self.log(console,"trim_tree_to_genomeSet() DONE")
-        #END trim_tree_to_genomeSet
+        self.log(console,"trim_species_tree_to_genomeSet() DONE")
+        #END trim_species_tree_to_genomeSet
 
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
-            raise ValueError('Method trim_tree_to_genomeSet return value ' +
+            raise ValueError('Method trim_species_tree_to_genomeSet return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]

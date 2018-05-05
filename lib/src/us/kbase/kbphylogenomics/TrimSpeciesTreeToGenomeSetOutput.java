@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: trim_tree_to_genomeSet_Output</p>
+ * <p>Original spec-file type: trim_species_tree_to_genomeSet_Output</p>
  * 
  * 
  */
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "report_name",
     "report_ref"
 })
-public class TrimTreeToGenomeSetOutput {
+public class TrimSpeciesTreeToGenomeSetOutput {
 
     @JsonProperty("report_name")
     private String reportName;
@@ -40,7 +40,7 @@ public class TrimTreeToGenomeSetOutput {
         this.reportName = reportName;
     }
 
-    public TrimTreeToGenomeSetOutput withReportName(String reportName) {
+    public TrimSpeciesTreeToGenomeSetOutput withReportName(String reportName) {
         this.reportName = reportName;
         return this;
     }
@@ -55,7 +55,7 @@ public class TrimTreeToGenomeSetOutput {
         this.reportRef = reportRef;
     }
 
-    public TrimTreeToGenomeSetOutput withReportRef(String reportRef) {
+    public TrimSpeciesTreeToGenomeSetOutput withReportRef(String reportRef) {
         this.reportRef = reportRef;
         return this;
     }
@@ -72,7 +72,7 @@ public class TrimTreeToGenomeSetOutput {
 
     @Override
     public String toString() {
-        return ((((((("TrimTreeToGenomeSetOutput"+" [reportName=")+ reportName)+", reportRef=")+ reportRef)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((("TrimSpeciesTreeToGenomeSetOutput"+" [reportName=")+ reportName)+", reportRef=")+ reportRef)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
