@@ -103,13 +103,24 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN view_tree
 
         #### STEP 0: init
-        ##
-        dfu = DFUClient(self.callbackURL)
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except Exception as e:
+            raise ValueError('Unable to instantiate DataFileUtil client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+        except Exception as e:
+            raise ValueError('Unable to instantiate Workspace client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         console = []
         invalid_msgs = []
+        report = ''
         self.log(console,'Running view_tree() with params=')
         self.log(console, "\n"+pformat(params))
-        report = ''
+
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
         output_dir = os.path.join (self.scratch, 'output_'+str(timestamp))
         if not os.path.exists(output_dir):
@@ -117,7 +128,6 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         #### STEP 1: do some basic checks
-        ##
         if 'workspace_name' not in params:
             raise ValueError('workspace_name parameter is required')
         if 'input_tree_ref' not in params:
@@ -127,7 +137,6 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         #### STEP 2: load the method provenance from the context object
-        ##
         self.log(console,"SETTING PROVENANCE")  # DEBUG
         provenance = [{}]
         if 'provenance' in ctx:
@@ -140,10 +149,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         #### STEP 3: Get tree and save as newick file
-        ##
         try:
-            ws = workspaceService(self.workspaceURL, token=ctx['token'])
-            objects = ws.get_objects([{'ref': params['input_tree_ref']}])
+            objects = wsClient.get_objects([{'ref': params['input_tree_ref']}])
             data = objects[0]['data']
             info = objects[0]['info']
             intree_name = info[1]
@@ -165,7 +172,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # upload
         try:
-            newick_upload_ret = dfu.file_to_shock({'file_path': intree_newick_file_path,
+            newick_upload_ret = dfuClient.file_to_shock({'file_path': intree_newick_file_path,
                                                    #'pack': 'zip'})
                                                    'make_handle': 0})
         except:
@@ -174,7 +181,6 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 4: if labels defined, make separate newick-labels file
         ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
-        ##
         if 'default_node_labels' in tree_in:
             newick_labels_file = intree_name+'-labels.newick'
             output_newick_labels_file_path = os.path.join(output_dir, newick_labels_file);
@@ -215,7 +221,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # upload
             try:
-                newick_labels_upload_ret = dfu.file_to_shock({'file_path': output_newick_labels_file_path,
+                newick_labels_upload_ret = dfuClient.file_to_shock({'file_path': output_newick_labels_file_path,
                                                               #'pack': 'zip'})
                                                               'make_handle': 0})
             except:
@@ -223,7 +229,6 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         #### STEP 5: Create html with tree image
-        ##
         html_output_dir = os.path.join(output_dir, 'output_html.'+str(timestamp))
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
@@ -317,19 +322,19 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # upload images and html
         try:
-            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
+            png_upload_ret = dfuClient.file_to_shock({'file_path': output_png_file_path,
                                                 #'pack': 'zip'})
                                                 'make_handle': 0})
         except:
             raise ValueError ('error uploading png file to shock')
         try:
-            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
+            pdf_upload_ret = dfuClient.file_to_shock({'file_path': output_pdf_file_path,
                                                 #'pack': 'zip'})
                                                 'make_handle': 0})
         except:
             raise ValueError ('error uploading pdf file to shock')
         try:
-            html_upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
+            html_upload_ret = dfuClient.file_to_shock({'file_path': html_output_dir,
                                                  'make_handle': 0,
                                                  'pack': 'zip'})
         except:
@@ -416,13 +421,24 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN trim_tree_to_genomeSet
 
         #### STEP 0: init
-        ##
-        dfu = DFUClient(self.callbackURL)
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except Exception as e:
+            raise ValueError('Unable to instantiate DataFileUtil client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+        except Exception as e:
+            raise ValueError('Unable to instantiate Workspace client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         console = []
         invalid_msgs = []
+        report = ''
         self.log(console,'Running trim_tree_to_genomeSet() with params=')
         self.log(console, "\n"+pformat(params))
-        report = ''
+
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
         output_dir = os.path.join (self.scratch, 'output_'+str(timestamp))
         if not os.path.exists(output_dir):
@@ -430,11 +446,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         #### STEP 1: do some basic checks
-        ##
         if 'workspace_name' not in params:
             raise ValueError('workspace_name parameter is required')
         if 'input_genomeSet_ref' not in params:
-            raise ValueError('input_tree_ref parameter is required')
+            raise ValueError('input_genomeSet_ref parameter is required')
         if 'input_tree_ref' not in params:
             raise ValueError('input_tree_ref parameter is required')
         if 'output_name' not in params:
@@ -442,23 +457,75 @@ This module contains methods for running and visualizing results of phylogenomic
 
 
         #### STEP 2: load the method provenance from the context object
-        ##
         self.log(console,"SETTING PROVENANCE")  # DEBUG
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
         # add additional info to provenance here, in this case the input data object reference
         provenance[0]['input_ws_objects'] = []
+        provenance[0]['input_ws_objects'].append(params['input_genomeSet_ref'])
         provenance[0]['input_ws_objects'].append(params['input_tree_ref'])
         provenance[0]['service'] = 'kb_phylogenomics'
         provenance[0]['method'] = 'trim_tree_to_genomeSet'
 
 
-        #### STEP 3: Get tree and save as newick file
+        #### STEP 3: Get genomeSet
+        input_ref = params['input_genomeSet_ref']
+        try:
+            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+        accepted_input_types = ["KBaseSearch.GenomeSet" ]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+        # get set obj
+        try:
+            genomeSet_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
+        except:
+            raise ValueError ("unable to fetch genomeSet: "+input_ref)
+
+        # get genome refs and object names
+        genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
+        genome_refs = []
+        for genome_id in genome_ids:
+            genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
+
+        genome_obj_name_by_ref = dict()
+        uniq_genome_ws_ids = dict()
+        ws_name_by_genome_ref = dict()
+
+        for genome_ref in genome_refs:
+
+            # get genome object name
+            input_ref = genome_ref
+            try:
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
+                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                input_name = input_obj_info[NAME_I]
+                uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
+                ws_name_by_genome_ref[input_ref] = input_obj_info[WORKSPACE_I]
+
+            except Exception as e:
+                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
+            accepted_input_types = ["KBaseGenomes.Genome" ]
+            if input_obj_type not in accepted_input_types:
+                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+
+            genome_obj_name_by_ref[input_ref] = input_name
+
+
+
+        # HERE
+
+
+
+        #### STEP 4: Get tree (don't save because we have to remove leaves and leafless nodes still)
         ##
         try:
-            ws = workspaceService(self.workspaceURL, token=ctx['token'])
-            objects = ws.get_objects([{'ref': params['input_tree_ref']}])
+            objects = wsClient.get_objects([{'ref': params['input_tree_ref']}])
             data = objects[0]['data']
             info = objects[0]['info']
             intree_name = info[1]
@@ -473,21 +540,21 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             raise ValueError('Cannot yet handle input_tree type of: '+type_name)
 
-        intree_newick_file_path = os.path.join(output_dir, intree_name+".newick")
-        self.log(console, 'writing intree file: '+intree_newick_file_path)
-        with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
-            intree_newick_file_handle.write(tree_in['tree'])
+        #intree_newick_file_path = os.path.join(output_dir, intree_name+".newick")
+        #self.log(console, 'writing intree file: '+intree_newick_file_path)
+        #with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
+        #    intree_newick_file_handle.write(tree_in['tree'])
 
-        # upload
-        try:
-            newick_upload_ret = dfu.file_to_shock({'file_path': intree_newick_file_path,
-                                                   #'pack': 'zip'})
-                                                   'make_handle': 0})
-        except:
-            raise ValueError ('error uploading newick file to shock')
+        ## upload
+        #try:
+        #    newick_upload_ret = dfuClient.file_to_shock({'file_path': intree_newick_file_path,
+        #                                                 #'pack': 'zip'})
+        #                                                 'make_handle': 0})
+        #except:
+        #    raise ValueError ('error uploading newick file to shock')
 
 
-        #### STEP 4: if labels defined, make separate newick-labels file
+        #### STEP 5: if labels defined, make separate newick-labels file
         ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
         ##
         if 'default_node_labels' in tree_in:
@@ -530,14 +597,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # upload
             try:
-                newick_labels_upload_ret = dfu.file_to_shock({'file_path': output_newick_labels_file_path,
-                                                              #'pack': 'zip'})
-                                                              'make_handle': 0})
+                newick_labels_upload_ret = dfuClient.file_to_shock({'file_path': output_newick_labels_file_path,
+                                                                    #'pack': 'zip'})
+                                                                    'make_handle': 0})
             except:
                 raise ValueError ('error uploading newick labels file to shock')
 
 
-        #### STEP 5: Create html with tree image
+        #### STEP 6: Create html with tree image
         ##
         html_output_dir = os.path.join(output_dir, 'output_html.'+str(timestamp))
         if not os.path.exists(html_output_dir):
@@ -632,21 +699,21 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # upload images and html
         try:
-            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
-                                                #'pack': 'zip'})
-                                                'make_handle': 0})
+            png_upload_ret = dfuClient.file_to_shock({'file_path': output_png_file_path,
+                                                      #'pack': 'zip'})
+                                                      'make_handle': 0})
         except:
             raise ValueError ('error uploading png file to shock')
         try:
-            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
-                                                #'pack': 'zip'})
-                                                'make_handle': 0})
+            pdf_upload_ret = dfuClient.file_to_shock({'file_path': output_pdf_file_path,
+                                                      #'pack': 'zip'})
+                                                      'make_handle': 0})
         except:
             raise ValueError ('error uploading pdf file to shock')
         try:
-            html_upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
-                                                 'make_handle': 0,
-                                                 'pack': 'zip'})
+            html_upload_ret = dfuClient.file_to_shock({'file_path': html_output_dir,
+                                                       'make_handle': 0,
+                                                       'pack': 'zip'})
         except:
             raise ValueError ('error uploading png file to shock')
 
@@ -728,12 +795,25 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN run_DomainAnnotation_Sets
+
+        ### STEP 0: basic init
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except Exception as e:
+            raise ValueError('Unable to instantiate DataFileUtil client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+        except Exception as e:
+            raise ValueError('Unable to instantiate Workspace client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         console = []
         self.log(console, 'Running run_DomainAnnotation_Sets() with params=')
         self.log(console, "\n"+pformat(params))
 
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
         headers = {'Authorization': 'OAuth '+token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
@@ -920,12 +1000,23 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN view_fxn_profile
 
         ### STEP 0: basic init
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except Exception as e:
+            raise ValueError('Unable to instantiate DataFileUtil client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+        except Exception as e:
+            raise ValueError('Unable to instantiate Workspace client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         console = []
         self.log(console, 'Running view_fxn_profile(): ')
         self.log(console, "\n"+pformat(params))
 
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
         headers = {'Authorization': 'OAuth '+token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
@@ -2000,11 +2091,10 @@ This module contains methods for running and visualizing results of phylogenomic
         html_file = os.path.join (output_dir, 'domain_profile_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
-        dfu = DFUClient(self.callbackURL)
         try:
-            upload_ret = dfu.file_to_shock({'file_path': html_file,
-                                            'make_handle': 0,
-                                            'pack': 'zip'})
+            upload_ret = dfuClient.file_to_shock({'file_path': html_file,
+                                                  'make_handle': 0,
+                                                  'pack': 'zip'})
         except:
             raise ValueError ('Logging exception loading html_report to shock')
 
@@ -2058,12 +2148,23 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN view_fxn_profile_featureSet
 
         ### STEP 0: basic init
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except Exception as e:
+            raise ValueError('Unable to instantiate DataFileUtil client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+        except Exception as e:
+            raise ValueError('Unable to instantiate Workspace client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         console = []
         self.log(console, 'Running view_fxn_profile_featureSet(): ')
         self.log(console, "\n"+pformat(params))
 
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
         headers = {'Authorization': 'OAuth '+token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
@@ -3161,9 +3262,8 @@ This module contains methods for running and visualizing results of phylogenomic
         html_file = os.path.join (output_dir, 'domain_profile_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
-        dfu = DFUClient(self.callbackURL)
         try:
-            upload_ret = dfu.file_to_shock({'file_path': html_file,
+            upload_ret = dfuClient.file_to_shock({'file_path': html_file,
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
@@ -3220,12 +3320,23 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN view_fxn_profile_phylo
 
         ### STEP 0: basic init
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except Exception as e:
+            raise ValueError('Unable to instantiate DataFileUtil client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+        except Exception as e:
+            raise ValueError('Unable to instantiate Workspace client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         console = []
         self.log(console, 'Running view_fxn_profile_phylo(): ')
         self.log(console, "\n"+pformat(params))
 
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
         headers = {'Authorization': 'OAuth '+token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
@@ -4418,10 +4529,9 @@ This module contains methods for running and visualizing results of phylogenomic
         html_file = os.path.join (html_output_dir, 'domain_profile_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
-        dfu = DFUClient(self.callbackURL)
         try:
-            #upload_ret = dfu.file_to_shock({'file_path': html_file,
-            upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
+            #upload_ret = dfuClient.file_to_shock({'file_path': html_file,
+            upload_ret = dfuClient.file_to_shock({'file_path': html_output_dir,
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
@@ -4493,13 +4603,24 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN view_pan_circle_plot
 
         ### STEP 0: basic init
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except Exception as e:
+            raise ValueError('Unable to instantiate DataFileUtil client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+        except Exception as e:
+            raise ValueError('Unable to instantiate Workspace client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         console = []
         invalid_msgs = []
         self.log(console, 'Running view_pan_circle_plot(): ')
         self.log(console, "\n"+pformat(params))
 
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
         headers = {'Authorization': 'OAuth '+token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
@@ -5356,24 +5477,23 @@ This module contains methods for running and visualizing results of phylogenomic
         html_file = os.path.join (html_output_dir, 'pan_circle_plot_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
-        dfu = DFUClient(self.callbackURL)
         try:
-            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
+            png_upload_ret = dfuClient.file_to_shock({'file_path': output_png_file_path,
                                                 'make_handle': 0})
                                             #'pack': 'zip'})
         except:
             raise ValueError ('Logging exception loading png_file to shock')
 
         try:
-            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
+            pdf_upload_ret = dfuClient.file_to_shock({'file_path': output_pdf_file_path,
                                                 'make_handle': 0})
                                             #'pack': 'zip'})
         except:
             raise ValueError ('Logging exception loading pdf_file to shock')
 
         try:
-            #upload_ret = dfu.file_to_shock({'file_path': html_file,
-            upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
+            #upload_ret = dfuClient.file_to_shock({'file_path': html_file,
+            upload_ret = dfuClient.file_to_shock({'file_path': html_output_dir,
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
@@ -5498,12 +5618,23 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN view_pan_phylo
 
         ### STEP 0: basic init
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except Exception as e:
+            raise ValueError('Unable to instantiate DataFileUtil client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+        except Exception as e:
+            raise ValueError('Unable to instantiate Workspace client: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         console = []
         self.log(console, 'Running view_pan_phylo(): ')
         self.log(console, "\n"+pformat(params))
 
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
         headers = {'Authorization': 'OAuth '+token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
@@ -6111,24 +6242,23 @@ This module contains methods for running and visualizing results of phylogenomic
         html_file = os.path.join (html_output_dir, 'pan_phylo_report.html')
         with open (html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
-        dfu = DFUClient(self.callbackURL)
         try:
-            png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
+            png_upload_ret = dfuClient.file_to_shock({'file_path': output_png_file_path,
                                                 'make_handle': 0})
                                             #'pack': 'zip'})
         except:
             raise ValueError ('Logging exception loading png_file to shock')
 
         try:
-            pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
+            pdf_upload_ret = dfuClient.file_to_shock({'file_path': output_pdf_file_path,
                                                 'make_handle': 0})
                                             #'pack': 'zip'})
         except:
             raise ValueError ('Logging exception loading pdf_file to shock')
 
         try:
-            #upload_ret = dfu.file_to_shock({'file_path': html_file,
-            upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
+            #upload_ret = dfuClient.file_to_shock({'file_path': html_file,
+            upload_ret = dfuClient.file_to_shock({'file_path': html_output_dir,
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
