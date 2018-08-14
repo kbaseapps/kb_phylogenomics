@@ -1,37 +1,25 @@
 # -*- coding: utf-8 -*-
 #BEGIN_HEADER
-from __future__ import print_function
 from __future__ import division
+from __future__ import print_function
 
+import math
 import os
-import sys
-import shutil
-import hashlib
-import subprocess
-import requests
-requests.packages.urllib3.disable_warnings()
 import re
-import traceback
+import sys
 import uuid
 from datetime import datetime
-from pprint import pprint, pformat
-
-import numpy as np
-import math
-from Bio import SeqIO
-
-from biokbase.workspace.client import Workspace as workspaceService
-#from Workspace.WorkspaceClient import Workspace as workspaceService
-from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
-from KBaseReport.KBaseReportClient import KBaseReport
-
-from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
+from pprint import pformat
 
 import ete3
 import matplotlib.pyplot as pyplot  # use this instead
 from matplotlib.patches import Arc
 from matplotlib.patches import Rectangle
 
+from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
+from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
+from KBaseReport.KBaseReportClient import KBaseReport
+from Workspace.WorkspaceClient import Workspace as workspaceService
 #END_HEADER
 
 
@@ -156,7 +144,7 @@ This module contains methods for running and visualizing results of phylogenomic
         if intree_type_name == 'Tree':
             tree_in = data
         else:
-            raise ValueError('Cannot yet handle input_tree type of: '+type_name)
+            raise ValueError('Cannot yet handle input_tree type of: '+ intree_type_name)
 
         intree_newick_file_path = os.path.join(output_dir, intree_name+".newick")
         self.log(console, 'writing intree file: '+intree_newick_file_path)
@@ -414,6 +402,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN trim_tree_to_genomeSet
+        output = {}
+        raise NotImplementedError
         #END trim_tree_to_genomeSet
 
         # At some point might do deeper type checking...
@@ -458,7 +448,7 @@ This module contains methods for running and visualizing results of phylogenomic
                           ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
-                raise ValueError ("Must define required param: '"+required_param+"'")
+                raise ValueError ("Must define required param: '"+arg+"'")
 
 
         ### STEP 2: build a list of genomes to iterate through
@@ -4174,6 +4164,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN view_genome_circle_plot
+        output = {}
+        raise NotImplementedError
         #END view_genome_circle_plot
 
         # At some point might do deeper type checking...
@@ -5134,6 +5126,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN view_pan_accumulation_plot
+        output = {}
+        raise NotImplementedError
         #END view_pan_accumulation_plot
 
         # At some point might do deeper type checking...
@@ -5158,6 +5152,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN view_pan_flower_venn
+        output = {}
+        raise NotImplementedError
         #END view_pan_flower_venn
 
         # At some point might do deeper type checking...
@@ -5182,6 +5178,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN view_pan_pairwise_overlap
+        output = {}
+        raise NotImplementedError
         #END view_pan_pairwise_overlap
 
         # At some point might do deeper type checking...
