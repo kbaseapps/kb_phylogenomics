@@ -329,9 +329,6 @@ This module contains methods for running and visualizing results of phylogenomic
         reportName = 'blast_report_'+str(uuid.uuid4())
         #report += output_newick_buf+"\n"
         reportObj = {'objects_created': [],
-                     #'text_message': '',  # or is it 'message'?
-                     'message': '',  # or is it 'text_message'?
-                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -512,7 +509,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             for info in dom_annot_obj_info_list:
                 [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-                
+
                 dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
                 try:
                     domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
@@ -650,7 +647,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR']) \
                     and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
                 ):
-                    
+
                 raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
 
         # base config
@@ -727,7 +724,7 @@ This module contains methods for running and visualizing results of phylogenomic
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line = line.strip()
-                    
+
                     if namespace == 'COG':
                         [cat, cat_group, cat_name] = line.split("\t")[0:3]
                         if namespace == params['namespace'] and cat not in cats:
@@ -842,7 +839,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     num_id_len['TIGR'] = 5
 
                     #self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
-                    
+
                     if target_fam.startswith('SEED'):
                         namespaces_reading['SEED'] = True
                         target_fam = target_fam.strip()
@@ -948,7 +945,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                     combo_name = domfam_id+': '+domfam_desc
                             if ec_id != '':
                                 combo_name += ' (EC '+ec_id+')'
-                                    
+
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'SEED':
@@ -1042,7 +1039,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
-            
+
             # CDS cnt
             cds_cnt = 0
             for feature in genome_obj['features']:
@@ -1064,7 +1061,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                         if 'function' in feature and feature['function'] != None and feature['function'] != '':
                             gene_name = feature['id']
-                            
+
                             #if f_cnt % 100 == 0:
                             #    self.log (console, "fxn: '"+str(feature['function'])+"'")  # DEBUG
 
@@ -1130,7 +1127,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 for info in dom_annot_obj_info_list:
                     [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            
+
                     dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
                     try:
                         domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
@@ -1152,7 +1149,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     for scaffold_id_iter in domain_data['data'].keys():
                         for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
                             gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
-                            #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID) 
+                            #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID)
                             gene_name = gene_ID
                             #(contig_name, gene_name) = (gene_ID[0:gene_ID.index(".")], gene_ID[gene_ID.index(".")+1:])
                             #print ("DOMAIN_HIT: "+contig_name+" "+gene_name)  # DEBUG
@@ -1198,7 +1195,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                                 or top_hit_evalue_by_namespace[namespace] > e_value:
                                             top_hit_dom_by_namespace[namespace] = domfam_clean
                                             top_hit_evalue_by_namespace[namespace] = e_value
-                                        
+
                                     dom_hits_by_namespace[namespace][domfam_clean] = True
 
                             # store assignments for gene
@@ -1212,7 +1209,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                                     if gene_name not in dom_hits[genome_ref]:
                                         dom_hits[genome_ref][gene_name] = dict()
-                                
+
                                     if top_hit_flag:
                                         dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
                                     else:
@@ -1227,12 +1224,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 error_msg = "ABORT: You must run the DomainAnnotation App first\n"
                 error_msg += "\n".join(missing_annot)
                 raise ValueError (error_msg)
-                                
+
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
-                                    
+
         # calculate table
         #
         table_data = dict()
@@ -1273,7 +1270,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 if cat in cats:
                                     #self.log(console, "CAT_FOUND: '"+str(cat)+"'")  # DEBUG
                                     table_data[genome_ref][cat] += 1
-                
+
         # adjust to percs
         if params['count_category'].startswith('perc'):
             for genome_ref in genome_refs:
@@ -1380,9 +1377,6 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
         reportObj = {'objects_created': [],
-                     #'text_message': '',  # or is it 'message'?
-                     'message': '',  # or is it 'text_message'?
-                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -1457,7 +1451,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 elif label == 'TIGR':
                     label = 'TIGRFAM'
             html_report_lines += ['<tr><td valign=bottom align=right rowspan='+corner_rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
-        
+
             # group headers
             if show_groups:
                 for cat_group in group_order:
@@ -1530,7 +1524,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     html_report_lines += ['</div></div>']
                 html_report_lines += ['</td>']
             html_report_lines += ['</tr>']
-            
+
             # rest of rows
             for genome_ref in genome_refs:
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
@@ -1542,7 +1536,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     val = table_data[genome_ref][cat]
                     if val == 0:
                         cell_color = 'white'
-                    else:                    
+                    else:
                         if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                             log_base = float(params['log_base'])
                             if log_base <= 1.0:
@@ -1653,7 +1647,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if len(cat_disp) > cat_disp_trunc_len+1:
                         cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
                     cat_disp = sp+cat_disp
-                        
+
                     html_report_lines += ['<tr>']
                     html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
                     html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
@@ -1691,7 +1685,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # close
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
-        
+
         html_report_str = "\n".join(html_report_lines)
         #reportObj['direct_html'] = html_report_str
 
@@ -1788,7 +1782,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR']) \
                     and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
                 ):
-                    
+
                 raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
 
         # base config
@@ -1865,7 +1859,7 @@ This module contains methods for running and visualizing results of phylogenomic
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line = line.strip()
-                    
+
                     if namespace == 'COG':
                         [cat, cat_group, cat_name] = line.split("\t")[0:3]
                         if namespace == params['namespace'] and cat not in cats:
@@ -1980,7 +1974,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     num_id_len['TIGR'] = 5
 
                     #self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
-                    
+
                     if target_fam.startswith('SEED'):
                         namespaces_reading['SEED'] = True
                         target_fam = target_fam.strip()
@@ -2086,7 +2080,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                     combo_name = domfam_id+': '+domfam_desc
                             if ec_id != '':
                                 combo_name += ' (EC '+ec_id+')'
-                                    
+
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'SEED':
@@ -2186,7 +2180,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
-            
+
             # CDS cnt
             cds_cnt = 0
             for feature in genome_obj['features']:
@@ -2216,7 +2210,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                         if 'function' in feature and feature['function'] != None and feature['function'] != '':
                             gene_name = feature['id']
-                            
+
                             #if f_cnt % 100 == 0:
                             #    self.log (console, "fxn: '"+str(feature['function'])+"'")  # DEBUG
 
@@ -2285,7 +2279,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 for info in dom_annot_obj_info_list:
                     [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            
+
                     dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
                     try:
                         domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
@@ -2307,7 +2301,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     for scaffold_id_iter in domain_data['data'].keys():
                         for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
                             gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
-                            #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID) 
+                            #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID)
                             gene_name = gene_ID
                             #(contig_name, gene_name) = (gene_ID[0:gene_ID.index(".")], gene_ID[gene_ID.index(".")+1:])
                             #print ("DOMAIN_HIT: "+contig_name+" "+gene_name)  # DEBUG
@@ -2353,7 +2347,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                                 or top_hit_evalue_by_namespace[namespace] > e_value:
                                             top_hit_dom_by_namespace[namespace] = domfam_clean
                                             top_hit_evalue_by_namespace[namespace] = e_value
-                                        
+
                                     dom_hits_by_namespace[namespace][domfam_clean] = True
 
                             # store assignments for gene
@@ -2370,10 +2364,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                     featureSet_element_id = gene_ID
                                     if featureSet_element_id not in featureSet_obj['elements']:
                                         continue
-                                    
+
                                     if gene_name not in dom_hits[genome_ref]:
                                         dom_hits[genome_ref][gene_name] = dict()
-                                
+
                                     if top_hit_flag:
                                         dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
                                     else:
@@ -2388,12 +2382,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 error_msg = "ABORT: You must run the DomainAnnotation App first\n"
                 error_msg += "\n".join(missing_annot)
                 raise ValueError (error_msg)
-                                
+
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
-                                    
+
         # calculate table
         #
         table_data = dict()
@@ -2434,7 +2428,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 if cat in cats:
                                     #self.log(console, "CAT_FOUND: '"+str(cat)+"'")  # DEBUG
                                     table_data[genome_ref][cat] += 1
-                
+
         # adjust to percs
         if params['count_category'].startswith('perc'):
             for genome_ref in genome_refs:
@@ -2541,9 +2535,6 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
         reportObj = {'objects_created': [],
-                     #'text_message': '',  # or is it 'message'?
-                     'message': '',  # or is it 'text_message'?
-                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -2618,7 +2609,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 elif label == 'TIGR':
                     label = 'TIGRFAM'
             html_report_lines += ['<tr><td valign=bottom align=right rowspan='+corner_rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
-        
+
             # group headers
             if show_groups:
                 for cat_group in group_order:
@@ -2691,7 +2682,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     html_report_lines += ['</div></div>']
                 html_report_lines += ['</td>']
             html_report_lines += ['</tr>']
-            
+
             # rest of rows
             for genome_ref in genome_refs:
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
@@ -2703,7 +2694,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     val = table_data[genome_ref][cat]
                     if val == 0:
                         cell_color = 'white'
-                    else:                    
+                    else:
                         if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                             log_base = float(params['log_base'])
                             if log_base <= 1.0:
@@ -2814,7 +2805,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if len(cat_disp) > cat_disp_trunc_len+1:
                         cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
                     cat_disp = sp+cat_disp
-                        
+
                     html_report_lines += ['<tr>']
                     html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
                     html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
@@ -2852,7 +2843,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # close
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
-        
+
         html_report_str = "\n".join(html_report_lines)
         #reportObj['direct_html'] = html_report_str
 
@@ -2950,7 +2941,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR']) \
                     and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
                 ):
-                    
+
                 raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
 
         # base config
@@ -3030,7 +3021,7 @@ This module contains methods for running and visualizing results of phylogenomic
             with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line = line.strip()
-                    
+
                     if namespace == 'COG':
                         [cat, cat_group, cat_name] = line.split("\t")[0:3]
                         if namespace == params['namespace'] and cat not in cats:
@@ -3148,7 +3139,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     num_id_len['TIGR'] = 5
 
                     #self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
-                    
+
                     if target_fam.startswith('SEED'):
                         namespaces_reading['SEED'] = True
                         target_fam = target_fam.strip()
@@ -3254,7 +3245,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                     combo_name = domfam_id+': '+domfam_desc
                             if ec_id != '':
                                 combo_name += ' (EC '+ec_id+')'
-                                    
+
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'SEED':
@@ -3363,7 +3354,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
             genome_sci_name_by_id[genome_id_by_ref[genome_ref]] = genome_obj['scientific_name']
-            
+
             # CDS cnt
             cds_cnt = 0
             for feature in genome_obj['features']:
@@ -3385,7 +3376,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                         if 'function' in feature and feature['function'] != None and feature['function'] != '':
                             gene_name = feature['id']
-                            
+
                             #if f_cnt % 100 == 0:
                             #    self.log (console, "fxn: '"+str(feature['function'])+"'")  # DEBUG
 
@@ -3451,7 +3442,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 for info in dom_annot_obj_info_list:
                     [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            
+
                     dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
                     try:
                         domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
@@ -3473,7 +3464,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     for scaffold_id_iter in domain_data['data'].keys():
                         for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
                             gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
-                            #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID) 
+                            #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID)
                             gene_name = gene_ID
                             #(contig_name, gene_name) = (gene_ID[0:gene_ID.index(".")], gene_ID[gene_ID.index(".")+1:])
                             #print ("DOMAIN_HIT: "+contig_name+" "+gene_name)  # DEBUG
@@ -3519,7 +3510,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                                 or top_hit_evalue_by_namespace[namespace] > e_value:
                                             top_hit_dom_by_namespace[namespace] = domfam_clean
                                             top_hit_evalue_by_namespace[namespace] = e_value
-                                        
+
                                     dom_hits_by_namespace[namespace][domfam_clean] = True
 
                             # store assignments for gene
@@ -3533,12 +3524,12 @@ This module contains methods for running and visualizing results of phylogenomic
 
                                     if gene_name not in dom_hits[genome_ref]:
                                         dom_hits[genome_ref][gene_name] = dict()
-                                
+
                                     if top_hit_flag:
                                         dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
                                     else:
                                         dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
-                                
+
             # make sure we have domain annotations for all genomes
             missing_annot = []
             for genome_ref in genome_refs:
@@ -3548,12 +3539,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 error_msg = "ABORT: You must run the DomainAnnotation App first\n"
                 error_msg += "\n".join(missing_annot)
                 raise ValueError (error_msg)
-                                
+
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
-                                    
+
         # calculate table
         #
         table_data = dict()
@@ -3594,7 +3585,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 if cat in cats:
                                     #self.log(console, "CAT_FOUND: '"+str(cat)+"'")  # DEBUG
                                     table_data[genome_ref][cat] += 1
-                
+
         # adjust to percs
         if params['count_category'].startswith('perc'):
             for genome_ref in genome_refs:
@@ -3782,9 +3773,6 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
         reportObj = {'objects_created': [],
-                     #'text_message': '',  # or is it 'message'?
-                     'message': '',  # or is it 'text_message'?
-                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -3863,7 +3851,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 elif label == 'TIGR':
                     label = 'TIGRFAM'
             html_report_lines += ['<tr><td valign=bottom align=right rowspan='+corner_rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
-        
+
             # group headers
             if show_groups:
                 for cat_group in group_order:
@@ -3936,7 +3924,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     html_report_lines += ['</div></div>']
                 html_report_lines += ['</td>']
             html_report_lines += ['</tr>']
-            
+
             # add tree image
             html_report_lines += ['<tr><td align="left" valign="top" rowspan='+str(len(genome_refs)+extra_tree_rows)+'><img src="'+png_file+'" height='+str(tree_img_height)+'></td>']
 
@@ -3952,7 +3940,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     val = table_data[genome_ref][cat]
                     if val == 0:
                         cell_color = 'white'
-                    else:                    
+                    else:
                         if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                             log_base = float(params['log_base'])
                             if log_base <= 1.0:
@@ -4071,7 +4059,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if len(cat_disp) > cat_disp_trunc_len+1:
                         cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
                     cat_disp = sp+cat_disp
-                        
+
                     html_report_lines += ['<tr>']
                     html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
                     html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
@@ -4109,7 +4097,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # close
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
-        
+
         html_report_str = "\n".join(html_report_lines)
         #reportObj['direct_html'] = html_report_str
 
@@ -4475,7 +4463,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
                 singleton_featureSet_elements = {}  # free memory
                 singleton_obj = {}  # free memory
-                
+
             if partial_featureSet_elements:
                 fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".non-core_pangenome.FeatureSet"
                 fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" non-core pangenome features"
@@ -4586,7 +4574,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         base_cores[base_fid] = True
                     elif singleton:
                         base_singletons[base_fid] = True
-                    
+
 
         # Get positions of genes in base genome
         #
@@ -4608,7 +4596,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 sum_contig_lens += contig_len
 
         # otherwise have to get contig ids from Assembly or ContigSet obj
-        else:  
+        else:
             # Get genome_assembly_refs
             base_genome_assemby_ref = None
             base_genome_assembly_type = None
@@ -4630,7 +4618,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 base_genome_assembly_ref = base_genome_obj['contigset_ref']
                 base_genome_assembly_type = 'contigset'
 
-            # get assembly obj and read contig ids and lengths (both contigset obj and assembly obj have list of contigs that 
+            # get assembly obj and read contig ids and lengths (both contigset obj and assembly obj have list of contigs that
             try:
                 [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
                 #objects_list = wsClient.get_objects2({'objects':[{'ref':input_ref}]})['data']
@@ -4651,7 +4639,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     contig_len = contig['length']
                     unsorted_contig_lens[contig_id] = contig_len
                     sum_contig_lens += contig_len
-            
+
         # order contigs by length and store by contig_id
         for order_i,contig_id in enumerate(sorted(unsorted_contig_lens, key=unsorted_contig_lens.__getitem__, reverse=True)):
             #print ("STORING CONTIG ORDER: '"+str(order_i)+"' for CONTIG_ID: '"+str(contig_id)+"'\n")  # DEBUG
@@ -4785,7 +4773,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     this_mark_width = mark_width
                     z_level = 1
                 gene_pos = base_contig_pos + feature_pos_in_contig[fid]
-                
+
                 arc_beg = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) - this_mark_width
                 arc_end = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
 
@@ -4808,11 +4796,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 #self.log(console, str('BASE')+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                 gene_x_radius = 1.0 * gene_bar_radius
                 gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
-                
+
                 gene_arc = Arc (ellipse_center, gene_x_radius, gene_y_radius, \
                                 theta1=arc_beg, theta2=arc_end, \
                                 edgecolor=gene_color, lw=this_gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
-                ax.add_patch (gene_arc)        
+                ax.add_patch (gene_arc)
 
                 # add homolog rings
                 for genome_i,hit_flag in enumerate(base_to_compare_redundant_map[fid]):
@@ -4837,7 +4825,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     gene_arc = Arc (ellipse_center, gene_x_radius, gene_y_radius, \
                                     theta1=arc_beg, theta2=arc_end, \
                                     edgecolor=hit_gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
-                    ax.add_patch (gene_arc)        
+                    ax.add_patch (gene_arc)
 
         # Add labels
         base_text_fontsize = 10
@@ -4980,9 +4968,6 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "CREATING HTML REPORT")
         reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
         reportObj = {'objects_created': [],
-                     #'text_message': '',  # or is it 'message'?
-                     'message': '',  # or is it 'text_message'?
-                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
@@ -5007,7 +4992,7 @@ This module contains methods for running and visualizing results of phylogenomic
         bar_fontsize = '1'
         bar_width = 50
         num_bars_per_node = 2 + 1
-        
+
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
@@ -5048,7 +5033,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</table>']
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
-        
+
         html_report_str = "\n".join(html_report_lines)
         #reportObj['direct_html'] = html_report_str
 
@@ -5310,7 +5295,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 if genome_ref not in genome_ref_to_node_ids_by_refs:
                     genome_ref_to_node_ids_by_refs[genome_ref] = []
                 genome_ref_to_node_ids_by_refs[genome_ref].append(node_ref_id)
-            
+
 
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
@@ -5353,7 +5338,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
             genome_sci_name_by_id[genome_id_by_ref[genome_ref]] = genome_obj['scientific_name']
-            
+
             # CDS cnt
             cds_cnt = 0
             for feature in genome_obj['features']:
@@ -5426,7 +5411,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref] = []
 
                     nodes_hit_by_gene[node_ref_id][cluster_num][genome_ref].append(gene_id)
-                
+
             # sum counts
             for node_ref_id in nodes_hit.keys():
                 for genome_ref in nodes_hit[node_ref_id].keys():
@@ -5455,7 +5440,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if hit_cnt == 1:
                         clusters_singletons[node_ref_id] += 1
                         clusters_singletons_by_node_and_cluster_flag[node_ref_id][cluster_num] = True
-                        
+
                     elif hit_cnt == node_size[node_ref_id]:
                         clusters_core[node_ref_id] += 1
                         clusters_core_by_node_and_cluster_flag[node_ref_id][cluster_num] = True
@@ -5705,9 +5690,6 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
         reportObj = {'objects_created': [],
-                     #'text_message': '',  # or is it 'message'?
-                     'message': '',  # or is it 'text_message'?
-                     'direct_html': None,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
