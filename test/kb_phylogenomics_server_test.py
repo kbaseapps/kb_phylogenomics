@@ -723,7 +723,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome Circle Plot
     ##
-    @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
     def test_view_pan_circle_plot_01(self):
         method = 'view_pan_circle_plot'
 
@@ -784,7 +784,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome on Tree
     ##
-    @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
     def test_view_pan_phylo_01(self):
         method = 'view_pan_phylo'
 
@@ -844,14 +844,14 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Tree
     ##
-    #@unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
     def test_view_tree_01(self):
         method = 'view_tree'
 
         print ("\n\nRUNNING: test_"+method+"_01()")
         print ("=============================\n\n")
 
-        """# input_data
+        # input_data
         genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
         genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
         genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
@@ -875,11 +875,11 @@ class kb_phylogenomicsTest(unittest.TestCase):
                         }
         obj_info = self.getTreeInfo('Tiny_things.SpeciesTree', 0, genome_refs_map)
         [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-        tree_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])"""
+        tree_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
 
         # run that sucker
         params = { 'workspace_name': self.getWsName(),
-                   'input_tree_ref': '34844/17/8',
+                   'input_tree_ref': tree_ref,
                    'desc':           'test tree'
                }
         ret = self.getImpl().view_tree(self.getContext(),params)[0]
