@@ -3,6 +3,7 @@
 from __future__ import division
 from __future__ import print_function
 
+import copy
 import math
 import os
 import re
@@ -263,11 +264,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
         for n in t.traverse():
             if n.is_leaf():
-                style = leaf_style
+                style = copy.copy(leaf_style)
+                if "User Genome" in n.name:
+                    style["bgcolor"] = "#fafcc2"
             else:
-                style = ete3.NodeStyle()
-                for k in node_style.keys():
-                    style[k] = node_style[k]
+                style = copy.copy(node_style)
 
                 if n.support > 0.95:
                     style["size"] = 6
