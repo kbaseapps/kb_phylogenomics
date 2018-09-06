@@ -1060,7 +1060,8 @@ This module contains methods for running and visualizing results of phylogenomic
                         #if f_cnt % 100 == 0:
                         #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
-                        if 'function' in feature and feature['function'] != None and feature['function'] != '':
+                        if ('function' in feature and feature['function'] != None and feature['function'] != '') \
+                           or ('functions' in feature and feature['functions'] != None and len(feature['functions']) != 0):
                             gene_name = feature['id']
 
                             #if f_cnt % 100 == 0:
@@ -1077,7 +1078,16 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
-                                annot_set = feature['function'].strip().split(';')
+                                annot_set = []
+                                if 'function' in feature:
+                                    annot_set = feature['function'].strip().split(';')
+                                elif 'functions' in feature:
+                                    annot_set = feature['functions']
+                                else:
+                                    raise ValueError ("need either function or functions for gene " \
+                                                      +gene_name+" in genome object "+str(genome_ref) \
+                                                      +" genome "+genome_sci_name_by_ref[genome_ref])
+                                                      
                                 for annot in annot_set:
                                     annot_set_2 = annot.strip().split('@')
                                     for annot2 in annot_set_2:
@@ -2209,7 +2219,8 @@ This module contains methods for running and visualizing results of phylogenomic
                         #if f_cnt % 100 == 0:
                         #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
-                        if 'function' in feature and feature['function'] != None and feature['function'] != '':
+                        if ('function' in feature and feature['function'] != None and feature['function'] != '') \
+                           or ('functions' in feature and feature['functions'] != None and len(feature['functions']) != 0):
                             gene_name = feature['id']
 
                             #if f_cnt % 100 == 0:
@@ -2229,7 +2240,16 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
-                                annot_set = feature['function'].strip().split(';')
+                                annot_set = []
+                                if 'function' in feature:
+                                    annot_set = feature['function'].strip().split(';')
+                                elif 'functions' in feature:
+                                    annot_set = feature['functions']
+                                else:
+                                    raise ValueError ("need either function or functions for gene " \
+                                                      +gene_name+" in genome object "+str(genome_ref) \
+                                                      +" genome "+genome_sci_name_by_ref[genome_ref])
+
                                 for annot in annot_set:
                                     annot_set_2 = annot.strip().split('@')
                                     for annot2 in annot_set_2:
@@ -3375,7 +3395,9 @@ This module contains methods for running and visualizing results of phylogenomic
                         #if f_cnt % 100 == 0:
                         #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
-                        if 'function' in feature and feature['function'] != None and feature['function'] != '':
+                        if 'function' in feature and feature['function'] != None and feature['function'] != '' \
+                           or ('functions' in feature and feature['functions'] != None and len(feature['functions']) != 0):
+
                             gene_name = feature['id']
 
                             #if f_cnt % 100 == 0:
@@ -3392,7 +3414,16 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
-                                annot_set = feature['function'].strip().split(';')
+                                annot_set = []
+                                if 'function' in feature:
+                                    annot_set = feature['function'].strip().split(';')
+                                elif 'functions' in feature:
+                                    annot_set = feature['functions']
+                                else:
+                                    raise ValueError ("need either function or functions for gene " \
+                                                      +gene_name+" in genome object "+str(genome_ref) \
+                                                      +" genome "+genome_sci_name_by_ref[genome_ref])
+
                                 for annot in annot_set:
                                     annot_set_2 = annot.strip().split('@')
                                     for annot2 in annot_set_2:
