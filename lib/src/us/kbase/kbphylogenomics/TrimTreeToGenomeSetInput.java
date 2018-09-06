@@ -12,11 +12,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: trim_species_tree_to_genomeSet_Input</p>
+ * <p>Original spec-file type: trim_tree_to_genomeSet_Input</p>
  * <pre>
- * trim_species_tree_to_genomeSet()
+ * trim_tree_to_genomeSet()
  * **
- * ** trim a KBase Species Tree to match genomeset, and make newick and images downloadable
+ * ** trim a KBase Tree to match genomeset, and make newick and images downloadable
  * </pre>
  * 
  */
@@ -26,10 +26,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "input_genomeSet_ref",
     "input_tree_ref",
-    "desc",
-    "output_name"
+    "desc"
 })
-public class TrimSpeciesTreeToGenomeSetInput {
+public class TrimTreeToGenomeSetInput {
 
     @JsonProperty("workspace_name")
     private String workspaceName;
@@ -39,8 +38,6 @@ public class TrimSpeciesTreeToGenomeSetInput {
     private String inputTreeRef;
     @JsonProperty("desc")
     private String desc;
-    @JsonProperty("output_name")
-    private String outputName;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -53,7 +50,7 @@ public class TrimSpeciesTreeToGenomeSetInput {
         this.workspaceName = workspaceName;
     }
 
-    public TrimSpeciesTreeToGenomeSetInput withWorkspaceName(String workspaceName) {
+    public TrimTreeToGenomeSetInput withWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
@@ -68,7 +65,7 @@ public class TrimSpeciesTreeToGenomeSetInput {
         this.inputGenomeSetRef = inputGenomeSetRef;
     }
 
-    public TrimSpeciesTreeToGenomeSetInput withInputGenomeSetRef(String inputGenomeSetRef) {
+    public TrimTreeToGenomeSetInput withInputGenomeSetRef(String inputGenomeSetRef) {
         this.inputGenomeSetRef = inputGenomeSetRef;
         return this;
     }
@@ -83,7 +80,7 @@ public class TrimSpeciesTreeToGenomeSetInput {
         this.inputTreeRef = inputTreeRef;
     }
 
-    public TrimSpeciesTreeToGenomeSetInput withInputTreeRef(String inputTreeRef) {
+    public TrimTreeToGenomeSetInput withInputTreeRef(String inputTreeRef) {
         this.inputTreeRef = inputTreeRef;
         return this;
     }
@@ -98,23 +95,8 @@ public class TrimSpeciesTreeToGenomeSetInput {
         this.desc = desc;
     }
 
-    public TrimSpeciesTreeToGenomeSetInput withDesc(String desc) {
+    public TrimTreeToGenomeSetInput withDesc(String desc) {
         this.desc = desc;
-        return this;
-    }
-
-    @JsonProperty("output_name")
-    public String getOutputName() {
-        return outputName;
-    }
-
-    @JsonProperty("output_name")
-    public void setOutputName(String outputName) {
-        this.outputName = outputName;
-    }
-
-    public TrimSpeciesTreeToGenomeSetInput withOutputName(String outputName) {
-        this.outputName = outputName;
         return this;
     }
 
@@ -130,7 +112,7 @@ public class TrimSpeciesTreeToGenomeSetInput {
 
     @Override
     public String toString() {
-        return ((((((((((((("TrimSpeciesTreeToGenomeSetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", outputName=")+ outputName)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((("TrimTreeToGenomeSetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

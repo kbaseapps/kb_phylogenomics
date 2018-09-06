@@ -181,19 +181,19 @@ public class KbPhylogenomicsClient {
     }
 
     /**
-     * <p>Original spec-file function name: trim_species_tree_to_genomeSet</p>
+     * <p>Original spec-file function name: trim_tree_to_genomeSet</p>
      * <pre>
      * </pre>
-     * @param   params   instance of type {@link us.kbase.kbphylogenomics.TrimSpeciesTreeToGenomeSetInput TrimSpeciesTreeToGenomeSetInput} (original type "trim_species_tree_to_genomeSet_Input")
-     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.TrimSpeciesTreeToGenomeSetOutput TrimSpeciesTreeToGenomeSetOutput} (original type "trim_species_tree_to_genomeSet_Output")
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.TrimTreeToGenomeSetInput TrimTreeToGenomeSetInput} (original type "trim_tree_to_genomeSet_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.TrimTreeToGenomeSetOutput TrimTreeToGenomeSetOutput} (original type "trim_tree_to_genomeSet_Output")
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public TrimSpeciesTreeToGenomeSetOutput trimSpeciesTreeToGenomeSet(TrimSpeciesTreeToGenomeSetInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public TrimTreeToGenomeSetOutput trimTreeToGenomeSet(TrimTreeToGenomeSetInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(params);
-        TypeReference<List<TrimSpeciesTreeToGenomeSetOutput>> retType = new TypeReference<List<TrimSpeciesTreeToGenomeSetOutput>>() {};
-        List<TrimSpeciesTreeToGenomeSetOutput> res = caller.jsonrpcCall("kb_phylogenomics.trim_species_tree_to_genomeSet", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        TypeReference<List<TrimTreeToGenomeSetOutput>> retType = new TypeReference<List<TrimTreeToGenomeSetOutput>>() {};
+        List<TrimTreeToGenomeSetOutput> res = caller.jsonrpcCall("kb_phylogenomics.trim_tree_to_genomeSet", args, retType, true, true, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 

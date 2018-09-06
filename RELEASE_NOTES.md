@@ -2,7 +2,6 @@
 __Changes__
 - Added trim_tree_to_genomeSet()
 - Create FeatureSet output objects for each node in species tree from view_pan_phylo()
-- Updated docker base image to sdkbase2
 
 ### Version 1.1.2
 __Changes__

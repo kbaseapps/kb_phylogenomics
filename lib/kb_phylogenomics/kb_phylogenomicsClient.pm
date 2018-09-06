@@ -210,9 +210,9 @@ view_tree_Output is a reference to a hash where the following keys are defined:
  
 
 
-=head2 trim_species_tree_to_genomeSet
+=head2 trim_tree_to_genomeSet
 
-  $output = $obj->trim_species_tree_to_genomeSet($params)
+  $output = $obj->trim_tree_to_genomeSet($params)
 
 =over 4
 
@@ -221,18 +221,16 @@ view_tree_Output is a reference to a hash where the following keys are defined:
 =begin html
 
 <pre>
-$params is a kb_phylogenomics.trim_species_tree_to_genomeSet_Input
-$output is a kb_phylogenomics.trim_species_tree_to_genomeSet_Output
-trim_species_tree_to_genomeSet_Input is a reference to a hash where the following keys are defined:
+$params is a kb_phylogenomics.trim_tree_to_genomeSet_Input
+$output is a kb_phylogenomics.trim_tree_to_genomeSet_Output
+trim_tree_to_genomeSet_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	desc has a value which is a string
-	output_name has a value which is a kb_phylogenomics.data_obj_name
 workspace_name is a string
 data_obj_ref is a string
-data_obj_name is a string
-trim_species_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
+trim_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
 
@@ -242,18 +240,16 @@ trim_species_tree_to_genomeSet_Output is a reference to a hash where the followi
 
 =begin text
 
-$params is a kb_phylogenomics.trim_species_tree_to_genomeSet_Input
-$output is a kb_phylogenomics.trim_species_tree_to_genomeSet_Output
-trim_species_tree_to_genomeSet_Input is a reference to a hash where the following keys are defined:
+$params is a kb_phylogenomics.trim_tree_to_genomeSet_Input
+$output is a kb_phylogenomics.trim_tree_to_genomeSet_Output
+trim_tree_to_genomeSet_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	desc has a value which is a string
-	output_name has a value which is a kb_phylogenomics.data_obj_name
 workspace_name is a string
 data_obj_ref is a string
-data_obj_name is a string
-trim_species_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
+trim_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
 
@@ -268,7 +264,7 @@ trim_species_tree_to_genomeSet_Output is a reference to a hash where the followi
 
 =cut
 
- sub trim_species_tree_to_genomeSet
+ sub trim_tree_to_genomeSet
 {
     my($self, @args) = @_;
 
@@ -277,7 +273,7 @@ trim_species_tree_to_genomeSet_Output is a reference to a hash where the followi
     if ((my $n = @args) != 1)
     {
 	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
-							       "Invalid argument count for function trim_species_tree_to_genomeSet (received $n, expecting 1)");
+							       "Invalid argument count for function trim_tree_to_genomeSet (received $n, expecting 1)");
     }
     {
 	my($params) = @args;
@@ -285,31 +281,31 @@ trim_species_tree_to_genomeSet_Output is a reference to a hash where the followi
 	my @_bad_arguments;
         (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
         if (@_bad_arguments) {
-	    my $msg = "Invalid arguments passed to trim_species_tree_to_genomeSet:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    my $msg = "Invalid arguments passed to trim_tree_to_genomeSet:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
-								   method_name => 'trim_species_tree_to_genomeSet');
+								   method_name => 'trim_tree_to_genomeSet');
 	}
     }
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_phylogenomics.trim_species_tree_to_genomeSet",
+	    method => "kb_phylogenomics.trim_tree_to_genomeSet",
 	    params => \@args,
     });
     if ($result) {
 	if ($result->is_error) {
 	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
 					       code => $result->content->{error}->{code},
-					       method_name => 'trim_species_tree_to_genomeSet',
+					       method_name => 'trim_tree_to_genomeSet',
 					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
 					      );
 	} else {
 	    return wantarray ? @{$result->result} : $result->result->[0];
 	}
     } else {
-        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method trim_species_tree_to_genomeSet",
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method trim_tree_to_genomeSet",
 					    status_line => $self->{client}->status_line,
-					    method_name => 'trim_species_tree_to_genomeSet',
+					    method_name => 'trim_tree_to_genomeSet',
 				       );
     }
 }
@@ -1687,7 +1683,7 @@ report_ref has a value which is a string
 
 
 
-=head2 trim_species_tree_to_genomeSet_Input
+=head2 trim_tree_to_genomeSet_Input
 
 =over 4
 
@@ -1695,9 +1691,9 @@ report_ref has a value which is a string
 
 =item Description
 
-trim_species_tree_to_genomeSet()
+trim_tree_to_genomeSet()
 **
-** trim a KBase Species Tree to match genomeset, and make newick and images downloadable
+** trim a KBase Tree to match genomeset, and make newick and images downloadable
 
 
 =item Definition
@@ -1710,7 +1706,6 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
-output_name has a value which is a kb_phylogenomics.data_obj_name
 
 </pre>
 
@@ -1723,7 +1718,6 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
-output_name has a value which is a kb_phylogenomics.data_obj_name
 
 
 =end text
@@ -1732,7 +1726,7 @@ output_name has a value which is a kb_phylogenomics.data_obj_name
 
 
 
-=head2 trim_species_tree_to_genomeSet_Output
+=head2 trim_tree_to_genomeSet_Output
 
 =over 4
 
