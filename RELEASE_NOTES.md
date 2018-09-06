@@ -1,10 +1,13 @@
+### Version 1.2.2
+__Changes__
+- read 'functions' field in view functional profile apps (in KBaseGenomes.Genome-9.0 data typedef)
+
 ### Version 1.2.1
 __Changes__
 - In view_tree, leafs prefixed with "user" are highlighted
 
 ### Version 1.2.0
 __Changes__
-- Added trim_tree_to_genomeSet()
 - Create FeatureSet output objects for each node in species tree from view_pan_phylo()
 - fixes to report generation call
 
