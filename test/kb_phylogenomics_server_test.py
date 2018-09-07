@@ -435,7 +435,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for GenomeSet
     ##
-    @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
     def test_view_fxn_profile_01(self):
         method = 'view_fxn_profile'
 
@@ -542,7 +542,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for FeatureSet
     ##
-    @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
     def test_view_fxn_profile_featureSet_01(self):
         method = 'view_fxn_profile_featureSet'
 
@@ -650,7 +650,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for Tree
     ##
-    @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
     def test_view_fxn_profile_phylo_01(self):
         method = 'view_fxn_profile_phylo'
 
@@ -844,7 +844,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Tree
     ##
-    @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
     def test_view_tree_01(self):
         method = 'view_tree'
 
