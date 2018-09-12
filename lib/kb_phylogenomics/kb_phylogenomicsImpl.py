@@ -59,7 +59,7 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             return False
 
-    def _get_SEED_annotationss(self, feature):
+    def _get_SEED_annotations(self, feature):
         annot_set = []
         if feature.get('function'):
             annot_set = feature['function'].strip().split(';')
