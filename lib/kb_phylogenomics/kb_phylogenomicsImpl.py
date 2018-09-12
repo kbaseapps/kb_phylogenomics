@@ -41,7 +41,7 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.2.0"
+    VERSION = "1.2.2"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
     GIT_COMMIT_HASH = "43733230d3f70a2eccc123b3867e99775b0d9f4c"
 
@@ -52,6 +52,20 @@ This module contains methods for running and visualizing results of phylogenomic
             target.append(message)
         print(message)
         sys.stdout.flush()
+
+    def _check_SEED_function_defined_in_feature(self, feature):
+        if feature.get('function') or feature.get('functions'):
+            return True
+        else:
+            return False
+
+    def _get_SEED_annotationss(self, feature):
+        annot_set = []
+        if feature.get('function'):
+            annot_set = feature['function'].strip().split(';')
+        elif feature.get('functions'):
+            annot_set = feature['functions']
+        return annot_set
 
     #END_CLASS_HEADER
 
@@ -1060,8 +1074,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         #if f_cnt % 100 == 0:
                         #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
-                        if ('function' in feature and feature['function'] != None and feature['function'] != '') \
-                           or ('functions' in feature and feature['functions'] != None and len(feature['functions']) != 0):
+                        if self._check_SEED_function_defined_in_feature(feature):
                             gene_name = feature['id']
 
                             #if f_cnt % 100 == 0:
@@ -1078,19 +1091,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
-                                annot_set = []
-                                if 'function' in feature:
-                                    annot_set = feature['function'].strip().split(';')
-                                elif 'functions' in feature:
-                                    annot_set = feature['functions']
-                                else:
-                                    raise ValueError ("need either function or functions for gene " \
-                                                      +gene_name+" in genome object "+str(genome_ref) \
-                                                      +" genome "+genome_sci_name_by_ref[genome_ref])
-                                                      
-                                for annot in annot_set:
-                                    annot_set_2 = annot.strip().split('@')
-                                    for annot2 in annot_set_2:
+                                for annot in self._get_SEED_annotations(feature):
+                                    for annot2 in annot.strip().split('@'):
                                         domfam = annot2.strip()
                                         domfam = re.sub (' *\#.*$', '', domfam)
                                         domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
@@ -2219,10 +2221,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         #if f_cnt % 100 == 0:
                         #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
-                        if ('function' in feature and feature['function'] != None and feature['function'] != '') \
-                           or ('functions' in feature and feature['functions'] != None and len(feature['functions']) != 0):
-                            gene_name = feature['id']
-
+                        if self._check_SEED_function_defined_in_feature(feature):
                             #if f_cnt % 100 == 0:
                             #    self.log (console, "fxn: '"+str(feature['function'])+"'")  # DEBUG
 
@@ -2240,19 +2239,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
-                                annot_set = []
-                                if 'function' in feature:
-                                    annot_set = feature['function'].strip().split(';')
-                                elif 'functions' in feature:
-                                    annot_set = feature['functions']
-                                else:
-                                    raise ValueError ("need either function or functions for gene " \
-                                                      +gene_name+" in genome object "+str(genome_ref) \
-                                                      +" genome "+genome_sci_name_by_ref[genome_ref])
-
-                                for annot in annot_set:
-                                    annot_set_2 = annot.strip().split('@')
-                                    for annot2 in annot_set_2:
+                                for annot in self._get_SEED_annotations(feature):
+                                    for annot2 in annot.strip().split('@'):
                                         domfam = annot2.strip()
                                         domfam = re.sub (' *\#.*$', '', domfam)
                                         domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
@@ -3395,9 +3383,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         #if f_cnt % 100 == 0:
                         #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
-                        if 'function' in feature and feature['function'] != None and feature['function'] != '' \
-                           or ('functions' in feature and feature['functions'] != None and len(feature['functions']) != 0):
-
+                        if self._check_SEED_function_defined_in_feature(feature):
                             gene_name = feature['id']
 
                             #if f_cnt % 100 == 0:
@@ -3414,19 +3400,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
-                                annot_set = []
-                                if 'function' in feature:
-                                    annot_set = feature['function'].strip().split(';')
-                                elif 'functions' in feature:
-                                    annot_set = feature['functions']
-                                else:
-                                    raise ValueError ("need either function or functions for gene " \
-                                                      +gene_name+" in genome object "+str(genome_ref) \
-                                                      +" genome "+genome_sci_name_by_ref[genome_ref])
-
-                                for annot in annot_set:
-                                    annot_set_2 = annot.strip().split('@')
-                                    for annot2 in annot_set_2:
+                                for annot in self._get_SEED_annotations(feature):
+                                    for annot2 in annot.strip().split('@'):
                                         domfam = annot2.strip()
                                         domfam = re.sub (' *\#.*$', '', domfam)
                                         domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
