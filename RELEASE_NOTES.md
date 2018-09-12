@@ -1,6 +1,7 @@
 ### Version 1.2.2
 __Changes__
 - read 'functions' field in view functional profile apps (in KBaseGenomes.Genome-9.0 data typedef)
+- removed incomplete trim_tree_to_genomeSet() method
 
 ### Version 1.2.1
 __Changes__
