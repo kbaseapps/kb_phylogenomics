@@ -41,7 +41,7 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.2.0"
+    VERSION = "1.2.2"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
     GIT_COMMIT_HASH = "43733230d3f70a2eccc123b3867e99775b0d9f4c"
 
@@ -52,6 +52,20 @@ This module contains methods for running and visualizing results of phylogenomic
             target.append(message)
         print(message)
         sys.stdout.flush()
+
+    def _check_SEED_function_defined_in_feature(self, feature):
+        if feature.get('function') or feature.get('functions'):
+            return True
+        else:
+            return False
+
+    def _get_SEED_annotations(self, feature):
+        annot_set = []
+        if feature.get('function'):
+            annot_set = feature['function'].strip().split(';')
+        elif feature.get('functions'):
+            annot_set = feature['functions']
+        return annot_set
 
     #END_CLASS_HEADER
 
@@ -76,7 +90,6 @@ This module contains methods for running and visualizing results of phylogenomic
         #END_CONSTRUCTOR
         pass
 
-
     def view_tree(self, ctx, params):
         """
         :param params: instance of type "view_tree_Input" (view_tree() ** **
@@ -96,14 +109,13 @@ This module contains methods for running and visualizing results of phylogenomic
         dfu = DFUClient(self.callbackURL)
         console = []
         invalid_msgs = []
-        self.log(console,'Running view_tree() with params=')
-        self.log(console, "\n"+pformat(params))
+        self.log(console, 'Running view_tree() with params=')
+        self.log(console, "\n" + pformat(params))
         report = ''
-        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
-        output_dir = os.path.join (self.scratch, 'output_'+str(timestamp))
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-
 
         #### STEP 1: do some basic checks
         ##
@@ -114,10 +126,9 @@ This module contains methods for running and visualizing results of phylogenomic
         #if 'output_name' not in params:
         #    raise ValueError('output_name parameter is required')
 
-
         #### STEP 2: load the method provenance from the context object
         ##
-        self.log(console,"SETTING PROVENANCE")  # DEBUG
+        self.log(console, "SETTING PROVENANCE")  # DEBUG
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
@@ -126,7 +137,6 @@ This module contains methods for running and visualizing results of phylogenomic
         provenance[0]['input_ws_objects'].append(params['input_tree_ref'])
         provenance[0]['service'] = 'kb_phylogenomics'
         provenance[0]['method'] = 'view_tree'
-
 
         #### STEP 3: Get tree and save as newick file
         ##
@@ -141,14 +151,14 @@ This module contains methods for running and visualizing results of phylogenomic
         except Exception as e:
             raise ValueError('Unable to fetch input_tree_ref object from workspace: ' + str(e))
             #to get the full stack trace: traceback.format_exc()
-            
+
         if intree_type_name == 'Tree':
             tree_in = data
         else:
-            raise ValueError('Cannot yet handle input_tree type of: '+ intree_type_name)
+            raise ValueError('Cannot yet handle input_tree type of: ' + intree_type_name)
 
-        intree_newick_file_path = os.path.join(output_dir, intree_name+".newick")
-        self.log(console, 'writing intree file: '+intree_newick_file_path)
+        intree_newick_file_path = os.path.join(output_dir, intree_name + ".newick")
+        self.log(console, 'writing intree file: ' + intree_newick_file_path)
         with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
             intree_newick_file_handle.write(tree_in['tree'])
 
@@ -158,48 +168,47 @@ This module contains methods for running and visualizing results of phylogenomic
                                                    #'pack': 'zip'})
                                                    'make_handle': 0})
         except:
-            raise ValueError ('error uploading newick file to shock')
-
+            raise ValueError('error uploading newick file to shock')
 
         #### STEP 4: if labels defined, make separate newick-labels file
         ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
         ##
         if 'default_node_labels' in tree_in:
-            newick_labels_file = intree_name+'-labels.newick'
-            output_newick_labels_file_path = os.path.join(output_dir, newick_labels_file);
+            newick_labels_file = intree_name + '-labels.newick'
+            output_newick_labels_file_path = os.path.join(output_dir, newick_labels_file)
             #default_row_ids = tree_in['default_row_labels']
             #new_ids = dict()
             #for row_id in default_row_ids.keys():
             #    new_ids[row_id] = default_row_ids[row_id]
 
             mod_newick_buf = tree_in['tree']
-            mod_newick_buf = re.sub('\|','%'+'|'.encode("hex"), mod_newick_buf)
+            mod_newick_buf = re.sub('\|', '%' + '|'.encode("hex"), mod_newick_buf)
             #for row_id in new_ids.keys():
             for node_id in tree_in['default_node_labels'].keys():
                 label = tree_in['default_node_labels'][node_id]
                 #self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
                 label = re.sub(' \(kb[^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
-                label = re.sub('\s','_',label)
+                label = re.sub('\s', '_', label)
                 #label = re.sub('\/','%'+'/'.encode("hex"), label)
                 #label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
                 #label = re.sub('\[','%'+'['.encode("hex"), label)
                 #label = re.sub('\]','%'+']'.encode("hex"), label)
-                label = re.sub('\(','[', label)
-                label = re.sub('\)',']', label)
-                label = re.sub('\:','%'+':'.encode("hex"), label)
-                label = re.sub('\;','%'+';'.encode("hex"), label)
-                label = re.sub('\|','%'+'|'.encode("hex"), label)
+                label = re.sub('\(', '[', label)
+                label = re.sub('\)', ']', label)
+                label = re.sub('\:', '%' + ':'.encode("hex"), label)
+                label = re.sub('\;', '%' + ';'.encode("hex"), label)
+                label = re.sub('\|', '%' + '|'.encode("hex"), label)
                 #self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
                 #self.log (console, "NEWICK B4: '"+mod_newick_buf+"'")  # DEBUG
-                mod_node_id = re.sub('\|','%'+'|'.encode("hex"), node_id)
-                mod_newick_buf = re.sub ('\('+mod_node_id+'\:', '('+label+':', mod_newick_buf)
-                mod_newick_buf = re.sub ('\,'+mod_node_id+'\:', ','+label+':', mod_newick_buf)
+                mod_node_id = re.sub('\|', '%' + '|'.encode("hex"), node_id)
+                mod_newick_buf = re.sub('\(' + mod_node_id + '\:', '(' + label + ':', mod_newick_buf)
+                mod_newick_buf = re.sub('\,' + mod_node_id + '\:', ',' + label + ':', mod_newick_buf)
                 #self.log (console, "NEWICK AF: '"+mod_newick_buf+"'")  # DEBUG
 
                 #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
-        
-            mod_newick_buf = re.sub ('_', ' ', mod_newick_buf)
-            with open (output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
+
+            mod_newick_buf = re.sub('_', ' ', mod_newick_buf)
+            with open(output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
                 output_newick_labels_file_handle.write(mod_newick_buf)
 
             # upload
@@ -208,24 +217,23 @@ This module contains methods for running and visualizing results of phylogenomic
                                                               #'pack': 'zip'})
                                                               'make_handle': 0})
             except:
-                raise ValueError ('error uploading newick labels file to shock')
-
+                raise ValueError('error uploading newick labels file to shock')
 
         #### STEP 5: Create html with tree image
         ##
-        html_output_dir = os.path.join(output_dir, 'output_html.'+str(timestamp))
+        html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
-        html_file = intree_name+'.html'
-        png_file = intree_name+'.png'
-        pdf_file = intree_name+'.pdf'
-        output_html_file_path = os.path.join(html_output_dir, html_file);
-        output_png_file_path = os.path.join(html_output_dir, png_file);
-        output_pdf_file_path = os.path.join(output_dir, pdf_file);
+        html_file = intree_name + '.html'
+        png_file = intree_name + '.png'
+        pdf_file = intree_name + '.pdf'
+        output_html_file_path = os.path.join(html_output_dir, html_file)
+        output_png_file_path = os.path.join(html_output_dir, png_file)
+        output_pdf_file_path = os.path.join(output_dir, pdf_file)
         newick_buf = tree_in['tree']
         if 'default_node_labels' in tree_in:
             newick_buf = mod_newick_buf
-        self.log(console, "NEWICK_BUF: '"+newick_buf+"'")
+        self.log(console, "NEWICK_BUF: '" + newick_buf + "'")
 
         # init ETE3 objects
         t = ete3.Tree(newick_buf)
@@ -236,10 +244,10 @@ This module contains methods for running and visualizing results of phylogenomic
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
-        ts.branch_vertical_margin = 5 # pixels between adjacent branches
+        ts.branch_vertical_margin = 5  # pixels between adjacent branches
         title_disp = intree_name
         if 'desc' in params and params['desc'] != None and params['desc'] != '':
-            title_disp += ': '+params['desc']
+            title_disp += ': ' + params['desc']
         ts.title.add_face(ete3.TextFace(title_disp, fsize=10), column=0)
 
         node_style = ete3.NodeStyle()
@@ -249,7 +257,7 @@ This module contains methods for running and visualizing results of phylogenomic
         node_style["hz_line_color"] = "#606060"
         node_style["vt_line_width"] = 2
         node_style["hz_line_width"] = 2
-        node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        node_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
         node_style["hz_line_type"] = 0
 
         leaf_style = ete3.NodeStyle()
@@ -259,7 +267,7 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_style["hz_line_color"] = "#606060"
         leaf_style["vt_line_width"] = 2
         leaf_style["hz_line_width"] = 2
-        leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        leaf_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
         leaf_style["hz_line_type"] = 0
 
         for n in t.traverse():
@@ -285,7 +293,7 @@ This module contains methods for running and visualizing results of phylogenomic
         dpi = 300
         img_units = "in"
         img_pix_width = 1200
-        img_in_width = round(float(img_pix_width)/float(dpi), 1)
+        img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 2
         t.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
         t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
@@ -293,16 +301,15 @@ This module contains methods for running and visualizing results of phylogenomic
         # make html
         html_report_lines = []
         html_report_lines += ['<html>']
-        html_report_lines += ['<head><title>KBase Tree: '+intree_name+'</title></head>']
+        html_report_lines += ['<head><title>KBase Tree: ' + intree_name + '</title></head>']
         html_report_lines += ['<body bgcolor="white">']
-        html_report_lines += ['<img width='+str(img_html_width)+' src="'+png_file+'">']
+        html_report_lines += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
 
         html_report_str = "\n".join(html_report_lines)
-        with open (output_html_file_path, 'w', 0) as html_handle:
+        with open(output_html_file_path, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
-
 
         # upload images and html
         try:
@@ -310,24 +317,23 @@ This module contains methods for running and visualizing results of phylogenomic
                                                 #'pack': 'zip'})
                                                 'make_handle': 0})
         except:
-            raise ValueError ('error uploading png file to shock')
+            raise ValueError('error uploading png file to shock')
         try:
             pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
                                                 #'pack': 'zip'})
                                                 'make_handle': 0})
         except:
-            raise ValueError ('error uploading pdf file to shock')
+            raise ValueError('error uploading pdf file to shock')
         try:
             html_upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
                                                  'make_handle': 0,
                                                  'pack': 'zip'})
         except:
-            raise ValueError ('error uploading png file to shock')
-
+            raise ValueError('error uploading png file to shock')
 
         # Create report obj
         #
-        reportName = 'blast_report_'+str(uuid.uuid4())
+        reportName = 'blast_report_' + str(uuid.uuid4())
         #report += output_newick_buf+"\n"
         reportObj = {'objects_created': [],
                      'direct_html_link_index': 0,
@@ -339,42 +345,41 @@ This module contains methods for running and visualizing results of phylogenomic
         #reportObj['objects_created'].append({'ref': str(params['workspace_name'])+'/'+str(params['output_name']),'description': params['output_name']+' Tree'})
         reportObj['html_links'] = [{'shock_id': html_upload_ret['shock_id'],
                                     'name': html_file,
-                                    'label': intree_name+' HTML'
+                                    'label': intree_name + ' HTML'
                                     }
                                    ]
         reportObj['file_links'] = [{'shock_id': newick_upload_ret['shock_id'],
-                                    'name': intree_name+'.newick',
-                                    'label': intree_name+' NEWICK'
+                                    'name': intree_name + '.newick',
+                                    'label': intree_name + ' NEWICK'
                                     }
                                    ]
         if 'default_node_labels' in tree_in:
             reportObj['file_links'].append({'shock_id': newick_labels_upload_ret['shock_id'],
-                                            'name': intree_name+'-labels.newick',
-                                            'label': intree_name+' NEWICK (with labels)'
-                                        })
+                                            'name': intree_name + '-labels.newick',
+                                            'label': intree_name + ' NEWICK (with labels)'
+                                            })
 
         reportObj['file_links'].extend([{'shock_id': png_upload_ret['shock_id'],
-                                         'name': intree_name+'.png',
-                                         'label': intree_name+' PNG'
-                                     },
+                                         'name': intree_name + '.png',
+                                         'label': intree_name + ' PNG'
+                                         },
                                         {'shock_id': pdf_upload_ret['shock_id'],
-                                         'name': intree_name+'.pdf',
-                                         'label': intree_name+' PDF'
-                                     }])
+                                         'name': intree_name + '.pdf',
+                                         'label': intree_name + ' PDF'
+                                         }])
 
         SERVICE_VER = 'release'
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         report_info = reportClient.create_extended_report(reportObj)
 
-
         # Done
         #
-        self.log(console,"BUILDING RETURN OBJECT")
-        output = { 'report_name': report_info['name'],
-                   'report_ref': report_info['ref']
-        }
+        self.log(console, "BUILDING RETURN OBJECT")
+        output = {'report_name': report_info['name'],
+                  'report_ref': report_info['ref']
+                  }
 
-        self.log(console,"view_tree() DONE")
+        self.log(console, "view_tree() DONE")
         #END view_tree
 
         # At some point might do deeper type checking...
@@ -428,52 +433,52 @@ This module contains methods for running and visualizing results of phylogenomic
         #BEGIN run_DomainAnnotation_Sets
         console = []
         self.log(console, 'Running run_DomainAnnotation_Sets() with params=')
-        self.log(console, "\n"+pformat(params))
+        self.log(console, "\n" + pformat(params))
 
         token = ctx['token']
         wsClient = workspaceService(self.workspaceURL, token=token)
-        headers = {'Authorization': 'OAuth '+token}
+        headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
 
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
 
-
         ### STEP 1: basic parameter checks + parsing
         required_params = ['workspace_name',
                            'input_genomeSet_ref'
-                          ]
+                           ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
-                raise ValueError ("Must define required param: '"+arg+"'")
-
+                raise ValueError("Must define required param: '" + arg + "'")
 
         ### STEP 2: build a list of genomes to iterate through
 
         # get genome set
         input_ref = params['input_genomeSet_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
         except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseSearch.GenomeSet" ]
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseSearch.GenomeSet"]
         if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
         # get set obj
         try:
-            genomeSet_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            genomeSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
         except:
-            raise ValueError ("unable to fetch genomeSet: "+input_ref)
+            raise ValueError("unable to fetch genomeSet: " + input_ref)
 
         # get genome refs and object names
         genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
         genome_refs = []
         for genome_id in genome_ids:
-            genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
+            genome_refs.append(genomeSet_obj['elements'][genome_id]['ref'])
 
         genome_obj_name_by_ref = dict()
         uniq_genome_ws_ids = dict()
@@ -484,38 +489,41 @@ This module contains methods for running and visualizing results of phylogenomic
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+                input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
                 uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
                 ws_name_by_genome_ref[input_ref] = input_obj_info[WORKSPACE_I]
 
             except Exception as e:
-                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-            accepted_input_types = ["KBaseGenomes.Genome" ]
+                raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+            accepted_input_types = ["KBaseGenomes.Genome"]
             if input_obj_type not in accepted_input_types:
-                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+                raise ValueError("Input object of type '" + input_obj_type +
+                                 "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[input_ref] = input_name
-
 
         ### STEP 3: Determine which genomes have already got domain annotations
         domain_annot_done = dict()
         for ws_id in uniq_genome_ws_ids.keys():
             try:
-                dom_annot_obj_info_list = wsClient.list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
+                dom_annot_obj_info_list = wsClient.list_objects(
+                    {'ids': [ws_id], 'type': "KBaseGeneFamilies.DomainAnnotation"})
             except Exception as e:
-                raise ValueError ("Unable to list DomainAnnotation objects from workspace: "+str(ws_id)+" "+str(e))
+                raise ValueError("Unable to list DomainAnnotation objects from workspace: " + str(ws_id) + " " + str(e))
 
             for info in dom_annot_obj_info_list:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
 
-                dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
+                dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
                 try:
-                    domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
+                    domain_data = wsClient.get_objects([{'ref': dom_annot_ref}])[0]['data']
                 except:
-                    raise ValueError ("unable to fetch domain annotation: "+dom_annot_ref)
+                    raise ValueError("unable to fetch domain annotation: " + dom_annot_ref)
 
                 # read domain data object
                 genome_ref = domain_data['genome_ref']
@@ -523,53 +531,52 @@ This module contains methods for running and visualizing results of phylogenomic
                     continue
                 domain_annot_done[genome_ref] = True
 
-
         ### STEP 4: run DomainAnnotation on each genome in set
         try:
             SERVICE_VER = 'dev'  # DEBUG
-            daClient = DomainAnnotation (url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
+            daClient = DomainAnnotation(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
             #daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
-            raise ValueError ("unable to instantiate DomainAnnotationClient")
+            raise ValueError("unable to instantiate DomainAnnotationClient")
 
         # RUN DomainAnnotations
         report_text = ''
-        for genome_i,genome_ref in enumerate(genome_refs):
+        for genome_i, genome_ref in enumerate(genome_refs):
 
             if 'override_annot' not in params or params['override_annot'] != '1':
                 if genome_ref in domain_annot_done:
-                    self.log (console, "SKIPPING repeat domain annotation for genome: "+genome_obj_name_by_ref[genome_ref])
+                    self.log(console, "SKIPPING repeat domain annotation for genome: " +
+                             genome_obj_name_by_ref[genome_ref])
 
                     continue
 
             genome_obj_name = genome_obj_name_by_ref[genome_ref]
-            domains_obj_name = re.sub ('[\.\-\_\:]GenomeAnnotation$', '', genome_obj_name)
-            domains_obj_name = re.sub ('[\.\-\_\:]Genome$', '', domains_obj_name)
+            domains_obj_name = re.sub('[\.\-\_\:]GenomeAnnotation$', '', genome_obj_name)
+            domains_obj_name = re.sub('[\.\-\_\:]Genome$', '', domains_obj_name)
             domains_obj_name += '.DomainAnnotation'
-            domains_obj_name = 'domains_'+domains_obj_name  # DEBUG
-            DomainAnnotation_Params = { 'genome_ref': genome_ref,
-                                        'dms_ref': 'KBasePublicGeneDomains/All',
-                                        'ws': params['workspace_name'],
-                                        #'ws': ws_name_by_genome_ref[genome_ref],
-                                        'output_result_id': domains_obj_name
-                                      }
-            self.log (console, "RUNNING domain annotation for genome: "+genome_obj_name_by_ref[genome_ref])
-            self.log(console, "\n"+pformat(DomainAnnotation_Params))
+            domains_obj_name = 'domains_' + domains_obj_name  # DEBUG
+            DomainAnnotation_Params = {'genome_ref': genome_ref,
+                                       'dms_ref': 'KBasePublicGeneDomains/All',
+                                       'ws': params['workspace_name'],
+                                       #'ws': ws_name_by_genome_ref[genome_ref],
+                                       'output_result_id': domains_obj_name
+                                       }
+            self.log(console, "RUNNING domain annotation for genome: " + genome_obj_name_by_ref[genome_ref])
+            self.log(console, "\n" + pformat(DomainAnnotation_Params))
             self.log(console, str(datetime.now()))
 
             #da_retVal = daClient.search_domains (DomainAnnotation_Params)[0]
-            da_retVal = daClient.search_domains (DomainAnnotation_Params)
-            this_output_ref  = da_retVal['output_result_id']
+            da_retVal = daClient.search_domains(DomainAnnotation_Params)
+            this_output_ref = da_retVal['output_result_id']
             this_report_name = da_retVal['report_name']
-            this_report_ref  = da_retVal['report_ref']
+            this_report_ref = da_retVal['report_ref']
 
             try:
-                this_report_obj =  wsClient.get_objects([{'ref':this_report_ref}])[0]['data']
+                this_report_obj = wsClient.get_objects([{'ref': this_report_ref}])[0]['data']
             except:
-                raise ValueError ("unable to fetch report: "+this_report_ref)
+                raise ValueError("unable to fetch report: " + this_report_ref)
             report_text += this_report_obj['text_message']
             report_text += "\n\n"
-
 
         ### STEP 5: build and save the report
         reportObj = {
@@ -577,11 +584,10 @@ This module contains methods for running and visualizing results of phylogenomic
             'text_message': report_text
         }
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
-        report_info = reportClient.create({'report':reportObj, 'workspace_name':params['workspace_name']})
-
+        report_info = reportClient.create({'report': reportObj, 'workspace_name': params['workspace_name']})
 
         ### STEP 6: construct the output to send back
-        output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
+        output = {'report_name': report_info['name'], 'report_ref': report_info['ref']}
 
         #END run_DomainAnnotation_Sets
 
@@ -620,11 +626,11 @@ This module contains methods for running and visualizing results of phylogenomic
         ### STEP 0: basic init
         console = []
         self.log(console, 'Running view_fxn_profile(): ')
-        self.log(console, "\n"+pformat(params))
+        self.log(console, "\n" + pformat(params))
 
         token = ctx['token']
         wsClient = workspaceService(self.workspaceURL, token=token)
-        headers = {'Authorization': 'OAuth '+token}
+        headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
 
@@ -634,22 +640,24 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['input_genomeSet_ref',
                            'namespace'
-                          ]
+                           ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
-                raise ValueError ("Must define required param: '"+arg+"'")
+                raise ValueError("Must define required param: '" + arg + "'")
 
         if params['namespace'] == 'custom':
             if ('custom_target_fams' not in params or not params['custom_target_fams']) \
-                    or ( \
-                ('target_fams' not in params['custom_target_fams'] or not params['custom_target_fams']['target_fams']) \
-                    and ('extra_target_fam_groups_COG' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_COG']) \
-                    and ('extra_target_fam_groups_PFAM' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_PFAM']) \
-                    and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR']) \
-                    and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
-                ):
+                or (
+                    ('target_fams' not in params['custom_target_fams']
+                     or not params['custom_target_fams']['target_fams'])
+                and ('extra_target_fam_groups_COG' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_COG'])
+                and ('extra_target_fam_groups_PFAM' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_PFAM'])
+                and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR'])
+                and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
+            ):
 
-                raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
+                raise ValueError(
+                    "Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
 
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
@@ -658,44 +666,41 @@ This module contains methods for running and visualizing results of phylogenomic
             show_blanks = True
         e_value_thresh = None
         if 'e_value' in params and params['e_value'] != None and params['e_value'] != '':
-            e_value_thresh = float (params['e_value'])
+            e_value_thresh = float(params['e_value'])
         top_hit_flag = False
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        domain_desc_basepath           = os.path.abspath('/kb/module/data/domain_desc')
-        domain_to_cat_map_path         = dict()
-        domain_cat_names_path          = dict()
-        domain_fam_names_path          = dict()
-        domain_to_cat_map_path['COG']  = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_cat_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
-        domain_fam_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_to_cat_map_path['PF']   = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
-        domain_cat_names_path['PF']    = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
-        domain_fam_names_path['PF']    = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_desc_basepath = os.path.abspath('/kb/module/data/domain_desc')
+        domain_to_cat_map_path = dict()
+        domain_cat_names_path = dict()
+        domain_fam_names_path = dict()
+        domain_to_cat_map_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_cat_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
+        domain_fam_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_to_cat_map_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_cat_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
+        domain_fam_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
         domain_to_cat_map_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
-        domain_cat_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
+        domain_cat_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
         #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
-        domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
+        domain_fam_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
         domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
+        domain_cat_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
         #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_fam_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-
+        domain_fam_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
 
         # load provenance
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
-        provenance[0]['input_ws_objects']=[str(params['input_genomeSet_ref'])]
-
+        provenance[0]['input_ws_objects'] = [str(params['input_genomeSet_ref'])]
 
         # set the output path
-        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
-        output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output.' + str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-
 
         # configure categories
         #
@@ -708,12 +713,12 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # categories are high-level summations
         if params['namespace'] != 'custom':
-            for namespace in ['COG','PF','TIGR','SEED']:
+            for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
                 if params['namespace'] == namespace:
                     namespaces_reading[namespace] = True
 
         # read all mappings between groups and domfams
-        for namespace in ['COG','PF','TIGR','SEED']:
+        for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
 
             cat2name[namespace] = dict()
             cat2group[namespace] = dict()
@@ -722,7 +727,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # get high-level cats
             tigrrole_id2cat = dict()
-            with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
+            with open(domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line = line.strip()
 
@@ -747,7 +752,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         tigrrole_id2cat[cat_id] = cat
                         if namespace == params['namespace'] and cat not in cats:
                             cats.append(cat)
-                        cat_name = re.sub (' *\> GO:.*$', '', cat_name_plus_go_terms)
+                        cat_name = re.sub(' *\> GO:.*$', '', cat_name_plus_go_terms)
                         cat2name[namespace][cat] = cat_name
                         cat2group[namespace][cat] = cat_group
 
@@ -756,12 +761,12 @@ This module contains methods for running and visualizing results of phylogenomic
                         [cat_group, cat] = line.split("\t")[0:2]
                         if namespace == params['namespace'] and cat not in cats:
                             cats.append(cat)
-                        cat_disp = re.sub ('_', ' ', cat)
+                        cat_disp = re.sub('_', ' ', cat)
                         cat2name[namespace][cat] = cat_disp
                         cat2group[namespace][cat] = cat_group
 
             # get domfam to cat map, and vice versa
-            with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
+            with open(domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
                     line = line.strip()
 
@@ -784,11 +789,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     elif namespace == 'SEED':
                         [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
                         domfam = domfam.strip()
-                        domfam = re.sub (' *\#.*$', '', domfam)
-                        domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub (' ', '_', domfam)
-                        domfam = 'SEED'+domfam
+                        domfam = re.sub(' *\#.*$', '', domfam)
+                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub(' ', '_', domfam)
+                        domfam = 'SEED' + domfam
 
                     domfam2cat[namespace][domfam] = cat
                     if cat not in cat2domfams[namespace]:
@@ -806,33 +811,33 @@ This module contains methods for running and visualizing results of phylogenomic
                     if target_fam == '':
                         continue
 
-                    target_fam = re.sub ("^cog", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^pf", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^seed", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^cog", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^pf", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^seed", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
 
-                    target_fam = re.sub ("^COG:", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^COG-", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^COG_", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^COG *", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF:", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF-", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF_", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF *", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG:", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG-", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG_", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG *", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF:", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF-", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF_", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF *", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
 
                     num_id_len = dict()
                     num_id_len['COG'] = 4
@@ -844,12 +849,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     if target_fam.startswith('SEED'):
                         namespaces_reading['SEED'] = True
                         target_fam = target_fam.strip()
-                        target_fam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub (' ', '_', target_fam)
+                        target_fam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub(' ', '_', target_fam)
                     else:
                         namespace_found = False
-                        for namespace_iter in ['COG','PF','TIGR']:
+                        for namespace_iter in ['COG', 'PF', 'TIGR']:
                             if target_fam.startswith(namespace_iter):
                                 this_namespace = namespace_iter
                                 namespaces_reading[this_namespace] = True
@@ -857,7 +862,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 namespace_found = True
                                 break
                         if not namespace_found:
-                            raise ValueError ("unrecognized custom domain family: '"+str(target_fam)+"'")
+                            raise ValueError("unrecognized custom domain family: '" + str(target_fam) + "'")
                         leading_zeros = ''
                         for c_i in range(num_id_len[this_namespace] - len(str(target_fam))):
                             leading_zeros += '0'
@@ -873,7 +878,7 @@ This module contains methods for running and visualizing results of phylogenomic
             domfam2group = dict()
             for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_PFAM', 'extra_target_fam_groups_TIGR', 'extra_target_fam_groups_SEED']:
                 if target_set in params['custom_target_fams'] and params['custom_target_fams'][target_set]:
-                    extra_target_fam_groups.extend (params['custom_target_fams'][target_set])
+                    extra_target_fam_groups.extend(params['custom_target_fams'][target_set])
 
             if extra_target_fam_groups:
                 for target_group in extra_target_fam_groups:
@@ -881,21 +886,21 @@ This module contains methods for running and visualizing results of phylogenomic
                     if target_group == '':
                         continue
 
-                    namespace = re.sub (":.*$", "", target_group)
+                    namespace = re.sub(":.*$", "", target_group)
                     namespaces_reading[namespace] = True
 
                     if namespace == 'COG':
-                        this_group = re.sub ("COG: ", "", target_group)
-                        this_group = re.sub (":.*$", "", this_group)
+                        this_group = re.sub("COG: ", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
                     elif namespace == 'PF':
-                        this_group = re.sub ("PF: Clan ", "", target_group)
-                        this_group = re.sub (":.*$", "", this_group)
+                        this_group = re.sub("PF: Clan ", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
                     elif namespace == 'TIGR':
-                        this_group = re.sub ("TIGR: role:", "", target_group)
-                        this_group = re.sub (":.*$", "", this_group)
-                        this_group = 'TIGR_role:'+this_group
+                        this_group = re.sub("TIGR: role:", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
+                        this_group = 'TIGR_role:' + this_group
                     elif namespace == 'SEED':
-                        this_group = re.sub ("SEED: ", "", target_group)
+                        this_group = re.sub("SEED: ", "", target_group)
 
                     for domfam in cat2domfams[namespace][this_group]:
                         extra_target_fams.append(domfam)
@@ -910,58 +915,59 @@ This module contains methods for running and visualizing results of phylogenomic
                 domfam2name[namespace] = dict()
 
                 if namespace == 'COG':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
                             domfam2name[namespace][domfam] = domfam_name
 
                 elif namespace == 'PF':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
                             if domfam_name.startswith(domfam_id):
                                 combo_name = domfam_name
                             else:
-                                combo_name = domfam_id+': '+domfam_name
+                                combo_name = domfam_id + ': ' + domfam_name
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'TIGR':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             if line.startswith('!'):
                                 continue
-                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
+                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[
+                                0:7]
                             if domfam_name != '':
                                 if domfam_desc.startswith(domfam_name):
                                     combo_name = domfam_desc
                                 else:
-                                    combo_name = domfam_name+': '+domfam_desc
+                                    combo_name = domfam_name + ': ' + domfam_desc
                             else:
                                 if domfam_desc.startswith(domfam_id):
                                     combo_name = domfam_desc
                                 else:
-                                    combo_name = domfam_id+': '+domfam_desc
+                                    combo_name = domfam_id + ': ' + domfam_desc
                             if ec_id != '':
-                                combo_name += ' (EC '+ec_id+')'
+                                combo_name += ' (EC ' + ec_id + ')'
 
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'SEED':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [level1, level2, level3, domfam] = line.split("\t")[0:4]
 
                             domfam_desc = domfam
                             domfam = domfam.strip()
-                            domfam = re.sub (' *\#.*$', '', domfam)
-                            domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub (' ', '_', domfam)
-                            domfam = 'SEED'+domfam
+                            domfam = re.sub(' *\#.*$', '', domfam)
+                            domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                            domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                            domfam = re.sub(' ', '_', domfam)
+                            domfam = 'SEED' + domfam
                             if domfam in domfam2name[namespace]:
                                 if len(domfam_desc) > len(domfam2name[namespace][domfam]):
                                     domfam2name[namespace][domfam] = domfam_desc
@@ -973,35 +979,35 @@ This module contains methods for running and visualizing results of phylogenomic
                 and params['namespace'] != 'PF' \
                 and params['namespace'] != 'TIGR' \
                 and params['namespace'] != 'SEED':
-            raise ValueError ("Unknown namespace: '"+str(params['namespace'])+"'")
-
+            raise ValueError("Unknown namespace: '" + str(params['namespace']) + "'")
 
         # get genome set
         #
         input_ref = params['input_genomeSet_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
         except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseSearch.GenomeSet" ]
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseSearch.GenomeSet"]
         if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
         # get set obj
         try:
-            genomeSet_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            genomeSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
         except:
-            raise ValueError ("unable to fetch genomeSet: "+input_ref)
-
+            raise ValueError("unable to fetch genomeSet: " + input_ref)
 
         # get genome refs, object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
         genome_refs = []
         for genome_id in genome_ids:
-            genome_refs.append (genomeSet_obj['elements'][genome_id]['ref'])
+            genome_refs.append(genomeSet_obj['elements'][genome_id]['ref'])
 
         genome_obj_name_by_ref = dict()
         genome_sci_name_by_ref = dict()
@@ -1019,24 +1025,26 @@ This module contains methods for running and visualizing results of phylogenomic
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+                input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
                 uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
 
             except Exception as e:
-                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-            accepted_input_types = ["KBaseGenomes.Genome" ]
+                raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+            accepted_input_types = ["KBaseGenomes.Genome"]
             if input_obj_type not in accepted_input_types:
-                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+                raise ValueError("Input object of type '" + input_obj_type +
+                                 "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
 
             try:
-                genome_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+                genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
             except:
-                raise ValueError ("unable to fetch genome: "+input_ref)
+                raise ValueError("unable to fetch genome: " + input_ref)
 
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
@@ -1060,7 +1068,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         #if f_cnt % 100 == 0:
                         #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
-                        if 'function' in feature and feature['function'] != None and feature['function'] != '':
+                        if self._check_SEED_function_defined_in_feature(feature):
                             gene_name = feature['id']
 
                             #if f_cnt % 100 == 0:
@@ -1077,16 +1085,14 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
-                                annot_set = feature['function'].strip().split(';')
-                                for annot in annot_set:
-                                    annot_set_2 = annot.strip().split('@')
-                                    for annot2 in annot_set_2:
+                                for annot in self._get_SEED_annotations(feature):
+                                    for annot2 in annot.strip().split('@'):
                                         domfam = annot2.strip()
-                                        domfam = re.sub (' *\#.*$', '', domfam)
-                                        domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub (' ', '_', domfam)
-                                        domfam = 'SEED'+domfam
+                                        domfam = re.sub(' *\#.*$', '', domfam)
+                                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                                        domfam = re.sub(' ', '_', domfam)
+                                        domfam = 'SEED' + domfam
                                         domfam_list.append(domfam)
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
@@ -1099,22 +1105,21 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     #f_cnt += 1  # DEBUG
 
-
         # capture domain hits to genes within each namespace
         #
         if params['namespace'] != 'SEED':
             dom_annot_found = dict()
 
-            KBASE_DOMAINHIT_GENE_ID_I        = 0
-            KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
-            KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
-            KBASE_DOMAINHIT_GENE_STRAND_I    = 3  # not used
+            KBASE_DOMAINHIT_GENE_ID_I = 0
+            KBASE_DOMAINHIT_GENE_BEG_I = 1  # not used
+            KBASE_DOMAINHIT_GENE_END_I = 2  # not used
+            KBASE_DOMAINHIT_GENE_STRAND_I = 3  # not used
             KBASE_DOMAINHIT_GENE_HITS_DICT_I = 4
-            KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J      = 0
-            KBASE_DOMAINHIT_GENE_HITS_DICT_END_J      = 1
-            KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J   = 2
+            KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J = 0
+            KBASE_DOMAINHIT_GENE_HITS_DICT_END_J = 1
+            KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J = 2
             KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J = 3
-            KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J  = 4
+            KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J = 4
 
             # DEBUG
             #for genome_ref in genome_refs:
@@ -1122,18 +1127,21 @@ This module contains methods for running and visualizing results of phylogenomic
 
             for ws_id in uniq_genome_ws_ids.keys():
                 try:
-                    dom_annot_obj_info_list = wsClient.list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
+                    dom_annot_obj_info_list = wsClient.list_objects(
+                        {'ids': [ws_id], 'type': "KBaseGeneFamilies.DomainAnnotation"})
                 except Exception as e:
-                    raise ValueError ("Unable to list DomainAnnotation objects from workspace: "+str(ws_id)+" "+str(e))
+                    raise ValueError("Unable to list DomainAnnotation objects from workspace: " +
+                                     str(ws_id) + " " + str(e))
 
                 for info in dom_annot_obj_info_list:
-                    [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                    [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                        WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
 
-                    dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
+                    dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
                     try:
-                        domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
+                        domain_data = wsClient.get_objects([{'ref': dom_annot_ref}])[0]['data']
                     except:
-                        raise ValueError ("unable to fetch domain annotation: "+dom_annot_ref)
+                        raise ValueError("unable to fetch domain annotation: " + dom_annot_ref)
 
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
@@ -1149,7 +1157,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     for scaffold_id_iter in domain_data['data'].keys():
                         for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
-                            gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
+                            gene_ID = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
                             #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID)
                             gene_name = gene_ID
                             #(contig_name, gene_name) = (gene_ID[0:gene_ID.index(".")], gene_ID[gene_ID.index(".")+1:])
@@ -1160,9 +1168,9 @@ This module contains methods for running and visualizing results of phylogenomic
                             #gene_strand    = CDS_domain_list[KBASE_DOMAINHIT_GENE_STRAND_I]
                             gene_hits_dict = CDS_domain_list[KBASE_DOMAINHIT_GENE_HITS_DICT_I]
 
-                            dom_hits_by_namespace       = dict()
+                            dom_hits_by_namespace = dict()
                             top_hit_evalue_by_namespace = dict()
-                            top_hit_dom_by_namespace    = dict()
+                            top_hit_dom_by_namespace = dict()
 
                             for namespace in namespace_classes:
                                 dom_hits_by_namespace[namespace] = dict()
@@ -1171,7 +1179,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                             for domfam in gene_hits_dict.keys():
                                 if domfam.startswith('PF'):
-                                    domfam_clean = re.sub('\.[^\.]*$','',domfam)
+                                    domfam_clean = re.sub('\.[^\.]*$', '', domfam)
                                 else:
                                     domfam_clean = domfam
                                 known_namespace = False
@@ -1183,11 +1191,11 @@ This module contains methods for running and visualizing results of phylogenomic
                                     continue
 
                                 for hit in gene_hits_dict[domfam]:
-                                    beg       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J])
-                                    end       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J])
-                                    e_value   = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J])
+                                    beg = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J])
+                                    end = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J])
+                                    e_value = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J])
                                     bit_score = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J])
-                                    aln_perc  = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J])
+                                    aln_perc = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J])
 
                                     if e_value_thresh != None and e_value > e_value_thresh:
                                         continue
@@ -1212,7 +1220,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                         dom_hits[genome_ref][gene_name] = dict()
 
                                     if top_hit_flag:
-                                        dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
+                                        dom_hits[genome_ref][gene_name][namespace] = {
+                                            top_hit_dom_by_namespace[namespace]: True}
                                     else:
                                         dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
 
@@ -1220,22 +1229,21 @@ This module contains methods for running and visualizing results of phylogenomic
             missing_annot = []
             for genome_ref in genome_refs:
                 if genome_ref not in dom_annot_found:
-                    missing_annot.append("\t"+'MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
+                    missing_annot.append("\t" + 'MISSING DOMAIN ANNOTATION FOR: ' + genome_ref)
             if missing_annot:
                 error_msg = "ABORT: You must run the DomainAnnotation App first\n"
                 error_msg += "\n".join(missing_annot)
-                raise ValueError (error_msg)
+                raise ValueError(error_msg)
 
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
-
         # calculate table
         #
         table_data = dict()
         INSANE_VALUE = 10000000000000000
-        overall_low_val  =  INSANE_VALUE
+        overall_low_val = INSANE_VALUE
         overall_high_val = -INSANE_VALUE
 
         # count raw
@@ -1251,7 +1259,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ('\d*$', '', cat)
+                        namespace = re.sub('\d*$', '', cat)
                     for gene_name in dom_hits[genome_ref].keys():
                         if namespace in dom_hits[genome_ref][gene_name]:
                             if cat in dom_hits[genome_ref][gene_name][namespace]:
@@ -1281,7 +1289,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             if cat.startswith('SEED'):
                                 namespace = 'SEED'
                             else:
-                                namespace = re.sub ('\d*$', '', cat)
+                                namespace = re.sub('\d*$', '', cat)
                         else:
                             namespace = params['namespace']
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
@@ -1295,20 +1303,20 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             for cat in cats:
                 val = table_data[genome_ref][cat]
-                if val == 0:  continue
+                if val == 0:
+                    continue
                 #self.log (console, "HIGH VAL SCAN CAT: '"+cat+"' VAL: '"+str(val)+"'")  # DEBUG
                 if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                     log_base = float(params['log_base'])
                     if log_base <= 1.0:
-                        raise ValueError ("log base must be > 1.0")
+                        raise ValueError("log base must be > 1.0")
                     val = math.log(val, log_base)
                 if val > overall_high_val:
                     overall_high_val = val
                 if val < overall_low_val:
                     overall_low_val = val
         if overall_high_val == -INSANE_VALUE:
-            raise ValueError ("unable to find any counts")
-
+            raise ValueError("unable to find any counts")
 
         # determine cats with a value and build group
         #
@@ -1373,10 +1381,9 @@ This module contains methods for running and visualizing results of phylogenomic
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
 
-
         # build report
         #
-        reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
+        reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
         reportObj = {'objects_created': [],
                      'direct_html_link_index': 0,
                      'file_links': [],
@@ -1385,10 +1392,9 @@ This module contains methods for running and visualizing results of phylogenomic
                      'report_object_name': reportName
                      }
 
-
         # build html report
         sp = '&nbsp;'
-        text_color   = "#606060"
+        text_color = "#606060"
         text_color_2 = "#606060"
         head_color_1 = "#eeeeee"
         head_color_2 = "#eeeeee"
@@ -1398,8 +1404,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #graph_width = 100
         #graph_char = "."
         graph_char = sp
-        color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
-        max_color = len(color_list)-1
+        color_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e']
+        max_color = len(color_list) - 1
         cat_disp_trunc_len = 40
         cell_width = '10px'
         if len(genome_refs) > 20:
@@ -1425,15 +1431,18 @@ This module contains methods for running and visualizing results of phylogenomic
         #row_spacing = "-2"
         num_rows = len(genome_refs)
         show_groups = False
-        if len(group_order) > 0:  show_groups = True
+        if len(group_order) > 0:
+            show_groups = True
 
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
         html_report_lines += ['<title>KBase Functional Domain Profile</title>']
         html_report_lines += ['<style>']
-        html_report_lines += [".vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 0.65em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.1;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
-        html_report_lines += [".vertical-text_title {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner_title {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.0;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner_title:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
+        html_report_lines += [
+            ".vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 0.65em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.1;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
+        html_report_lines += [
+            ".vertical-text_title {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner_title {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.0;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner_title:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
         html_report_lines += ['</style>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
@@ -1441,9 +1450,11 @@ This module contains methods for running and visualizing results of phylogenomic
         # genomes as rows
         if 'vertical' in params and params['vertical'] == "1":
             # table header
-            html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
+            html_report_lines += ['<table cellpadding=' + graph_padding +
+                                  ' cellspacing=' + graph_spacing + ' border=' + border + '>']
             corner_rowspan = "1"
-            if show_groups:  corner_rowspan = "2"
+            if show_groups:
+                corner_rowspan = "2"
             label = ''
             if params['namespace'] != 'custom':
                 label = params['namespace']
@@ -1451,25 +1462,26 @@ This module contains methods for running and visualizing results of phylogenomic
                     label = 'PFAM'
                 elif label == 'TIGR':
                     label = 'TIGRFAM'
-            html_report_lines += ['<tr><td valign=bottom align=right rowspan='+corner_rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
+            html_report_lines += ['<tr><td valign=bottom align=right rowspan=' + corner_rowspan +
+                                  '><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="' + text_color + '">' + label + '</font></div></div></td>']
 
             # group headers
             if show_groups:
                 for cat_group in group_order:
                     if cat_group.startswith('SEED'):
-                        cat_group_disp = re.sub ('_',' ',cat_group)
+                        cat_group_disp = re.sub('_', ' ', cat_group)
                     else:
                         cat_group_disp = cat_group
                     cat_group_words = cat_group_disp.split()
-                    max_group_width = 3*group_size[cat_group]
+                    max_group_width = 3 * group_size[cat_group]
                     if len(cat_group) > max_group_width:
                         new_cat_group_words = []
                         sentence_len = 0
-                        for w_i,word in enumerate(cat_group_words):
+                        for w_i, word in enumerate(cat_group_words):
                             new_cat_group_words.append(word)
                             sentence_len += len(word)
-                            if w_i < len(cat_group_words)-1:
-                                if sentence_len + 1 + len(cat_group_words[w_i+1]) > max_group_width:
+                            if w_i < len(cat_group_words) - 1:
+                                if sentence_len + 1 + len(cat_group_words[w_i + 1]) > max_group_width:
                                     new_cat_group_words[w_i] += '<br>'
                                     sentence_len = 0
                         cat_group_words = new_cat_group_words
@@ -1486,9 +1498,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     #        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
 
                     if cat_group_disp == '':
-                        html_report_lines += ['<td bgcolor=white colspan='+str(group_size[cat_group])+'></td>']
+                        html_report_lines += ['<td bgcolor=white colspan=' + str(group_size[cat_group]) + '></td>']
                     else:
-                        html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                        html_report_lines += ['<td style="border-right:solid 2px ' + border_cat_color + '; border-bottom:solid 2px ' + border_cat_color + '" bgcolor="' + head_color_1 +
+                                              '"valign=middle align=center colspan=' + str(group_size[cat_group]) + '><font color="' + text_color + '" size=' + str(graph_cat_fontsize) + '><b>' + cat_group_disp + '</b></font></td>']
 
                 html_report_lines += ['</tr><tr>']
 
@@ -1500,20 +1513,21 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ("\d*$", "", cat)
+                        namespace = re.sub("\d*$", "", cat)
                     cell_title = domfam2name[namespace][cat].strip()
                     cat_disp = cat
-                    cat_disp = re.sub ('^SEED', 'SEED:', cat_disp)
+                    cat_disp = re.sub('^SEED', 'SEED:', cat_disp)
                 else:
                     cell_title = cat2name[params['namespace']][cat].strip()
                     cat_disp = cat
-                    cat_disp = re.sub ("TIGR_", "", cat_disp)
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center>']
+                    cat_disp = re.sub("TIGR_", "", cat_disp)
+                if len(cat_disp) > cat_disp_trunc_len + 1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
+                html_report_lines += ['<td style="border-right:solid 2px ' + border_cat_color + '; border-bottom:solid 2px ' +
+                                      border_cat_color + '" bgcolor="' + head_color_2 + '"title="' + cell_title + '" valign=bottom align=center>']
                 if params['namespace'] != 'COG':
                     html_report_lines += ['<div class="vertical-text"><div class="vertical-text__inner">']
-                html_report_lines += ['<font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
+                html_report_lines += ['<font color="' + text_color_2 + '" size=' + graph_cat_fontsize + '><b>']
                 #for c_i,c in enumerate(cat_disp):
                 #    if c_i < len(cat_disp)-1:
                 #        html_report_lines += [c+'<br>']
@@ -1530,7 +1544,8 @@ This module contains methods for running and visualizing results of phylogenomic
             for genome_ref in genome_refs:
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
                 html_report_lines += ['<tr>']
-                html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_sci_name+'</nobr></b></font></td>']
+                html_report_lines += ['<td align=right><font color="' + text_color + '" size=' +
+                                      graph_gen_fontsize + '><b><nobr>' + genome_sci_name + '</nobr></b></font></td>']
                 for cat in cats:
                     if not cat_seen[cat] and not show_blanks:
                         continue
@@ -1541,14 +1556,15 @@ This module contains methods for running and visualizing results of phylogenomic
                         if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                             log_base = float(params['log_base'])
                             if log_base <= 1.0:
-                                raise ValueError ("log base must be > 1.0")
+                                raise ValueError("log base must be > 1.0")
                             val = math.log(val, log_base)
-                        cell_color_i = max_color - int(round(max_color * (val-overall_low_val) / float(overall_high_val-overall_low_val)))
+                        cell_color_i = max_color - \
+                            int(round(max_color * (val - overall_low_val) / float(overall_high_val - overall_low_val)))
                         c = color_list[cell_color_i]
-                        cell_color = '#'+c+c+c+c+'FF'
+                        cell_color = '#' + c + c + c + c + 'FF'
 
                     if params['count_category'].startswith('perc'):
-                        cell_val = str("%.3f"%table_data[genome_ref][cat])
+                        cell_val = str("%.3f" % table_data[genome_ref][cat])
                         cell_val += '%'
                     else:
                         cell_val = str(table_data[genome_ref][cat])
@@ -1561,28 +1577,30 @@ This module contains methods for running and visualizing results of phylogenomic
                         else:
                             this_text_color = cell_color
                             this_graph_char = graph_char
-                        html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" style="width:'+cell_width+'" bgcolor="'+cell_color+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
+                        html_report_lines += ['<td align=center valign=middle title="' + cell_val + '" style="width:' + cell_width + '" bgcolor="' +
+                                              cell_color + '"><font color="' + this_text_color + '" size=' + cell_fontsize + '>' + this_graph_char + '</font></td>']
                     else:
-                        html_report_lines += ['<td align=center valign=middle style="'+cell_width+'; border-right:solid 2px '+border_color+'; border-bottom:solid 2px '+border_color+'"><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
+                        html_report_lines += ['<td align=center valign=middle style="' + cell_width + '; border-right:solid 2px ' + border_color +
+                                              '; border-bottom:solid 2px ' + border_color + '"><font color="' + text_color + '" size=' + cell_fontsize + '>' + cell_val + '</font></td>']
 
                 html_report_lines += ['</tr>']
             html_report_lines += ['</table>']
 
         # genomes as columns
         else:
-            raise ValueError ("Do not yet support Genomes as columns")
-
+            raise ValueError("Do not yet support Genomes as columns")
 
         # key table
         html_report_lines += ['<p>']
-        html_report_lines += ['<table cellpadding=3 cellspacing=2 border='+border+'>']
-        html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 4px '+border_color+'"><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
+        html_report_lines += ['<table cellpadding=3 cellspacing=2 border=' + border + '>']
+        html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 4px ' +
+                              border_color + '"><font color="' + text_color + '"><b>KEY</b></font></td></tr>']
 
         if show_groups:
             group_cat_i = 0
             for cat_group in group_order_with_blanks:
                 if cat_group.startswith('SEED'):
-                    cat_group_disp = re.sub ('_',' ',cat_group)
+                    cat_group_disp = re.sub('_', ' ', cat_group)
                 else:
                     cat_group_disp = cat_group
                 cat_group_words = cat_group_disp.split()
@@ -1594,9 +1612,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 html_report_lines += ['<tr>']
                 if cat_group_disp == '':
-                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group])+' style="border-right:solid 4px '+border_color+'"></td>']
+                    html_report_lines += ['<td bgcolor=white rowspan=' + str(
+                        group_size_with_blanks[cat_group]) + ' style="border-right:solid 4px ' + border_color + '"></td>']
                 else:
-                    html_report_lines += ['<td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                    html_report_lines += ['<td style="border-right:solid 4px ' + border_color + '" valign=top align=right rowspan=' + str(
+                        group_size_with_blanks[cat_group]) + '><font color="' + text_color + '" size=' + str(graph_cat_fontsize) + '><b>' + cat_group_disp + '</b></font></td>']
 
                 # add first cat for group
                 first_cat = cats[group_cat_i]
@@ -1609,25 +1629,27 @@ This module contains methods for running and visualizing results of phylogenomic
                     if first_cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ('\d*$', '', first_cat)
-                    cat_disp = re.sub ('^SEED', 'SEED:', first_cat)
+                        namespace = re.sub('\d*$', '', first_cat)
+                    cat_disp = re.sub('^SEED', 'SEED:', first_cat)
                     desc = domfam2name[namespace][domfam]
                 else:
                     namespace = params['namespace']
                     cat_disp = first_cat
                     desc = cat2name[namespace][first_cat]
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                cat_disp = sp+cat_disp
+                if len(cat_disp) > cat_disp_trunc_len + 1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
+                cat_disp = sp + cat_disp
 
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '" style="border-right:solid 4px ' +
+                                      border_color + '"><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + cat_disp + '</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '"><font color="' +
+                                      text_color + '" size=' + graph_cat_fontsize + '>' + sp + desc + '</font></td>']
                 html_report_lines += ['</tr>']
 
                 group_cat_i += 1
 
                 # add rest of cats in group
-                for c_i in range(group_cat_i, group_cat_i+group_size_with_blanks[cat_group]-1):
+                for c_i in range(group_cat_i, group_cat_i + group_size_with_blanks[cat_group] - 1):
                     cat = cats[c_i]
                     cell_color = 'white'
                     #if not cat_seen[cat] and not show_blanks:
@@ -1638,20 +1660,22 @@ This module contains methods for running and visualizing results of phylogenomic
                         if cat.startswith('SEED'):
                             namespace = 'SEED'
                         else:
-                            namespace = re.sub ('\d*$', '', cat)
-                        cat_disp = re.sub ('^SEED', 'SEED:', cat)
+                            namespace = re.sub('\d*$', '', cat)
+                        cat_disp = re.sub('^SEED', 'SEED:', cat)
                         desc = domfam2name[namespace][domfam]
                     else:
                         namespace = params['namespace']
                         cat_disp = cat
                         desc = cat2name[namespace][cat]
-                    if len(cat_disp) > cat_disp_trunc_len+1:
-                        cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                    cat_disp = sp+cat_disp
+                    if len(cat_disp) > cat_disp_trunc_len + 1:
+                        cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
+                    cat_disp = sp + cat_disp
 
                     html_report_lines += ['<tr>']
-                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '" style="border-right:solid 4px ' +
+                                          border_color + '"><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + cat_disp + '</font></td>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '"><font color="' +
+                                          text_color + '" size=' + graph_cat_fontsize + '>' + sp + desc + '</font></td>']
                     html_report_lines += ['</tr>']
 
                     group_cat_i += 1
@@ -1666,20 +1690,21 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ('\d*$', '', domfam)
-                    cat_disp = re.sub ('^SEED', 'SEED:', cat)
+                        namespace = re.sub('\d*$', '', domfam)
+                    cat_disp = re.sub('^SEED', 'SEED:', cat)
                     desc = domfam2name[namespace][domfam]
                 else:
                     namespace = params['namespace']
                     cat_disp = cat
                     desc = cat2name[namespace][cat]
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
+                if len(cat_disp) > cat_disp_trunc_len + 1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
                 html_report_lines += ['<tr>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '" style="border-right:solid 4px ' +
+                                      border_color + '><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + cat_disp + '</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color +
+                                      '"><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + desc + '</font></td>']
                 html_report_lines += ['</tr>']
-
 
         html_report_lines += ['</table>']
 
@@ -1690,10 +1715,9 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_str = "\n".join(html_report_lines)
         #reportObj['direct_html'] = html_report_str
 
-
         # write html to file and upload
-        html_file = os.path.join (output_dir, 'domain_profile_report.html')
-        with open (html_file, 'w', 0) as html_handle:
+        html_file = os.path.join(output_dir, 'domain_profile_report.html')
+        with open(html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -1701,13 +1725,12 @@ This module contains methods for running and visualizing results of phylogenomic
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
-            raise ValueError ('Logging exception loading html_report to shock')
+            raise ValueError('Logging exception loading html_report to shock')
 
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
                                     'name': 'domain_profile_report.html',
                                     'label': 'Functional Domain Profile report'}
                                    ]
-
 
         # save report object
         #
@@ -1715,7 +1738,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
         report_info = reportClient.create_extended_report(reportObj)
 
-        output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
+        output = {'report_name': report_info['name'], 'report_ref': report_info['ref']}
 
         #END view_fxn_profile
 
@@ -1755,11 +1778,11 @@ This module contains methods for running and visualizing results of phylogenomic
         ### STEP 0: basic init
         console = []
         self.log(console, 'Running view_fxn_profile_featureSet(): ')
-        self.log(console, "\n"+pformat(params))
+        self.log(console, "\n" + pformat(params))
 
         token = ctx['token']
         wsClient = workspaceService(self.workspaceURL, token=token)
-        headers = {'Authorization': 'OAuth '+token}
+        headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
 
@@ -1769,22 +1792,24 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['input_featureSet_ref',
                            'namespace'
-                          ]
+                           ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
-                raise ValueError ("Must define required param: '"+arg+"'")
+                raise ValueError("Must define required param: '" + arg + "'")
 
         if params['namespace'] == 'custom':
             if ('custom_target_fams' not in params or not params['custom_target_fams']) \
-                    or ( \
-                ('target_fams' not in params['custom_target_fams'] or not params['custom_target_fams']['target_fams']) \
-                    and ('extra_target_fam_groups_COG' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_COG']) \
-                    and ('extra_target_fam_groups_PFAM' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_PFAM']) \
-                    and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR']) \
-                    and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
-                ):
+                or (
+                    ('target_fams' not in params['custom_target_fams']
+                     or not params['custom_target_fams']['target_fams'])
+                and ('extra_target_fam_groups_COG' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_COG'])
+                and ('extra_target_fam_groups_PFAM' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_PFAM'])
+                and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR'])
+                and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
+            ):
 
-                raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
+                raise ValueError(
+                    "Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
 
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
@@ -1793,44 +1818,41 @@ This module contains methods for running and visualizing results of phylogenomic
             show_blanks = True
         e_value_thresh = None
         if 'e_value' in params and params['e_value'] != None and params['e_value'] != '':
-            e_value_thresh = float (params['e_value'])
+            e_value_thresh = float(params['e_value'])
         top_hit_flag = False
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        domain_desc_basepath           = os.path.abspath('/kb/module/data/domain_desc')
-        domain_to_cat_map_path         = dict()
-        domain_cat_names_path          = dict()
-        domain_fam_names_path          = dict()
-        domain_to_cat_map_path['COG']  = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_cat_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
-        domain_fam_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_to_cat_map_path['PF']   = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
-        domain_cat_names_path['PF']    = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
-        domain_fam_names_path['PF']    = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_desc_basepath = os.path.abspath('/kb/module/data/domain_desc')
+        domain_to_cat_map_path = dict()
+        domain_cat_names_path = dict()
+        domain_fam_names_path = dict()
+        domain_to_cat_map_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_cat_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
+        domain_fam_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_to_cat_map_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_cat_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
+        domain_fam_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
         domain_to_cat_map_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
-        domain_cat_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
+        domain_cat_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
         #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
-        domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
+        domain_fam_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
         domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
+        domain_cat_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
         #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_fam_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-
+        domain_fam_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
 
         # load provenance
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
-        provenance[0]['input_ws_objects']=[str(params['input_featureSet_ref'])]
-
+        provenance[0]['input_ws_objects'] = [str(params['input_featureSet_ref'])]
 
         # set the output path
-        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
-        output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output.' + str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-
 
         # configure categories
         #
@@ -1843,12 +1865,12 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # categories are high-level summations
         if params['namespace'] != 'custom':
-            for namespace in ['COG','PF','TIGR','SEED']:
+            for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
                 if params['namespace'] == namespace:
                     namespaces_reading[namespace] = True
 
         # read all mappings between groups and domfams
-        for namespace in ['COG','PF','TIGR','SEED']:
+        for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
 
             cat2name[namespace] = dict()
             cat2group[namespace] = dict()
@@ -1857,7 +1879,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # get high-level cats
             tigrrole_id2cat = dict()
-            with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
+            with open(domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line = line.strip()
 
@@ -1882,7 +1904,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         tigrrole_id2cat[cat_id] = cat
                         if namespace == params['namespace'] and cat not in cats:
                             cats.append(cat)
-                        cat_name = re.sub (' *\> GO:.*$', '', cat_name_plus_go_terms)
+                        cat_name = re.sub(' *\> GO:.*$', '', cat_name_plus_go_terms)
                         cat2name[namespace][cat] = cat_name
                         cat2group[namespace][cat] = cat_group
 
@@ -1891,12 +1913,12 @@ This module contains methods for running and visualizing results of phylogenomic
                         [cat_group, cat] = line.split("\t")[0:2]
                         if namespace == params['namespace'] and cat not in cats:
                             cats.append(cat)
-                        cat_disp = re.sub ('_', ' ', cat)
+                        cat_disp = re.sub('_', ' ', cat)
                         cat2name[namespace][cat] = cat_disp
                         cat2group[namespace][cat] = cat_group
 
             # get domfam to cat map, and vice versa
-            with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
+            with open(domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
                     line = line.strip()
 
@@ -1919,11 +1941,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     elif namespace == 'SEED':
                         [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
                         domfam = domfam.strip()
-                        domfam = re.sub (' *\#.*$', '', domfam)
-                        domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub (' ', '_', domfam)
-                        domfam = 'SEED'+domfam
+                        domfam = re.sub(' *\#.*$', '', domfam)
+                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub(' ', '_', domfam)
+                        domfam = 'SEED' + domfam
 
                     domfam2cat[namespace][domfam] = cat
                     if cat not in cat2domfams[namespace]:
@@ -1941,33 +1963,33 @@ This module contains methods for running and visualizing results of phylogenomic
                     if target_fam == '':
                         continue
 
-                    target_fam = re.sub ("^cog", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^pf", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^seed", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^cog", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^pf", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^seed", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
 
-                    target_fam = re.sub ("^COG:", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^COG-", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^COG_", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^COG *", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF:", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF-", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF_", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF *", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG:", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG-", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG_", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG *", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF:", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF-", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF_", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF *", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
 
                     num_id_len = dict()
                     num_id_len['COG'] = 4
@@ -1979,12 +2001,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     if target_fam.startswith('SEED'):
                         namespaces_reading['SEED'] = True
                         target_fam = target_fam.strip()
-                        target_fam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub (' ', '_', target_fam)
+                        target_fam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub(' ', '_', target_fam)
                     else:
                         namespace_found = False
-                        for namespace_iter in ['COG','PF','TIGR']:
+                        for namespace_iter in ['COG', 'PF', 'TIGR']:
                             if target_fam.startswith(namespace_iter):
                                 this_namespace = namespace_iter
                                 namespaces_reading[this_namespace] = True
@@ -1992,7 +2014,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 namespace_found = True
                                 break
                         if not namespace_found:
-                            raise ValueError ("unrecognized custom domain family: '"+str(target_fam)+"'")
+                            raise ValueError("unrecognized custom domain family: '" + str(target_fam) + "'")
                         leading_zeros = ''
                         for c_i in range(num_id_len[this_namespace] - len(str(target_fam))):
                             leading_zeros += '0'
@@ -2008,7 +2030,7 @@ This module contains methods for running and visualizing results of phylogenomic
             domfam2group = dict()
             for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_PFAM', 'extra_target_fam_groups_TIGR', 'extra_target_fam_groups_SEED']:
                 if target_set in params['custom_target_fams'] and params['custom_target_fams'][target_set]:
-                    extra_target_fam_groups.extend (params['custom_target_fams'][target_set])
+                    extra_target_fam_groups.extend(params['custom_target_fams'][target_set])
 
             if extra_target_fam_groups:
                 for target_group in extra_target_fam_groups:
@@ -2016,21 +2038,21 @@ This module contains methods for running and visualizing results of phylogenomic
                     if target_group == '':
                         continue
 
-                    namespace = re.sub (":.*$", "", target_group)
+                    namespace = re.sub(":.*$", "", target_group)
                     namespaces_reading[namespace] = True
 
                     if namespace == 'COG':
-                        this_group = re.sub ("COG: ", "", target_group)
-                        this_group = re.sub (":.*$", "", this_group)
+                        this_group = re.sub("COG: ", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
                     elif namespace == 'PF':
-                        this_group = re.sub ("PF: Clan ", "", target_group)
-                        this_group = re.sub (":.*$", "", this_group)
+                        this_group = re.sub("PF: Clan ", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
                     elif namespace == 'TIGR':
-                        this_group = re.sub ("TIGR: role:", "", target_group)
-                        this_group = re.sub (":.*$", "", this_group)
-                        this_group = 'TIGR_role:'+this_group
+                        this_group = re.sub("TIGR: role:", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
+                        this_group = 'TIGR_role:' + this_group
                     elif namespace == 'SEED':
-                        this_group = re.sub ("SEED: ", "", target_group)
+                        this_group = re.sub("SEED: ", "", target_group)
 
                     for domfam in cat2domfams[namespace][this_group]:
                         extra_target_fams.append(domfam)
@@ -2045,58 +2067,59 @@ This module contains methods for running and visualizing results of phylogenomic
                 domfam2name[namespace] = dict()
 
                 if namespace == 'COG':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
                             domfam2name[namespace][domfam] = domfam_name
 
                 elif namespace == 'PF':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
                             if domfam_name.startswith(domfam_id):
                                 combo_name = domfam_name
                             else:
-                                combo_name = domfam_id+': '+domfam_name
+                                combo_name = domfam_id + ': ' + domfam_name
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'TIGR':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             if line.startswith('!'):
                                 continue
-                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
+                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[
+                                0:7]
                             if domfam_name != '':
                                 if domfam_desc.startswith(domfam_name):
                                     combo_name = domfam_desc
                                 else:
-                                    combo_name = domfam_name+': '+domfam_desc
+                                    combo_name = domfam_name + ': ' + domfam_desc
                             else:
                                 if domfam_desc.startswith(domfam_id):
                                     combo_name = domfam_desc
                                 else:
-                                    combo_name = domfam_id+': '+domfam_desc
+                                    combo_name = domfam_id + ': ' + domfam_desc
                             if ec_id != '':
-                                combo_name += ' (EC '+ec_id+')'
+                                combo_name += ' (EC ' + ec_id + ')'
 
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'SEED':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [level1, level2, level3, domfam] = line.split("\t")[0:4]
 
                             domfam_desc = domfam
                             domfam = domfam.strip()
-                            domfam = re.sub (' *\#.*$', '', domfam)
-                            domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub (' ', '_', domfam)
-                            domfam = 'SEED'+domfam
+                            domfam = re.sub(' *\#.*$', '', domfam)
+                            domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                            domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                            domfam = re.sub(' ', '_', domfam)
+                            domfam = 'SEED' + domfam
                             if domfam in domfam2name[namespace]:
                                 if len(domfam_desc) > len(domfam2name[namespace][domfam]):
                                     domfam2name[namespace][domfam] = domfam_desc
@@ -2108,28 +2131,28 @@ This module contains methods for running and visualizing results of phylogenomic
                 and params['namespace'] != 'PF' \
                 and params['namespace'] != 'TIGR' \
                 and params['namespace'] != 'SEED':
-            raise ValueError ("Unknown namespace: '"+str(params['namespace'])+"'")
-
+            raise ValueError("Unknown namespace: '" + str(params['namespace']) + "'")
 
         # get genome set from featureSet
         #
         input_ref = params['input_featureSet_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
         except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseCollections.FeatureSet" ]
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseCollections.FeatureSet"]
         if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
         # get set obj
         try:
-            featureSet_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            featureSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
         except:
-            raise ValueError ("unable to fetch featureSet: "+input_ref)
-
+            raise ValueError("unable to fetch featureSet: " + input_ref)
 
         # get genome refs, object names, sci names, protein-coding gene counts, and SEED annot
         #
@@ -2160,24 +2183,26 @@ This module contains methods for running and visualizing results of phylogenomic
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+                input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
                 uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
 
             except Exception as e:
-                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-            accepted_input_types = ["KBaseGenomes.Genome" ]
+                raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+            accepted_input_types = ["KBaseGenomes.Genome"]
             if input_obj_type not in accepted_input_types:
-                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+                raise ValueError("Input object of type '" + input_obj_type +
+                                 "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
 
             try:
-                genome_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+                genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
             except:
-                raise ValueError ("unable to fetch genome: "+input_ref)
+                raise ValueError("unable to fetch genome: " + input_ref)
 
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
@@ -2209,9 +2234,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         #if f_cnt % 100 == 0:
                         #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
-                        if 'function' in feature and feature['function'] != None and feature['function'] != '':
-                            gene_name = feature['id']
-
+                        if self._check_SEED_function_defined_in_feature(feature):
                             #if f_cnt % 100 == 0:
                             #    self.log (console, "fxn: '"+str(feature['function'])+"'")  # DEBUG
 
@@ -2229,16 +2252,14 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
-                                annot_set = feature['function'].strip().split(';')
-                                for annot in annot_set:
-                                    annot_set_2 = annot.strip().split('@')
-                                    for annot2 in annot_set_2:
+                                for annot in self._get_SEED_annotations(feature):
+                                    for annot2 in annot.strip().split('@'):
                                         domfam = annot2.strip()
-                                        domfam = re.sub (' *\#.*$', '', domfam)
-                                        domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub (' ', '_', domfam)
-                                        domfam = 'SEED'+domfam
+                                        domfam = re.sub(' *\#.*$', '', domfam)
+                                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                                        domfam = re.sub(' ', '_', domfam)
+                                        domfam = 'SEED' + domfam
                                         domfam_list.append(domfam)
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
@@ -2251,22 +2272,21 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     #f_cnt += 1  # DEBUG
 
-
         # capture domain hits to genes within each namespace
         #
         if params['namespace'] != 'SEED':
             dom_annot_found = dict()
 
-            KBASE_DOMAINHIT_GENE_ID_I        = 0
-            KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
-            KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
-            KBASE_DOMAINHIT_GENE_STRAND_I    = 3  # not used
+            KBASE_DOMAINHIT_GENE_ID_I = 0
+            KBASE_DOMAINHIT_GENE_BEG_I = 1  # not used
+            KBASE_DOMAINHIT_GENE_END_I = 2  # not used
+            KBASE_DOMAINHIT_GENE_STRAND_I = 3  # not used
             KBASE_DOMAINHIT_GENE_HITS_DICT_I = 4
-            KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J      = 0
-            KBASE_DOMAINHIT_GENE_HITS_DICT_END_J      = 1
-            KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J   = 2
+            KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J = 0
+            KBASE_DOMAINHIT_GENE_HITS_DICT_END_J = 1
+            KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J = 2
             KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J = 3
-            KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J  = 4
+            KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J = 4
 
             # DEBUG
             #for genome_ref in genome_refs:
@@ -2274,18 +2294,21 @@ This module contains methods for running and visualizing results of phylogenomic
 
             for ws_id in uniq_genome_ws_ids.keys():
                 try:
-                    dom_annot_obj_info_list = wsClient.list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
+                    dom_annot_obj_info_list = wsClient.list_objects(
+                        {'ids': [ws_id], 'type': "KBaseGeneFamilies.DomainAnnotation"})
                 except Exception as e:
-                    raise ValueError ("Unable to list DomainAnnotation objects from workspace: "+str(ws_id)+" "+str(e))
+                    raise ValueError("Unable to list DomainAnnotation objects from workspace: " +
+                                     str(ws_id) + " " + str(e))
 
                 for info in dom_annot_obj_info_list:
-                    [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                    [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                        WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
 
-                    dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
+                    dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
                     try:
-                        domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
+                        domain_data = wsClient.get_objects([{'ref': dom_annot_ref}])[0]['data']
                     except:
-                        raise ValueError ("unable to fetch domain annotation: "+dom_annot_ref)
+                        raise ValueError("unable to fetch domain annotation: " + dom_annot_ref)
 
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
@@ -2301,7 +2324,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     for scaffold_id_iter in domain_data['data'].keys():
                         for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
-                            gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
+                            gene_ID = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
                             #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID)
                             gene_name = gene_ID
                             #(contig_name, gene_name) = (gene_ID[0:gene_ID.index(".")], gene_ID[gene_ID.index(".")+1:])
@@ -2312,9 +2335,9 @@ This module contains methods for running and visualizing results of phylogenomic
                             #gene_strand    = CDS_domain_list[KBASE_DOMAINHIT_GENE_STRAND_I]
                             gene_hits_dict = CDS_domain_list[KBASE_DOMAINHIT_GENE_HITS_DICT_I]
 
-                            dom_hits_by_namespace       = dict()
+                            dom_hits_by_namespace = dict()
                             top_hit_evalue_by_namespace = dict()
-                            top_hit_dom_by_namespace    = dict()
+                            top_hit_dom_by_namespace = dict()
 
                             for namespace in namespace_classes:
                                 dom_hits_by_namespace[namespace] = dict()
@@ -2323,7 +2346,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                             for domfam in gene_hits_dict.keys():
                                 if domfam.startswith('PF'):
-                                    domfam_clean = re.sub('\.[^\.]*$','',domfam)
+                                    domfam_clean = re.sub('\.[^\.]*$', '', domfam)
                                 else:
                                     domfam_clean = domfam
                                 known_namespace = False
@@ -2335,11 +2358,11 @@ This module contains methods for running and visualizing results of phylogenomic
                                     continue
 
                                 for hit in gene_hits_dict[domfam]:
-                                    beg       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J])
-                                    end       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J])
-                                    e_value   = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J])
+                                    beg = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J])
+                                    end = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J])
+                                    e_value = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J])
                                     bit_score = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J])
-                                    aln_perc  = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J])
+                                    aln_perc = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J])
 
                                     if e_value_thresh != None and e_value > e_value_thresh:
                                         continue
@@ -2370,7 +2393,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                         dom_hits[genome_ref][gene_name] = dict()
 
                                     if top_hit_flag:
-                                        dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
+                                        dom_hits[genome_ref][gene_name][namespace] = {
+                                            top_hit_dom_by_namespace[namespace]: True}
                                     else:
                                         dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
 
@@ -2378,22 +2402,21 @@ This module contains methods for running and visualizing results of phylogenomic
             missing_annot = []
             for genome_ref in genome_refs:
                 if genome_ref not in dom_annot_found:
-                    missing_annot.append("\t"+'MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
+                    missing_annot.append("\t" + 'MISSING DOMAIN ANNOTATION FOR: ' + genome_ref)
             if missing_annot:
                 error_msg = "ABORT: You must run the DomainAnnotation App first\n"
                 error_msg += "\n".join(missing_annot)
-                raise ValueError (error_msg)
+                raise ValueError(error_msg)
 
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
-
         # calculate table
         #
         table_data = dict()
         INSANE_VALUE = 10000000000000000
-        overall_low_val  =  INSANE_VALUE
+        overall_low_val = INSANE_VALUE
         overall_high_val = -INSANE_VALUE
 
         # count raw
@@ -2409,7 +2432,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ('\d*$', '', cat)
+                        namespace = re.sub('\d*$', '', cat)
                     for gene_name in dom_hits[genome_ref].keys():
                         if namespace in dom_hits[genome_ref][gene_name]:
                             if cat in dom_hits[genome_ref][gene_name][namespace]:
@@ -2439,7 +2462,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             if cat.startswith('SEED'):
                                 namespace = 'SEED'
                             else:
-                                namespace = re.sub ('\d*$', '', cat)
+                                namespace = re.sub('\d*$', '', cat)
                         else:
                             namespace = params['namespace']
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
@@ -2453,20 +2476,20 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             for cat in cats:
                 val = table_data[genome_ref][cat]
-                if val == 0:  continue
+                if val == 0:
+                    continue
                 #self.log (console, "HIGH VAL SCAN CAT: '"+cat+"' VAL: '"+str(val)+"'")  # DEBUG
                 if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                     log_base = float(params['log_base'])
                     if log_base <= 1.0:
-                        raise ValueError ("log base must be > 1.0")
+                        raise ValueError("log base must be > 1.0")
                     val = math.log(val, log_base)
                 if val > overall_high_val:
                     overall_high_val = val
                 if val < overall_low_val:
                     overall_low_val = val
         if overall_high_val == -INSANE_VALUE:
-            raise ValueError ("unable to find any counts")
-
+            raise ValueError("unable to find any counts")
 
         # determine cats with a value and build group
         #
@@ -2531,10 +2554,9 @@ This module contains methods for running and visualizing results of phylogenomic
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
 
-
         # build report
         #
-        reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
+        reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
         reportObj = {'objects_created': [],
                      'direct_html_link_index': 0,
                      'file_links': [],
@@ -2543,10 +2565,9 @@ This module contains methods for running and visualizing results of phylogenomic
                      'report_object_name': reportName
                      }
 
-
         # build html report
         sp = '&nbsp;'
-        text_color   = "#606060"
+        text_color = "#606060"
         text_color_2 = "#606060"
         head_color_1 = "#eeeeee"
         head_color_2 = "#eeeeee"
@@ -2556,8 +2577,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #graph_width = 100
         #graph_char = "."
         graph_char = sp
-        color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
-        max_color = len(color_list)-1
+        color_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e']
+        max_color = len(color_list) - 1
         cat_disp_trunc_len = 40
         cell_width = '10px'
         if len(genome_refs) > 20:
@@ -2583,15 +2604,18 @@ This module contains methods for running and visualizing results of phylogenomic
         #row_spacing = "-2"
         num_rows = len(genome_refs)
         show_groups = False
-        if len(group_order) > 0:  show_groups = True
+        if len(group_order) > 0:
+            show_groups = True
 
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
         html_report_lines += ['<title>KBase Functional Domain Profile</title>']
         html_report_lines += ['<style>']
-        html_report_lines += [".vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 0.65em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.1;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
-        html_report_lines += [".vertical-text_title {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner_title {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.0;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner_title:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
+        html_report_lines += [
+            ".vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 0.65em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.1;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
+        html_report_lines += [
+            ".vertical-text_title {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner_title {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.0;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner_title:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
         html_report_lines += ['</style>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
@@ -2599,9 +2623,11 @@ This module contains methods for running and visualizing results of phylogenomic
         # genomes as rows
         if 'vertical' in params and params['vertical'] == "1":
             # table header
-            html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
+            html_report_lines += ['<table cellpadding=' + graph_padding +
+                                  ' cellspacing=' + graph_spacing + ' border=' + border + '>']
             corner_rowspan = "1"
-            if show_groups:  corner_rowspan = "2"
+            if show_groups:
+                corner_rowspan = "2"
             label = ''
             if params['namespace'] != 'custom':
                 label = params['namespace']
@@ -2609,25 +2635,26 @@ This module contains methods for running and visualizing results of phylogenomic
                     label = 'PFAM'
                 elif label == 'TIGR':
                     label = 'TIGRFAM'
-            html_report_lines += ['<tr><td valign=bottom align=right rowspan='+corner_rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
+            html_report_lines += ['<tr><td valign=bottom align=right rowspan=' + corner_rowspan +
+                                  '><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="' + text_color + '">' + label + '</font></div></div></td>']
 
             # group headers
             if show_groups:
                 for cat_group in group_order:
                     if cat_group.startswith('SEED'):
-                        cat_group_disp = re.sub ('_',' ',cat_group)
+                        cat_group_disp = re.sub('_', ' ', cat_group)
                     else:
                         cat_group_disp = cat_group
                     cat_group_words = cat_group_disp.split()
-                    max_group_width = 3*group_size[cat_group]
+                    max_group_width = 3 * group_size[cat_group]
                     if len(cat_group) > max_group_width:
                         new_cat_group_words = []
                         sentence_len = 0
-                        for w_i,word in enumerate(cat_group_words):
+                        for w_i, word in enumerate(cat_group_words):
                             new_cat_group_words.append(word)
                             sentence_len += len(word)
-                            if w_i < len(cat_group_words)-1:
-                                if sentence_len + 1 + len(cat_group_words[w_i+1]) > max_group_width:
+                            if w_i < len(cat_group_words) - 1:
+                                if sentence_len + 1 + len(cat_group_words[w_i + 1]) > max_group_width:
                                     new_cat_group_words[w_i] += '<br>'
                                     sentence_len = 0
                         cat_group_words = new_cat_group_words
@@ -2644,9 +2671,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     #        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
 
                     if cat_group_disp == '':
-                        html_report_lines += ['<td bgcolor=white colspan='+str(group_size[cat_group])+'></td>']
+                        html_report_lines += ['<td bgcolor=white colspan=' + str(group_size[cat_group]) + '></td>']
                     else:
-                        html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                        html_report_lines += ['<td style="border-right:solid 2px ' + border_cat_color + '; border-bottom:solid 2px ' + border_cat_color + '" bgcolor="' + head_color_1 +
+                                              '"valign=middle align=center colspan=' + str(group_size[cat_group]) + '><font color="' + text_color + '" size=' + str(graph_cat_fontsize) + '><b>' + cat_group_disp + '</b></font></td>']
 
                 html_report_lines += ['</tr><tr>']
 
@@ -2658,20 +2686,21 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ("\d*$", "", cat)
+                        namespace = re.sub("\d*$", "", cat)
                     cell_title = domfam2name[namespace][cat].strip()
                     cat_disp = cat
-                    cat_disp = re.sub ('^SEED', 'SEED:', cat_disp)
+                    cat_disp = re.sub('^SEED', 'SEED:', cat_disp)
                 else:
                     cell_title = cat2name[params['namespace']][cat].strip()
                     cat_disp = cat
-                    cat_disp = re.sub ("TIGR_", "", cat_disp)
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center>']
+                    cat_disp = re.sub("TIGR_", "", cat_disp)
+                if len(cat_disp) > cat_disp_trunc_len + 1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
+                html_report_lines += ['<td style="border-right:solid 2px ' + border_cat_color + '; border-bottom:solid 2px ' +
+                                      border_cat_color + '" bgcolor="' + head_color_2 + '"title="' + cell_title + '" valign=bottom align=center>']
                 if params['namespace'] != 'COG':
                     html_report_lines += ['<div class="vertical-text"><div class="vertical-text__inner">']
-                html_report_lines += ['<font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
+                html_report_lines += ['<font color="' + text_color_2 + '" size=' + graph_cat_fontsize + '><b>']
                 #for c_i,c in enumerate(cat_disp):
                 #    if c_i < len(cat_disp)-1:
                 #        html_report_lines += [c+'<br>']
@@ -2688,7 +2717,8 @@ This module contains methods for running and visualizing results of phylogenomic
             for genome_ref in genome_refs:
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
                 html_report_lines += ['<tr>']
-                html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_sci_name+'</nobr></b></font></td>']
+                html_report_lines += ['<td align=right><font color="' + text_color + '" size=' +
+                                      graph_gen_fontsize + '><b><nobr>' + genome_sci_name + '</nobr></b></font></td>']
                 for cat in cats:
                     if not cat_seen[cat] and not show_blanks:
                         continue
@@ -2699,14 +2729,15 @@ This module contains methods for running and visualizing results of phylogenomic
                         if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                             log_base = float(params['log_base'])
                             if log_base <= 1.0:
-                                raise ValueError ("log base must be > 1.0")
+                                raise ValueError("log base must be > 1.0")
                             val = math.log(val, log_base)
-                        cell_color_i = max_color - int(round(max_color * (val-overall_low_val) / float(overall_high_val-overall_low_val)))
+                        cell_color_i = max_color - \
+                            int(round(max_color * (val - overall_low_val) / float(overall_high_val - overall_low_val)))
                         c = color_list[cell_color_i]
-                        cell_color = '#'+c+c+c+c+'FF'
+                        cell_color = '#' + c + c + c + c + 'FF'
 
                     if params['count_category'].startswith('perc'):
-                        cell_val = str("%.3f"%table_data[genome_ref][cat])
+                        cell_val = str("%.3f" % table_data[genome_ref][cat])
                         cell_val += '%'
                     else:
                         cell_val = str(table_data[genome_ref][cat])
@@ -2719,28 +2750,30 @@ This module contains methods for running and visualizing results of phylogenomic
                         else:
                             this_text_color = cell_color
                             this_graph_char = graph_char
-                        html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" style="width:'+cell_width+'" bgcolor="'+cell_color+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
+                        html_report_lines += ['<td align=center valign=middle title="' + cell_val + '" style="width:' + cell_width + '" bgcolor="' +
+                                              cell_color + '"><font color="' + this_text_color + '" size=' + cell_fontsize + '>' + this_graph_char + '</font></td>']
                     else:
-                        html_report_lines += ['<td align=center valign=middle style="'+cell_width+'; border-right:solid 2px '+border_color+'; border-bottom:solid 2px '+border_color+'"><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
+                        html_report_lines += ['<td align=center valign=middle style="' + cell_width + '; border-right:solid 2px ' + border_color +
+                                              '; border-bottom:solid 2px ' + border_color + '"><font color="' + text_color + '" size=' + cell_fontsize + '>' + cell_val + '</font></td>']
 
                 html_report_lines += ['</tr>']
             html_report_lines += ['</table>']
 
         # genomes as columns
         else:
-            raise ValueError ("Do not yet support Genomes as columns")
-
+            raise ValueError("Do not yet support Genomes as columns")
 
         # key table
         html_report_lines += ['<p>']
-        html_report_lines += ['<table cellpadding=3 cellspacing=2 border='+border+'>']
-        html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 4px '+border_color+'"><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
+        html_report_lines += ['<table cellpadding=3 cellspacing=2 border=' + border + '>']
+        html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 4px ' +
+                              border_color + '"><font color="' + text_color + '"><b>KEY</b></font></td></tr>']
 
         if show_groups:
             group_cat_i = 0
             for cat_group in group_order_with_blanks:
                 if cat_group.startswith('SEED'):
-                    cat_group_disp = re.sub ('_',' ',cat_group)
+                    cat_group_disp = re.sub('_', ' ', cat_group)
                 else:
                     cat_group_disp = cat_group
                 cat_group_words = cat_group_disp.split()
@@ -2752,9 +2785,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 html_report_lines += ['<tr>']
                 if cat_group_disp == '':
-                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group])+' style="border-right:solid 4px '+border_color+'"></td>']
+                    html_report_lines += ['<td bgcolor=white rowspan=' + str(
+                        group_size_with_blanks[cat_group]) + ' style="border-right:solid 4px ' + border_color + '"></td>']
                 else:
-                    html_report_lines += ['<td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                    html_report_lines += ['<td style="border-right:solid 4px ' + border_color + '" valign=top align=right rowspan=' + str(
+                        group_size_with_blanks[cat_group]) + '><font color="' + text_color + '" size=' + str(graph_cat_fontsize) + '><b>' + cat_group_disp + '</b></font></td>']
 
                 # add first cat for group
                 first_cat = cats[group_cat_i]
@@ -2767,25 +2802,27 @@ This module contains methods for running and visualizing results of phylogenomic
                     if first_cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ('\d*$', '', first_cat)
-                    cat_disp = re.sub ('^SEED', 'SEED:', first_cat)
+                        namespace = re.sub('\d*$', '', first_cat)
+                    cat_disp = re.sub('^SEED', 'SEED:', first_cat)
                     desc = domfam2name[namespace][domfam]
                 else:
                     namespace = params['namespace']
                     cat_disp = first_cat
                     desc = cat2name[namespace][first_cat]
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                cat_disp = sp+cat_disp
+                if len(cat_disp) > cat_disp_trunc_len + 1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
+                cat_disp = sp + cat_disp
 
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '" style="border-right:solid 4px ' +
+                                      border_color + '"><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + cat_disp + '</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '"><font color="' +
+                                      text_color + '" size=' + graph_cat_fontsize + '>' + sp + desc + '</font></td>']
                 html_report_lines += ['</tr>']
 
                 group_cat_i += 1
 
                 # add rest of cats in group
-                for c_i in range(group_cat_i, group_cat_i+group_size_with_blanks[cat_group]-1):
+                for c_i in range(group_cat_i, group_cat_i + group_size_with_blanks[cat_group] - 1):
                     cat = cats[c_i]
                     cell_color = 'white'
                     #if not cat_seen[cat] and not show_blanks:
@@ -2796,20 +2833,22 @@ This module contains methods for running and visualizing results of phylogenomic
                         if cat.startswith('SEED'):
                             namespace = 'SEED'
                         else:
-                            namespace = re.sub ('\d*$', '', cat)
-                        cat_disp = re.sub ('^SEED', 'SEED:', cat)
+                            namespace = re.sub('\d*$', '', cat)
+                        cat_disp = re.sub('^SEED', 'SEED:', cat)
                         desc = domfam2name[namespace][domfam]
                     else:
                         namespace = params['namespace']
                         cat_disp = cat
                         desc = cat2name[namespace][cat]
-                    if len(cat_disp) > cat_disp_trunc_len+1:
-                        cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                    cat_disp = sp+cat_disp
+                    if len(cat_disp) > cat_disp_trunc_len + 1:
+                        cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
+                    cat_disp = sp + cat_disp
 
                     html_report_lines += ['<tr>']
-                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '" style="border-right:solid 4px ' +
+                                          border_color + '"><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + cat_disp + '</font></td>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '"><font color="' +
+                                          text_color + '" size=' + graph_cat_fontsize + '>' + sp + desc + '</font></td>']
                     html_report_lines += ['</tr>']
 
                     group_cat_i += 1
@@ -2824,20 +2863,21 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ('\d*$', '', domfam)
-                    cat_disp = re.sub ('^SEED', 'SEED:', cat)
+                        namespace = re.sub('\d*$', '', domfam)
+                    cat_disp = re.sub('^SEED', 'SEED:', cat)
                     desc = domfam2name[namespace][domfam]
                 else:
                     namespace = params['namespace']
                     cat_disp = cat
                     desc = cat2name[namespace][cat]
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
+                if len(cat_disp) > cat_disp_trunc_len + 1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
                 html_report_lines += ['<tr>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '" style="border-right:solid 4px ' +
+                                      border_color + '><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + cat_disp + '</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color +
+                                      '"><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + desc + '</font></td>']
                 html_report_lines += ['</tr>']
-
 
         html_report_lines += ['</table>']
 
@@ -2848,10 +2888,9 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_str = "\n".join(html_report_lines)
         #reportObj['direct_html'] = html_report_str
 
-
         # write html to file and upload
-        html_file = os.path.join (output_dir, 'domain_profile_report.html')
-        with open (html_file, 'w', 0) as html_handle:
+        html_file = os.path.join(output_dir, 'domain_profile_report.html')
+        with open(html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -2859,13 +2898,12 @@ This module contains methods for running and visualizing results of phylogenomic
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
-            raise ValueError ('Logging exception loading html_report to shock')
+            raise ValueError('Logging exception loading html_report to shock')
 
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
                                     'name': 'domain_profile_report.html',
                                     'label': 'Functional Domain Profile report'}
                                    ]
-
 
         # save report object
         #
@@ -2873,7 +2911,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
         report_info = reportClient.create_extended_report(reportObj)
 
-        output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
+        output = {'report_name': report_info['name'], 'report_ref': report_info['ref']}
 
         #END view_fxn_profile_featureSet
 
@@ -2914,11 +2952,11 @@ This module contains methods for running and visualizing results of phylogenomic
         ### STEP 0: basic init
         console = []
         self.log(console, 'Running view_fxn_profile_phylo(): ')
-        self.log(console, "\n"+pformat(params))
+        self.log(console, "\n" + pformat(params))
 
         token = ctx['token']
         wsClient = workspaceService(self.workspaceURL, token=token)
-        headers = {'Authorization': 'OAuth '+token}
+        headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
 
@@ -2928,22 +2966,24 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['input_speciesTree_ref',
                            'namespace'
-                          ]
+                           ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
-                raise ValueError ("Must define required param: '"+arg+"'")
+                raise ValueError("Must define required param: '" + arg + "'")
 
         if params['namespace'] == 'custom':
             if ('custom_target_fams' not in params or not params['custom_target_fams']) \
-                    or ( \
-                ('target_fams' not in params['custom_target_fams'] or not params['custom_target_fams']['target_fams']) \
-                    and ('extra_target_fam_groups_COG' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_COG']) \
-                    and ('extra_target_fam_groups_PFAM' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_PFAM']) \
-                    and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR']) \
-                    and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
-                ):
+                or (
+                    ('target_fams' not in params['custom_target_fams']
+                     or not params['custom_target_fams']['target_fams'])
+                and ('extra_target_fam_groups_COG' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_COG'])
+                and ('extra_target_fam_groups_PFAM' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_PFAM'])
+                and ('extra_target_fam_groups_TIGR' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_TIGR'])
+                and ('extra_target_fam_groups_SEED' not in params['custom_target_fams'] or not params['custom_target_fams']['extra_target_fam_groups_SEED'])
+            ):
 
-                raise ValueError ("Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
+                raise ValueError(
+                    "Must define either param: 'target_fams' or 'extra_target_fam_groups' if using CUSTOM targets")
 
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
@@ -2952,47 +2992,44 @@ This module contains methods for running and visualizing results of phylogenomic
             show_blanks = True
         e_value_thresh = None
         if 'e_value' in params and params['e_value'] != None and params['e_value'] != '':
-            e_value_thresh = float (params['e_value'])
+            e_value_thresh = float(params['e_value'])
         top_hit_flag = False
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        domain_desc_basepath           = os.path.abspath('/kb/module/data/domain_desc')
-        domain_to_cat_map_path         = dict()
-        domain_cat_names_path          = dict()
-        domain_fam_names_path          = dict()
-        domain_to_cat_map_path['COG']  = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_cat_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
-        domain_fam_names_path['COG']   = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_to_cat_map_path['PF']   = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
-        domain_cat_names_path['PF']    = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
-        domain_fam_names_path['PF']    = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_desc_basepath = os.path.abspath('/kb/module/data/domain_desc')
+        domain_to_cat_map_path = dict()
+        domain_cat_names_path = dict()
+        domain_fam_names_path = dict()
+        domain_to_cat_map_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_cat_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
+        domain_fam_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_to_cat_map_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_cat_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
+        domain_fam_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
         domain_to_cat_map_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
-        domain_cat_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
+        domain_cat_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
         #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
-        domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
+        domain_fam_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
         domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
+        domain_cat_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
         #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_fam_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-
+        domain_fam_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
 
         # load provenance
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
-        provenance[0]['input_ws_objects']=[str(params['input_speciesTree_ref'])]
-
+        provenance[0]['input_ws_objects'] = [str(params['input_speciesTree_ref'])]
 
         # set the output paths
-        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
-        output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output.' + str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        html_output_dir = os.path.join(output_dir,'html_output')
+        html_output_dir = os.path.join(output_dir, 'html_output')
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
-
 
         # configure categories
         #
@@ -3005,12 +3042,12 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # categories are high-level summations
         if params['namespace'] != 'custom':
-            for namespace in ['COG','PF','TIGR','SEED']:
+            for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
                 if params['namespace'] == namespace:
                     namespaces_reading[namespace] = True
 
         # read all mappings between groups and domfams
-        for namespace in ['COG','PF','TIGR','SEED']:
+        for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
 
             cat2name[namespace] = dict()
             cat2group[namespace] = dict()
@@ -3019,7 +3056,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # get high-level cats
             tigrrole_id2cat = dict()
-            with open (domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
+            with open(domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line = line.strip()
 
@@ -3044,7 +3081,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         tigrrole_id2cat[cat_id] = cat
                         if namespace == params['namespace'] and cat not in cats:
                             cats.append(cat)
-                        cat_name = re.sub (' *\> GO:.*$', '', cat_name_plus_go_terms)
+                        cat_name = re.sub(' *\> GO:.*$', '', cat_name_plus_go_terms)
                         cat2name[namespace][cat] = cat_name
                         cat2group[namespace][cat] = cat_group
 
@@ -3056,12 +3093,12 @@ This module contains methods for running and visualizing results of phylogenomic
                         [cat_group, cat] = line.split("\t")[0:2]
                         if namespace == params['namespace'] and cat not in cats:
                             cats.append(cat)
-                        cat_disp = re.sub ('_', ' ', cat)
+                        cat_disp = re.sub('_', ' ', cat)
                         cat2name[namespace][cat] = cat_disp
                         cat2group[namespace][cat] = cat_group
 
             # get domfam to cat map, and vice versa
-            with open (domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
+            with open(domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
                     line = line.strip()
 
@@ -3084,11 +3121,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     elif namespace == 'SEED':
                         [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
                         domfam = domfam.strip()
-                        domfam = re.sub (' *\#.*$', '', domfam)
-                        domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub (' ', '_', domfam)
-                        domfam = 'SEED'+domfam
+                        domfam = re.sub(' *\#.*$', '', domfam)
+                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub(' ', '_', domfam)
+                        domfam = 'SEED' + domfam
 
                     domfam2cat[namespace][domfam] = cat
                     if cat not in cat2domfams[namespace]:
@@ -3106,33 +3143,33 @@ This module contains methods for running and visualizing results of phylogenomic
                     if target_fam == '':
                         continue
 
-                    target_fam = re.sub ("^cog", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^pf", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^seed", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^cog", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^pf", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^seed", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
 
-                    target_fam = re.sub ("^COG:", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^COG-", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^COG_", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^COG *", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF:", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF-", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF_", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^PF *", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub ("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG:", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG-", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG_", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG *", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF:", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF-", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF_", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF *", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
 
                     num_id_len = dict()
                     num_id_len['COG'] = 4
@@ -3144,12 +3181,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     if target_fam.startswith('SEED'):
                         namespaces_reading['SEED'] = True
                         target_fam = target_fam.strip()
-                        target_fam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub (' ', '_', target_fam)
+                        target_fam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub(' ', '_', target_fam)
                     else:
                         namespace_found = False
-                        for namespace_iter in ['COG','PF','TIGR']:
+                        for namespace_iter in ['COG', 'PF', 'TIGR']:
                             if target_fam.startswith(namespace_iter):
                                 this_namespace = namespace_iter
                                 namespaces_reading[this_namespace] = True
@@ -3157,7 +3194,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 namespace_found = True
                                 break
                         if not namespace_found:
-                            raise ValueError ("unrecognized custom domain family: '"+str(target_fam)+"'")
+                            raise ValueError("unrecognized custom domain family: '" + str(target_fam) + "'")
                         leading_zeros = ''
                         for c_i in range(num_id_len[this_namespace] - len(str(target_fam))):
                             leading_zeros += '0'
@@ -3173,7 +3210,7 @@ This module contains methods for running and visualizing results of phylogenomic
             domfam2group = dict()
             for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_PFAM', 'extra_target_fam_groups_TIGR', 'extra_target_fam_groups_SEED']:
                 if target_set in params['custom_target_fams'] and params['custom_target_fams'][target_set]:
-                    extra_target_fam_groups.extend (params['custom_target_fams'][target_set])
+                    extra_target_fam_groups.extend(params['custom_target_fams'][target_set])
 
             if extra_target_fam_groups:
                 for target_group in extra_target_fam_groups:
@@ -3181,21 +3218,21 @@ This module contains methods for running and visualizing results of phylogenomic
                     if target_group == '':
                         continue
 
-                    namespace = re.sub (":.*$", "", target_group)
+                    namespace = re.sub(":.*$", "", target_group)
                     namespaces_reading[namespace] = True
 
                     if namespace == 'COG':
-                        this_group = re.sub ("COG: ", "", target_group)
-                        this_group = re.sub (":.*$", "", this_group)
+                        this_group = re.sub("COG: ", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
                     elif namespace == 'PF':
-                        this_group = re.sub ("PF: Clan ", "", target_group)
-                        this_group = re.sub (":.*$", "", this_group)
+                        this_group = re.sub("PF: Clan ", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
                     elif namespace == 'TIGR':
-                        this_group = re.sub ("TIGR: role:", "", target_group)
-                        this_group = re.sub (":.*$", "", this_group)
-                        this_group = 'TIGR_role:'+this_group
+                        this_group = re.sub("TIGR: role:", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
+                        this_group = 'TIGR_role:' + this_group
                     elif namespace == 'SEED':
-                        this_group = re.sub ("SEED: ", "", target_group)
+                        this_group = re.sub("SEED: ", "", target_group)
 
                     for domfam in cat2domfams[namespace][this_group]:
                         extra_target_fams.append(domfam)
@@ -3210,58 +3247,59 @@ This module contains methods for running and visualizing results of phylogenomic
                 domfam2name[namespace] = dict()
 
                 if namespace == 'COG':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
                             domfam2name[namespace][domfam] = domfam_name
 
                 elif namespace == 'PF':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
                             if domfam_name.startswith(domfam_id):
                                 combo_name = domfam_name
                             else:
-                                combo_name = domfam_id+': '+domfam_name
+                                combo_name = domfam_id + ': ' + domfam_name
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'TIGR':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             if line.startswith('!'):
                                 continue
-                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
+                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[
+                                0:7]
                             if domfam_name != '':
                                 if domfam_desc.startswith(domfam_name):
                                     combo_name = domfam_desc
                                 else:
-                                    combo_name = domfam_name+': '+domfam_desc
+                                    combo_name = domfam_name + ': ' + domfam_desc
                             else:
                                 if domfam_desc.startswith(domfam_id):
                                     combo_name = domfam_desc
                                 else:
-                                    combo_name = domfam_id+': '+domfam_desc
+                                    combo_name = domfam_id + ': ' + domfam_desc
                             if ec_id != '':
-                                combo_name += ' (EC '+ec_id+')'
+                                combo_name += ' (EC ' + ec_id + ')'
 
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'SEED':
-                    with open (domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [level1, level2, level3, domfam] = line.split("\t")[0:4]
 
                             domfam_desc = domfam
                             domfam = domfam.strip()
-                            domfam = re.sub (' *\#.*$', '', domfam)
-                            domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub (' ', '_', domfam)
-                            domfam = 'SEED'+domfam
+                            domfam = re.sub(' *\#.*$', '', domfam)
+                            domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                            domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                            domfam = re.sub(' ', '_', domfam)
+                            domfam = 'SEED' + domfam
                             if domfam in domfam2name[namespace]:
                                 if len(domfam_desc) > len(domfam2name[namespace][domfam]):
                                     domfam2name[namespace][domfam] = domfam_desc
@@ -3273,30 +3311,30 @@ This module contains methods for running and visualizing results of phylogenomic
                 and params['namespace'] != 'PF' \
                 and params['namespace'] != 'TIGR' \
                 and params['namespace'] != 'SEED':
-            raise ValueError ("Unknown namespace: '"+str(params['namespace'])+"'")
-
+            raise ValueError("Unknown namespace: '" + str(params['namespace']) + "'")
 
         # get speciesTree
         #
         input_ref = params['input_speciesTree_ref']
         speciesTree_name = None
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             speciesTree_name = input_obj_info[NAME_I]
         except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseTrees.Tree" ]
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseTrees.Tree"]
         if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
         # get set obj
         try:
-            speciesTree_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            speciesTree_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
         except:
-            raise ValueError ("unable to fetch speciesTree: "+input_ref)
-
+            raise ValueError("unable to fetch speciesTree: " + input_ref)
 
         # get genome_refs from speciesTree and instantiate ETE3 tree and order
         #
@@ -3313,12 +3351,11 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_id in species_tree.get_leaf_names():
             genome_refs.append(genome_ref_by_id[genome_id])
 
-
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_obj_name_by_ref = dict()
         genome_sci_name_by_ref = dict()
-        genome_sci_name_by_id  = dict()
+        genome_sci_name_by_id = dict()
         genome_CDS_count_by_ref = dict()
         uniq_genome_ws_ids = dict()
 
@@ -3333,24 +3370,26 @@ This module contains methods for running and visualizing results of phylogenomic
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+                input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
                 uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
 
             except Exception as e:
-                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-            accepted_input_types = ["KBaseGenomes.Genome" ]
+                raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+            accepted_input_types = ["KBaseGenomes.Genome"]
             if input_obj_type not in accepted_input_types:
-                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+                raise ValueError("Input object of type '" + input_obj_type +
+                                 "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
 
             try:
-                genome_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+                genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
             except:
-                raise ValueError ("unable to fetch genome: "+input_ref)
+                raise ValueError("unable to fetch genome: " + input_ref)
 
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
@@ -3375,7 +3414,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         #if f_cnt % 100 == 0:
                         #    self.log (console, "prot: "+str(feature['protein_translation']))  # DEBUG
 
-                        if 'function' in feature and feature['function'] != None and feature['function'] != '':
+                        if self._check_SEED_function_defined_in_feature(feature):
                             gene_name = feature['id']
 
                             #if f_cnt % 100 == 0:
@@ -3392,16 +3431,14 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
                                 domfam_list = []
-                                annot_set = feature['function'].strip().split(';')
-                                for annot in annot_set:
-                                    annot_set_2 = annot.strip().split('@')
-                                    for annot2 in annot_set_2:
+                                for annot in self._get_SEED_annotations(feature):
+                                    for annot2 in annot.strip().split('@'):
                                         domfam = annot2.strip()
-                                        domfam = re.sub (' *\#.*$', '', domfam)
-                                        domfam = re.sub (' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub (' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub (' ', '_', domfam)
-                                        domfam = 'SEED'+domfam
+                                        domfam = re.sub(' *\#.*$', '', domfam)
+                                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                                        domfam = re.sub(' ', '_', domfam)
+                                        domfam = 'SEED' + domfam
                                         domfam_list.append(domfam)
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
@@ -3414,22 +3451,21 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     #f_cnt += 1  # DEBUG
 
-
         # capture domain hits to genes within each namespace
         #
         if params['namespace'] != 'SEED':
             dom_annot_found = dict()
 
-            KBASE_DOMAINHIT_GENE_ID_I        = 0
-            KBASE_DOMAINHIT_GENE_BEG_I       = 1  # not used
-            KBASE_DOMAINHIT_GENE_END_I       = 2  # not used
-            KBASE_DOMAINHIT_GENE_STRAND_I    = 3  # not used
+            KBASE_DOMAINHIT_GENE_ID_I = 0
+            KBASE_DOMAINHIT_GENE_BEG_I = 1  # not used
+            KBASE_DOMAINHIT_GENE_END_I = 2  # not used
+            KBASE_DOMAINHIT_GENE_STRAND_I = 3  # not used
             KBASE_DOMAINHIT_GENE_HITS_DICT_I = 4
-            KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J      = 0
-            KBASE_DOMAINHIT_GENE_HITS_DICT_END_J      = 1
-            KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J   = 2
+            KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J = 0
+            KBASE_DOMAINHIT_GENE_HITS_DICT_END_J = 1
+            KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J = 2
             KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J = 3
-            KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J  = 4
+            KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J = 4
 
             # DEBUG
             #for genome_ref in genome_refs:
@@ -3437,18 +3473,21 @@ This module contains methods for running and visualizing results of phylogenomic
 
             for ws_id in uniq_genome_ws_ids.keys():
                 try:
-                    dom_annot_obj_info_list = wsClient.list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
+                    dom_annot_obj_info_list = wsClient.list_objects(
+                        {'ids': [ws_id], 'type': "KBaseGeneFamilies.DomainAnnotation"})
                 except Exception as e:
-                    raise ValueError ("Unable to list DomainAnnotation objects from workspace: "+str(ws_id)+" "+str(e))
+                    raise ValueError("Unable to list DomainAnnotation objects from workspace: " +
+                                     str(ws_id) + " " + str(e))
 
                 for info in dom_annot_obj_info_list:
-                    [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                    [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                        WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
 
-                    dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
+                    dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
                     try:
-                        domain_data = wsClient.get_objects([{'ref':dom_annot_ref}])[0]['data']
+                        domain_data = wsClient.get_objects([{'ref': dom_annot_ref}])[0]['data']
                     except:
-                        raise ValueError ("unable to fetch domain annotation: "+dom_annot_ref)
+                        raise ValueError("unable to fetch domain annotation: " + dom_annot_ref)
 
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
@@ -3464,7 +3503,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     for scaffold_id_iter in domain_data['data'].keys():
                         for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
-                            gene_ID   = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
+                            gene_ID = CDS_domain_list[KBASE_DOMAINHIT_GENE_ID_I]
                             #gene_name = re.sub ('^'+genome_object_name+'.', '', gene_ID)
                             gene_name = gene_ID
                             #(contig_name, gene_name) = (gene_ID[0:gene_ID.index(".")], gene_ID[gene_ID.index(".")+1:])
@@ -3475,9 +3514,9 @@ This module contains methods for running and visualizing results of phylogenomic
                             #gene_strand    = CDS_domain_list[KBASE_DOMAINHIT_GENE_STRAND_I]
                             gene_hits_dict = CDS_domain_list[KBASE_DOMAINHIT_GENE_HITS_DICT_I]
 
-                            dom_hits_by_namespace       = dict()
+                            dom_hits_by_namespace = dict()
                             top_hit_evalue_by_namespace = dict()
-                            top_hit_dom_by_namespace    = dict()
+                            top_hit_dom_by_namespace = dict()
 
                             for namespace in namespace_classes:
                                 dom_hits_by_namespace[namespace] = dict()
@@ -3486,7 +3525,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                             for domfam in gene_hits_dict.keys():
                                 if domfam.startswith('PF'):
-                                    domfam_clean = re.sub('\.[^\.]*$','',domfam)
+                                    domfam_clean = re.sub('\.[^\.]*$', '', domfam)
                                 else:
                                     domfam_clean = domfam
                                 known_namespace = False
@@ -3498,11 +3537,11 @@ This module contains methods for running and visualizing results of phylogenomic
                                     continue
 
                                 for hit in gene_hits_dict[domfam]:
-                                    beg       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J])
-                                    end       = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J])
-                                    e_value   = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J])
+                                    beg = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BEG_J])
+                                    end = int(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_END_J])
+                                    e_value = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_EVALUE_J])
                                     bit_score = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_BITSCORE_J])
-                                    aln_perc  = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J])
+                                    aln_perc = float(hit[KBASE_DOMAINHIT_GENE_HITS_DICT_ALNPERC_J])
 
                                     if e_value_thresh != None and e_value > e_value_thresh:
                                         continue
@@ -3527,7 +3566,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                         dom_hits[genome_ref][gene_name] = dict()
 
                                     if top_hit_flag:
-                                        dom_hits[genome_ref][gene_name][namespace] = { top_hit_dom_by_namespace[namespace]: True }
+                                        dom_hits[genome_ref][gene_name][namespace] = {
+                                            top_hit_dom_by_namespace[namespace]: True}
                                     else:
                                         dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
 
@@ -3535,22 +3575,21 @@ This module contains methods for running and visualizing results of phylogenomic
             missing_annot = []
             for genome_ref in genome_refs:
                 if genome_ref not in dom_annot_found:
-                    missing_annot.append("\t"+'MISSING DOMAIN ANNOTATION FOR: '+genome_ref)
+                    missing_annot.append("\t" + 'MISSING DOMAIN ANNOTATION FOR: ' + genome_ref)
             if missing_annot:
                 error_msg = "ABORT: You must run the DomainAnnotation App first\n"
                 error_msg += "\n".join(missing_annot)
-                raise ValueError (error_msg)
+                raise ValueError(error_msg)
 
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
-
         # calculate table
         #
         table_data = dict()
         INSANE_VALUE = 10000000000000000
-        overall_low_val  =  INSANE_VALUE
+        overall_low_val = INSANE_VALUE
         overall_high_val = -INSANE_VALUE
 
         # count raw
@@ -3566,7 +3605,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ('\d*$', '', cat)
+                        namespace = re.sub('\d*$', '', cat)
                     for gene_name in dom_hits[genome_ref].keys():
                         if namespace in dom_hits[genome_ref][gene_name]:
                             if cat in dom_hits[genome_ref][gene_name][namespace]:
@@ -3605,7 +3644,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             if cat.startswith('SEED'):
                                 namespace = 'SEED'
                             else:
-                                namespace = re.sub ('\d*$', '', cat)
+                                namespace = re.sub('\d*$', '', cat)
                         else:
                             namespace = params['namespace']
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
@@ -3619,20 +3658,20 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in genome_refs:
             for cat in cats:
                 val = table_data[genome_ref][cat]
-                if val == 0:  continue
+                if val == 0:
+                    continue
                 #self.log (console, "HIGH VAL SCAN CAT: '"+cat+"' VAL: '"+str(val)+"'")  # DEBUG
                 if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                     log_base = float(params['log_base'])
                     if log_base <= 1.0:
-                        raise ValueError ("log base must be > 1.0")
+                        raise ValueError("log base must be > 1.0")
                     val = math.log(val, log_base)
                 if val > overall_high_val:
                     overall_high_val = val
                 if val < overall_low_val:
                     overall_low_val = val
         if overall_high_val == -INSANE_VALUE:
-            raise ValueError ("unable to find any counts")
-
+            raise ValueError("unable to find any counts")
 
         # determine cats with a value and build group
         #
@@ -3697,13 +3736,12 @@ This module contains methods for running and visualizing results of phylogenomic
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
 
-
         # Draw tree (we already instantiated Tree above)
         #
-        png_file = speciesTree_name+'.png'
-        pdf_file = speciesTree_name+'.pdf'
-        output_png_file_path = os.path.join(html_output_dir, png_file);
-        output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
+        png_file = speciesTree_name + '.png'
+        pdf_file = speciesTree_name + '.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file)
+        output_pdf_file_path = os.path.join(html_output_dir, pdf_file)
 
         # init ETE3 accessory objects
         ts = ete3.TreeStyle()
@@ -3713,7 +3751,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
-        ts.branch_vertical_margin = 5 # pixels between adjacent branches
+        ts.branch_vertical_margin = 5  # pixels between adjacent branches
         #ts.title.add_face(ete3.TextFace(params['output_name']+": "+params['desc'], fsize=10), column=0)
 
         node_style = ete3.NodeStyle()
@@ -3723,7 +3761,7 @@ This module contains methods for running and visualizing results of phylogenomic
         node_style["hz_line_color"] = "#606060"
         node_style["vt_line_width"] = 2
         node_style["hz_line_width"] = 2
-        node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        node_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
         node_style["hz_line_type"] = 0
 
         leaf_style = ete3.NodeStyle()
@@ -3733,7 +3771,7 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_style["hz_line_color"] = "#606060"
         leaf_style["vt_line_width"] = 2
         leaf_style["hz_line_width"] = 2
-        leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        leaf_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
         leaf_style["hz_line_type"] = 0
 
         for n in species_tree.traverse():
@@ -3764,15 +3802,14 @@ This module contains methods for running and visualizing results of phylogenomic
         dpi = 300
         img_units = "in"
         img_pix_width = 1200
-        img_in_width = round(float(img_pix_width)/float(dpi), 1)
+        img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 2
         species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
         species_tree.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
-
         # build report
         #
-        reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
+        reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
         reportObj = {'objects_created': [],
                      'direct_html_link_index': 0,
                      'file_links': [],
@@ -3781,10 +3818,9 @@ This module contains methods for running and visualizing results of phylogenomic
                      'report_object_name': reportName
                      }
 
-
         # build html report
         sp = '&nbsp;'
-        text_color   = "#606060"
+        text_color = "#606060"
         text_color_2 = "#606060"
         head_color_1 = "#eeeeee"
         head_color_2 = "#eeeeee"
@@ -3794,12 +3830,12 @@ This module contains methods for running and visualizing results of phylogenomic
         #graph_width = 100
         #graph_char = "."
         graph_char = sp
-        color_list = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
-        max_color = len(color_list)-1
+        color_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e']
+        max_color = len(color_list) - 1
         cat_disp_trunc_len = 40
         cell_width = '10px'
         tree_scale_factor = 22.625
-        tree_img_height = int(tree_scale_factor*len(genome_refs))
+        tree_img_height = int(tree_scale_factor * len(genome_refs))
         extra_tree_rows = 3
         if len(genome_refs) > 20:
             graph_gen_fontsize = "1"
@@ -3825,15 +3861,18 @@ This module contains methods for running and visualizing results of phylogenomic
         #row_spacing = "-2"
         num_rows = len(genome_refs)
         show_groups = False
-        if len(group_order) > 0:  show_groups = True
+        if len(group_order) > 0:
+            show_groups = True
 
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
         html_report_lines += ['<title>KBase Functional Domain Profile with Species Tree</title>']
         html_report_lines += ['<style>']
-        html_report_lines += [".vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 0.65em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.1;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
-        html_report_lines += [".vertical-text_title {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner_title {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.0;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner_title:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
+        html_report_lines += [
+            ".vertical-text {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 0.65em;\n}\n.vertical-text__inner {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.1;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
+        html_report_lines += [
+            ".vertical-text_title {\ndisplay: inline-block;\noverflow: hidden;\nwidth: 1.0em;\n}\n.vertical-text__inner_title {\ndisplay: inline-block;\nwhite-space: nowrap;\nline-height: 1.0;\ntransform: translate(0,100%) rotate(-90deg);\ntransform-origin: 0 0;\n}\n.vertical-text__inner_title:after {\ncontent: \"\";\ndisplay: block;\nmargin: 0.0em 0 100%;\n}"]
         html_report_lines += ['</style>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
@@ -3841,9 +3880,11 @@ This module contains methods for running and visualizing results of phylogenomic
         # genomes as rows
         if 'vertical' in params and params['vertical'] == "1":
             # table header
-            html_report_lines += ['<table cellpadding='+graph_padding+' cellspacing='+graph_spacing+' border='+border+'>']
+            html_report_lines += ['<table cellpadding=' + graph_padding +
+                                  ' cellspacing=' + graph_spacing + ' border=' + border + '>']
             corner_rowspan = "1"
-            if show_groups:  corner_rowspan = "2"
+            if show_groups:
+                corner_rowspan = "2"
             label = ''
             if params['namespace'] != 'custom':
                 label = params['namespace']
@@ -3851,25 +3892,26 @@ This module contains methods for running and visualizing results of phylogenomic
                     label = 'PFAM'
                 elif label == 'TIGR':
                     label = 'TIGRFAM'
-            html_report_lines += ['<tr><td valign=bottom align=right rowspan='+corner_rowspan+'><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="'+text_color+'">'+label+'</font></div></div></td>']
+            html_report_lines += ['<tr><td valign=bottom align=right rowspan=' + corner_rowspan +
+                                  '><div class="vertical-text_title"><div class="vertical-text__inner_title"><font color="' + text_color + '">' + label + '</font></div></div></td>']
 
             # group headers
             if show_groups:
                 for cat_group in group_order:
                     if cat_group.startswith('SEED'):
-                        cat_group_disp = re.sub ('_',' ',cat_group)
+                        cat_group_disp = re.sub('_', ' ', cat_group)
                     else:
                         cat_group_disp = cat_group
                     cat_group_words = cat_group_disp.split()
-                    max_group_width = 3*group_size[cat_group]
+                    max_group_width = 3 * group_size[cat_group]
                     if len(cat_group) > max_group_width:
                         new_cat_group_words = []
                         sentence_len = 0
-                        for w_i,word in enumerate(cat_group_words):
+                        for w_i, word in enumerate(cat_group_words):
                             new_cat_group_words.append(word)
                             sentence_len += len(word)
-                            if w_i < len(cat_group_words)-1:
-                                if sentence_len + 1 + len(cat_group_words[w_i+1]) > max_group_width:
+                            if w_i < len(cat_group_words) - 1:
+                                if sentence_len + 1 + len(cat_group_words[w_i + 1]) > max_group_width:
                                     new_cat_group_words[w_i] += '<br>'
                                     sentence_len = 0
                         cat_group_words = new_cat_group_words
@@ -3886,9 +3928,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     #        self.log(console, "CG: '"+str(cg)+"'")  # DEBUG
 
                     if cat_group_disp == '':
-                        html_report_lines += ['<td bgcolor=white colspan='+str(group_size[cat_group])+'></td>']
+                        html_report_lines += ['<td bgcolor=white colspan=' + str(group_size[cat_group]) + '></td>']
                     else:
-                        html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_1+'"valign=middle align=center colspan='+str(group_size[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
+                        html_report_lines += ['<td style="border-right:solid 2px ' + border_cat_color + '; border-bottom:solid 2px ' + border_cat_color + '" bgcolor="' + head_color_1 +
+                                              '"valign=middle align=center colspan=' + str(group_size[cat_group]) + '><font color="' + text_color + '" size=' + str(graph_cat_fontsize) + '><b>' + cat_group_disp + '</b></font></td>']
 
                 html_report_lines += ['</tr><tr>']
 
@@ -3900,20 +3943,21 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ("\d*$", "", cat)
+                        namespace = re.sub("\d*$", "", cat)
                     cell_title = domfam2name[namespace][cat].strip()
                     cat_disp = cat
-                    cat_disp = re.sub ('^SEED', 'SEED:', cat_disp)
+                    cat_disp = re.sub('^SEED', 'SEED:', cat_disp)
                 else:
                     cell_title = cat2name[params['namespace']][cat].strip()
                     cat_disp = cat
-                    cat_disp = re.sub ("TIGR_", "", cat_disp)
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                html_report_lines += ['<td style="border-right:solid 2px '+border_cat_color+'; border-bottom:solid 2px '+border_cat_color+'" bgcolor="'+head_color_2+'"title="'+cell_title+'" valign=bottom align=center>']
+                    cat_disp = re.sub("TIGR_", "", cat_disp)
+                if len(cat_disp) > cat_disp_trunc_len + 1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
+                html_report_lines += ['<td style="border-right:solid 2px ' + border_cat_color + '; border-bottom:solid 2px ' +
+                                      border_cat_color + '" bgcolor="' + head_color_2 + '"title="' + cell_title + '" valign=bottom align=center>']
                 if params['namespace'] != 'COG':
                     html_report_lines += ['<div class="vertical-text"><div class="vertical-text__inner">']
-                html_report_lines += ['<font color="'+text_color_2+'" size='+graph_cat_fontsize+'><b>']
+                html_report_lines += ['<font color="' + text_color_2 + '" size=' + graph_cat_fontsize + '><b>']
                 #for c_i,c in enumerate(cat_disp):
                 #    if c_i < len(cat_disp)-1:
                 #        html_report_lines += [c+'<br>']
@@ -3927,10 +3971,11 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['</tr>']
 
             # add tree image
-            html_report_lines += ['<tr><td align="left" valign="top" rowspan='+str(len(genome_refs)+extra_tree_rows)+'><img src="'+png_file+'" height='+str(tree_img_height)+'></td>']
+            html_report_lines += ['<tr><td align="left" valign="top" rowspan=' + str(
+                len(genome_refs) + extra_tree_rows) + '><img src="' + png_file + '" height=' + str(tree_img_height) + '></td>']
 
             # rest of rows
-            for row_i,genome_ref in enumerate(genome_refs):
+            for row_i, genome_ref in enumerate(genome_refs):
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
                 if row_i > 0:
                     html_report_lines += ['<tr>']
@@ -3945,14 +3990,15 @@ This module contains methods for running and visualizing results of phylogenomic
                         if 'log_base' in params and params['log_base'] != None and params['log_base'] != '':
                             log_base = float(params['log_base'])
                             if log_base <= 1.0:
-                                raise ValueError ("log base must be > 1.0")
+                                raise ValueError("log base must be > 1.0")
                             val = math.log(val, log_base)
-                        cell_color_i = max_color - int(round(max_color * (val-overall_low_val) / float(overall_high_val-overall_low_val)))
+                        cell_color_i = max_color - \
+                            int(round(max_color * (val - overall_low_val) / float(overall_high_val - overall_low_val)))
                         c = color_list[cell_color_i]
-                        cell_color = '#'+c+c+c+c+'FF'
+                        cell_color = '#' + c + c + c + c + 'FF'
 
                     if params['count_category'].startswith('perc'):
-                        cell_val = str("%.3f"%table_data[genome_ref][cat])
+                        cell_val = str("%.3f" % table_data[genome_ref][cat])
                         cell_val += '%'
                     else:
                         cell_val = str(table_data[genome_ref][cat])
@@ -3965,32 +4011,35 @@ This module contains methods for running and visualizing results of phylogenomic
                         else:
                             this_text_color = cell_color
                             this_graph_char = graph_char
-                        html_report_lines += ['<td align=center valign=middle title="'+cell_val+'" style="width:'+cell_width+'" bgcolor="'+cell_color+'"><font color="'+this_text_color+'" size='+cell_fontsize+'>'+this_graph_char+'</font></td>']
+                        html_report_lines += ['<td align=center valign=middle title="' + cell_val + '" style="width:' + cell_width + '" bgcolor="' +
+                                              cell_color + '"><font color="' + this_text_color + '" size=' + cell_fontsize + '>' + this_graph_char + '</font></td>']
                     else:
-                        html_report_lines += ['<td align=center valign=middle style="'+cell_width+'; border-right:solid 2px '+border_color+'; border-bottom:solid 2px '+border_color+'"><font color="'+text_color+'" size='+cell_fontsize+'>'+cell_val+'</font></td>']
+                        html_report_lines += ['<td align=center valign=middle style="' + cell_width + '; border-right:solid 2px ' + border_color +
+                                              '; border-bottom:solid 2px ' + border_color + '"><font color="' + text_color + '" size=' + cell_fontsize + '>' + cell_val + '</font></td>']
 
                 html_report_lines += ['</tr>']
             # add extra blank rows to extend tree rule below grid
             for row_i in range(extra_tree_rows):
-                html_report_lines += ['<tr><td bgcolor="white" style="width:10px"><font color="white" size='+cell_fontsize+'>'+sp+'</font></td></tr>']
+                html_report_lines += ['<tr><td bgcolor="white" style="width:10px"><font color="white" size=' +
+                                      cell_fontsize + '>' + sp + '</font></td></tr>']
 
             html_report_lines += ['</table>']
 
         # genomes as columns
         else:
-            raise ValueError ("Do not yet support Genomes as columns")
-
+            raise ValueError("Do not yet support Genomes as columns")
 
         # key table
         html_report_lines += ['<p>']
-        html_report_lines += ['<table cellpadding=3 cellspacing=2 border='+border+'>']
-        html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 4px '+border_color+'"><font color="'+text_color+'"><b>KEY</b></font></td></tr>']
+        html_report_lines += ['<table cellpadding=3 cellspacing=2 border=' + border + '>']
+        html_report_lines += ['<tr><td valign=middle align=left colspan=3 style="border-bottom:solid 4px ' +
+                              border_color + '"><font color="' + text_color + '"><b>KEY</b></font></td></tr>']
 
         if show_groups:
             group_cat_i = 0
             for cat_group in group_order_with_blanks:
                 if cat_group.startswith('SEED'):
-                    cat_group_disp = re.sub ('_',' ',cat_group)
+                    cat_group_disp = re.sub('_', ' ', cat_group)
                 else:
                     cat_group_disp = cat_group
                 cat_group_words = cat_group_disp.split()
@@ -4002,10 +4051,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 html_report_lines += ['<tr>']
                 if cat_group_disp == '':
-                    html_report_lines += ['<td bgcolor=white rowspan='+str(group_size_with_blanks[cat_group])+' style="border-right:solid 4px '+border_color+'"></td>']
+                    html_report_lines += ['<td bgcolor=white rowspan=' + str(
+                        group_size_with_blanks[cat_group]) + ' style="border-right:solid 4px ' + border_color + '"></td>']
                 else:
-                    html_report_lines += ['<td style="border-right:solid 4px '+border_color+'" valign=top align=right rowspan='+str(group_size_with_blanks[cat_group])+'><font color="'+text_color+'" size='+str(graph_cat_fontsize)+'><b>'+cat_group_disp+'</b></font></td>']
-
+                    html_report_lines += ['<td style="border-right:solid 4px ' + border_color + '" valign=top align=right rowspan=' + str(
+                        group_size_with_blanks[cat_group]) + '><font color="' + text_color + '" size=' + str(graph_cat_fontsize) + '><b>' + cat_group_disp + '</b></font></td>']
 
                 # DEBUG
                 #self.log (console, "CAT GROUP: '"+cat_group+"' SIZE: '"+str(group_size_with_blanks[cat_group])+"'")
@@ -4021,25 +4071,27 @@ This module contains methods for running and visualizing results of phylogenomic
                     if first_cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ('\d*$', '', first_cat)
-                    cat_disp = re.sub ('^SEED', 'SEED:', first_cat)
+                        namespace = re.sub('\d*$', '', first_cat)
+                    cat_disp = re.sub('^SEED', 'SEED:', first_cat)
                     desc = domfam2name[namespace][domfam]
                 else:
                     namespace = params['namespace']
                     cat_disp = first_cat
                     desc = cat2name[namespace][first_cat]
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                cat_disp = sp+cat_disp
+                if len(cat_disp) > cat_disp_trunc_len + 1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
+                cat_disp = sp + cat_disp
 
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '" style="border-right:solid 4px ' +
+                                      border_color + '"><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + cat_disp + '</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '"><font color="' +
+                                      text_color + '" size=' + graph_cat_fontsize + '>' + sp + desc + '</font></td>']
                 html_report_lines += ['</tr>']
 
                 group_cat_i += 1
 
                 # add rest of cats in group
-                for c_i in range(group_cat_i, group_cat_i+group_size_with_blanks[cat_group]-1):
+                for c_i in range(group_cat_i, group_cat_i + group_size_with_blanks[cat_group] - 1):
                     cat = cats[c_i]
                     cell_color = 'white'
                     #if not cat_seen[cat] and not show_blanks:
@@ -4050,20 +4102,22 @@ This module contains methods for running and visualizing results of phylogenomic
                         if cat.startswith('SEED'):
                             namespace = 'SEED'
                         else:
-                            namespace = re.sub ('\d*$', '', cat)
-                        cat_disp = re.sub ('^SEED', 'SEED:', cat)
+                            namespace = re.sub('\d*$', '', cat)
+                        cat_disp = re.sub('^SEED', 'SEED:', cat)
                         desc = domfam2name[namespace][domfam]
                     else:
                         namespace = params['namespace']
                         cat_disp = cat
                         desc = cat2name[namespace][cat]
-                    if len(cat_disp) > cat_disp_trunc_len+1:
-                        cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
-                    cat_disp = sp+cat_disp
+                    if len(cat_disp) > cat_disp_trunc_len + 1:
+                        cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
+                    cat_disp = sp + cat_disp
 
                     html_report_lines += ['<tr>']
-                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                    html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+sp+desc+'</font></td>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '" style="border-right:solid 4px ' +
+                                          border_color + '"><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + cat_disp + '</font></td>']
+                    html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '"><font color="' +
+                                          text_color + '" size=' + graph_cat_fontsize + '>' + sp + desc + '</font></td>']
                     html_report_lines += ['</tr>']
 
                     group_cat_i += 1
@@ -4078,20 +4132,21 @@ This module contains methods for running and visualizing results of phylogenomic
                     if cat.startswith('SEED'):
                         namespace = 'SEED'
                     else:
-                        namespace = re.sub ('\d*$', '', domfam)
-                    cat_disp = re.sub ('^SEED', 'SEED:', cat)
+                        namespace = re.sub('\d*$', '', domfam)
+                    cat_disp = re.sub('^SEED', 'SEED:', cat)
                     desc = domfam2name[namespace][domfam]
                 else:
                     namespace = params['namespace']
                     cat_disp = cat
                     desc = cat2name[namespace][cat]
-                if len(cat_disp) > cat_disp_trunc_len+1:
-                    cat_disp = cat_disp[0:cat_disp_trunc_len]+'*'
+                if len(cat_disp) > cat_disp_trunc_len + 1:
+                    cat_disp = cat_disp[0:cat_disp_trunc_len] + '*'
                 html_report_lines += ['<tr>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'" style="border-right:solid 4px '+border_color+'><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+cat_disp+'</font></td>']
-                html_report_lines += ['<td valign=middle align=left bgcolor="'+cell_color+'"><font color="'+text_color+'" size='+graph_cat_fontsize+'>'+desc+'</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color + '" style="border-right:solid 4px ' +
+                                      border_color + '><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + cat_disp + '</font></td>']
+                html_report_lines += ['<td valign=middle align=left bgcolor="' + cell_color +
+                                      '"><font color="' + text_color + '" size=' + graph_cat_fontsize + '>' + desc + '</font></td>']
                 html_report_lines += ['</tr>']
-
 
         html_report_lines += ['</table>']
 
@@ -4102,10 +4157,9 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_str = "\n".join(html_report_lines)
         #reportObj['direct_html'] = html_report_str
 
-
         # write html to file and upload
-        html_file = os.path.join (html_output_dir, 'domain_profile_report.html')
-        with open (html_file, 'w', 0) as html_handle:
+        html_file = os.path.join(html_output_dir, 'domain_profile_report.html')
+        with open(html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -4114,13 +4168,12 @@ This module contains methods for running and visualizing results of phylogenomic
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
-            raise ValueError ('Logging exception loading html_report to shock')
+            raise ValueError('Logging exception loading html_report to shock')
 
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
                                     'name': 'domain_profile_report.html',
                                     'label': 'Functional Domain Profile report'}
                                    ]
-
 
         # save report object
         #
@@ -4128,7 +4181,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
         report_info = reportClient.create_extended_report(reportObj)
 
-        output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
+        output = {'report_name': report_info['name'], 'report_ref': report_info['ref']}
 
         #END view_fxn_profile_phylo
 
@@ -4187,11 +4240,11 @@ This module contains methods for running and visualizing results of phylogenomic
         console = []
         invalid_msgs = []
         self.log(console, 'Running view_pan_circle_plot(): ')
-        self.log(console, "\n"+pformat(params))
+        self.log(console, "\n" + pformat(params))
 
         token = ctx['token']
         wsClient = workspaceService(self.workspaceURL, token=token)
-        headers = {'Authorization': 'OAuth '+token}
+        headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
 
@@ -4201,30 +4254,27 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['input_genome_ref',
                            'input_pangenome_ref'
-                          ]
+                           ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
-                raise ValueError ("Must define required param: '"+arg+"'")
-
+                raise ValueError("Must define required param: '" + arg + "'")
 
         # load provenance
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
-        provenance[0]['input_ws_objects']=[str(params['input_genome_ref']),
-                                           str(params['input_pangenome_ref'])
-                                           ]
-
+        provenance[0]['input_ws_objects'] = [str(params['input_genome_ref']),
+                                             str(params['input_pangenome_ref'])
+                                             ]
 
         # set the output paths
-        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
-        output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output.' + str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        html_output_dir = os.path.join(output_dir,'html_output')
+        html_output_dir = os.path.join(output_dir, 'html_output')
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
-
 
         # get base genome
         #
@@ -4233,45 +4283,47 @@ This module contains methods for running and visualizing results of phylogenomic
         base_genome_ref = input_ref = params['input_genome_ref']
         base_genome_obj_name = None
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             base_genome_obj_name = input_obj_info[NAME_I]
-            base_genome_obj_name = base_genome_obj_name.replace(" ","_")
+            base_genome_obj_name = base_genome_obj_name.replace(" ", "_")
         except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseGenomes.Genome" ]
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseGenomes.Genome"]
         if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
         try:
-            base_genome_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            base_genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
             genome_sci_name_by_ref[base_genome_ref] = base_genome_obj['scientific_name']
         except:
-            raise ValueError ("unable to fetch genome: "+input_ref)
-
+            raise ValueError("unable to fetch genome: " + input_ref)
 
         # get pangenome
         #
         self.log(console, "GETTING PANGENOME OBJECT")
         input_ref = params['input_pangenome_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             pg_obj_name = input_obj_info[NAME_I]
             pg_obj_name = pg_obj_name.replace(" ", "_")
         except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseGenomes.Pangenome" ]
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseGenomes.Pangenome"]
         if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
         try:
-            pg_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            pg_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
         except:
-            raise ValueError ("unable to fetch genome: "+input_ref)
-
+            raise ValueError("unable to fetch genome: " + input_ref)
 
         # get genome_refs from pangenome and make sure requested genomes are found
         #
@@ -4292,7 +4344,6 @@ This module contains methods for running and visualizing results of phylogenomic
                 compare_genome_refs.append(g_ref)
                 compare_genomes_cnt += 1
 
-
         # get outgroup genomes and remove from compare_genomes
         #
         self.log(console, "REMOVING OUTGROUP GENOME(s) FROM TARGETS")
@@ -4310,7 +4361,6 @@ This module contains methods for running and visualizing results of phylogenomic
                     compare_genomes_cnt += 1
             compare_genome_refs = new_compare_genome_refs
 
-
         # Make sure all requested genomes are in pangenome
         #
         self.log(console, "CHECKING FOR REQUESTED GENOMES IN PANGENOME")
@@ -4321,9 +4371,8 @@ This module contains methods for running and visualizing results of phylogenomic
         if missing_genomes:
             msg = ''
             for genome_ref in missing_genomes:
-                msg += "genome "+genome_ref+" not found in pangenome\n"
-            raise ValueError (msg)
-
+                msg += "genome " + genome_ref + " not found in pangenome\n"
+            raise ValueError(msg)
 
         # Reorder compare genomes by fractional overlap to base by pangenome
         #
@@ -4335,29 +4384,28 @@ This module contains methods for running and visualizing results of phylogenomic
         for cluster in pg_obj['orthologs']:
             genomes_seen = dict()
             for cluster_member in cluster['orthologs']:
-                feature_id        = cluster_member[0]
+                feature_id = cluster_member[0]
                 feature_len_maybe = cluster_member[1]
-                genome_ref        = cluster_member[2]
+                genome_ref = cluster_member[2]
                 genomes_seen[genome_ref] = True
             if base_genome_ref in genomes_seen:
                 for genome_ref in compare_genome_refs:
                     if genome_ref in genomes_seen:
                         compare_genome_cluster_overlap_cnt[genome_ref] += 1
 
-        sorted_compare_genome_refs = sorted(compare_genome_cluster_overlap_cnt, key=compare_genome_cluster_overlap_cnt.__getitem__, reverse=True)
+        sorted_compare_genome_refs = sorted(compare_genome_cluster_overlap_cnt,
+                                            key=compare_genome_cluster_overlap_cnt.__getitem__, reverse=True)
         compare_genome_refs = sorted_compare_genome_refs
-
 
         # Get genome sci names
         #
         self.log(console, "GETTING GENOME SCIENTIFIC NAMES")
         for genome_ref in compare_genome_refs + outgroup_genome_refs:
             try:
-                genome_obj =  wsClient.get_objects([{'ref':genome_ref}])[0]['data']
+                genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]['data']
                 genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
             except:
-                raise ValueError ("unable to fetch genome: "+genome_ref)
-
+                raise ValueError("unable to fetch genome: " + genome_ref)
 
         # Determine singleton, clade-core, universal, and partial pangenome
         #   feature sets for base+compare genome set
@@ -4365,16 +4413,16 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         self.log(console, "DETERMINING PANGENOME CATEGORIES OF FEATURES")
         singleton_featureSet_elements = dict()
-        partial_featureSet_elements   = dict()
-        core_featureSet_elements      = dict()
-        univ_featureSet_elements      = dict()
+        partial_featureSet_elements = dict()
+        core_featureSet_elements = dict()
+        univ_featureSet_elements = dict()
         for cluster in pg_obj['orthologs']:
             genomes_seen = dict()
             fids_by_genome_ref = dict()
             for cluster_member in cluster['orthologs']:
-                feature_id        = cluster_member[0]
+                feature_id = cluster_member[0]
                 feature_len_maybe = cluster_member[1]
-                genome_ref        = cluster_member[2]
+                genome_ref = cluster_member[2]
                 genomes_seen[genome_ref] = True
                 try:
                     fid_list = fids_by_genome_ref[genome_ref]
@@ -4384,13 +4432,13 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # determine categorization
             hit_cnt = 0
-            for genome_ref in [base_genome_ref]+compare_genome_refs:
+            for genome_ref in [base_genome_ref] + compare_genome_refs:
                 if genome_ref in genomes_seen:
                     hit_cnt += 1
             if hit_cnt == 0:  # nothing within requested genome set
                 continue
             elif hit_cnt == 1:  # singleton
-                for genome_ref in [base_genome_ref]+compare_genome_refs:
+                for genome_ref in [base_genome_ref] + compare_genome_refs:
                     if genome_ref in genomes_seen:
                         for fid in fids_by_genome_ref[genome_ref]:
                             #featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
@@ -4400,7 +4448,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             else:
                                 singleton_featureSet_elements[fid] = [genome_ref]
             elif hit_cnt < compare_genomes_cnt + 1:  # +1: include base genome
-                for genome_ref in [base_genome_ref]+compare_genome_refs:
+                for genome_ref in [base_genome_ref] + compare_genome_refs:
                     if genome_ref in genomes_seen:
                         for fid in fids_by_genome_ref[genome_ref]:
                             #featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
@@ -4416,7 +4464,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         outgroup_hit = True
                         break
                 if outgroup_hit:  # universal core
-                    for genome_ref in [base_genome_ref]+compare_genome_refs:
+                    for genome_ref in [base_genome_ref] + compare_genome_refs:
                         #if genome_ref in genomes_seen:  # implicit
                         for fid in fids_by_genome_ref[genome_ref]:
                             #featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
@@ -4426,7 +4474,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             else:
                                 univ_featureSet_elements[fid] = [genome_ref]
                 else:  # clade-specific core
-                    for genome_ref in [base_genome_ref]+compare_genome_refs:
+                    for genome_ref in [base_genome_ref] + compare_genome_refs:
                         #if genome_ref in genomes_seen:  # implicit
                         for fid in fids_by_genome_ref[genome_ref]:
                             #featureSet_element_id = genome_ref + self.genome_feature_id_delim + fid
@@ -4435,7 +4483,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                 core_featureSet_elements[fid].append(genome_ref)
                             else:
                                 core_featureSet_elements[fid] = [genome_ref]
-
 
         # Create and save featureSets
         #
@@ -4446,89 +4493,92 @@ This module contains methods for running and visualizing results of phylogenomic
             self.log(console, "SAVING FEATURESETS")
 
             if singleton_featureSet_elements:
-                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".singleton_pangenome.FeatureSet"
-                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" singleton pangenome features"
-                singleton_obj = { 'description': fs_desc,
-                                  'elements': singleton_featureSet_elements
-                              }
+                fs_name = pg_obj_name + ".base_genome-" + base_genome_obj_name + ".singleton_pangenome.FeatureSet"
+                fs_desc = pg_obj_name + ".base_genome-" + base_genome_obj_name + " singleton pangenome features"
+                singleton_obj = {'description': fs_desc,
+                                 'elements': singleton_featureSet_elements
+                                 }
                 new_obj_info = wsClient.save_objects({
-                    'workspace':params['workspace_name'],
-                    'objects':[
-                        { 'type': 'KBaseCollections.FeatureSet',
-                          'data': singleton_obj,
-                          'name': fs_name,
-                          'meta': {},
-                          'provenance': provenance
-                      }]
+                    'workspace': params['workspace_name'],
+                    'objects': [
+                        {'type': 'KBaseCollections.FeatureSet',
+                         'data': singleton_obj,
+                         'name': fs_name,
+                         'meta': {},
+                         'provenance': provenance
+                         }]
                 })[0]
-                objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                objects_created.append(
+                    {'ref': str(new_obj_info[6]) + '/' + str(new_obj_info[0]) + '/' + str(new_obj_info[4]), 'description': fs_desc})
                 singleton_featureSet_elements = {}  # free memory
                 singleton_obj = {}  # free memory
 
             if partial_featureSet_elements:
-                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".non-core_pangenome.FeatureSet"
-                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" non-core pangenome features"
-                partial_obj = { 'description': fs_desc,
-                                'elements': partial_featureSet_elements
-                            }
+                fs_name = pg_obj_name + ".base_genome-" + base_genome_obj_name + ".non-core_pangenome.FeatureSet"
+                fs_desc = pg_obj_name + ".base_genome-" + base_genome_obj_name + " non-core pangenome features"
+                partial_obj = {'description': fs_desc,
+                               'elements': partial_featureSet_elements
+                               }
                 new_obj_info = wsClient.save_objects({
-                    'workspace':params['workspace_name'],
-                    'objects':[
-                        { 'type': 'KBaseCollections.FeatureSet',
-                          'data': partial_obj,
-                          'name': fs_name,
-                          'meta': {},
-                          'provenance': provenance
-                      }]
+                    'workspace': params['workspace_name'],
+                    'objects': [
+                        {'type': 'KBaseCollections.FeatureSet',
+                         'data': partial_obj,
+                         'name': fs_name,
+                         'meta': {},
+                         'provenance': provenance
+                         }]
                 })[0]
-                objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                objects_created.append(
+                    {'ref': str(new_obj_info[6]) + '/' + str(new_obj_info[0]) + '/' + str(new_obj_info[4]), 'description': fs_desc})
                 partial_featureSet_elements = {}  # free memory
                 partial_obj = {}  # free memory
 
             if core_featureSet_elements:
                 if outgroup_genome_refs_cnt == 0:
-                    fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".core_pangenome.FeatureSet"
-                    fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" core pangenome features"
+                    fs_name = pg_obj_name + ".base_genome-" + base_genome_obj_name + ".core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name + ".base_genome-" + base_genome_obj_name + " core pangenome features"
                 else:
-                    fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".clade-specific_core_pangenome.FeatureSet"
-                    fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" clade-specific core pangenome features"
-                core_obj = { 'description': fs_desc,
-                             'elements': core_featureSet_elements
-                }
+                    fs_name = pg_obj_name + ".base_genome-" + base_genome_obj_name + ".clade-specific_core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name + ".base_genome-" + base_genome_obj_name + " clade-specific core pangenome features"
+                core_obj = {'description': fs_desc,
+                            'elements': core_featureSet_elements
+                            }
                 new_obj_info = wsClient.save_objects({
-                    'workspace':params['workspace_name'],
-                    'objects':[
-                        { 'type': 'KBaseCollections.FeatureSet',
-                          'data': core_obj,
-                          'name': fs_name,
-                          'meta': {},
-                          'provenance': provenance
-                      }]
+                    'workspace': params['workspace_name'],
+                    'objects': [
+                        {'type': 'KBaseCollections.FeatureSet',
+                         'data': core_obj,
+                         'name': fs_name,
+                         'meta': {},
+                         'provenance': provenance
+                         }]
                 })[0]
-                objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                objects_created.append(
+                    {'ref': str(new_obj_info[6]) + '/' + str(new_obj_info[0]) + '/' + str(new_obj_info[4]), 'description': fs_desc})
                 core_featureSet_elements = {}  # free memory
                 core_obj = {}  # free memory
 
             if univ_featureSet_elements:
-                fs_name = pg_obj_name+".base_genome-"+base_genome_obj_name+".non-specific_core_pangenome.FeatureSet"
-                fs_desc = pg_obj_name+".base_genome-"+base_genome_obj_name+" non-specific core pangenome features"
-                univ_obj = { 'description': fs_desc,
-                             'elements': univ_featureSet_elements
-                         }
+                fs_name = pg_obj_name + ".base_genome-" + base_genome_obj_name + ".non-specific_core_pangenome.FeatureSet"
+                fs_desc = pg_obj_name + ".base_genome-" + base_genome_obj_name + " non-specific core pangenome features"
+                univ_obj = {'description': fs_desc,
+                            'elements': univ_featureSet_elements
+                            }
                 new_obj_info = wsClient.save_objects({
-                    'workspace':params['workspace_name'],
-                    'objects':[
-                        { 'type': 'KBaseCollections.FeatureSet',
-                          'data': univ_obj,
-                          'name': fs_name,
-                          'meta': {},
-                          'provenance': provenance
-                      }]
+                    'workspace': params['workspace_name'],
+                    'objects': [
+                        {'type': 'KBaseCollections.FeatureSet',
+                         'data': univ_obj,
+                         'name': fs_name,
+                         'meta': {},
+                         'provenance': provenance
+                         }]
                 })[0]
-                objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                objects_created.append(
+                    {'ref': str(new_obj_info[6]) + '/' + str(new_obj_info[0]) + '/' + str(new_obj_info[4]), 'description': fs_desc})
                 univ_featureSet_elements = {}  # free memory
                 univ_obj = {}  # free memory
-
 
         # Get mapping of base genes to pangenome
         #
@@ -4543,9 +4593,9 @@ This module contains methods for running and visualizing results of phylogenomic
             compare_genomes_seen = []
             outgroup_genomes_seen = []
             for cluster_member in cluster['orthologs']:
-                feature_id        = cluster_member[0]
+                feature_id = cluster_member[0]
                 feature_len_maybe = cluster_member[1]
-                genome_ref        = cluster_member[2]
+                genome_ref = cluster_member[2]
                 genomes_seen[genome_ref] = True
                 if genome_ref == base_genome_ref:
                     base_fids.append(feature_id)
@@ -4576,7 +4626,6 @@ This module contains methods for running and visualizing results of phylogenomic
                     elif singleton:
                         base_singletons[base_fid] = True
 
-
         # Get positions of genes in base genome
         #
         self.log(console, "READING BASE GENOME COORDS")
@@ -4591,7 +4640,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # hopefully info sitting in Genome obj
         if 'contig_ids' in base_genome_obj and base_genome_obj['contig_ids'] != None:
-            for contig_i,contig_id in enumerate(base_genome_obj['contig_ids']):
+            for contig_i, contig_id in enumerate(base_genome_obj['contig_ids']):
                 contig_len = base_genome_obj['contig_lengths'][contig_i]
                 unsorted_contig_lens[contig_id] = contig_len
                 sum_contig_lens += contig_len
@@ -4603,29 +4652,38 @@ This module contains methods for running and visualizing results of phylogenomic
             base_genome_assembly_type = None
             if ('contigset_ref' not in base_genome_obj or base_genome_obj['contigset_ref'] == None) \
                and ('assembly_ref' not in base_genome_obj or base_genome_obj['assembly_ref'] == None):
-                msg = "Genome "+base_genome_obj_name+" (ref:"+base_genome_ref+") "+genome_sci_name_by_ref[base_genome_ref]+" MISSING BOTH contigset_ref AND assembly_ref.  Cannot process.  Exiting."
+                msg = "Genome " + base_genome_obj_name + \
+                    " (ref:" + base_genome_ref + ") " + genome_sci_name_by_ref[base_genome_ref] + \
+                    " MISSING BOTH contigset_ref AND assembly_ref.  Cannot process.  Exiting."
                 self.log(console, msg)
                 #self.log(invalid_msgs, msg)
                 #continue
-                raise ValueError (msg)
+                raise ValueError(msg)
             elif 'assembly_ref' in base_genome_obj and base_genome_obj['assembly_ref'] != None:
-                msg = "Genome "+base_genome_obj_name+" (ref:"+base_genome_ref+") "+genome_sci_name_by_ref[base_genome_ref]+" USING assembly_ref: "+str(base_genome_obj['assembly_ref'])
-                self.log (console, msg)
+                msg = "Genome " + base_genome_obj_name + \
+                    " (ref:" + base_genome_ref + ") " + \
+                    genome_sci_name_by_ref[base_genome_ref] + \
+                    " USING assembly_ref: " + str(base_genome_obj['assembly_ref'])
+                self.log(console, msg)
                 base_genome_assembly_ref = base_genome_obj['assembly_ref']
                 base_genome_assembly_type = 'assembly'
             elif 'contigset_ref' in base_genome_obj and base_genome_obj['contigset_ref'] != None:
-                msg = "Genome "+base_genome_obj_name+" (ref:"+base_genome_ref+") "+genome_sci_name_by_ref[base_genome_ref]+" USING contigset_ref: "+str(base_genome_obj['contigset_ref'])
-                self.log (console, msg)
+                msg = "Genome " + base_genome_obj_name + \
+                    " (ref:" + base_genome_ref + ") " + \
+                    genome_sci_name_by_ref[base_genome_ref] + \
+                    " USING contigset_ref: " + str(base_genome_obj['contigset_ref'])
+                self.log(console, msg)
                 base_genome_assembly_ref = base_genome_obj['contigset_ref']
                 base_genome_assembly_type = 'contigset'
 
             # get assembly obj and read contig ids and lengths (both contigset obj and assembly obj have list of contigs that
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
                 #objects_list = wsClient.get_objects2({'objects':[{'ref':input_ref}]})['data']
-                ass_obj = wsClient.get_objects([{'ref':base_genome_assembly_ref}])[0]['data']
+                ass_obj = wsClient.get_objects([{'ref': base_genome_assembly_ref}])[0]['data']
             except:
-                raise ValueError ("unable to fetch assembly: "+base_genome_assembly_ref)
+                raise ValueError("unable to fetch assembly: " + base_genome_assembly_ref)
 
             if base_genome_assembly_type == 'assembly':
                 for contig_key in ass_obj['contigs'].keys():
@@ -4642,7 +4700,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     sum_contig_lens += contig_len
 
         # order contigs by length and store by contig_id
-        for order_i,contig_id in enumerate(sorted(unsorted_contig_lens, key=unsorted_contig_lens.__getitem__, reverse=True)):
+        for order_i, contig_id in enumerate(sorted(unsorted_contig_lens, key=unsorted_contig_lens.__getitem__, reverse=True)):
             #print ("STORING CONTIG ORDER: '"+str(order_i)+"' for CONTIG_ID: '"+str(contig_id)+"'\n")  # DEBUG
             sorted_contig_order[contig_id] = order_i
             sorted_base_contig_ids.append(contig_id)
@@ -4654,16 +4712,15 @@ This module contains methods for running and visualizing results of phylogenomic
                 fid = feature['id']
                 #print ("FEATURE_ID: '"+str(fid)+"'\n")  # DEBUG
                 feature_contig_id[fid] = feature['location'][0][0]
-                beg                    = feature['location'][0][1]
-                strand                 = feature['location'][0][2]
-                len                    = feature['location'][0][3]
+                beg = feature['location'][0][1]
+                strand = feature['location'][0][2]
+                len = feature['location'][0][3]
                 if strand == '-':
-                    feature_pos_in_contig[fid] = beg - int(len/2)
+                    feature_pos_in_contig[fid] = beg - int(len / 2)
                 else:
-                    feature_pos_in_contig[fid] = beg + int(len/2)
+                    feature_pos_in_contig[fid] = beg + int(len / 2)
                 contig_i = sorted_contig_order[feature_contig_id[fid]]
                 feature_order[contig_i].append(fid)
-
 
         # Draw Circle Plot with matplotlib
         #
@@ -4725,13 +4782,13 @@ This module contains methods for running and visualizing results of phylogenomic
         # Build image
         fig = pyplot.figure()
         fig.set_size_inches(img_in_width, img_in_width)
-        ax = pyplot.subplot2grid( (1,1), (0,0), rowspan=1, colspan=1 )
+        ax = pyplot.subplot2grid((1, 1), (0, 0), rowspan=1, colspan=1)
 
         # Let's turn off visibility of all tic labels and boxes here
         for ax in fig.axes:
             ax.xaxis.set_visible(False)  # remove axis labels and tics
             ax.yaxis.set_visible(False)
-            for t in ax.get_xticklabels()+ax.get_yticklabels():  # remove tics
+            for t in ax.get_xticklabels() + ax.get_yticklabels():  # remove tics
                 t.set_visible(False)
             ax.spines['top'].set_visible(False)     # Get rid of top axis line
             ax.spines['bottom'].set_visible(False)  # bottom axis line
@@ -4741,9 +4798,9 @@ This module contains methods for running and visualizing results of phylogenomic
         # Add marks for genomes
         ax = fig.axes[0]
         base_contig_pos = 0
-        for contig_i,contig_feature_order in enumerate(feature_order):
+        for contig_i, contig_feature_order in enumerate(feature_order):
             if contig_i > 0:
-                base_contig_pos += sorted_base_contig_lens[contig_i-1]
+                base_contig_pos += sorted_base_contig_lens[contig_i - 1]
 
             # use base genome for angle
             #
@@ -4752,7 +4809,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 # base genome ring color
                 if fid in base_singletons:
                     gene_color = base_singleton_color
-                    this_mark_width = 2* mark_width
+                    this_mark_width = 2 * mark_width
                     z_level = 4
                 elif fid in base_cores:
                     gene_color = base_core_color
@@ -4775,9 +4832,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     z_level = 1
                 gene_pos = base_contig_pos + feature_pos_in_contig[fid]
 
-                arc_beg = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) - this_mark_width
-                arc_end = 90 - origin_gap_angle/2.0 - (360-origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
-
+                arc_beg = 90 - origin_gap_angle / 2.0 - \
+                    (360 - origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) - this_mark_width
+                arc_end = 90 - origin_gap_angle / 2.0 - \
+                    (360 - origin_gap_angle) * (float(gene_pos) / float(sum_contig_lens)) + this_mark_width
 
                 # draw base genome gene
                 #gene_bar_radius = inner_radius + 0.5*gene_bar_lw*lw_to_coord_scale
@@ -4790,21 +4848,23 @@ This module contains methods for running and visualizing results of phylogenomic
                 #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
                 this_gene_bar_lw = unscaled_ring_lw
                 if gene_bar_lw == unscaled_ring_lw:
-                    gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt) * (gene_bar_lw+genome_ring_spacing)
+                    gene_bar_radius = inner_radius + lw_to_coord_scale * \
+                        (compare_genomes_cnt) * (gene_bar_lw + genome_ring_spacing)
                 else:
-                    gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1) * (gene_bar_lw+genome_ring_spacing) + 0.5 * lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
+                    gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - 1) * (
+                        gene_bar_lw + genome_ring_spacing) + 0.5 * lw_to_coord_scale * (this_gene_bar_lw + genome_ring_spacing)
 
                 #self.log(console, str('BASE')+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                 gene_x_radius = 1.0 * gene_bar_radius
                 gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
 
-                gene_arc = Arc (ellipse_center, gene_x_radius, gene_y_radius, \
-                                theta1=arc_beg, theta2=arc_end, \
-                                edgecolor=gene_color, lw=this_gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
-                ax.add_patch (gene_arc)
+                gene_arc = Arc(ellipse_center, gene_x_radius, gene_y_radius,
+                               theta1=arc_beg, theta2=arc_end,
+                               edgecolor=gene_color, lw=this_gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
+                ax.add_patch(gene_arc)
 
                 # add homolog rings
-                for genome_i,hit_flag in enumerate(base_to_compare_redundant_map[fid]):
+                for genome_i, hit_flag in enumerate(base_to_compare_redundant_map[fid]):
                     if not hit_flag:
                         continue
 #                    if fid in base_cores:
@@ -4819,14 +4879,15 @@ This module contains methods for running and visualizing results of phylogenomic
 #                        z_level = 1
                     #gene_bar_radius = inner_radius + 0.5*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
                     #gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
-                    gene_bar_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1)) * (gene_bar_lw+genome_ring_spacing)
+                    gene_bar_radius = inner_radius + lw_to_coord_scale * \
+                        (compare_genomes_cnt - (genome_i + 1)) * (gene_bar_lw + genome_ring_spacing)
                     #self.log(console, str(genome_i)+" gene_bar_radius: "+str(gene_bar_radius))  # DEBUG
                     gene_x_radius = 1.0 * gene_bar_radius
                     gene_y_radius = ellipse_to_circle_scaling * gene_bar_radius
-                    gene_arc = Arc (ellipse_center, gene_x_radius, gene_y_radius, \
-                                    theta1=arc_beg, theta2=arc_end, \
-                                    edgecolor=hit_gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
-                    ax.add_patch (gene_arc)
+                    gene_arc = Arc(ellipse_center, gene_x_radius, gene_y_radius,
+                                   theta1=arc_beg, theta2=arc_end,
+                                   edgecolor=hit_gene_color, lw=gene_bar_lw, alpha=1.0, zorder=z_level)  # facecolor does nothing (no fill for Arc)
+                    ax.add_patch(gene_arc)
 
         # Add labels
         base_text_fontsize = 10
@@ -4844,7 +4905,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #y_downshift = 0.0
         #text_y_delta = 0.0
 
-        label_angle = (math.pi/180) * (90 - origin_gap_angle/2.0 - (360-origin_gap_angle))
+        label_angle = (math.pi / 180) * (90 - origin_gap_angle / 2.0 - (360 - origin_gap_angle))
         #label_radius = inner_radius + 0.5*gene_bar_lw*lw_to_coord_scale
         #label_radius = 0.5*inner_radius
         #label_radius = 0.5*inner_radius + text_y_delta*compare_genomes_cnt*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
@@ -4852,122 +4913,131 @@ This module contains methods for running and visualizing results of phylogenomic
         #label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt + 0.5) * (gene_bar_lw+genome_ring_spacing)
         this_gene_bar_lw = unscaled_ring_lw
         if gene_bar_lw == unscaled_ring_lw:
-            label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt) * (gene_bar_lw+genome_ring_spacing)
+            label_radius = inner_radius + lw_to_coord_scale * \
+                (compare_genomes_cnt) * (gene_bar_lw + genome_ring_spacing)
         else:
-            label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-1)*(gene_bar_lw+genome_ring_spacing) + 0.5*lw_to_coord_scale * (this_gene_bar_lw+genome_ring_spacing)
+            label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - 1) * (
+                gene_bar_lw + genome_ring_spacing) + 0.5 * lw_to_coord_scale * (this_gene_bar_lw + genome_ring_spacing)
         label_radius *= 0.5  # why is this necessary?
         x_shift = label_radius * math.cos(label_angle)
         y_shift = label_radius * math.sin(label_angle)
         label_x_pos = ellipse_center_x + x_shift + label_margin
         label_y_pos = ellipse_center_y + y_shift - y_downshift
         label = str(0)
-        ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text(label_x_pos, label_y_pos, label, verticalalignment="bottom",
+                horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
-        for genome_i,genome_ref in enumerate(compare_genome_refs):
+        for genome_i, genome_ref in enumerate(compare_genome_refs):
             #label_radius = 0.5*inner_radius + text_y_delta*(compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)*lw_to_coord_scale
             #label_radius = inner_radius + text_y_delta * lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
             #label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt - (genome_i+1) + 0.5) * (gene_bar_lw+genome_ring_spacing)
             #label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-(genome_i+1+1))*(gene_bar_lw+genome_ring_spacing) + 0.5*lw_to_coord_scale * (gene_bar_lw+genome_ring_spacing)
-            label_radius = inner_radius + lw_to_coord_scale * (compare_genomes_cnt-(genome_i+1))*(gene_bar_lw+genome_ring_spacing)
+            label_radius = inner_radius + lw_to_coord_scale * \
+                (compare_genomes_cnt - (genome_i + 1)) * (gene_bar_lw + genome_ring_spacing)
             label_radius *= 0.5  # why is this necessary?
             x_shift = label_radius * math.cos(label_angle)
             y_shift = label_radius * math.sin(label_angle)
             label_x_pos = ellipse_center_x + x_shift + label_margin
             label_y_pos = ellipse_center_y + y_shift - y_downshift
-            label = str(genome_i+1)
-            ax.text (label_x_pos, label_y_pos, label, verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+            label = str(genome_i + 1)
+            ax.text(label_x_pos, label_y_pos, label, verticalalignment="bottom",
+                    horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         # Add color key
         key_x_margin = 0.01
         key_y_margin = 0.01
         key_line_spacing = 0.015
         key_x_label_offset = 0.018
-        box_gap = key_line_spacing/6.0
+        box_gap = key_line_spacing / 6.0
         box_h = key_line_spacing - box_gap
         box_w = box_h
 
         # base genome key
-        ax.text (key_x_margin/2.0, 1.0-key_y_margin, genome_sci_name_by_ref[base_genome_ref], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text(key_x_margin / 2.0, 1.0 - key_y_margin,
+                genome_sci_name_by_ref[base_genome_ref], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
-        key_config = [ { 'name': 'base singletons',
-                         'y_shift': 1,
-                         'color': base_singleton_color
-                     },
-                       { 'name': 'non-core',
-                         'y_shift': 2,
-                         'color': base_partial_color
-                     }
-                   ]
+        key_config = [{'name': 'base singletons',
+                       'y_shift': 1,
+                       'color': base_singleton_color
+                       },
+                      {'name': 'non-core',
+                       'y_shift': 2,
+                       'color': base_partial_color
+                       }
+                      ]
         if outgroup_genome_refs_cnt == 0:
             key_config.extend(
-                [ { 'name': 'core',
+                [{'name': 'core',
                     'y_shift': 3,
                     'color': base_nonspecific_core_color
-                }
-              ])
+                  }
+                 ])
         else:
             key_config.extend(
-                [ { 'name': 'clade-specific core',
+                [{'name': 'clade-specific core',
                     'y_shift': 3,
                     'color': base_core_color
-                },
-                  { 'name': 'core + outgroup',
+                  },
+                 {'name': 'core + outgroup',
                     'y_shift': 4,
                     'color': base_univ_color
-                }
-              ])
+                  }
+                 ])
         for k_config in key_config:
-            key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing)), box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
+            key_box = Rectangle((key_x_margin, 1.0 - (key_y_margin + k_config['y_shift'] * key_line_spacing)),
+                                box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
             ax.add_patch(key_box)
-            ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+box_gap+k_config['y_shift']*key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+            ax.text(key_x_margin + key_x_label_offset, 1.0 - (key_y_margin + box_gap +
+                                                              k_config['y_shift'] * key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         # rest of pangenome key
-        ax.text (key_x_margin/2.0, 1.0-(key_y_margin+5.5*key_line_spacing), "Pangenome", verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
+        ax.text(key_x_margin / 2.0, 1.0 - (key_y_margin + 5.5 * key_line_spacing), "Pangenome",
+                verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
-        key_config = [ { 'name': 'non-core',
-                         'y_shift': 6.5,
-                         'color': hit_partial_color
-                         }
-                   ]
+        key_config = [{'name': 'non-core',
+                       'y_shift': 6.5,
+                       'color': hit_partial_color
+                       }
+                      ]
         if outgroup_genome_refs_cnt == 0:
-            key_config.extend ([
-                       { 'name': 'core',
-                         'y_shift': 7.5,
+            key_config.extend([
+                {'name': 'core',
+                 'y_shift': 7.5,
                          'color': hit_nonspecific_core_color
-                         }
-                       ])
+                 }
+            ])
         else:
-            key_config.extend ([
-                       { 'name': 'clade-specific core',
-                         'y_shift': 7.5,
+            key_config.extend([
+                {'name': 'clade-specific core',
+                 'y_shift': 7.5,
                          'color': hit_core_color
-                         },
-                       { 'name': 'core + outgroup',
-                         'y_shift': 8.5,
-                         'color': hit_univ_color
-                         }
-                       ])
+                 },
+                {'name': 'core + outgroup',
+                 'y_shift': 8.5,
+                 'color': hit_univ_color
+                 }
+            ])
         for k_config in key_config:
-            key_box = Rectangle ((key_x_margin, 1.0-(key_y_margin+k_config['y_shift']*key_line_spacing)), box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
+            key_box = Rectangle((key_x_margin, 1.0 - (key_y_margin + k_config['y_shift'] * key_line_spacing)),
+                                box_w, box_h, facecolor=k_config['color'], edgecolor=text_color, alpha=1.0, zorder=1)
             ax.add_patch(key_box)
-            ax.text (key_x_margin+key_x_label_offset, 1.0-(key_y_margin+box_gap+k_config['y_shift']*key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
-
+            ax.text(key_x_margin + key_x_label_offset, 1.0 - (key_y_margin + box_gap +
+                                                              k_config['y_shift'] * key_line_spacing), k_config['name'], verticalalignment="bottom", horizontalalignment="left", color=text_color, fontsize=text_fontsize, zorder=1)
 
         # Save circle plot
         #
         self.log(console, "SAVING CIRCLE PLOT")
-        png_file = base_genome_obj_name+'-pangenome_circle.png'
-        pdf_file = base_genome_obj_name+'-pangenome_circle.pdf'
-        output_png_file_path = os.path.join(html_output_dir, png_file);
-        output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
+        png_file = base_genome_obj_name + '-pangenome_circle.png'
+        pdf_file = base_genome_obj_name + '-pangenome_circle.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file)
+        output_pdf_file_path = os.path.join(html_output_dir, pdf_file)
         fig.savefig(output_png_file_path, dpi=img_dpi)
         fig.savefig(output_pdf_file_path, format='pdf')
-
 
         # build report object
         #
         self.log(console, "CREATING HTML REPORT")
-        reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
+        reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
         reportObj = {'objects_created': [],
                      'direct_html_link_index': 0,
                      'file_links': [],
@@ -4976,7 +5046,6 @@ This module contains methods for running and visualizing results of phylogenomic
                      'report_object_name': reportName
                      }
         reportObj['objects_created'] = objects_created
-
 
         # build html report
         #
@@ -5000,35 +5069,42 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<title>KBase Pangenome Homolog Circle Plot</title>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
-        html_report_lines += ['<table cellpadding="'+str(cell_padding)+'" cellspacing="'+str(cell_spacing)+'" border="'+str(cell_border)+'">']
+        html_report_lines += ['<table cellpadding="' +
+                              str(cell_padding) + '" cellspacing="' + str(cell_spacing) + '" border="' + str(cell_border) + '">']
 
         # add circle image
-        circle_rowspan = 2 * (compare_genomes_cnt+outgroup_genome_refs_cnt+1)
+        circle_rowspan = 2 * (compare_genomes_cnt + outgroup_genome_refs_cnt + 1)
         html_report_lines += ['<tr>']
-        html_report_lines += ['<td valign="middle" align="left" rowspan="'+str(circle_rowspan)+'">']
-        html_report_lines += ['<img src="'+png_file+'" height='+str(circle_img_height)+'>']
+        html_report_lines += ['<td valign="middle" align="left" rowspan="' + str(circle_rowspan) + '">']
+        html_report_lines += ['<img src="' + png_file + '" height=' + str(circle_img_height) + '>']
         html_report_lines += ['</td>']
 
         # add labels
-        for filler_line_i in range((compare_genomes_cnt+outgroup_genome_refs_cnt+1)//2):
+        for filler_line_i in range((compare_genomes_cnt + outgroup_genome_refs_cnt + 1) // 2):
             if filler_line_i > 0:
                 html_report_lines += ['<tr>']
-            html_report_lines += ['<td>'+sp+'</td></tr>']
-        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><b>'+"genome "+str(0)+'</b></nobr></font></td>']
-        html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><b>'+str(genome_sci_name_by_ref[base_genome_ref])+'</b></nobr></font></td>']
+            html_report_lines += ['<td>' + sp + '</td></tr>']
+        html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
+            font_size) + '"><nobr><b>' + "genome " + str(0) + '</b></nobr></font></td>']
+        html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
+            font_size) + '"><nobr><b>' + str(genome_sci_name_by_ref[base_genome_ref]) + '</b></nobr></font></td>']
         html_report_lines += ['</tr>']
-        for genome_i,genome_ref in enumerate(compare_genome_refs):
+        for genome_i, genome_ref in enumerate(compare_genome_refs):
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+"genome "+str(genome_i+1)+'</nobr></font></td>']
-            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+str(genome_sci_name_by_ref[genome_ref])+'</nobr></font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
+                font_size) + '"><nobr>' + "genome " + str(genome_i + 1) + '</nobr></font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
+                font_size) + '"><nobr>' + str(genome_sci_name_by_ref[genome_ref]) + '</nobr></font></td>']
             html_report_lines += ['</tr>']
-        for genome_i,genome_ref in enumerate(outgroup_genome_refs):
+        for genome_i, genome_ref in enumerate(outgroup_genome_refs):
             html_report_lines += ['<tr>']
-            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><i>'+"outgroup"+'</i></nobr></font></td>']
-            html_report_lines += ['<td valign="top" align="left"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr><i>'+str(genome_sci_name_by_ref[genome_ref])+'</i></nobr></font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="' +
+                                  str(text_color) + '" size="' + str(font_size) + '"><nobr><i>' + "outgroup" + '</i></nobr></font></td>']
+            html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
+                font_size) + '"><nobr><i>' + str(genome_sci_name_by_ref[genome_ref]) + '</i></nobr></font></td>']
             html_report_lines += ['</tr>']
-        for filler_line_i in range((compare_genomes_cnt+outgroup_genome_refs_cnt+1)//2):
-            html_report_lines += ['<tr><td>'+sp+'</td></tr>']
+        for filler_line_i in range((compare_genomes_cnt + outgroup_genome_refs_cnt + 1) // 2):
+            html_report_lines += ['<tr><td>' + sp + '</td></tr>']
 
         # close
         html_report_lines += ['</table>']
@@ -5038,26 +5114,25 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_str = "\n".join(html_report_lines)
         #reportObj['direct_html'] = html_report_str
 
-
         # write html to file and upload
         self.log(console, "SAVING AND UPLOADING HTML REPORT")
-        html_file = os.path.join (html_output_dir, 'pan_circle_plot_report.html')
-        with open (html_file, 'w', 0) as html_handle:
+        html_file = os.path.join(html_output_dir, 'pan_circle_plot_report.html')
+        with open(html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
             png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
                                                 'make_handle': 0})
-                                            #'pack': 'zip'})
+            #'pack': 'zip'})
         except:
-            raise ValueError ('Logging exception loading png_file to shock')
+            raise ValueError('Logging exception loading png_file to shock')
 
         try:
             pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
                                                 'make_handle': 0})
-                                            #'pack': 'zip'})
+            #'pack': 'zip'})
         except:
-            raise ValueError ('Logging exception loading pdf_file to shock')
+            raise ValueError('Logging exception loading pdf_file to shock')
 
         try:
             #upload_ret = dfu.file_to_shock({'file_path': html_file,
@@ -5065,7 +5140,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
-            raise ValueError ('Logging exception loading html_report to shock')
+            raise ValueError('Logging exception loading html_report to shock')
 
         reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
                                     'name': 'pan_circle_plot.png',
@@ -5079,14 +5154,13 @@ This module contains methods for running and visualizing results of phylogenomic
                                     'label': 'Pangenome Circle Plot Report'}
                                    ]
 
-
         # save report object
         #
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
         report_info = reportClient.create_extended_report(reportObj)
 
-        output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
+        output = {'report_name': report_info['name'], 'report_ref': report_info['ref']}
 
         #END view_pan_circle_plot
 
@@ -5194,11 +5268,11 @@ This module contains methods for running and visualizing results of phylogenomic
         ### STEP 0: basic init
         console = []
         self.log(console, 'Running view_pan_phylo(): ')
-        self.log(console, "\n"+pformat(params))
+        self.log(console, "\n" + pformat(params))
 
         token = ctx['token']
         wsClient = workspaceService(self.workspaceURL, token=token)
-        headers = {'Authorization': 'OAuth '+token}
+        headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
 
@@ -5208,52 +5282,50 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['input_speciesTree_ref',
                            'input_pangenome_ref'
-                          ]
+                           ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
-                raise ValueError ("Must define required param: '"+arg+"'")
-
+                raise ValueError("Must define required param: '" + arg + "'")
 
         # load provenance
         provenance = [{}]
         if 'provenance' in ctx:
             provenance = ctx['provenance']
-        provenance[0]['input_ws_objects']=[str(params['input_speciesTree_ref']),
-                                           str(params['input_pangenome_ref'])
-                                          ]
-
+        provenance[0]['input_ws_objects'] = [str(params['input_speciesTree_ref']),
+                                             str(params['input_pangenome_ref'])
+                                             ]
 
         # set the output paths
-        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds()*1000)
-        output_dir = os.path.join(self.scratch,'output.'+str(timestamp))
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output.' + str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        html_output_dir = os.path.join(output_dir,'html_output')
+        html_output_dir = os.path.join(output_dir, 'html_output')
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
-
 
         # get speciesTree
         #
         input_ref = params['input_speciesTree_ref']
         speciesTree_name = None
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             speciesTree_name = input_obj_info[NAME_I]
         except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseTrees.Tree" ]
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseTrees.Tree"]
         if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
         # get set obj
         try:
-            speciesTree_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            speciesTree_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
         except:
-            raise ValueError ("unable to fetch speciesTree: "+input_ref)
-
+            raise ValueError("unable to fetch speciesTree: " + input_ref)
 
         # get genome_refs from speciesTree and instantiate ETE3 tree and order
         #
@@ -5269,7 +5341,6 @@ This module contains methods for running and visualizing results of phylogenomic
         species_tree.ladderize()
         for genome_id in species_tree.get_leaf_names():
             genome_refs.append(genome_ref_by_id[genome_id])
-
 
         # get internal node ids based on sorted genome_refs of children
         #
@@ -5297,12 +5368,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     genome_ref_to_node_ids_by_refs[genome_ref] = []
                 genome_ref_to_node_ids_by_refs[genome_ref].append(node_ref_id)
 
-
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_obj_name_by_ref = dict()
         genome_sci_name_by_ref = dict()
-        genome_sci_name_by_id  = dict()
+        genome_sci_name_by_id = dict()
         genome_CDS_count_by_ref = dict()
         uniq_genome_ws_ids = dict()
 
@@ -5317,24 +5387,26 @@ This module contains methods for running and visualizing results of phylogenomic
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-                input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-                input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+                input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
                 uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
 
             except Exception as e:
-                raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-            accepted_input_types = ["KBaseGenomes.Genome" ]
+                raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+            accepted_input_types = ["KBaseGenomes.Genome"]
             if input_obj_type not in accepted_input_types:
-                raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+                raise ValueError("Input object of type '" + input_obj_type +
+                                 "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
 
             try:
-                genome_obj = wsClient.get_objects([{'ref':input_ref}])[0]['data']
+                genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
             except:
-                raise ValueError ("unable to fetch genome: "+input_ref)
+                raise ValueError("unable to fetch genome: " + input_ref)
 
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
@@ -5347,35 +5419,33 @@ This module contains methods for running and visualizing results of phylogenomic
                     cds_cnt += 1
             genome_CDS_count_by_ref[genome_ref] = cds_cnt
 
-
         # get pangenome
         #
         self.log(console, "GETTING PANGENOME OBJECT")
         input_ref = params['input_pangenome_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-            input_obj_info = wsClient.get_object_info_new ({'objects':[{'ref':input_ref}]})[0]
-            input_obj_type = re.sub ('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             pg_obj_name = input_obj_info[NAME_I]
             pg_obj_name = pg_obj_name.replace(" ", "_")
         except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref +')' + str(e))
-        accepted_input_types = ["KBaseGenomes.Pangenome" ]
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseGenomes.Pangenome"]
         if input_obj_type not in accepted_input_types:
-            raise ValueError ("Input object of type '"+input_obj_type+"' not accepted.  Must be one of "+", ".join(accepted_input_types))
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
         try:
-            pg_obj =  wsClient.get_objects([{'ref':input_ref}])[0]['data']
+            pg_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
         except:
-            raise ValueError ("unable to fetch genome: "+input_ref)
-
-
+            raise ValueError("unable to fetch genome: " + input_ref)
 
         # make sure species tree genomes are found in pangenome (reverse not required)
         for genome_ref in genome_refs:
             if genome_ref not in pg_obj['genome_refs']:
-                raise ValueError ("genome: '"+str(genome_ref)+"' from SpeciesTree not present in Pangenome object")
-
+                raise ValueError("genome: '" + str(genome_ref) + "' from SpeciesTree not present in Pangenome object")
 
         # determine pangenome accumulations of core, partial, and singleton
         #
@@ -5392,9 +5462,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
             nodes_hit = dict()
             for gene in homolog_cluster['orthologs']:
-                gene_id                     = gene[0]
+                gene_id = gene[0]
                 probably_gene_len_dont_need = gene[1]
-                genome_ref                  = gene[2]
+                genome_ref = gene[2]
 
                 if genome_ref not in genome_ref_to_node_ids_by_refs:
                     continue
@@ -5435,7 +5505,7 @@ This module contains methods for running and visualizing results of phylogenomic
             clusters_core_by_node_and_cluster_flag[node_ref_id] = dict()
             clusters_partial_by_node_and_cluster_flag[node_ref_id] = dict()
 
-            for cluster_num,hit_cnt in enumerate(cluster_hits[node_ref_id]):
+            for cluster_num, hit_cnt in enumerate(cluster_hits[node_ref_id]):
                 if hit_cnt > 0:
                     clusters_total[node_ref_id] += 1
                     if hit_cnt == 1:
@@ -5452,15 +5522,15 @@ This module contains methods for running and visualizing results of phylogenomic
         # get min and max cluster cnts
         INSANE_VALUE = 10000000000000000
         max_clusters_cnt = -INSANE_VALUE
-        min_clusters_cnt =  INSANE_VALUE
+        min_clusters_cnt = INSANE_VALUE
         for node_ref_id in node_ids_by_refs.keys():
             if clusters_total[node_ref_id] > max_clusters_cnt:
                 max_clusters_cnt = clusters_total[node_ref_id]
             if clusters_total[node_ref_id] < min_clusters_cnt:
                 min_clusters_cnt = clusters_total[node_ref_id]
 
-            self.log(console, "NODE: "+node_ref_id+" MIN: "+str(min_clusters_cnt)+" MAX: "+str(max_clusters_cnt))  # DEBUG
-
+            self.log(console, "NODE: " + node_ref_id + " MIN: " +
+                     str(min_clusters_cnt) + " MAX: " + str(max_clusters_cnt))  # DEBUG
 
         # Create FeatureSet objects for nodes
         #
@@ -5474,12 +5544,12 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 node_num_id = str(node_ids_by_refs[node_ref_id])
 
-                self.log(console, "calculating feature sets for node "+str(node_num_id))
+                self.log(console, "calculating feature sets for node " + str(node_num_id))
 
                 # Core
                 if clusters_core[node_ref_id] > 0:
 
-                    self.log(console, "\t"+"adding CORE.  Num clusters: "+str(clusters_core[node_ref_id]))
+                    self.log(console, "\t" + "adding CORE.  Num clusters: " + str(clusters_core[node_ref_id]))
 
                     # build core featureset elements
                     core_featureSet_elements = {}
@@ -5492,30 +5562,31 @@ This module contains methods for running and visualizing results of phylogenomic
                                     core_featureSet_elements[gene_id] = [genome_ref]
 
                     # build object
-                    fs_name = pg_obj_name+".node-"+str(node_num_id)+".core_pangenome.FeatureSet"
-                    fs_desc = pg_obj_name+".node-"+str(node_num_id)+" core pangenome features"
-                    core_obj = { 'description': fs_desc,
-                                 'elements': core_featureSet_elements
-                             }
+                    fs_name = pg_obj_name + ".node-" + str(node_num_id) + ".core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name + ".node-" + str(node_num_id) + " core pangenome features"
+                    core_obj = {'description': fs_desc,
+                                'elements': core_featureSet_elements
+                                }
                     new_obj_info = wsClient.save_objects({
-                        'workspace':params['workspace_name'],
-                        'objects':[
-                            { 'type': 'KBaseCollections.FeatureSet',
-                              'data': core_obj,
-                              'name': fs_name,
-                              'meta': {},
-                              'provenance': provenance
-                          }]
+                        'workspace': params['workspace_name'],
+                        'objects': [
+                            {'type': 'KBaseCollections.FeatureSet',
+                             'data': core_obj,
+                             'name': fs_name,
+                             'meta': {},
+                             'provenance': provenance
+                             }]
                     })[0]
-                    objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                    objects_created.append(
+                        {'ref': str(new_obj_info[6]) + '/' + str(new_obj_info[0]) + '/' + str(new_obj_info[4]), 'description': fs_desc})
                     core_featureSet_elements = {}  # free memory
                     core_obj = {}  # free memory
-
 
                 # Singletons
                 if clusters_singletons[node_ref_id] > 0:
 
-                    self.log(console, "\t"+"adding SINGLETON.  Num clusters: "+str(clusters_singletons[node_ref_id]))
+                    self.log(console, "\t" + "adding SINGLETON.  Num clusters: " +
+                             str(clusters_singletons[node_ref_id]))
 
                     # build singleton featureset elements
                     singleton_featureSet_elements = {}
@@ -5528,30 +5599,30 @@ This module contains methods for running and visualizing results of phylogenomic
                                     singleton_featureSet_elements[gene_id] = [genome_ref]
 
                     # build object
-                    fs_name = pg_obj_name+".node-"+str(node_num_id)+".singleton_pangenome.FeatureSet"
-                    fs_desc = pg_obj_name+".node-"+str(node_num_id)+" singleton pangenome features"
-                    singleton_obj = { 'description': fs_desc,
-                                      'elements': singleton_featureSet_elements
-                                  }
+                    fs_name = pg_obj_name + ".node-" + str(node_num_id) + ".singleton_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name + ".node-" + str(node_num_id) + " singleton pangenome features"
+                    singleton_obj = {'description': fs_desc,
+                                     'elements': singleton_featureSet_elements
+                                     }
                     new_obj_info = wsClient.save_objects({
-                        'workspace':params['workspace_name'],
-                        'objects':[
-                            { 'type': 'KBaseCollections.FeatureSet',
-                              'data': singleton_obj,
-                              'name': fs_name,
-                              'meta': {},
-                              'provenance': provenance
-                          }]
+                        'workspace': params['workspace_name'],
+                        'objects': [
+                            {'type': 'KBaseCollections.FeatureSet',
+                             'data': singleton_obj,
+                             'name': fs_name,
+                             'meta': {},
+                             'provenance': provenance
+                             }]
                     })[0]
-                    objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                    objects_created.append(
+                        {'ref': str(new_obj_info[6]) + '/' + str(new_obj_info[0]) + '/' + str(new_obj_info[4]), 'description': fs_desc})
                     singleton_featureSet_elements = {}  # free memory
                     singleton_obj = {}  # free memory
-
 
                 # Partial pangenome
                 if clusters_partial[node_ref_id] > 0:
 
-                    self.log(console, "\t"+"adding PARTIAL.  Num clusters: "+str(clusters_partial[node_ref_id]))
+                    self.log(console, "\t" + "adding PARTIAL.  Num clusters: " + str(clusters_partial[node_ref_id]))
 
                     # build partial featureset elements
                     partial_featureSet_elements = {}
@@ -5564,32 +5635,32 @@ This module contains methods for running and visualizing results of phylogenomic
                                     partial_featureSet_elements[gene_id] = [genome_ref]
 
                     # build object
-                    fs_name = pg_obj_name+".node-"+str(node_num_id)+".non-core_pangenome.FeatureSet"
-                    fs_desc = pg_obj_name+".node-"+str(node_num_id)+" non-core pangenome features"
-                    partial_obj = { 'description': fs_desc,
-                                    'elements': partial_featureSet_elements
-                                }
+                    fs_name = pg_obj_name + ".node-" + str(node_num_id) + ".non-core_pangenome.FeatureSet"
+                    fs_desc = pg_obj_name + ".node-" + str(node_num_id) + " non-core pangenome features"
+                    partial_obj = {'description': fs_desc,
+                                   'elements': partial_featureSet_elements
+                                   }
                     new_obj_info = wsClient.save_objects({
-                        'workspace':params['workspace_name'],
-                        'objects':[
-                            { 'type': 'KBaseCollections.FeatureSet',
-                              'data': partial_obj,
-                              'name': fs_name,
-                              'meta': {},
-                              'provenance': provenance
-                          }]
+                        'workspace': params['workspace_name'],
+                        'objects': [
+                            {'type': 'KBaseCollections.FeatureSet',
+                             'data': partial_obj,
+                             'name': fs_name,
+                             'meta': {},
+                             'provenance': provenance
+                             }]
                     })[0]
-                    objects_created.append({'ref':str(new_obj_info[6])+'/'+str(new_obj_info[0])+'/'+str(new_obj_info[4]), 'description': fs_desc})
+                    objects_created.append(
+                        {'ref': str(new_obj_info[6]) + '/' + str(new_obj_info[0]) + '/' + str(new_obj_info[4]), 'description': fs_desc})
                     partial_featureSet_elements = {}  # free memory
                     partial_obj = {}  # free memory
 
-
         # Draw tree (we already instantiated Tree above)
         #
-        png_file = speciesTree_name+'-pangenome.png'
-        pdf_file = speciesTree_name+'-pangenome.pdf'
-        output_png_file_path = os.path.join(html_output_dir, png_file);
-        output_pdf_file_path = os.path.join(html_output_dir, pdf_file);
+        png_file = speciesTree_name + '-pangenome.png'
+        pdf_file = speciesTree_name + '-pangenome.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file)
+        output_pdf_file_path = os.path.join(html_output_dir, pdf_file)
 
         # init ETE3 accessory objects
         ts = ete3.TreeStyle()
@@ -5597,7 +5668,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # customize
         min_pie_size = 1000
         max_pie_size = 2000
-        leaf_fontsize = 500  # scale of everything is goofy in circle tree mode, and pie size affects type size and line thickness.  ugh.
+        # scale of everything is goofy in circle tree mode, and pie size affects type size and line thickness.  ugh.
+        leaf_fontsize = 500
         node_fontsize = 500
         ts.mode = "c"  # circular tree graph
         #ts.arc_start = -180 # 0 degrees = 3 o'clock
@@ -5606,7 +5678,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
-        ts.branch_vertical_margin = 5 # pixels between adjacent branches
+        ts.branch_vertical_margin = 5  # pixels between adjacent branches
         #ts.title.add_face(ete3.TextFace(params['output_name']+": "+params['desc'], fsize=10), column=0)
 
         node_style = ete3.NodeStyle()
@@ -5616,7 +5688,7 @@ This module contains methods for running and visualizing results of phylogenomic
         node_style["hz_line_color"] = "#606060"
         node_style["vt_line_width"] = 100  # 2
         node_style["hz_line_width"] = 100  # 2
-        node_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        node_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
         node_style["hz_line_type"] = 0
 
         leaf_style = ete3.NodeStyle()
@@ -5626,7 +5698,7 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_style["hz_line_color"] = "#606060"
         leaf_style["vt_line_width"] = 100  # 2
         leaf_style["hz_line_width"] = 100  # 2
-        leaf_style["vt_line_type"] = 0 # 0 solid, 1 dashed, 2 dotted
+        leaf_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
         leaf_style["hz_line_type"] = 0
 
         for n in species_tree.traverse("preorder"):
@@ -5636,17 +5708,17 @@ This module contains methods for running and visualizing results of phylogenomic
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
                 leaf_name_disp = genome_sci_name_by_id[genome_id]
-                n.add_face (ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
+                n.add_face(ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
 
             else:
                 leaf_refs = []
                 for genome_id in n.get_leaf_names():
                     leaf_refs.append(genome_ref_by_id[genome_id])
-                node_ref_id = "+".join(sorted (leaf_refs))
+                node_ref_id = "+".join(sorted(leaf_refs))
                 node_num_id = node_ids_by_refs[node_ref_id]
                 node_name_disp = str(node_num_id)
                 #n.add_face (ete3.TextFace(node_name_disp, fsize=node_fontsize),column=0, position="branch-right")
-                n.add_face (ete3.TextFace(' '+node_name_disp+' ', fsize=node_fontsize),column=0)
+                n.add_face(ete3.TextFace(' ' + node_name_disp + ' ', fsize=node_fontsize), column=0)
 
                 style = ete3.NodeStyle()
                 for k in node_style.keys():
@@ -5662,10 +5734,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     style["size"] = 2
 
                 # yum! pie!
-                pie_size = int(min_pie_size + float(max_pie_size-min_pie_size) * float(clusters_total[node_ref_id]-min_clusters_cnt) / float(max_clusters_cnt-min_clusters_cnt))
-                singleton_perc = round(100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
-                core_perc = round(100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
-                partial_perc = round (100.0 - core_perc - singleton_perc, 1)
+                pie_size = int(min_pie_size + float(max_pie_size - min_pie_size) *
+                               float(clusters_total[node_ref_id] - min_clusters_cnt) / float(max_clusters_cnt - min_clusters_cnt))
+                singleton_perc = round(
+                    100.0 * float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
+                core_perc = round(100.0 * float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
+                partial_perc = round(100.0 - core_perc - singleton_perc, 1)
 
                 pie_w = pie_h = pie_size
                 pie_percs = [singleton_perc, partial_perc, core_perc]
@@ -5673,7 +5747,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 pie_line_color = "White"
 
                 this_pieFace = ete3.PieChartFace(pie_percs, pie_w, pie_h, pie_colors, pie_line_color)
-                n.add_face (this_pieFace, column=1)
+                n.add_face(this_pieFace, column=1)
 
             n.set_style(style)
 
@@ -5681,15 +5755,14 @@ This module contains methods for running and visualizing results of phylogenomic
         dpi = 300
         img_units = "in"
         img_pix_width = 1200
-        img_in_width = round(float(img_pix_width)/float(dpi), 1)
+        img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 2
         species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
         species_tree.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
-
         # build report object
         #
-        reportName = 'kb_phylogenomics_report_'+str(uuid.uuid4())
+        reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
         reportObj = {'objects_created': [],
                      'direct_html_link_index': 0,
                      'file_links': [],
@@ -5697,7 +5770,6 @@ This module contains methods for running and visualizing results of phylogenomic
                      'workspace_name': params['workspace_name'],
                      'report_object_name': reportName
                      }
-
 
         # build html report
         #
@@ -5707,7 +5779,7 @@ This module contains methods for running and visualizing results of phylogenomic
         cell_spacing = 0
         cell_border = 0
         sp = '&nbsp;'
-        horiz_sp = sp+sp+sp+sp
+        horiz_sp = sp + sp + sp + sp
         text_color = "#606060"
         font_size = '2'
         space_fontsize = '1'
@@ -5718,19 +5790,21 @@ This module contains methods for running and visualizing results of phylogenomic
         cat_colors = [text_color] + pie_colors
         #num_bars_per_node = 2*len(cat_order) + 1
         num_bars_per_node = len(cat_order) + 1
-        
+
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
         html_report_lines += ['<title>KBase Pangenome Phylogenetic Context</title>']
         html_report_lines += ['</head>']
         html_report_lines += ['<body bgcolor="white">']
-        html_report_lines += ['<table cellpadding="'+str(cell_padding)+'" cellspacing="'+str(cell_spacing)+'" border="'+str(cell_border)+'">']
+        html_report_lines += ['<table cellpadding="' +
+                              str(cell_padding) + '" cellspacing="' + str(cell_spacing) + '" border="' + str(cell_border) + '">']
 
         # add tree image
         html_report_lines += ['<tr>']
-        html_report_lines += ['<td valign="top" align="left" rowspan="'+str(num_bars_per_node*len(node_ids_by_refs))+'">']
-        html_report_lines += ['<img src="'+png_file+'" height='+str(tree_img_height)+'>']
+        html_report_lines += ['<td valign="top" align="left" rowspan="' +
+                              str(num_bars_per_node * len(node_ids_by_refs)) + '">']
+        html_report_lines += ['<img src="' + png_file + '" height=' + str(tree_img_height) + '>']
         html_report_lines += ['</td>']
 
         # add key and bar graph
@@ -5739,83 +5813,91 @@ This module contains methods for running and visualizing results of phylogenomic
             if clusters_total[node_ref_id] > max_cnt:
                 max_cnt = clusters_total[node_ref_id]
 
-        for node_i,node_ref_id in enumerate(node_order_by_ref):
+        for node_i, node_ref_id in enumerate(node_order_by_ref):
             node_id = node_ids_by_refs[node_ref_id]
             if node_i > 0:
                 html_report_lines += ['<tr>']
 
             # vals
-            cat_cnts  = dict()
+            cat_cnts = dict()
             cat_percs = dict()
-            cat_cnts['TOTAL']        = clusters_total[node_ref_id]
-            cat_cnts['singleton']    = clusters_singletons[node_ref_id]
+            cat_cnts['TOTAL'] = clusters_total[node_ref_id]
+            cat_cnts['singleton'] = clusters_singletons[node_ref_id]
             cat_cnts['perfect core'] = clusters_core[node_ref_id]
-            cat_cnts['partial']      = clusters_total[node_ref_id] - clusters_singletons[node_ref_id] - clusters_core[node_ref_id]
+            cat_cnts['partial'] = clusters_total[node_ref_id] - \
+                clusters_singletons[node_ref_id] - clusters_core[node_ref_id]
             cat_percs['TOTAL'] = '100'
-            cat_percs['singleton']    = round (100.0*float(clusters_singletons[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
-            cat_percs['perfect core'] = round (100.0*float(clusters_core[node_ref_id]) / float(clusters_total[node_ref_id]), 1)
+            cat_percs['singleton'] = round(100.0 * float(clusters_singletons[node_ref_id]
+                                                         ) / float(clusters_total[node_ref_id]), 1)
+            cat_percs['perfect core'] = round(100.0 * float(clusters_core[node_ref_id]
+                                                            ) / float(clusters_total[node_ref_id]), 1)
             if cat_cnts['partial'] == 0:
                 cat_percs['partial'] = 0.0
             else:
-                cat_percs['partial'] = round (100.0 - cat_percs['perfect core'] - cat_percs['singleton'], 1)
+                cat_percs['partial'] = round(100.0 - cat_percs['perfect core'] - cat_percs['singleton'], 1)
 
             # node id
-            node_label = 'NODE '+str(node_id)
-            html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'" valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><b><nobr>'+str(node_label)+'</nobr></b></font></td>']
-            html_report_lines += ['<td rowspan="'+str(num_bars_per_node)+'"><font size="'+str(space_fontsize)+'">'+horiz_sp+'</font></td>']
+            node_label = 'NODE ' + str(node_id)
+            html_report_lines += ['<td rowspan="' + str(num_bars_per_node) + '" valign="top" align="right"><font color="' + str(
+                text_color) + '" size="' + str(font_size) + '"><b><nobr>' + str(node_label) + '</nobr></b></font></td>']
+            html_report_lines += ['<td rowspan="' + str(num_bars_per_node) +
+                                  '"><font size="' + str(space_fontsize) + '">' + horiz_sp + '</font></td>']
 
-            for cat_i,cat in enumerate(cat_order):
+            for cat_i, cat in enumerate(cat_order):
                 if cat_i > 0:
                     html_report_lines += ['<tr>']
                 # cat name
-                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'"><nobr>'+cat+'</nobr></font></td>']
-                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+horiz_sp+'</font></td>']
-            
+                html_report_lines += ['<td valign="top" align="right"><font color="' +
+                                      str(text_color) + '" size="' + str(font_size) + '"><nobr>' + cat + '</nobr></font></td>']
+                html_report_lines += ['<td><font size="' + str(space_fontsize) + '">' + horiz_sp + '</font></td>']
+
                 # cnt
-                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_cnts[cat])+'</font></td>']
-                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+horiz_sp+'</font></td>']
+                html_report_lines += ['<td valign="top" align="right"><font color="' +
+                                      str(text_color) + '" size="' + str(font_size) + '">' + str(cat_cnts[cat]) + '</font></td>']
+                html_report_lines += ['<td><font size="' + str(space_fontsize) + '">' + horiz_sp + '</font></td>']
 
                 #perc
-                html_report_lines += ['<td valign="top" align="right"><font color="'+str(text_color)+'" size="'+str(font_size)+'">'+str(cat_percs[cat])+'%'+'</font></td>']
-                html_report_lines += ['<td><font size="'+str(space_fontsize)+'">'+horiz_sp+'</font></td>']
+                html_report_lines += ['<td valign="top" align="right"><font color="' +
+                                      str(text_color) + '" size="' + str(font_size) + '">' + str(cat_percs[cat]) + '%' + '</font></td>']
+                html_report_lines += ['<td><font size="' + str(space_fontsize) + '">' + horiz_sp + '</font></td>']
 
                 # bar
-                this_width = int(round(float(bar_width) * (float(cat_cnts[cat])/float(max_cnt)), 0))
+                this_width = int(round(float(bar_width) * (float(cat_cnts[cat]) / float(max_cnt)), 0))
                 for cell_i in range(this_width):
-                    html_report_lines += ['<td bgcolor="'+str(cat_colors[cat_i])+'"><font size="'+str(bar_fontsize)+'" color="'+str(cat_colors[cat_i])+'">'+bar_char+'</font></td>']
+                    html_report_lines += ['<td bgcolor="' + str(cat_colors[cat_i]) + '"><font size="' + str(
+                        bar_fontsize) + '" color="' + str(cat_colors[cat_i]) + '">' + bar_char + '</font></td>']
 
                 html_report_lines += ['</tr>']
                 #html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+'</font></td></tr>']  # space for blank row
-            html_report_lines += ['<tr><td><font size="'+str(space_fontsize)+'">'+sp+'</font></td></tr>']  # space for blank row
-            
+            html_report_lines += ['<tr><td><font size="' +
+                                  str(space_fontsize) + '">' + sp + '</font></td></tr>']  # space for blank row
 
         # close
         html_report_lines += ['</table>']
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
-        
+
         html_report_str = "\n".join(html_report_lines)
         #reportObj['direct_html'] = html_report_str
 
-
         # write html to file and upload
-        html_file = os.path.join (html_output_dir, 'pan_phylo_report.html')
-        with open (html_file, 'w', 0) as html_handle:
+        html_file = os.path.join(html_output_dir, 'pan_phylo_report.html')
+        with open(html_file, 'w', 0) as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
             png_upload_ret = dfu.file_to_shock({'file_path': output_png_file_path,
                                                 'make_handle': 0})
-                                            #'pack': 'zip'})
+            #'pack': 'zip'})
         except:
-            raise ValueError ('Logging exception loading png_file to shock')
+            raise ValueError('Logging exception loading png_file to shock')
 
         try:
             pdf_upload_ret = dfu.file_to_shock({'file_path': output_pdf_file_path,
                                                 'make_handle': 0})
-                                            #'pack': 'zip'})
+            #'pack': 'zip'})
         except:
-            raise ValueError ('Logging exception loading pdf_file to shock')
+            raise ValueError('Logging exception loading pdf_file to shock')
 
         try:
             #upload_ret = dfu.file_to_shock({'file_path': html_file,
@@ -5823,7 +5905,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                             'make_handle': 0,
                                             'pack': 'zip'})
         except:
-            raise ValueError ('Logging exception loading html_report to shock')
+            raise ValueError('Logging exception loading html_report to shock')
 
         reportObj['file_links'] = [{'shock_id': png_upload_ret['shock_id'],
                                     'name': 'phylogenetic_pangenome.png',
@@ -5840,14 +5922,13 @@ This module contains methods for running and visualizing results of phylogenomic
         # attach any created objects
         reportObj['objects_created'] = objects_created
 
-
         # save report object
         #
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
         report_info = reportClient.create_extended_report(reportObj)
 
-        output = { 'report_name': report_info['name'], 'report_ref': report_info['ref'] }
+        output = {'report_name': report_info['name'], 'report_ref': report_info['ref']}
 
         #END view_pan_phylo
 
@@ -5857,6 +5938,7 @@ This module contains methods for running and visualizing results of phylogenomic
                              'output is not type dict as required.')
         # return the results
         return [output]
+
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

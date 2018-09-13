@@ -36,27 +36,6 @@ module kb_phylogenomics {
         authentication required;
 
 
-    /* trim_tree_to_genomeSet()
-    **
-    ** trim a KBase Tree to match genomeset, and make newick and images downloadable
-    */
-    typedef structure {
-        workspace_name workspace_name;
-        data_obj_ref   input_genomeSet_ref;
-	data_obj_ref   input_tree_ref;
-	string         desc;
-    } trim_tree_to_genomeSet_Input;
-
-    typedef structure {
-        string report_name;
-        string report_ref;
-    } trim_tree_to_genomeSet_Output;
-
-    funcdef trim_tree_to_genomeSet(trim_tree_to_genomeSet_Input params) 
-        returns (trim_tree_to_genomeSet_Output output)
-        authentication required;
-
-
     /* run_DomainAnnotation_Sets()
     **
     ** run the DomainAnnotation App against a GenomeSet
