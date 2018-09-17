@@ -44,3 +44,10 @@ description : |
     <p>View a Species Tree or Gene Tree as an image and download images and NEWICK representations.</p>
 
     <p><i>View Tree</i> App written by Dylan Chivian (DCChivian@lbl.gov)</p>
+
+publications :
+    -
+        pmid: 29979655
+        display-text : |
+            'Arkin AP, Cottingham RW, Henry CS, Harris NL, Stevens RL, Maslov S, et al. KBase: The United States Department of Energy Systems Biology Knowledgebase. Nature Biotechnology. 2018;36: 566.'
+        link: https://www.nature.com/articles/nbt.4163
