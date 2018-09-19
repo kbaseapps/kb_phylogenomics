@@ -68,4 +68,10 @@ parameters :
 description : |
     <p>After Pangenome calculation, you can use this method to view the overlapping membership of genes against a base genome.</p>
 
-    <p>View Pangenome Circle Plot App written by Dylan Chivian (DCChivian@lbl.gov), using Pangenome Calculator OrthoMCL (<i>Li Li, Christian J. Stoeckert, Jr., and David S. Roos. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003 13: 2178-2189</i>).</p>
+    <p>View Pangenome Circle Plot App written by Dylan Chivian (DCChivian@lbl.gov), using Pangenome Calculator OrthoMCL
+
+publications :
+    -
+        display-text: |
+            Li L, Stoeckert CJ, Roos DS. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003;13: 2178–2189. doi:10.1101/gr.1224503
+        link: https://genome.cshlp.org/content/13/9/2178
