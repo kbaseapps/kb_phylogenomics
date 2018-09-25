@@ -1,3 +1,7 @@
+### Version 1.2.3
+__Changes__
+- changed citations to PLOS format 
+
 ### Version 1.2.2
 __Changes__
 - read 'functions' field in view functional profile apps (in KBaseGenomes.Genome-9.0 data typedef)
