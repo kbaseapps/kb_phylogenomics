@@ -6,7 +6,7 @@ name: View Function Profile for Genomes - v1.2.2
 tooltip: |
     Examine the general functional distribution or specific functional gene families for a Genome Set
 
-screenshots: 
+screenshots:
     - big_view_table.png
     - key.png
 
@@ -146,3 +146,9 @@ description : |
     <p>After DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for a Genome Set.</p>
 
     <p>View Fxn Profile App written by Dylan Chivian (DCChivian@lbl.gov), using DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>
+
+publications :
+    -
+        display-text: |
+            Arkin AP, Cottingham RW, Henry CS, Harris NL, Stevens RL, Maslov S, et al. KBase: The United States Department of Energy Systems Biology Knowledgebase. Nature Biotechnology. 2018;36: 566. doi: 10.1038/nbt.4163
+        link: https://www.nature.com/articles/nbt.4163
