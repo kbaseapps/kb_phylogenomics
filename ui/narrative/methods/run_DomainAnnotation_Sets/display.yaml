@@ -48,3 +48,54 @@ description : |
     <p>run DomainAnnotation runs the DomainAnnotation App on all the members of a Genome Set.</p>
 
     <p>DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>
+
+publications :
+    -
+        display-text: |
+            Altschul SF, Madden TL, Schäffer AA, Zhang J, Zhang Z, Miller W, et al. Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. Nucleic Acids Res. 1997;25: 3389–3402. doi:10.1093/nar/25.17.3389
+        link: https://academic.oup.com/nar/article/25/17/3389/1061651
+
+    -
+        display-text: |
+            Camacho C, Coulouris G, Avagyan V, Ma N, Papadopoulos J, Bealer K, et al. BLAST+: architecture and applications. BMC Bioinformatics. 2009;10: 421. doi:10.1186/1471-2105-10-421
+        link: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-421
+
+    -
+        display-text: |
+            Eddy SR. Accelerated Profile HMM Searches. PLOS Computational Biology. 2011;7: e1002195. doi:10.1371/journal.pcbi.1002195
+        link: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002195
+
+    -
+        display-text: |
+            Finn RD, Coggill P, Eberhardt RY, Eddy SR, Mistry J, Mitchell AL, et al. The Pfam protein families database: towards a more sustainable future. Nucleic Acids Res. 2016;44: D279–D285. doi:10.1093/nar/gkv1344
+        link: https://academic.oup.com/nar/article/44/D1/D279/2503120
+
+    -
+        display-text: |
+            Haft DH, Selengut JD, Richter RA, Harkins D, Basu MK, Beck E. TIGRFAMs and Genome Properties in 2013. Nucleic Acids Res. 2013;41: D387–D395. doi:10.1093/nar/gks1234
+        link: https://academic.oup.com/nar/article/41/D1/D387/1070451
+
+    -
+        display-text: |
+            Letunic I, Bork P. 20 years of the SMART protein domain annotation resource. Nucleic Acids Res. 2018;46: D493–D496. doi:10.1093/nar/gkx922
+        link: https://academic.oup.com/nar/article/46/D1/D493/4429069
+
+    -
+        display-text: |
+            Letunic I, Doerks T, Bork P. SMART: recent updates, new developments and status in 2015. Nucleic Acids Res. 2015;43: D257-260. doi:10.1093/nar/gku949
+        link: https://academic.oup.com/nar/article/43/D1/D257/2439521
+
+    -
+        display-text: |
+            Marchler-Bauer A, Bo Y, Han L, He J, Lanczycki CJ, Lu S, et al. CDD/SPARCLE: functional classification of proteins via subfamily domain architectures. Nucleic Acids Res. 2017;45: D200–D203. doi:10.1093/nar/gkw1129
+        link: https://academic.oup.com/nar/article/45/D1/D200/2605748
+
+    -
+        display-text: |
+            Selengut JD, Haft DH, Davidsen T, Ganapathy A, Gwinn-Giglio M, Nelson WC, et al. TIGRFAMs and Genome Properties: tools for the assignment of molecular function and biological process in prokaryotic genomes. Nucleic Acids Res. 2007;35: D260-264. doi:10.1093/nar/gkl1043
+        link: https://academic.oup.com/nar/article/35/suppl_1/D260/1088023
+
+    -
+        display-text: |
+            Tatusov RL, Koonin EV, Lipman DJ. A Genomic Perspective on Protein Families. Science. 1997;278: 631–637. doi:10.1126/science.278.5338.631
+        link: https://www.ncbi.nlm.nih.gov/pubmed/9381173
