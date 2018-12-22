@@ -1,3 +1,7 @@
+### Version 1.3.0
+__Changes__
+- added find_homologs_with_genome_context() method
+
 ### Version 1.2.4
 __Changes__
 - added proper citations to Annotate Domains in a GenomeSet

@@ -23,7 +23,7 @@ class kb_phylogenomics(object):
             self, url=None, timeout=30 * 60, user_id=None,
             password=None, token=None, ignore_authrc=False,
             trust_all_ssl_certificates=False,
-            auth_svc='https://kbase.us/services/authorization/Sessions/Login'):
+            auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login'):
         if url is None:
             raise ValueError('A url is required')
         self._service_ver = None
@@ -45,23 +45,6 @@ class kb_phylogenomics(object):
         """
         return self._client.call_method(
             'kb_phylogenomics.view_tree',
-            [params], self._service_ver, context)
-
-    def trim_tree_to_genomeSet(self, params, context=None):
-        """
-        :param params: instance of type "trim_tree_to_genomeSet_Input"
-           (trim_tree_to_genomeSet() ** ** trim a KBase Tree to match
-           genomeset, and make newick and images downloadable) -> structure:
-           parameter "workspace_name" of type "workspace_name" (** Common
-           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
-           parameter "input_tree_ref" of type "data_obj_ref", parameter
-           "desc" of String
-        :returns: instance of type "trim_tree_to_genomeSet_Output" ->
-           structure: parameter "report_name" of String, parameter
-           "report_ref" of String
-        """
-        return self._client.call_method(
-            'kb_phylogenomics.trim_tree_to_genomeSet',
             [params], self._service_ver, context)
 
     def run_DomainAnnotation_Sets(self, params, context=None):
@@ -254,6 +237,25 @@ class kb_phylogenomics(object):
         """
         return self._client.call_method(
             'kb_phylogenomics.view_pan_phylo',
+            [params], self._service_ver, context)
+
+    def find_homologs_with_genome_context(self, params, context=None):
+        """
+        :param params: instance of type
+           "find_homologs_with_genome_context_Input"
+           (find_homologs_with_genome_context() ** ** show homolgous genes
+           across multiple genomes within genome context against species
+           tree) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter
+           "input_featureSet_ref" of type "data_obj_ref", parameter
+           "input_speciesTree_ref" of type "data_obj_ref", parameter
+           "save_per_genome_featureSets" of type "bool"
+        :returns: instance of type "find_homologs_with_genome_context_Output"
+           -> structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        return self._client.call_method(
+            'kb_phylogenomics.find_homologs_with_genome_context',
             [params], self._service_ver, context)
 
     def status(self, context=None):

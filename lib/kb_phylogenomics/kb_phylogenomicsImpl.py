@@ -41,9 +41,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.2.2"
-    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "43733230d3f70a2eccc123b3867e99775b0d9f4c"
+    VERSION = "1.3.0"
+    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
+    GIT_COMMIT_HASH = "5360e09f0c73e2d6208b9763744031113a5826af"
 
     #BEGIN_CLASS_HEADER
 
@@ -89,6 +89,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #END_CONSTRUCTOR
         pass
+
 
     def view_tree(self, ctx, params):
         """
@@ -385,33 +386,6 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method view_tree return value ' +
-                             'output is not type dict as required.')
-        # return the results
-        return [output]
-
-    def trim_tree_to_genomeSet(self, ctx, params):
-        """
-        :param params: instance of type "trim_tree_to_genomeSet_Input"
-           (trim_tree_to_genomeSet() ** ** trim a KBase Tree to match
-           genomeset, and make newick and images downloadable) -> structure:
-           parameter "workspace_name" of type "workspace_name" (** Common
-           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
-           parameter "input_tree_ref" of type "data_obj_ref", parameter
-           "desc" of String
-        :returns: instance of type "trim_tree_to_genomeSet_Output" ->
-           structure: parameter "report_name" of String, parameter
-           "report_ref" of String
-        """
-        # ctx is the context object
-        # return variables are: output
-        #BEGIN trim_tree_to_genomeSet
-        output = {}
-        raise NotImplementedError
-        #END trim_tree_to_genomeSet
-
-        # At some point might do deeper type checking...
-        if not isinstance(output, dict):
-            raise ValueError('Method trim_tree_to_genomeSet return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]
@@ -5939,6 +5913,32 @@ This module contains methods for running and visualizing results of phylogenomic
         # return the results
         return [output]
 
+    def find_homologs_with_genome_context(self, ctx, params):
+        """
+        :param params: instance of type
+           "find_homologs_with_genome_context_Input"
+           (find_homologs_with_genome_context() ** ** show homolgous genes
+           across multiple genomes within genome context against species
+           tree) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter
+           "input_featureSet_ref" of type "data_obj_ref", parameter
+           "input_speciesTree_ref" of type "data_obj_ref", parameter
+           "save_per_genome_featureSets" of type "bool"
+        :returns: instance of type "find_homologs_with_genome_context_Output"
+           -> structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN find_homologs_with_genome_context
+        #END find_homologs_with_genome_context
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method find_homologs_with_genome_context return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",
