@@ -6033,7 +6033,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # store which genomes are in tree and save in GenomeSet object, store order
         genomes_in_tree = dict()
-        genome_ref_order = []
+        genome_node_id_to_ref = dict()
         genome_ref_to_node_id = dict()
         tree_GS_name = intree_name+'.GenomeSet'
         tree_GS_obj = {'description': 'GenomeSet for '+intree_name,
@@ -6045,7 +6045,7 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_ref = tree_in['ws_refs'][node_id]['g'][0]
             genomes_in_tree[genome_ref] = node_id
             tree_GS_obj['elements'][node_id] = {'ref': genome_ref}
-            genome_ref_order.append(genome_ref)
+            genome_node_id_to_ref[genome_ref] = node_id
             genome_ref_to_node_id[genome_ref] = node_id
 
         # save newick file
@@ -6155,6 +6155,12 @@ This module contains methods for running and visualizing results of phylogenomic
         # init ETE3 objects
         t = ete3.Tree(newick_buf)
         ts = ete3.TreeStyle()
+
+        # ladderize to make row order consistent and get genome order
+        t.ladderize()
+        genome_ref_order = []
+        for genome_id in t.get_leaf_names():
+            genome_ref_order.append(genome_node_id_to_ref[genome_id])
 
         # customize
         ts.show_leaf_name = True
@@ -6357,7 +6363,10 @@ This module contains methods for running and visualizing results of phylogenomic
             hits_by_query_and_genome_ref[query_full_feature_id] = dict()
             for hit_feature_id in hits_obj['elements'].keys():
                 for genome_ref in hits_obj['elements'][hit_feature_id]:
-                    hits_by_query_and_genome_ref[query_full_feature_id][genome_ref] = hit_feature_id
+                    if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
+                        hits_by_query_and_genome_ref[query_full_feature_id][genome_ref] = []
+                        
+                    hits_by_query_and_genome_ref[query_full_feature_id][genome_ref].append(hit_feature_id)
                     """
                     # handle duplicate queries
                     hit_full_feature_id = genome_ref + genome_ref_feature_id_delim + hit_feature_id
@@ -6371,9 +6380,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 9: build HTML table for hits
         ##
+        border=1
+        cellpadding=10
+        cellspacing=0
+        fontsize=2
         hit_table_html = []
-        hit_table_html += ['<table border=1>']
-        for genome_ref in genome_ref_order:
+        hit_table_html += ['<table border='+str(border)+' cellpadding='+str(cellpadding)+' cellspacing='+str(cellspacing)+'>']
+        for genome_i,genome_ref in enumerate(genome_ref_order):
+            row_bg_color = '#ffffff'
+            if (genome_i % 2) == 0:
+                row_bg_color = '#cccccc'
             node_id = genome_ref_to_node_id[genome_ref]
             if 'default_node_labels' in tree_in:
                 label = tree_in['default_node_labels'][node_id]
@@ -6381,12 +6397,15 @@ This module contains methods for running and visualizing results of phylogenomic
                 label = node_id
 
             hit_table_html += ['<tr>']
-            hit_table_html += ['<td>'+label+'</td>']
+            hit_table_html += ['<td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                     hit_table_html += ['<td> - </td>']
                 else:
-                    hit_table_html += ['<td>'+hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]+'<td>']
+                    hit_ids = []
+                    for hit_id in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
+                        hit_ids.append(hit_id)
+                    hit_table_html += ['<td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+'<br>'.join(hit_ids)+'</font>'+'</td>']
             hit_table_html += ['</tr>']
         hit_table_html += ['</table>']
 
