@@ -6148,6 +6148,15 @@ This module contains methods for running and visualizing results of phylogenomic
         output_png_file_path = os.path.join(html_output_dir, png_file)
         output_pdf_file_path = os.path.join(output_dir, pdf_file)
         newick_buf = tree_in['tree']
+
+        # ladderize to make row order consistent and get genome order (get leaf ids before labels)
+        genome_ref_order = []
+        t_without_labels = ete3.Tree(newick_buf)
+        t_without_labels.ladderize()
+        for genome_id in t_without_labels.get_leaf_names():
+            genome_ref_order.append(genome_node_id_to_ref[genome_id])
+
+        # switch to labels
         if 'default_node_labels' in tree_in:
             newick_buf = mod_newick_buf
         self.log(console, "NEWICK_BUF: '" + newick_buf + "'")
