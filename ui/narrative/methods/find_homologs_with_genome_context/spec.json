@@ -56,6 +56,56 @@
                                 }
                 ]
             }
+        },
+        {
+            "id": "e_value",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ ".001" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_integer" : 0
+            }
+        },
+        {
+            "id": "bitscore",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "100" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_integer" : 25
+            }
+        },
+        {
+            "id": "ident_thresh",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "40.0" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_float" : 0.0,
+                "max_float" : 100.0
+            }
+        },
+        {
+            "id": "overlap_fraction",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "50.0" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_float" : 0.0,
+                "max_float" : 100.0
+            }
         }
     ],
     "behavior": {
@@ -81,6 +131,22 @@
                 {
                     "input_parameter": "save_per_genome_featureSets",
 		    "target_property": "save_per_genome_featureSets"
+                },
+                {
+                    "input_parameter": "e_value",
+                    "target_property": "e_value"
+                },
+                {
+                    "input_parameter": "bitscore",
+                    "target_property": "bitscore"
+                },
+                {
+                    "input_parameter": "ident_thresh",
+                    "target_property": "ident_thresh"
+                },
+                {
+                    "input_parameter": "overlap_fraction",
+                    "target_property": "overlap_fraction"
                 }
             ],
             "output_mapping": [

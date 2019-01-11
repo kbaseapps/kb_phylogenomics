@@ -50,6 +50,26 @@ parameters :
             Save a separate FeatureSet for each genome
         long-hint  : |
             Save a separate FeatureSet for each genome (homolog sets will be saved automatically)
+    ident_thresh:
+        ui-name : |
+            Identity Threshold (%)
+        short-hint : |
+            threshold for hits
+    e_value:
+        ui-name : |
+            E-value
+        short-hint : |
+            threshold for hits
+    bitscore:
+        ui-name : |
+            Bit Score
+        short-hint : |
+            threshold for hits
+    overlap_fraction:
+        ui-name : |
+            Alignment Overlap Threshold (%)
+        short-hint : |
+            threshold for hits
 
 description : |
     <p>Find Homologs with Genome Context.</p>
