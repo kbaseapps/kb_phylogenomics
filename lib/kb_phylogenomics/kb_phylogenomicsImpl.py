@@ -6295,12 +6295,13 @@ This module contains methods for running and visualizing results of phylogenomic
                                                                     'name':individual_FS_name,
                                                                     'meta':{},
                                                                     'provenance':individual_FS_prov,
-                                                                    'hidden':1  # True?
+                                                                    'hidden':1  # 1=True
                                                                 }]
                                                         })[0]
             #pprint(individual_FS_obj_info)
             self.log(console, "saved query feature as FS "+str(individual_FS_name))
-            self.log(console, pformat(individual_FS_obj_info))
+            self.log(console, "OBJ_INFO: "+pformat(individual_FS_obj_info))
+            self.log(console, "OBJ_DATA: "+pformat(individual_FS_obj))
 
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             individual_FS_ref = str(individual_FS_obj_info[WSID_I])+'/'+str(individual_FS_obj_info[OBJID_I])+'/'+str(individual_FS_obj_info[VERSION_I])
@@ -6325,7 +6326,7 @@ This module contains methods for running and visualizing results of phylogenomic
             output_individual_FS_name = input_individual_FS_name+'-'+intree_name+'.BLASTp_homologs'
 
             BLASTp_Params = {'workspace_name':       params['workspace_name'],
-                             'input_one_ref':        individual_FS_ref,
+                             'input_one_ref':        input_individual_FS_ref,
                              'input_many_ref':       tree_derived_genomeSet_ref,
                              'output_filtered_name': output_individual_FS_name,
                              'ident_thresh':         params['ident_thresh'],
@@ -6336,7 +6337,7 @@ This module contains methods for running and visualizing results of phylogenomic
                              }
 
             self.log (console, "running BLASTp for "+input_individual_FS_name)
-            self.log(console, "\n" + pformat(BLASTp_Params))
+            #self.log(console, "\n" + pformat(BLASTp_Params))
 
             blast_retVal = blastClient.BLASTp_Search(BLASTp_Params)
             this_report_name = blast_retVal['report_name']
