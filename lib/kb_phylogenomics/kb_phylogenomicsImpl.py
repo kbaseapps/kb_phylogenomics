@@ -6045,7 +6045,7 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_ref = tree_in['ws_refs'][node_id]['g'][0]
             genomes_in_tree[genome_ref] = node_id
             tree_GS_obj['elements'][node_id] = {'ref': genome_ref}
-            genome_node_id_to_ref[genome_ref] = node_id
+            genome_node_id_to_ref[node_id] = genome_ref
             genome_ref_to_node_id[genome_ref] = node_id
 
         # save newick file
