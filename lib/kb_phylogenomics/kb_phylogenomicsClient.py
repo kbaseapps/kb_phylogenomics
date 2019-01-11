@@ -249,7 +249,9 @@ class kb_phylogenomics(object):
            "workspace_name" (** Common types), parameter
            "input_featureSet_ref" of type "data_obj_ref", parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
-           "save_per_genome_featureSets" of type "bool"
+           "save_per_genome_featureSets" of type "bool", parameter
+           "ident_thresh" of Double, parameter "overlap_fraction" of Double,
+           parameter "e_value" of Double, parameter "bitscore" of Double
         :returns: instance of type "find_homologs_with_genome_context_Output"
            -> structure: parameter "report_name" of String, parameter
            "report_ref" of String

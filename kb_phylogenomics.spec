@@ -291,6 +291,10 @@ module kb_phylogenomics {
 	data_obj_ref   input_featureSet_ref;
 	data_obj_ref   input_speciesTree_ref;
 	bool           save_per_genome_featureSets;
+	float          ident_thresh;
+	float          overlap_fraction;
+	float          e_value;
+	float          bitscore;
     } find_homologs_with_genome_context_Input;
 
     typedef structure {

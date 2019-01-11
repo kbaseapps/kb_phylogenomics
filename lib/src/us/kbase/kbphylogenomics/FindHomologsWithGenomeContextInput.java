@@ -26,7 +26,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "input_featureSet_ref",
     "input_speciesTree_ref",
-    "save_per_genome_featureSets"
+    "save_per_genome_featureSets",
+    "ident_thresh",
+    "overlap_fraction",
+    "e_value",
+    "bitscore"
 })
 public class FindHomologsWithGenomeContextInput {
 
@@ -38,6 +42,14 @@ public class FindHomologsWithGenomeContextInput {
     private String inputSpeciesTreeRef;
     @JsonProperty("save_per_genome_featureSets")
     private Long savePerGenomeFeatureSets;
+    @JsonProperty("ident_thresh")
+    private Double identThresh;
+    @JsonProperty("overlap_fraction")
+    private Double overlapFraction;
+    @JsonProperty("e_value")
+    private Double eValue;
+    @JsonProperty("bitscore")
+    private Double bitscore;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -100,6 +112,66 @@ public class FindHomologsWithGenomeContextInput {
         return this;
     }
 
+    @JsonProperty("ident_thresh")
+    public Double getIdentThresh() {
+        return identThresh;
+    }
+
+    @JsonProperty("ident_thresh")
+    public void setIdentThresh(Double identThresh) {
+        this.identThresh = identThresh;
+    }
+
+    public FindHomologsWithGenomeContextInput withIdentThresh(Double identThresh) {
+        this.identThresh = identThresh;
+        return this;
+    }
+
+    @JsonProperty("overlap_fraction")
+    public Double getOverlapFraction() {
+        return overlapFraction;
+    }
+
+    @JsonProperty("overlap_fraction")
+    public void setOverlapFraction(Double overlapFraction) {
+        this.overlapFraction = overlapFraction;
+    }
+
+    public FindHomologsWithGenomeContextInput withOverlapFraction(Double overlapFraction) {
+        this.overlapFraction = overlapFraction;
+        return this;
+    }
+
+    @JsonProperty("e_value")
+    public Double getEValue() {
+        return eValue;
+    }
+
+    @JsonProperty("e_value")
+    public void setEValue(Double eValue) {
+        this.eValue = eValue;
+    }
+
+    public FindHomologsWithGenomeContextInput withEValue(Double eValue) {
+        this.eValue = eValue;
+        return this;
+    }
+
+    @JsonProperty("bitscore")
+    public Double getBitscore() {
+        return bitscore;
+    }
+
+    @JsonProperty("bitscore")
+    public void setBitscore(Double bitscore) {
+        this.bitscore = bitscore;
+    }
+
+    public FindHomologsWithGenomeContextInput withBitscore(Double bitscore) {
+        this.bitscore = bitscore;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -112,7 +184,7 @@ public class FindHomologsWithGenomeContextInput {
 
     @Override
     public String toString() {
-        return ((((((((((("FindHomologsWithGenomeContextInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", savePerGenomeFeatureSets=")+ savePerGenomeFeatureSets)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((("FindHomologsWithGenomeContextInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", savePerGenomeFeatureSets=")+ savePerGenomeFeatureSets)+", identThresh=")+ identThresh)+", overlapFraction=")+ overlapFraction)+", eValue=")+ eValue)+", bitscore=")+ bitscore)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
