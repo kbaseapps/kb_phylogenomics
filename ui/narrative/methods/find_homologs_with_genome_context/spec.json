@@ -70,18 +70,6 @@
             }
         },
         {
-            "id": "bitscore",
-            "optional": true,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values": [ "100" ],
-            "field_type": "text",
-            "text_options": {
-                "validate_as": "float",
-                "min_integer" : 25
-            }
-        },
-        {
             "id": "ident_thresh",
             "optional": false,
             "advanced": false,
@@ -105,6 +93,18 @@
                 "validate_as": "float",
                 "min_float" : 0.0,
                 "max_float" : 100.0
+            }
+        },
+        {
+            "id": "bitscore",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "100" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_integer" : 25
             }
         }
     ],
@@ -137,16 +137,16 @@
                     "target_property": "e_value"
                 },
                 {
-                    "input_parameter": "bitscore",
-                    "target_property": "bitscore"
-                },
-                {
                     "input_parameter": "ident_thresh",
                     "target_property": "ident_thresh"
                 },
                 {
                     "input_parameter": "overlap_fraction",
                     "target_property": "overlap_fraction"
+                },
+                {
+                    "input_parameter": "bitscore",
+                    "target_property": "bitscore"
                 }
             ],
             "output_mapping": [
