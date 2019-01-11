@@ -6165,11 +6165,8 @@ This module contains methods for running and visualizing results of phylogenomic
         t = ete3.Tree(newick_buf)
         ts = ete3.TreeStyle()
 
-        # ladderize to make row order consistent and get genome order
+        # ladderize to make row order consistent
         t.ladderize()
-        genome_ref_order = []
-        for genome_id in t.get_leaf_names():
-            genome_ref_order.append(genome_node_id_to_ref[genome_id])
 
         # customize
         ts.show_leaf_name = True
