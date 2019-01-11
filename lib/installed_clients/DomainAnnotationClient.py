@@ -24,7 +24,7 @@ class DomainAnnotation(object):
             self, url=None, timeout=30 * 60, user_id=None,
             password=None, token=None, ignore_authrc=False,
             trust_all_ssl_certificates=False,
-            auth_svc='https://kbase.us/services/authorization/Sessions/Login',
+            auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login',
             service_ver='release',
             async_job_check_time_ms=100, async_job_check_time_scale_percent=150, 
             async_job_check_max_time_ms=300000):
@@ -106,6 +106,31 @@ class DomainAnnotation(object):
            of String, parameter "report_ref" of String
         """
         job_id = self._search_domains_ga_submit(input, context)
+        async_job_check_time = self._client.async_job_check_time
+        while True:
+            time.sleep(async_job_check_time)
+            async_job_check_time = (async_job_check_time *
+                self._client.async_job_check_time_scale_percent / 100.0)
+            if async_job_check_time > self._client.async_job_check_max_time:
+                async_job_check_time = self._client.async_job_check_max_time
+            job_state = self._check_job(job_id)
+            if job_state['finished']:
+                return job_state['result'][0]
+
+    def _export_csv_submit(self, params, context=None):
+        return self._client._submit_job(
+             'DomainAnnotation.export_csv', [params],
+             self._service_ver, context)
+
+    def export_csv(self, params, context=None):
+        """
+        :param params: instance of type "ExportParams" (Exporter for domain
+           annotations as CSV files) -> structure: parameter "input_ref" of
+           String
+        :returns: instance of type "ExportResult" -> structure: parameter
+           "shock_id" of String
+        """
+        job_id = self._export_csv_submit(params, context)
         async_job_check_time = self._client.async_job_check_time
         while True:
             time.sleep(async_job_check_time)

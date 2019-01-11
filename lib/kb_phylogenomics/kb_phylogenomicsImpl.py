@@ -17,9 +17,13 @@ import matplotlib.pyplot as pyplot  # use this instead
 from matplotlib.patches import Arc
 from matplotlib.patches import Rectangle
 
-from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
-from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
-from KBaseReport.KBaseReportClient import KBaseReport
+#from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
+#from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
+#from KBaseReport.KBaseReportClient import KBaseReport
+from installed_clients.KBaseReportClient import KBaseReport
+from installed_clients.DataFileUtilClient import DataFileUtil as DFUClient
+from installed_clients.DomainAnnotationClient import DomainAnnotation
+from installed_clients.kb_blastClient import kb_blast
 from Workspace.WorkspaceClient import Workspace as workspaceService
 #END_HEADER
 
@@ -41,13 +45,23 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.2.2"
-    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "43733230d3f70a2eccc123b3867e99775b0d9f4c"
+    VERSION = "1.3.0"
+    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
+    GIT_COMMIT_HASH = "ac11efce671136f3f4f513ba737650efa2c8b76d"
 
     #BEGIN_CLASS_HEADER
 
+    def now_ISO(self):
+#        now_timestamp = datetime.datetime.now()
+#        now_secs_from_epoch = (end_timestamp - datetime.datetime(1970,1,1)).total_seconds()
+#        now_timestamp_in_iso = datetime.datetime.fromtimestamp(int(now_secs_from_epoch)).strftime('%Y-%m-%d_%T')
+        now_timestamp = datetime.now()
+        now_secs_from_epoch = (now_timestamp - datetime(1970,1,1)).total_seconds()
+        now_timestamp_in_iso = datetime.fromtimestamp(int(now_secs_from_epoch)).strftime('%Y-%m-%d_%T')
+        return now_timestamp_in_iso
+
     def log(self, target, message):
+        message = '['+self.now_ISO()+'] '+message
         if target is not None:
             target.append(message)
         print(message)
@@ -90,6 +104,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #END_CONSTRUCTOR
         pass
 
+
     def view_tree(self, ctx, params):
         """
         :param params: instance of type "view_tree_Input" (view_tree() ** **
@@ -117,6 +132,8 @@ This module contains methods for running and visualizing results of phylogenomic
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
+        wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+
         #### STEP 1: do some basic checks
         ##
         if 'workspace_name' not in params:
@@ -141,8 +158,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #### STEP 3: Get tree and save as newick file
         ##
         try:
-            ws = workspaceService(self.workspaceURL, token=ctx['token'])
-            objects = ws.get_objects([{'ref': params['input_tree_ref']}])
+            objects = wsClient.get_objects([{'ref': params['input_tree_ref']}])
             data = objects[0]['data']
             info = objects[0]['info']
             intree_name = info[1]
@@ -385,33 +401,6 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method view_tree return value ' +
-                             'output is not type dict as required.')
-        # return the results
-        return [output]
-
-    def trim_tree_to_genomeSet(self, ctx, params):
-        """
-        :param params: instance of type "trim_tree_to_genomeSet_Input"
-           (trim_tree_to_genomeSet() ** ** trim a KBase Tree to match
-           genomeset, and make newick and images downloadable) -> structure:
-           parameter "workspace_name" of type "workspace_name" (** Common
-           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
-           parameter "input_tree_ref" of type "data_obj_ref", parameter
-           "desc" of String
-        :returns: instance of type "trim_tree_to_genomeSet_Output" ->
-           structure: parameter "report_name" of String, parameter
-           "report_ref" of String
-        """
-        # ctx is the context object
-        # return variables are: output
-        #BEGIN trim_tree_to_genomeSet
-        output = {}
-        raise NotImplementedError
-        #END trim_tree_to_genomeSet
-
-        # At some point might do deeper type checking...
-        if not isinstance(output, dict):
-            raise ValueError('Method trim_tree_to_genomeSet return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]
@@ -5939,6 +5928,575 @@ This module contains methods for running and visualizing results of phylogenomic
         # return the results
         return [output]
 
+    def find_homologs_with_genome_context(self, ctx, params):
+        """
+        :param params: instance of type
+           "find_homologs_with_genome_context_Input"
+           (find_homologs_with_genome_context() ** ** show homolgous genes
+           across multiple genomes within genome context against species
+           tree) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter
+           "input_featureSet_ref" of type "data_obj_ref", parameter
+           "input_speciesTree_ref" of type "data_obj_ref", parameter
+           "save_per_genome_featureSets" of type "bool", parameter
+           "ident_thresh" of Double, parameter "overlap_fraction" of Double,
+           parameter "e_value" of Double, parameter "bitscore" of Double
+        :returns: instance of type "find_homologs_with_genome_context_Output"
+           -> structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN find_homologs_with_genome_context
+
+        #### STEP 0: init
+        ##
+        console = []
+        invalid_msgs = []
+        self.log(console, 'Running find_homologs_with_genome_context() with params=')
+        self.log(console, "\n" + pformat(params))
+        report = ''
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        token = ctx['token']
+        headers = {'Authorization': 'OAuth ' + token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except:
+            raise ValueError("unable to instantiate dfuClient")
+        try:
+            blastClient = kb_blast(url=self.callbackURL, token=token, service_ver=SERVICE_VER)  # SDK Local
+            #blastClient = kb_blast(url=self.serviceWizardURL, token=token, service_ver=SERVICE_VER)  # Dynamic service
+        except:
+            raise ValueError("unable to instantiate blastClient")
+
+
+        #### STEP 1: do some basic checks
+        ##
+        # param checks
+        required_params = ['workspace_name',
+                           'input_featureSet_ref',
+                           'input_speciesTree_ref',
+                           'ident_thresh',
+                           'e_value',
+                           'bitscore',
+                           'overlap_fraction'
+                           ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
+
+
+        #### STEP 2: load the method provenance from the context object
+        ##
+        self.log(console, "SETTING PROVENANCE")  # DEBUG
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects'] = []
+        provenance[0]['input_ws_objects'].append(params['input_featureSet_ref'])
+        provenance[0]['input_ws_objects'].append(params['input_speciesTree_ref'])
+        provenance[0]['service'] = 'kb_phylogenomics'
+        provenance[0]['method'] = 'find_homologs_with_genome_context'
+
+
+        #### STEP 3: Get tree and save as newick file and create GenomeSet object
+        ##
+        try:
+            objects = wsClient.get_objects([{'ref': params['input_speciesTree_ref']}])
+            data = objects[0]['data']
+            info = objects[0]['info']
+            intree_name = info[1]
+            intree_type_name = info[2].split('.')[1].split('-')[0]
+
+        except Exception as e:
+            raise ValueError('Unable to fetch input_speciesTree_ref object from workspace: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+
+        if intree_type_name == 'Tree':
+            tree_in = data
+        else:
+            raise ValueError('Cannot yet handle input_tree type of: ' + intree_type_name)
+
+        # store which genomes are in tree and save in GenomeSet object, store order
+        genomes_in_tree = dict()
+        genome_ref_order = []
+        genome_ref_to_node_id = dict()
+        tree_GS_name = intree_name+'.GenomeSet'
+        tree_GS_obj = {'description': 'GenomeSet for '+intree_name,
+                       'elements': dict()
+                      }
+        if 'ws_refs' not in tree_in:
+            raise ValueError ("Species Tree missing ws_refs field.  Cannot continue.  Exiting...")
+        for node_id in tree_in['ws_refs'].keys():
+            genome_ref = tree_in['ws_refs'][node_id]['g'][0]
+            genomes_in_tree[genome_ref] = node_id
+            tree_GS_obj['elements'][node_id] = {'ref': genome_ref}
+            genome_ref_order.append(genome_ref)
+            genome_ref_to_node_id[genome_ref] = node_id
+
+        # save newick file
+        intree_newick_file_path = os.path.join(output_dir, intree_name + ".newick")
+        self.log(console, 'writing intree file: ' + intree_newick_file_path)
+        with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
+            intree_newick_file_handle.write(tree_in['tree'])
+
+        """
+        # upload newick
+        try:
+            newick_upload_ret = dfuClient.file_to_shock({'file_path': intree_newick_file_path,
+                                                  #'pack': 'zip'})
+                                                   'make_handle': 0})
+        except:
+            raise ValueError('error uploading newick file to shock')
+        """
+        # save GenomeSet object for Tree
+        genomeSet_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                                    'objects': [
+                                                        { 
+                                                            'type':'KBaseSearch.GenomeSet',
+                                                            'data':tree_GS_obj,
+                                                            'name':tree_GS_name,
+                                                            'meta':{},
+                                                            'provenance':[
+                                                                {
+                                                                    'service':'kb_phylogenomics',
+                                                                    'method':'find_homologs_with_genome_context',
+                                                                    'input_ws_objects': [params['input_speciesTree_ref']]
+                                                                    
+                                                                }
+                                                            ]
+                                                        }]
+                                                })[0]
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        tree_derived_genomeSet_ref = str(genomeSet_obj_info[WSID_I])+'/'+str(genomeSet_obj_info[OBJID_I])+'/'+str(genomeSet_obj_info[VERSION_I])
+
+
+        #### STEP 4: if labels defined, make separate newick-labels file
+        ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
+        ##
+        if 'default_node_labels' in tree_in:
+            newick_labels_file = intree_name + '-labels.newick'
+            output_newick_labels_file_path = os.path.join(output_dir, newick_labels_file)
+            #default_row_ids = tree_in['default_row_labels']
+            #new_ids = dict()
+            #for row_id in default_row_ids.keys():
+            #    new_ids[row_id] = default_row_ids[row_id]
+
+            mod_newick_buf = tree_in['tree']
+            mod_newick_buf = re.sub('\|', '%' + '|'.encode("hex"), mod_newick_buf)
+            #for row_id in new_ids.keys():
+            for node_id in tree_in['default_node_labels'].keys():
+                label = tree_in['default_node_labels'][node_id]
+
+                #self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
+                label = re.sub(' \(kb[^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
+                label = re.sub('\s', '_', label)
+                #label = re.sub('\/','%'+'/'.encode("hex"), label)
+                #label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
+                #label = re.sub('\[','%'+'['.encode("hex"), label)
+                #label = re.sub('\]','%'+']'.encode("hex"), label)
+                label = re.sub('\(', '[', label)
+                label = re.sub('\)', ']', label)
+                label = re.sub('\:', '%' + ':'.encode("hex"), label)
+                label = re.sub('\;', '%' + ';'.encode("hex"), label)
+                label = re.sub('\|', '%' + '|'.encode("hex"), label)
+                #self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
+                #self.log (console, "NEWICK B4: '"+mod_newick_buf+"'")  # DEBUG
+                mod_node_id = re.sub('\|', '%' + '|'.encode("hex"), node_id)
+                mod_newick_buf = re.sub('\(' + mod_node_id + '\:', '(' + label + ':', mod_newick_buf)
+                mod_newick_buf = re.sub('\,' + mod_node_id + '\:', ',' + label + ':', mod_newick_buf)
+                #self.log (console, "NEWICK AF: '"+mod_newick_buf+"'")  # DEBUG
+
+                #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
+
+            mod_newick_buf = re.sub('_', ' ', mod_newick_buf)
+            with open(output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
+                output_newick_labels_file_handle.write(mod_newick_buf)
+
+            """
+            # upload
+            try:
+                newick_labels_upload_ret = dfuClient.file_to_shock({'file_path': output_newick_labels_file_path,
+                                                              #'pack': 'zip'})
+                                                              'make_handle': 0})
+            except:
+                raise ValueError('error uploading newick labels file to shock')
+            """
+
+
+        #### STEP 5: Create tree image in html dir
+        ##
+        html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
+        if not os.path.exists(html_output_dir):
+            os.makedirs(html_output_dir)
+        png_file = intree_name + '.png'
+        pdf_file = intree_name + '.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file)
+        output_pdf_file_path = os.path.join(output_dir, pdf_file)
+        newick_buf = tree_in['tree']
+        if 'default_node_labels' in tree_in:
+            newick_buf = mod_newick_buf
+        self.log(console, "NEWICK_BUF: '" + newick_buf + "'")
+
+        # init ETE3 objects
+        t = ete3.Tree(newick_buf)
+        ts = ete3.TreeStyle()
+
+        # customize
+        ts.show_leaf_name = True
+        ts.show_branch_length = False
+        ts.show_branch_support = True
+        #ts.scale = 50 # 50 pixels per branch length unit
+        ts.branch_vertical_margin = 5  # pixels between adjacent branches
+        title_disp = intree_name
+        if 'desc' in params and params['desc'] != None and params['desc'] != '':
+            title_disp += ': ' + params['desc']
+        ts.title.add_face(ete3.TextFace(title_disp, fsize=10), column=0)
+
+        node_style = ete3.NodeStyle()
+        node_style["fgcolor"] = "#606060"  # for node balls
+        node_style["size"] = 10  # for node balls (gets reset based on support)
+        node_style["vt_line_color"] = "#606060"
+        node_style["hz_line_color"] = "#606060"
+        node_style["vt_line_width"] = 2
+        node_style["hz_line_width"] = 2
+        node_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
+        node_style["hz_line_type"] = 0
+
+        leaf_style = ete3.NodeStyle()
+        leaf_style["fgcolor"] = "#ffffff"  # for node balls
+        leaf_style["size"] = 2  # for node balls (we're using it to add space)
+        leaf_style["vt_line_color"] = "#606060"  # unecessary
+        leaf_style["hz_line_color"] = "#606060"
+        leaf_style["vt_line_width"] = 2
+        leaf_style["hz_line_width"] = 2
+        leaf_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
+        leaf_style["hz_line_type"] = 0
+
+        for n in t.traverse():
+            if n.is_leaf():
+                style = copy.copy(leaf_style)
+                if "User Genome" in n.name:
+                    style["bgcolor"] = "#fafcc2"
+            else:
+                style = copy.copy(node_style)
+
+                if n.support > 0.95:
+                    style["size"] = 6
+                elif n.support > 0.90:
+                    style["size"] = 5
+                elif n.support > 0.80:
+                    style["size"] = 4
+                else:
+                    style["size"] = 2
+
+            n.set_style(style)
+
+        # save tree images
+        dpi = 300
+        img_units = "in"
+        img_pix_width = 1200
+        img_in_width = round(float(img_pix_width) / float(dpi), 1)
+        img_html_width = img_pix_width // 2
+        t.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
+        t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+
+
+        #### STEP 6: get query features from featureSet object
+        ##
+        input_ref = params['input_featureSet_ref']
+        try:
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseCollections.FeatureSet"]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
+        try:
+            featureSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
+        except:
+            raise ValueError("unable to fetch featureSet: " + input_ref)
+
+        # validate all genomes in species tree
+        genome_refs = []
+        genome_ref_seen = dict()
+        for element_id in featureSet_obj['elements'].keys():
+            genome_ref = featureSet_obj['elements'][element_id][0]
+            if genome_ref not in genome_ref_seen:
+                genome_ref_seen[genome_ref] = True
+                genome_refs.append(genome_ref)
+        genomes_missing_from_tree = []
+        for genome_ref in genome_ref_seen.keys():
+            try:
+                found_in_tree = genomes_in_tree[genome_ref]
+            except:
+                missing_genome_message = genomes_in_tree[genome_ref]+" ("+str(genome_ref)+")"
+                if 'default_node_labels' in tree_in:
+                    node_id = genomes_in_tree[genome_ref]
+                    missing_genome_message += ' '+tree_in['default_node_labels'][node_id]
+                genomes_missing_from_tree.append(missing_genome_message)
+
+        if len(genomes_missing_from_tree) > 0:
+            raise ValueError ("Species Tree missing genomes from FeatureSet.  Missing Genomes: "+", ".join(genomes_missing_from_tree))
+
+
+        #### STEP 7: make a separate featureSet with a single feature to run searches
+        ##  Kludge until change BLASTp to accept multi-feature FeatureSet queries
+        ##
+        input_full_feature_ids = []
+        individual_featureSet_refs = []
+        individual_featureSet_names = []
+        genome_ref_feature_id_delim = '.f:'
+
+        for element_id in featureSet_obj['elements'].keys():
+            genome_ref = featureSet_obj['elements'][element_id][0]
+            full_feature_id = genome_ref + genome_ref_feature_id_delim + element_id
+            individual_FS_name = genome_ref.replace('/','_')+'_'+element_id+'.FeatureSet'
+
+            individual_FS_prov = [{}]
+            if 'provenance' in ctx:
+                individual_FS_prov = ctx['provenance']
+            # add additional info to provenance here, in this case the input data object reference
+            individual_FS_prov[0]['input_ws_objects'] = []
+            individual_FS_prov[0]['input_ws_objects'].append(params['input_featureSet_ref'])
+            individual_FS_prov[0]['service'] = 'kb_phylogenomics'
+            individual_FS_prov[0]['method'] = 'find_homologs_with_genome_context'
+            
+            individual_FS_obj = {
+                'description': featureSet_obj['description']+' - '+element_id,
+                'elements': { 
+                    element_id: [genome_ref]
+                }
+            }
+
+            individual_FS_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                                            'objects': [
+                                                                {
+                                                                    'type':'KBaseCollections.FeatureSet',
+                                                                    'data':individual_FS_obj,
+                                                                    'name':individual_FS_name,
+                                                                    'meta':{},
+                                                                    'provenance':individual_FS_prov,
+                                                                    'hidden':1  # True?
+                                                                }]
+                                                        })[0]
+            #pprint(individual_FS_obj_info)
+            self.log(console, "saved query feature as FS "+str(individual_FS_name))
+            self.log(console, pformat(individual_FS_obj_info))
+
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+            individual_FS_ref = str(individual_FS_obj_info[WSID_I])+'/'+str(individual_FS_obj_info[OBJID_I])+'/'+str(individual_FS_obj_info[VERSION_I])
+
+            individual_featureSet_refs.append (individual_FS_ref)
+            individual_featureSet_names.append (individual_FS_name)
+            input_full_feature_ids.append (full_feature_id)
+
+
+        #### STEP 8: run BLASTp searches to get homologs
+        ##
+        hits_by_query_and_genome_ref = dict()
+        #hits_by_full_feature_id = dict()
+        #feature_included = dict()
+        #for query_i,individual_FS_ref in enumerate(individual_featureSet_refs):
+        for query_i,query_full_feature_id in enumerate(input_full_feature_ids):
+
+            #hits_by_full_feature_id[query_full_feature_id] = dict()
+
+            input_individual_FS_ref = individual_featureSet_refs[query_i]
+            input_individual_FS_name = individual_featureSet_names[query_i]
+            output_individual_FS_name = input_individual_FS_name+'-'+intree_name+'.BLASTp_homologs'
+
+            BLASTp_Params = {'workspace_name':       params['workspace_name'],
+                             'input_one_ref':        individual_FS_ref,
+                             'input_many_ref':       tree_derived_genomeSet_ref,
+                             'output_filtered_name': output_individual_FS_name,
+                             'ident_thresh':         params['ident_thresh'],
+                             'e_value':              params['e_value'],
+                             'bitscore':             params['bitscore'],
+                             'overlap_fraction':     params['overlap_fraction'],
+                             'maxaccepts':           1000  # hopefully won't exceed 1000 genomes!
+                             }
+
+            self.log (console, "running BLASTp for "+input_individual_FS_name)
+            self.log(console, "\n" + pformat(BLASTp_Params))
+
+            blast_retVal = blastClient.BLASTp_Search(BLASTp_Params)
+            this_report_name = blast_retVal['report_name']
+            this_report_ref = blast_retVal['report_ref']
+
+            try:
+                this_report_obj = wsClient.get_objects([{'ref': this_report_ref}])[0]['data']
+            except:
+                raise ValueError("unable to fetch report: " + this_report_ref)
+
+            # read hits and store top hit for each genome
+            hits_ref = this_report_obj['objects_created'][0]['ref']
+            try:
+                hits_obj = wsClient.get_objects([{'ref': hits_ref}])[0]['data']
+            except:
+                raise ValueError("unable to fetch hits for " + output_individual_FS_name+'('+hits_ref+')')
+            hits_by_query_and_genome_ref[query_full_feature_id] = dict()
+            for hit_feature_id in hits_obj['elements'].keys():
+                for genome_ref in hits_obj['elements'][hit_feature_id]:
+                    hits_by_query_and_genome_ref[query_full_feature_id][genome_ref] = hit_feature_id
+                    """
+                    # handle duplicate queries
+                    hit_full_feature_id = genome_ref + genome_ref_feature_id_delim + hit_feature_id
+                    try:
+                        included = feature_included[hit_full_feature_id]
+                    except:
+                        feature_included[hit_full_feature_id] = True
+                        hits_by_full_feature_id[query_full_feature_id][hit_full_feature_id] = True
+                    """
+
+
+        #### STEP 9: build HTML table for hits
+        ##
+        hit_table_html = []
+        hit_table_html += ['<table border=1>']
+        for genome_ref in genome_ref_order:
+            node_id = genome_ref_to_node_id[genome_ref]
+            if 'default_node_labels' in tree_in:
+                label = tree_in['default_node_labels'][node_id]
+            else:
+                label = node_id
+
+            hit_table_html += ['<tr>']
+            hit_table_html += ['<td>'+label+'</td>']
+            for query_i,query_full_feature_id in enumerate(input_full_feature_ids):
+                if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
+                    hit_table_html += ['<td> - </td>']
+                else:
+                    hit_table_html += ['<td>'+hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]+'<td>']
+            hit_table_html += ['</tr>']
+        hit_table_html += ['</table>']
+
+
+        #### STEP 10: make html report
+        ##
+        html_file = intree_name + '-homologs_chromosomal_context' + '.html'
+        output_html_file_path = os.path.join(html_output_dir, html_file)
+        html_report_lines = []
+        html_report_lines += ['<html>']
+        html_report_lines += ['<head><title>KBase Homologs Chromosomal Context: ' + intree_name + '</title></head>']
+        html_report_lines += ['<body bgcolor="white">']
+        html_report_lines += ['<table border=0>']
+#        html_report_lines += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
+        html_report_lines += ['<tr><td valign=top>']
+        html_report_lines += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
+        html_report_lines += ['</td>']
+        html_report_lines += ['<td valign=top>']
+        html_report_lines += hit_table_html
+        html_report_lines += ['</td></tr>']
+        html_report_lines += ['</table>']
+        html_report_lines += ['</body>']
+        html_report_lines += ['</html>']
+
+        html_report_str = "\n".join(html_report_lines)
+        with open(output_html_file_path, 'w', 0) as html_handle:
+            html_handle.write(html_report_str)
+
+        """
+        # upload images and html
+        try:
+            png_upload_ret = dfuClient.file_to_shock({'file_path': output_png_file_path,
+                                                #'pack': 'zip'})
+                                                'make_handle': 0})
+        except:
+            raise ValueError('error uploading png file to shock')
+        try:
+            pdf_upload_ret = dfuClient.file_to_shock({'file_path': output_pdf_file_path,
+                                                #'pack': 'zip'})
+                                                'make_handle': 0})
+        except:
+            raise ValueError('error uploading pdf file to shock')
+        """
+        try:
+            html_upload_ret = dfuClient.file_to_shock({'file_path': html_output_dir,
+                                                       'make_handle': 0,
+                                                       'pack': 'zip'})
+        except:
+            raise ValueError('error uploading html report to shock')
+
+
+        #### STEP 11: Create report obj
+        ##
+        reportName = 'blast_report_' + str(uuid.uuid4())
+        #report += output_newick_buf+"\n"
+        reportObj = {'objects_created': [],
+                     'direct_html_link_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+                     }
+        #reportObj['objects_created'].append({'ref': str(params['workspace_name'])+'/'+str(params['output_name']),'description': params['output_name']+' Tree'})
+        reportObj['html_links'] = [{'shock_id': html_upload_ret['shock_id'],
+                                    'name': html_file,
+                                    'label': intree_name + ' HTML'
+                                    }
+                                   ]
+        """
+        reportObj['file_links'] = [{'shock_id': newick_upload_ret['shock_id'],
+                                    'name': intree_name + '.newick',
+                                    'label': intree_name + ' NEWICK'
+                                    }
+                                   ]
+        if 'default_node_labels' in tree_in:
+            reportObj['file_links'].append({'shock_id': newick_labels_upload_ret['shock_id'],
+                                            'name': intree_name + '-labels.newick',
+                                            'label': intree_name + ' NEWICK (with labels)'
+                                            })
+
+        reportObj['file_links'].extend([{'shock_id': png_upload_ret['shock_id'],
+                                         'name': intree_name + '.png',
+                                         'label': intree_name + ' PNG'
+                                         },
+                                        {'shock_id': pdf_upload_ret['shock_id'],
+                                         'name': intree_name + '.pdf',
+                                         'label': intree_name + ' PDF'
+                                         }])
+        """
+
+        SERVICE_VER = 'release'
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        report_info = reportClient.create_extended_report(reportObj)
+
+
+        # Done
+        #
+        self.log(console, "BUILDING RETURN OBJECT")
+        output = {'report_name': report_info['name'],
+                  'report_ref': report_info['ref']
+                  }
+
+        self.log(console, "find_homologs_with_genome_context() DONE")
+        #END find_homologs_with_genome_context
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method find_homologs_with_genome_context return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

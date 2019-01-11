@@ -281,4 +281,29 @@ module kb_phylogenomics {
         returns (view_pan_phylo_Output output) 
         authentication required;
 
+
+    /* find_homologs_with_genome_context()
+    **
+    ** show homolgous genes across multiple genomes within genome context against species tree
+    */
+    typedef structure {
+        workspace_name workspace_name;
+	data_obj_ref   input_featureSet_ref;
+	data_obj_ref   input_speciesTree_ref;
+	bool           save_per_genome_featureSets;
+	float          ident_thresh;
+	float          overlap_fraction;
+	float          e_value;
+	float          bitscore;
+    } find_homologs_with_genome_context_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } find_homologs_with_genome_context_Output;
+
+    funcdef find_homologs_with_genome_context(find_homologs_with_genome_context_Input params) 
+        returns (find_homologs_with_genome_context_Output output) 
+        authentication required;
+
 };

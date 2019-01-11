@@ -210,108 +210,6 @@ view_tree_Output is a reference to a hash where the following keys are defined:
  
 
 
-=head2 trim_tree_to_genomeSet
-
-  $output = $obj->trim_tree_to_genomeSet($params)
-
-=over 4
-
-=item Parameter and return types
-
-=begin html
-
-<pre>
-$params is a kb_phylogenomics.trim_tree_to_genomeSet_Input
-$output is a kb_phylogenomics.trim_tree_to_genomeSet_Output
-trim_tree_to_genomeSet_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_phylogenomics.workspace_name
-	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
-	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
-	desc has a value which is a string
-workspace_name is a string
-data_obj_ref is a string
-trim_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
-	report_name has a value which is a string
-	report_ref has a value which is a string
-
-</pre>
-
-=end html
-
-=begin text
-
-$params is a kb_phylogenomics.trim_tree_to_genomeSet_Input
-$output is a kb_phylogenomics.trim_tree_to_genomeSet_Output
-trim_tree_to_genomeSet_Input is a reference to a hash where the following keys are defined:
-	workspace_name has a value which is a kb_phylogenomics.workspace_name
-	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
-	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
-	desc has a value which is a string
-workspace_name is a string
-data_obj_ref is a string
-trim_tree_to_genomeSet_Output is a reference to a hash where the following keys are defined:
-	report_name has a value which is a string
-	report_ref has a value which is a string
-
-
-=end text
-
-=item Description
-
-
-
-=back
-
-=cut
-
- sub trim_tree_to_genomeSet
-{
-    my($self, @args) = @_;
-
-# Authentication: required
-
-    if ((my $n = @args) != 1)
-    {
-	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
-							       "Invalid argument count for function trim_tree_to_genomeSet (received $n, expecting 1)");
-    }
-    {
-	my($params) = @args;
-
-	my @_bad_arguments;
-        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
-        if (@_bad_arguments) {
-	    my $msg = "Invalid arguments passed to trim_tree_to_genomeSet:\n" . join("", map { "\t$_\n" } @_bad_arguments);
-	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
-								   method_name => 'trim_tree_to_genomeSet');
-	}
-    }
-
-    my $url = $self->{url};
-    my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "kb_phylogenomics.trim_tree_to_genomeSet",
-	    params => \@args,
-    });
-    if ($result) {
-	if ($result->is_error) {
-	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
-					       code => $result->content->{error}->{code},
-					       method_name => 'trim_tree_to_genomeSet',
-					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
-					      );
-	} else {
-	    return wantarray ? @{$result->result} : $result->result->[0];
-	}
-    } else {
-        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method trim_tree_to_genomeSet",
-					    status_line => $self->{client}->status_line,
-					    method_name => 'trim_tree_to_genomeSet',
-				       );
-    }
-}
- 
-
-
 =head2 run_DomainAnnotation_Sets
 
   $output = $obj->run_DomainAnnotation_Sets($params)
@@ -1412,6 +1310,118 @@ view_pan_phylo_Output is a reference to a hash where the following keys are defi
     }
 }
  
+
+
+=head2 find_homologs_with_genome_context
+
+  $output = $obj->find_homologs_with_genome_context($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_phylogenomics.find_homologs_with_genome_context_Input
+$output is a kb_phylogenomics.find_homologs_with_genome_context_Output
+find_homologs_with_genome_context_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
+	save_per_genome_featureSets has a value which is a kb_phylogenomics.bool
+	ident_thresh has a value which is a float
+	overlap_fraction has a value which is a float
+	e_value has a value which is a float
+	bitscore has a value which is a float
+workspace_name is a string
+data_obj_ref is a string
+bool is an int
+find_homologs_with_genome_context_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_phylogenomics.find_homologs_with_genome_context_Input
+$output is a kb_phylogenomics.find_homologs_with_genome_context_Output
+find_homologs_with_genome_context_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
+	save_per_genome_featureSets has a value which is a kb_phylogenomics.bool
+	ident_thresh has a value which is a float
+	overlap_fraction has a value which is a float
+	e_value has a value which is a float
+	bitscore has a value which is a float
+workspace_name is a string
+data_obj_ref is a string
+bool is an int
+find_homologs_with_genome_context_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub find_homologs_with_genome_context
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function find_homologs_with_genome_context (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to find_homologs_with_genome_context:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'find_homologs_with_genome_context');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_phylogenomics.find_homologs_with_genome_context",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'find_homologs_with_genome_context',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method find_homologs_with_genome_context",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'find_homologs_with_genome_context',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -1455,16 +1465,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'view_pan_phylo',
+                method_name => 'find_homologs_with_genome_context',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method view_pan_phylo",
+            error => "Error invoking method find_homologs_with_genome_context",
             status_line => $self->{client}->status_line,
-            method_name => 'view_pan_phylo',
+            method_name => 'find_homologs_with_genome_context',
         );
     }
 }
@@ -1652,81 +1662,6 @@ desc has a value which is a string
 
 
 =head2 view_tree_Output
-
-=over 4
-
-
-
-=item Definition
-
-=begin html
-
-<pre>
-a reference to a hash where the following keys are defined:
-report_name has a value which is a string
-report_ref has a value which is a string
-
-</pre>
-
-=end html
-
-=begin text
-
-a reference to a hash where the following keys are defined:
-report_name has a value which is a string
-report_ref has a value which is a string
-
-
-=end text
-
-=back
-
-
-
-=head2 trim_tree_to_genomeSet_Input
-
-=over 4
-
-
-
-=item Description
-
-trim_tree_to_genomeSet()
-**
-** trim a KBase Tree to match genomeset, and make newick and images downloadable
-
-
-=item Definition
-
-=begin html
-
-<pre>
-a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_phylogenomics.workspace_name
-input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
-input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
-desc has a value which is a string
-
-</pre>
-
-=end html
-
-=begin text
-
-a reference to a hash where the following keys are defined:
-workspace_name has a value which is a kb_phylogenomics.workspace_name
-input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
-input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
-desc has a value which is a string
-
-
-=end text
-
-=back
-
-
-
-=head2 trim_tree_to_genomeSet_Output
 
 =over 4
 
@@ -2554,6 +2489,89 @@ save_featuresets has a value which is a kb_phylogenomics.bool
 
 
 =head2 view_pan_phylo_Output
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 find_homologs_with_genome_context_Input
+
+=over 4
+
+
+
+=item Description
+
+find_homologs_with_genome_context()
+**
+** show homolgous genes across multiple genomes within genome context against species tree
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
+save_per_genome_featureSets has a value which is a kb_phylogenomics.bool
+ident_thresh has a value which is a float
+overlap_fraction has a value which is a float
+e_value has a value which is a float
+bitscore has a value which is a float
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
+save_per_genome_featureSets has a value which is a kb_phylogenomics.bool
+ident_thresh has a value which is a float
+overlap_fraction has a value which is a float
+e_value has a value which is a float
+bitscore has a value which is a float
+
+
+=end text
+
+=back
+
+
+
+=head2 find_homologs_with_genome_context_Output
 
 =over 4
 

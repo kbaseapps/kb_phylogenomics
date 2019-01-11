@@ -1,0 +1,169 @@
+{
+    "ver": "1.3.0",
+    "authors": [
+        "dylan"
+    ],
+    "contact": "http://kbase.us/contact-us/",
+    "visible": true,
+    "categories": ["active", "comparative_genomics"],
+    "widgets": {
+        "input": null,
+        "output": "no-display"
+    },
+    "parameters": [ 
+        {
+            "id": "input_featureSet_ref",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseCollections.FeatureSet" ]
+            }
+        },
+        {
+            "id": "input_speciesTree_ref",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseTrees.Tree" ]
+            }
+        },
+        {
+            "id": "save_per_genome_featureSets",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+                "options": [
+                                {
+                                        "value": "0",
+                                        "display": "DON'T save feature sets",
+                                        "id": "save_featuresets-dont",
+                                        "ui-name": "save_featuresets-dont"
+                                },
+                                {
+                                        "value": "1",
+                                        "display": "DO save feature sets",
+                                        "id": "save_featuresets-do",
+                                        "ui-name": "save_featuresets-do"
+                                }
+                ]
+            }
+        },
+        {
+            "id": "e_value",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ ".001" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_integer" : 0
+            }
+        },
+        {
+            "id": "bitscore",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "100" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_integer" : 25
+            }
+        },
+        {
+            "id": "ident_thresh",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "40.0" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_float" : 0.0,
+                "max_float" : 100.0
+            }
+        },
+        {
+            "id": "overlap_fraction",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "50.0" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "float",
+                "min_float" : 0.0,
+                "max_float" : 100.0
+            }
+        }
+    ],
+    "behavior": {
+        "service-mapping": {
+            "url": "",
+            "name": "kb_phylogenomics",
+            "method": "find_homologs_with_genome_context",
+            "input_mapping": [
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "workspace_name"
+                },
+                {
+                    "input_parameter": "input_featureSet_ref",
+		    "target_property": "input_featureSet_ref",
+		    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter": "input_speciesTree_ref",
+		    "target_property": "input_speciesTree_ref",
+		    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter": "save_per_genome_featureSets",
+		    "target_property": "save_per_genome_featureSets"
+                },
+                {
+                    "input_parameter": "e_value",
+                    "target_property": "e_value"
+                },
+                {
+                    "input_parameter": "bitscore",
+                    "target_property": "bitscore"
+                },
+                {
+                    "input_parameter": "ident_thresh",
+                    "target_property": "ident_thresh"
+                },
+                {
+                    "input_parameter": "overlap_fraction",
+                    "target_property": "overlap_fraction"
+                }
+            ],
+            "output_mapping": [
+                {
+                    "service_method_output_path": [0, "report_name"],
+                    "target_property": "report_name"
+                },
+                {
+                    "service_method_output_path": [0, "report_ref"],
+                    "target_property": "report_ref"
+                },
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "workspace_name"
+                }
+            ]
+        }
+    },
+    "job_id_output_field": "docker"
+}
