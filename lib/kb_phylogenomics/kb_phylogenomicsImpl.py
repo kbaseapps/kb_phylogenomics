@@ -6224,9 +6224,9 @@ This module contains methods for running and visualizing results of phylogenomic
         img_pix_width = 1200
         height_to_genome_scaling = 0.25
         img_in_height = round(height_to_genome_scaling * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
-        img_in_width = round(float(img_pix_width) / float(dpi), 1)
+        #img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
-        t.render(output_png_file_path, w=img_in_width, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
+        t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
         #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
 
