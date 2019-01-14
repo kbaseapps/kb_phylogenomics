@@ -6222,7 +6222,7 @@ This module contains methods for running and visualizing results of phylogenomic
         dpi = 300
         img_units = "in"
         img_pix_width = 1200
-        height_to_genome_scaling = 0.25
+        height_to_genome_scaling = 1.00
         img_in_height = round(height_to_genome_scaling * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
         #img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
@@ -6399,10 +6399,10 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_table_html += ['<table border='+str(border)+' cellpadding='+str(cellpadding)+' cellspacing='+str(cellspacing)+'>']
 
         # add header row with bait genes
-        hit_table_html += ['<tr>']
-        hit_table_html += ['<td bgcolor='+'#ffffff'+'valign=middle align=right>'+'bait<br>gene'+'</td>']
-        sorted_input_full_feature_ids = sorted(input_full_feature_ids)
         row_bg_color = header_row_color
+        hit_table_html += ['<tr>']
+        hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=right>'+'bait<br>gene'+'</td>']
+        sorted_input_full_feature_ids = sorted(input_full_feature_ids)
         for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
             [genome_ref,query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
             hit_table_html += ['<td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'</font>'+'</td>']
