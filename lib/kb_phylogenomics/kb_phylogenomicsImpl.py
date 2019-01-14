@@ -6144,9 +6144,9 @@ This module contains methods for running and visualizing results of phylogenomic
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
         png_file = intree_name + '.png'
-        pdf_file = intree_name + '.pdf'
+        #pdf_file = intree_name + '.pdf'
         output_png_file_path = os.path.join(html_output_dir, png_file)
-        output_pdf_file_path = os.path.join(output_dir, pdf_file)
+        #output_pdf_file_path = os.path.join(output_dir, pdf_file)
         newick_buf = tree_in['tree']
 
         # ladderize to make row order consistent and get genome order (get leaf ids before labels)
@@ -6222,10 +6222,12 @@ This module contains methods for running and visualizing results of phylogenomic
         dpi = 300
         img_units = "in"
         img_pix_width = 1200
+        height_to_genome_scaling = 0.25
+        img_in_height = round(height_to_genome_scaling * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
         img_in_width = round(float(img_pix_width) / float(dpi), 1)
-        img_html_width = img_pix_width // 2
-        t.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
-        t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+        img_html_width = img_pix_width // 4
+        t.render(output_png_file_path, w=img_in_width, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
+        #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
 
         #### STEP 6: get query features from featureSet object
@@ -6360,7 +6362,7 @@ This module contains methods for running and visualizing results of phylogenomic
             except:
                 raise ValueError("unable to fetch report: " + this_report_ref)
 
-            # read hits and store top hit for each genome
+            # read hits and store hits for each genome
             hits_ref = this_report_obj['objects_created'][0]['ref']
             try:
                 hits_obj = wsClient.get_objects([{'ref': hits_ref}])[0]['data']
@@ -6386,16 +6388,31 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 9: build HTML table for hits
         ##
-        border=1
-        cellpadding=10
-        cellspacing=0
+        border=0
+        cellpadding=5
+        cellspacing=2
         fontsize=2
+        header_row_color="#ccccff"
+        even_row_color="#ffffff"
+        odd_row_color="#eeeeee"
         hit_table_html = []
         hit_table_html += ['<table border='+str(border)+' cellpadding='+str(cellpadding)+' cellspacing='+str(cellspacing)+'>']
+
+        # add header row with bait genes
+        hit_table_html += ['<tr>']
+        hit_table_html += ['<td bgcolor='+'#ffffff'+'valign=middle align=right>'+'bait<br>gene'+'</td>']
+        sorted_input_full_feature_ids = sorted(input_full_feature_ids)
+        row_bg_color = header_row_color
+        for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
+            [genome_ref,query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
+            hit_table_html += ['<td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'</font>'+'</td>']
+        hit_table_html += ['</tr>']
+
+        # add genome rows
         for genome_i,genome_ref in enumerate(genome_ref_order):
-            row_bg_color = '#ffffff'
+            row_bg_color = odd_row_color
             if (genome_i % 2) == 0:
-                row_bg_color = '#cccccc'
+                row_bg_color = even_row_color
             node_id = genome_ref_to_node_id[genome_ref]
             if 'default_node_labels' in tree_in:
                 label = tree_in['default_node_labels'][node_id]
@@ -6403,10 +6420,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 label = node_id
 
             hit_table_html += ['<tr>']
-            hit_table_html += ['<td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
-            for query_i,query_full_feature_id in enumerate(input_full_feature_ids):
+            #hit_table_html += ['<td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
+            hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
+            for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
-                    hit_table_html += ['<td> - </td>']
+                    hit_table_html += ['<td bgcolor='+row_bg_color+'> - </td>']
                 else:
                     hit_ids = []
                     for hit_id in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
