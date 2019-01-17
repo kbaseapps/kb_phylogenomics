@@ -6288,14 +6288,15 @@ This module contains methods for running and visualizing results of phylogenomic
             except:
                 raise ValueError("unable to fetch hits for " + output_individual_FS_name+'('+hits_ref+')')
             hits_by_query_and_genome_ref[query_full_feature_id] = dict()
-            hit_cnt = 0
+            hit_cnt_by_genome_ref = dict()
             for hit_feature_id in hits_obj['elements'].keys():
                 for genome_ref in hits_obj['elements'][hit_feature_id]:
                     if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                         hits_by_query_and_genome_ref[query_full_feature_id][genome_ref] = []
+                        hit_cnt_by_genome_ref[genome_ref] = 0
                         
                     hits_by_query_and_genome_ref[query_full_feature_id][genome_ref].append(hit_feature_id)
-                    hit_cnt += 1
+                    hit_cnt_by_genome_ref[genome_ref] += 1
                     """
                     # handle duplicate queries
                     hit_full_feature_id = genome_ref + genome_ref_feature_id_delim + hit_feature_id
@@ -6305,8 +6306,9 @@ This module contains methods for running and visualizing results of phylogenomic
                         feature_included[hit_full_feature_id] = True
                         hits_by_full_feature_id[query_full_feature_id][hit_full_feature_id] = True
                     """
-            if hit_cnt > max_hit_cnt:
-                max_hit_cnt = hit_cnt
+            for genome_ref in genome_ref_order:
+                if hit_cnt_by_genome_ref[genome_ref] > max_hit_cnt:
+                    max_hit_cnt = hit_cnt_by_genome_ref[genome_ref]
 
 
         #### STEP 9: Create tree image in html dir
@@ -6431,9 +6433,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # add genome rows
         for genome_i,genome_ref in enumerate(genome_ref_order):
-            row_bg_color = odd_row_color
-            if (genome_i % 2) == 0:
-                row_bg_color = even_row_color
+            #row_bg_color = odd_row_color
+            #if (genome_i % 2) == 0:
+            #    row_bg_color = even_row_color
+            row_bg_color='#ffffff'
             node_id = genome_ref_to_node_id[genome_ref]
             if 'default_node_labels' in tree_in:
                 label = tree_in['default_node_labels'][node_id]
@@ -6442,20 +6445,22 @@ This module contains methods for running and visualizing results of phylogenomic
 
             hit_table_html += ['<tr>']
             #hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
-            hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=left>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
+            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
-                    hit_table_html += ['<td bgcolor='+row_bg_color+'> - </td>']
+                    hit_table_html += ['<td bgcolor='row_bg_color+'> - </td>']
                 else:
                     hit_table_html += ['<td bgcolor='+row_bg_color+'>']
                     hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
                     hit_ids = []
                     for hit_id in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
                         hit_ids.append(hit_id)
-                        hit_table_html += ['<tr><td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+str(hit_id)+'</font>'+'</td></tr>']
+                        #cell_bg_color = cell_bg_color[hit_id]
+                        cell_bg_color = '#cccccc'
+                        hit_table_html += ['<tr><td bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+str(hit_id)+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(0,max_hit_cnt-len(hit_ids)):
-                            hit_table_html += ['<tr><td bgcolor=#ffffff><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
+                            hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
                     hit_table_html += ['</table></td>']
             hit_table_html += ['</tr>']
         hit_table_html += ['</table>']
