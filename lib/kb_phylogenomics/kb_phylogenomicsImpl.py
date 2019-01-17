@@ -6450,14 +6450,14 @@ This module contains methods for running and visualizing results of phylogenomic
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                     hit_table_html += ['<td bgcolor='+row_bg_color+'> - </td>']
                 else:
-                    hit_table_html += ['<td bgcolor='+row_bg_color+'>']
+                    hit_table_html += ['<td valign=top align=center bgcolor='+row_bg_color+'>']
                     hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
                     hit_ids = []
                     for hit_id in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
                         hit_ids.append(hit_id)
                         #cell_bg_color = cell_bg_color[hit_id]
                         cell_bg_color = '#cccccc'
-                        hit_table_html += ['<tr><td bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+str(hit_id)+'</font>'+'</td></tr>']
+                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+str(hit_id)+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(0,max_hit_cnt-len(hit_ids)):
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
