@@ -6138,96 +6138,14 @@ This module contains methods for running and visualizing results of phylogenomic
             """
 
 
-        #### STEP 5: Create tree image in html dir
+        #### STEP 5: read genome order in tree, ladderize to make row order consistent
         ##
-        html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
-        if not os.path.exists(html_output_dir):
-            os.makedirs(html_output_dir)
-        png_file = intree_name + '.png'
-        #pdf_file = intree_name + '.pdf'
-        output_png_file_path = os.path.join(html_output_dir, png_file)
-        #output_pdf_file_path = os.path.join(output_dir, pdf_file)
-        newick_buf = tree_in['tree']
-
-        # ladderize to make row order consistent and get genome order (get leaf ids before labels)
         genome_ref_order = []
+        newick_buf = tree_in['tree']
         t_without_labels = ete3.Tree(newick_buf)
         t_without_labels.ladderize()
         for genome_id in t_without_labels.get_leaf_names():
             genome_ref_order.append(genome_node_id_to_ref[genome_id])
-
-        # switch to labels
-        if 'default_node_labels' in tree_in:
-            newick_buf = mod_newick_buf
-        self.log(console, "NEWICK_BUF: '" + newick_buf + "'")
-
-        # init ETE3 objects
-        t = ete3.Tree(newick_buf)
-        ts = ete3.TreeStyle()
-
-        # ladderize to make row order consistent
-        t.ladderize()
-
-        # customize
-        ts.show_leaf_name = True
-        ts.show_branch_length = False
-        ts.show_branch_support = True
-        #ts.scale = 50 # 50 pixels per branch length unit
-        ts.branch_vertical_margin = 5  # pixels between adjacent branches
-        title_disp = intree_name
-        if 'desc' in params and params['desc'] != None and params['desc'] != '':
-            title_disp += ': ' + params['desc']
-        ts.title.add_face(ete3.TextFace(title_disp, fsize=10), column=0)
-
-        node_style = ete3.NodeStyle()
-        node_style["fgcolor"] = "#606060"  # for node balls
-        node_style["size"] = 10  # for node balls (gets reset based on support)
-        node_style["vt_line_color"] = "#606060"
-        node_style["hz_line_color"] = "#606060"
-        node_style["vt_line_width"] = 2
-        node_style["hz_line_width"] = 2
-        node_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
-        node_style["hz_line_type"] = 0
-
-        leaf_style = ete3.NodeStyle()
-        leaf_style["fgcolor"] = "#ffffff"  # for node balls
-        leaf_style["size"] = 2  # for node balls (we're using it to add space)
-        leaf_style["vt_line_color"] = "#606060"  # unecessary
-        leaf_style["hz_line_color"] = "#606060"
-        leaf_style["vt_line_width"] = 2
-        leaf_style["hz_line_width"] = 2
-        leaf_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
-        leaf_style["hz_line_type"] = 0
-
-        for n in t.traverse():
-            if n.is_leaf():
-                style = copy.copy(leaf_style)
-                if "User Genome" in n.name:
-                    style["bgcolor"] = "#fafcc2"
-            else:
-                style = copy.copy(node_style)
-
-                if n.support > 0.95:
-                    style["size"] = 6
-                elif n.support > 0.90:
-                    style["size"] = 5
-                elif n.support > 0.80:
-                    style["size"] = 4
-                else:
-                    style["size"] = 2
-
-            n.set_style(style)
-
-        # save tree images
-        dpi = 300
-        img_units = "in"
-        img_pix_width = 1200
-        height_to_genome_scaling = 1.00
-        img_in_height = round(height_to_genome_scaling * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
-        #img_in_width = round(float(img_pix_width) / float(dpi), 1)
-        img_html_width = img_pix_width // 4
-        t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
-        #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
 
         #### STEP 6: get query features from featureSet object
@@ -6328,6 +6246,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #### STEP 8: run BLASTp searches to get homologs
         ##
         hits_by_query_and_genome_ref = dict()
+        max_hit_cnt = 0
         #hits_by_full_feature_id = dict()
         #feature_included = dict()
         #for query_i,individual_FS_ref in enumerate(individual_featureSet_refs):
@@ -6369,12 +6288,14 @@ This module contains methods for running and visualizing results of phylogenomic
             except:
                 raise ValueError("unable to fetch hits for " + output_individual_FS_name+'('+hits_ref+')')
             hits_by_query_and_genome_ref[query_full_feature_id] = dict()
+            hit_cnt = 0
             for hit_feature_id in hits_obj['elements'].keys():
                 for genome_ref in hits_obj['elements'][hit_feature_id]:
                     if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                         hits_by_query_and_genome_ref[query_full_feature_id][genome_ref] = []
                         
                     hits_by_query_and_genome_ref[query_full_feature_id][genome_ref].append(hit_feature_id)
+                    hit_cnt += 1
                     """
                     # handle duplicate queries
                     hit_full_feature_id = genome_ref + genome_ref_feature_id_delim + hit_feature_id
@@ -6384,9 +6305,105 @@ This module contains methods for running and visualizing results of phylogenomic
                         feature_included[hit_full_feature_id] = True
                         hits_by_full_feature_id[query_full_feature_id][hit_full_feature_id] = True
                     """
+            if hit_cnt > max_hit_cnt:
+                max_hit_cnt = hit_cnt
 
 
-        #### STEP 9: build HTML table for hits
+        #### STEP 9: Create tree image in html dir
+        ##
+        branch_vertcal_margin = 5
+        hit_cnt_scaling = 1.0
+        html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
+        if not os.path.exists(html_output_dir):
+            os.makedirs(html_output_dir)
+        png_file = intree_name + '.png'
+        #pdf_file = intree_name + '.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file)
+        #output_pdf_file_path = os.path.join(output_dir, pdf_file)
+        newick_buf = tree_in['tree']
+
+        # ladderize to make row order consistent and get genome order (get leaf ids before labels)
+        genome_ref_order = []
+        t_without_labels = ete3.Tree(newick_buf)
+        t_without_labels.ladderize()
+        for genome_id in t_without_labels.get_leaf_names():
+            genome_ref_order.append(genome_node_id_to_ref[genome_id])
+
+        # switch to labels
+        if 'default_node_labels' in tree_in:
+            newick_buf = mod_newick_buf
+        self.log(console, "NEWICK_BUF: '" + newick_buf + "'")
+
+        # init ETE3 objects
+        t = ete3.Tree(newick_buf)
+        ts = ete3.TreeStyle()
+
+        # ladderize to make row order consistent
+        t.ladderize()
+
+        # customize
+        ts.show_leaf_name = True
+        ts.show_branch_length = False
+        ts.show_branch_support = True
+        #ts.scale = 50 # 50 pixels per branch length unit
+        ts.branch_vertical_margin = round(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling, 1)  # pixels between adjacent branches
+        title_disp = intree_name
+        if 'desc' in params and params['desc'] != None and params['desc'] != '':
+            title_disp += ': ' + params['desc']
+        ts.title.add_face(ete3.TextFace(title_disp, fsize=10), column=0)
+
+        node_style = ete3.NodeStyle()
+        node_style["fgcolor"] = "#606060"  # for node balls
+        node_style["size"] = 10  # for node balls (gets reset based on support)
+        node_style["vt_line_color"] = "#606060"
+        node_style["hz_line_color"] = "#606060"
+        node_style["vt_line_width"] = 2
+        node_style["hz_line_width"] = 2
+        node_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
+        node_style["hz_line_type"] = 0
+
+        leaf_style = ete3.NodeStyle()
+        leaf_style["fgcolor"] = "#ffffff"  # for node balls
+        leaf_style["size"] = 2  # for node balls (we're using it to add space)
+        leaf_style["vt_line_color"] = "#606060"  # unecessary
+        leaf_style["hz_line_color"] = "#606060"
+        leaf_style["vt_line_width"] = 2
+        leaf_style["hz_line_width"] = 2
+        leaf_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
+        leaf_style["hz_line_type"] = 0
+
+        for n in t.traverse():
+            if n.is_leaf():
+                style = copy.copy(leaf_style)
+                if "User Genome" in n.name:
+                    style["bgcolor"] = "#fafcc2"
+            else:
+                style = copy.copy(node_style)
+
+                if n.support > 0.95:
+                    style["size"] = 6
+                elif n.support > 0.90:
+                    style["size"] = 5
+                elif n.support > 0.80:
+                    style["size"] = 4
+                else:
+                    style["size"] = 2
+
+            n.set_style(style)
+
+        # save tree images
+        dpi = 300
+        img_units = "in"
+        img_pix_width = 1200
+        height_to_genome_scaling = 1.00
+        img_in_height = round(height_to_genome_scaling * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
+        img_in_width = round(float(img_pix_width) / float(dpi), 1)
+        img_html_width = img_pix_width // 4
+        #t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
+        t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+
+
+        #### STEP 10: build HTML table for hits
         ##
         border=0
         cellpadding=5
@@ -6434,7 +6451,7 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_table_html += ['</table>']
 
 
-        #### STEP 10: make html report
+        #### STEP 11: make html report
         ##
         html_file = intree_name + '-homologs_chromosomal_context' + '.html'
         output_html_file_path = os.path.join(html_output_dir, html_file)
@@ -6481,7 +6498,7 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError('error uploading html report to shock')
 
 
-        #### STEP 11: Create report obj
+        #### STEP 12: Create report obj
         ##
         reportName = 'blast_report_' + str(uuid.uuid4())
         #report += output_newick_buf+"\n"
