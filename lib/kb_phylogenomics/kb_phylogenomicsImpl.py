@@ -6396,19 +6396,22 @@ This module contains methods for running and visualizing results of phylogenomic
         dpi = 300
         img_units = "in"
         img_pix_width = 1200
-        #height_to_genome_scaling = 1.00
-        #img_in_height = round(height_to_genome_scaling * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
-        img_in_width = round(float(img_pix_width) / float(dpi), 1)
-        img_html_width = img_pix_width // 4
-        #t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
-        t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+        height_to_genome_scaling = 1.00
+        img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
+        #img_in_width = round(float(img_pix_width) / float(dpi), 1)
+        #img_html_width = img_pix_width // 4
+        t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
+        #t.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
+        #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
 
         #### STEP 10: build HTML table for hits
         ##
         border=0
         cellpadding=5
-        cellspacing=2
+        cellspacing=5
+        hit_cellpadding=5
+        hit_cellspacing=2
         fontsize=2
         header_row_color="#ccccff"
         even_row_color="#ffffff"
@@ -6423,7 +6426,7 @@ This module contains methods for running and visualizing results of phylogenomic
         sorted_input_full_feature_ids = sorted(input_full_feature_ids)
         for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
             [genome_ref,query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
-            hit_table_html += ['<td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'</font>'+'</td>']
+            hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=center>'+'<font size='+str(fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'</font>'+'</td>']
         hit_table_html += ['</tr>']
 
         # add genome rows
@@ -6444,10 +6447,16 @@ This module contains methods for running and visualizing results of phylogenomic
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                     hit_table_html += ['<td bgcolor='+row_bg_color+'> - </td>']
                 else:
+                    hit_table_html += ['<td bgcolor='+row_bg_color+'>']
+                    hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
                     hit_ids = []
                     for hit_id in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
                         hit_ids.append(hit_id)
-                    hit_table_html += ['<td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+'<br>'.join(hit_ids)+'</font>'+'</td>']
+                        hit_table_html += ['<tr><td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+str(hit_id)+'</font>'+'</td></tr>']
+                    if len(hit_ids) < max_hit_cnt:
+                        for blank_cell_i in range(0,max_hit_cnt-len(hit_ids)):
+                            hit_table_html += ['<tr><td bgcolor=#ffffff><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
+                    hit_table_html += ['</table></td>']
             hit_table_html += ['</tr>']
         hit_table_html += ['</table>']
 
