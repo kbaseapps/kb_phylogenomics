@@ -6311,7 +6311,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 9: Create tree image in html dir
         ##
-        branch_vertcal_margin = 5
+        branch_vertical_margin = 5
         hit_cnt_scaling = 1.0
         html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
         if not os.path.exists(html_output_dir):
@@ -6342,7 +6342,8 @@ This module contains methods for running and visualizing results of phylogenomic
         t.ladderize()
 
         # customize
-        ts.show_leaf_name = True
+        #ts.show_leaf_name = True
+        ts.show_leaf_name = False
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
@@ -6375,8 +6376,8 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in t.traverse():
             if n.is_leaf():
                 style = copy.copy(leaf_style)
-                if "User Genome" in n.name:
-                    style["bgcolor"] = "#fafcc2"
+                #if "User Genome" in n.name:
+                #    style["bgcolor"] = "#fafcc2"
             else:
                 style = copy.copy(node_style)
 
@@ -6395,8 +6396,8 @@ This module contains methods for running and visualizing results of phylogenomic
         dpi = 300
         img_units = "in"
         img_pix_width = 1200
-        height_to_genome_scaling = 1.00
-        img_in_height = round(height_to_genome_scaling * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
+        #height_to_genome_scaling = 1.00
+        #img_in_height = round(height_to_genome_scaling * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
         img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
         #t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
@@ -6437,8 +6438,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 label = node_id
 
             hit_table_html += ['<tr>']
-            #hit_table_html += ['<td bgcolor='+row_bg_color+'>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
-            hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
+            #hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
+            hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=left>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                     hit_table_html += ['<td bgcolor='+row_bg_color+'> - </td>']
