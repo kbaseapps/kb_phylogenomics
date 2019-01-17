@@ -6307,7 +6307,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         hits_by_full_feature_id[query_full_feature_id][hit_full_feature_id] = True
                     """
             for genome_ref in genome_ref_order:
-                if genome_ref in hit_cnt_by_genome:
+                if genome_ref in hit_cnt_by_genome_ref:
                     if hit_cnt_by_genome_ref[genome_ref] > max_hit_cnt:
                         max_hit_cnt = hit_cnt_by_genome_ref[genome_ref]
 
