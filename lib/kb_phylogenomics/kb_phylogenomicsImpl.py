@@ -6448,7 +6448,7 @@ This module contains methods for running and visualizing results of phylogenomic
             hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
-                    hit_table_html += ['<td bgcolor='row_bg_color+'> - </td>']
+                    hit_table_html += ['<td bgcolor='+row_bg_color+'> - </td>']
                 else:
                     hit_table_html += ['<td bgcolor='+row_bg_color+'>']
                     hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
