@@ -6350,7 +6350,8 @@ This module contains methods for running and visualizing results of phylogenomic
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
-        ts.branch_vertical_margin = round(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling, 1)  # pixels between adjacent branches
+        #ts.branch_vertical_margin = round(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling, 1)  # pixels between adjacent branches
+        ts.branch_vertical_margin = branch_vertical_margin # pixels between adjacent branches
         title_disp = intree_name
         if 'desc' in params and params['desc'] != None and params['desc'] != '':
             title_disp += ': ' + params['desc']
@@ -6425,7 +6426,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # add header row with bait genes
         row_bg_color = header_row_color
         hit_table_html += ['<tr>']
-        hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=right>'+'bait<br>gene'+'</td>']
+        hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=right><b>'+'bait gene'+'</b></td>']
         sorted_input_full_feature_ids = sorted(input_full_feature_ids)
         for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
             [genome_ref,query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
