@@ -6170,14 +6170,16 @@ This module contains methods for running and visualizing results of phylogenomic
         #### STEP 6: get query features from featureSet object
         ##
         input_ref = params['input_featureSet_ref']
+        input_featureSet_name = None
         try:
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            input_featureSet_namee = input_obj_info[NAME_I]
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
         accepted_input_types = ["KBaseCollections.FeatureSet"]
         if input_obj_type not in accepted_input_types:
-            raise ValueError("Input object of type '" + input_obj_type +
+            raise ValueError("Input object " + input_featureSet_name + " of type '" + input_obj_type +
                              "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
         try:
             featureSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
@@ -6538,7 +6540,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #reportObj['objects_created'].append({'ref': str(params['workspace_name'])+'/'+str(params['output_name']),'description': params['output_name']+' Tree'})
         reportObj['html_links'] = [{'shock_id': html_upload_ret['shock_id'],
                                     'name': html_file,
-                                    'label': intree_name + ' HTML'
+                                    'label': intree_name + ' - ' + input_featureSet_name + ' homologs' + ' HTML'
                                     }
                                    ]
         """
