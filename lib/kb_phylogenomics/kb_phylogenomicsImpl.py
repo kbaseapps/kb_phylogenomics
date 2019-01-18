@@ -6075,9 +6075,11 @@ This module contains methods for running and visualizing results of phylogenomic
         except Exception as e:
             raise ValueError("Unable to list GenomeSet objects from workspace: " + str(intree_ws_id) + " " + str(e))
         genomeSet_repeat = False
+        genomeSet_ref = None
         for info in genomeSet_obj_info_list:
             if info[NAME_I] == tree_GS_name:
                 genomeSet_repeat = True
+                genomeSet_ref = '/'.join([info[WSID_I],info[OBJID_I],info[VERSION_I]])
                 break
         if not genomeSet_repeat:
             try:
@@ -6103,6 +6105,8 @@ This module contains methods for running and visualizing results of phylogenomic
             except Exception as e:
                 raise ValueError ("unable to save GenomeSet from Tree object: " + str(e))
                 #to get the full stack trace: traceback.format_exc()
+        else:
+            tree_derived_genomeSet_ref = genomeSet_ref
 
 
         #### STEP 4: if labels defined, make separate newick-labels file
