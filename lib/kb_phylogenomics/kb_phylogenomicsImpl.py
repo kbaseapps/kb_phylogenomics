@@ -6079,7 +6079,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for info in genomeSet_obj_info_list:
             if info[NAME_I] == tree_GS_name:
                 genomeSet_repeat = True
-                genomeSet_ref = '/'.join([info[WSID_I],info[OBJID_I],info[VERSION_I]])
+                genomeSet_ref = '/'.join([str(info[WSID_I]),str(info[OBJID_I]),str(info[VERSION_I])])
                 break
         if not genomeSet_repeat:
             try:
