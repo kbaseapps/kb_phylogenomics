@@ -116,8 +116,8 @@
             "field_type": "text",
             "text_options": {
                 "validate_as": "int",
-                "min_integer" : 1,
-		"max_integer" : 1000
+                "min_int" : 1,
+		"max_int" : 1000
             }
         }
     ],
