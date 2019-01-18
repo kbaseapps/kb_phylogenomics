@@ -161,7 +161,7 @@
                     "input_parameter": "bitscore",
                     "target_property": "bitscore"
                 },
-
+		{
                     "input_parameter": "neighbor_thresh",
                     "target_property": "neighbor_thresh"
                 }
