@@ -6191,7 +6191,7 @@ This module contains methods for running and visualizing results of phylogenomic
         except:
             raise ValueError("unable to fetch featureSet: " + input_ref)
 
-        # validate all genomes in species tree
+        # validate all genomes can be found in species tree
         genome_refs = []
         genome_ref_seen = dict()
         for element_id in featureSet_obj['elements'].keys():
@@ -6545,7 +6545,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #reportObj['objects_created'].append({'ref': str(params['workspace_name'])+'/'+str(params['output_name']),'description': params['output_name']+' Tree'})
         reportObj['html_links'] = [{'shock_id': html_upload_ret['shock_id'],
                                     'name': html_file,
-                                    'label': intree_name + ' - ' + input_featureSet_name + ' homologs' + ' HTML'
+                                    'label': intree_name + ' HTML'
                                     }
                                    ]
         """
