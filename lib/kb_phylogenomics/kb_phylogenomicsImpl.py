@@ -5970,6 +5970,8 @@ This module contains methods for running and visualizing results of phylogenomic
         SERVICE_VER = 'release'
         try:
             wsClient = workspaceService(self.workspaceURL, token=token)
+            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+             WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
         except:
             raise ValueError("unable to instantiate wsClient")
         try:
@@ -6064,25 +6066,40 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError('error uploading newick file to shock')
         """
         # save GenomeSet object for Tree
-        genomeSet_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
-                                                    'objects': [
-                                                        { 
-                                                            'type':'KBaseSearch.GenomeSet',
-                                                            'data':tree_GS_obj,
-                                                            'name':tree_GS_name,
-                                                            'meta':{},
-                                                            'provenance':[
-                                                                {
-                                                                    'service':'kb_phylogenomics',
-                                                                    'method':'find_homologs_with_genome_context',
-                                                                    'input_ws_objects': [params['input_speciesTree_ref']]
-                                                                    
-                                                                }
-                                                            ]
-                                                        }]
-                                                })[0]
-        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-        tree_derived_genomeSet_ref = str(genomeSet_obj_info[WSID_I])+'/'+str(genomeSet_obj_info[OBJID_I])+'/'+str(genomeSet_obj_info[VERSION_I])
+        try:
+            genomeSet_obj_info_list = wsClient.list_objects(
+                    {'ids': [workspace_name], 'type': "KBaseSearch.GenomeSet"})
+        except Exception as e:
+            raise ValueError("Unable to list GenomeSet objects from workspace: " + str(ws_id) + " " + str(e))
+        genomeSet_repeat = False
+        for info in genomeSet_obj_info_list:
+            if info[NAME_I] == tree_GS_name:
+                genomeSet_repeat = True
+                break
+        if not genomeSet_repeat:
+            try:
+                genomeSet_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                                            'objects': [
+                                                                { 
+                                                                    'type':'KBaseSearch.GenomeSet',
+                                                                    'data':tree_GS_obj,
+                                                                    'name':tree_GS_name,
+                                                                    'meta':{},
+                                                                    'provenance':[
+                                                                        {
+                                                                            'service':'kb_phylogenomics',
+                                                                            'method':'find_homologs_with_genome_context',
+                                                                            'input_ws_objects': [params['input_speciesTree_ref']]
+                                                                            
+                                                                        }
+                                                                    ]
+                                                                }]
+                                                        })[0]
+                tree_derived_genomeSet_ref = str(genomeSet_obj_info[WSID_I])+'/'+str(genomeSet_obj_info[OBJID_I])+'/'+str(genomeSet_obj_info[VERSION_I])
+                
+            except Exception as e:
+                raise ValueError ("unable to save GenomeSet from Tree object: " + str(e))
+                #to get the full stack trace: traceback.format_exc()
 
 
         #### STEP 4: if labels defined, make separate newick-labels file
@@ -6152,8 +6169,6 @@ This module contains methods for running and visualizing results of phylogenomic
         ##
         input_ref = params['input_featureSet_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
         except Exception as e:
@@ -6235,7 +6250,6 @@ This module contains methods for running and visualizing results of phylogenomic
             self.log(console, "OBJ_INFO: "+pformat(individual_FS_obj_info))
             self.log(console, "OBJ_DATA: "+pformat(individual_FS_obj))
 
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             individual_FS_ref = str(individual_FS_obj_info[WSID_I])+'/'+str(individual_FS_obj_info[OBJID_I])+'/'+str(individual_FS_obj_info[VERSION_I])
 
             individual_featureSet_refs.append (individual_FS_ref)
@@ -6314,8 +6328,6 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 9: Create tree image in html dir
         ##
-        branch_vertical_margin = 5
-        hit_cnt_scaling = 1.0
         html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
@@ -6324,13 +6336,6 @@ This module contains methods for running and visualizing results of phylogenomic
         output_png_file_path = os.path.join(html_output_dir, png_file)
         #output_pdf_file_path = os.path.join(output_dir, pdf_file)
         newick_buf = tree_in['tree']
-
-        # ladderize to make row order consistent and get genome order (get leaf ids before labels)
-        genome_ref_order = []
-        t_without_labels = ete3.Tree(newick_buf)
-        t_without_labels.ladderize()
-        for genome_id in t_without_labels.get_leaf_names():
-            genome_ref_order.append(genome_node_id_to_ref[genome_id])
 
         # switch to labels
         if 'default_node_labels' in tree_in:
@@ -6345,8 +6350,10 @@ This module contains methods for running and visualizing results of phylogenomic
         t.ladderize()
 
         # customize
-        #ts.show_leaf_name = True
-        ts.show_leaf_name = False
+        branch_vertical_margin = 5
+        hit_cnt_scaling = 1.0
+        ts.show_leaf_name = True
+        #ts.show_leaf_name = False
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
@@ -6380,8 +6387,8 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in t.traverse():
             if n.is_leaf():
                 style = copy.copy(leaf_style)
-                #if "User Genome" in n.name:
-                #    style["bgcolor"] = "#fafcc2"
+                if "User Genome" in n.name:
+                    style["bgcolor"] = "#fafcc2"
             else:
                 style = copy.copy(node_style)
 
@@ -6402,10 +6409,10 @@ This module contains methods for running and visualizing results of phylogenomic
         img_pix_width = 1200
         height_to_genome_scaling = 1.00
         img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
-        #img_in_width = round(float(img_pix_width) / float(dpi), 1)
+        img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
-        t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
-        #t.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
+        #t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
+        t.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
         #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
 
@@ -6426,7 +6433,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # add header row with bait genes
         row_bg_color = header_row_color
         hit_table_html += ['<tr>']
-        hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=right><b>'+'bait gene'+'</b></td>']
+        hit_table_html += ['<td bgcolor='+'#ffffff'+' valign=middle align=right><b><font size='+str(fontsize)+'>'+'BAIT GENE'+'</font></b></td>']
         sorted_input_full_feature_ids = sorted(input_full_feature_ids)
         for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
             [genome_ref,query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
@@ -6446,11 +6453,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 label = node_id
 
             hit_table_html += ['<tr>']
-            #hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
-            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
+            hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
+            #hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
-                    hit_table_html += ['<td bgcolor='+row_bg_color+'> - </td>']
+                    hit_table_html += ['<td valign=top align=center bgcolor='+'#ffffff'+'> - </td>']
                 else:
                     hit_table_html += ['<td valign=top align=center bgcolor='+row_bg_color+'>']
                     hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
