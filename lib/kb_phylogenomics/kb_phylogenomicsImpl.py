@@ -6017,12 +6017,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 3: Get tree and save as newick file and create GenomeSet object
         ##
+        intree_ws_id = None
         try:
             objects = wsClient.get_objects([{'ref': params['input_speciesTree_ref']}])
             data = objects[0]['data']
             info = objects[0]['info']
-            intree_name = info[1]
-            intree_type_name = info[2].split('.')[1].split('-')[0]
+            intree_name = info[NAME_I]
+            intree_type_name = info[TYPE_I].split('.')[1].split('-')[0]
+            intree_ws_id = info[WSID_I]
 
         except Exception as e:
             raise ValueError('Unable to fetch input_speciesTree_ref object from workspace: ' + str(e))
@@ -6068,9 +6070,9 @@ This module contains methods for running and visualizing results of phylogenomic
         # save GenomeSet object for Tree
         try:
             genomeSet_obj_info_list = wsClient.list_objects(
-                    {'ids': [workspace_name], 'type': "KBaseSearch.GenomeSet"})
+                    {'ids': [intree_ws_id], 'type': "KBaseSearch.GenomeSet"})
         except Exception as e:
-            raise ValueError("Unable to list GenomeSet objects from workspace: " + str(ws_id) + " " + str(e))
+            raise ValueError("Unable to list GenomeSet objects from workspace: " + str(intree_ws_id) + " " + str(e))
         genomeSet_repeat = False
         for info in genomeSet_obj_info_list:
             if info[NAME_I] == tree_GS_name:
