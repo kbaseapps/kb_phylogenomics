@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "input_featureSet_ref",
     "input_speciesTree_ref",
     "save_per_genome_featureSets",
+    "neighbor_thresh",
     "ident_thresh",
     "overlap_fraction",
     "e_value",
@@ -42,6 +43,8 @@ public class FindHomologsWithGenomeContextInput {
     private String inputSpeciesTreeRef;
     @JsonProperty("save_per_genome_featureSets")
     private Long savePerGenomeFeatureSets;
+    @JsonProperty("neighbor_thresh")
+    private Long neighborThresh;
     @JsonProperty("ident_thresh")
     private Double identThresh;
     @JsonProperty("overlap_fraction")
@@ -109,6 +112,21 @@ public class FindHomologsWithGenomeContextInput {
 
     public FindHomologsWithGenomeContextInput withSavePerGenomeFeatureSets(Long savePerGenomeFeatureSets) {
         this.savePerGenomeFeatureSets = savePerGenomeFeatureSets;
+        return this;
+    }
+
+    @JsonProperty("neighbor_thresh")
+    public Long getNeighborThresh() {
+        return neighborThresh;
+    }
+
+    @JsonProperty("neighbor_thresh")
+    public void setNeighborThresh(Long neighborThresh) {
+        this.neighborThresh = neighborThresh;
+    }
+
+    public FindHomologsWithGenomeContextInput withNeighborThresh(Long neighborThresh) {
+        this.neighborThresh = neighborThresh;
         return this;
     }
 
@@ -184,7 +202,7 @@ public class FindHomologsWithGenomeContextInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((("FindHomologsWithGenomeContextInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", savePerGenomeFeatureSets=")+ savePerGenomeFeatureSets)+", identThresh=")+ identThresh)+", overlapFraction=")+ overlapFraction)+", eValue=")+ eValue)+", bitscore=")+ bitscore)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((("FindHomologsWithGenomeContextInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", savePerGenomeFeatureSets=")+ savePerGenomeFeatureSets)+", neighborThresh=")+ neighborThresh)+", identThresh=")+ identThresh)+", overlapFraction=")+ overlapFraction)+", eValue=")+ eValue)+", bitscore=")+ bitscore)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

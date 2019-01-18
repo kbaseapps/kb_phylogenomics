@@ -1330,6 +1330,7 @@ find_homologs_with_genome_context_Input is a reference to a hash where the follo
 	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	save_per_genome_featureSets has a value which is a kb_phylogenomics.bool
+	neighbor_thresh has a value which is an int
 	ident_thresh has a value which is a float
 	overlap_fraction has a value which is a float
 	e_value has a value which is a float
@@ -1354,6 +1355,7 @@ find_homologs_with_genome_context_Input is a reference to a hash where the follo
 	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	save_per_genome_featureSets has a value which is a kb_phylogenomics.bool
+	neighbor_thresh has a value which is an int
 	ident_thresh has a value which is a float
 	overlap_fraction has a value which is a float
 	e_value has a value which is a float
@@ -2543,6 +2545,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 save_per_genome_featureSets has a value which is a kb_phylogenomics.bool
+neighbor_thresh has a value which is an int
 ident_thresh has a value which is a float
 overlap_fraction has a value which is a float
 e_value has a value which is a float
@@ -2559,6 +2562,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 save_per_genome_featureSets has a value which is a kb_phylogenomics.bool
+neighbor_thresh has a value which is an int
 ident_thresh has a value which is a float
 overlap_fraction has a value which is a float
 e_value has a value which is a float

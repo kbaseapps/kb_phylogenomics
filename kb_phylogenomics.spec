@@ -291,6 +291,7 @@ module kb_phylogenomics {
 	data_obj_ref   input_featureSet_ref;
 	data_obj_ref   input_speciesTree_ref;
 	bool           save_per_genome_featureSets;
+	int            neighbor_thresh;
 	float          ident_thresh;
 	float          overlap_fraction;
 	float          e_value;

@@ -12,7 +12,7 @@ from __future__ import print_function
 try:
     # baseclient and this client are in a package
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
-except:
+except ImportError:
     # no they aren't
     from baseclient import BaseClient as _BaseClient  # @Reimport
 
@@ -43,9 +43,8 @@ class kb_phylogenomics(object):
         :returns: instance of type "view_tree_Output" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_tree',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_tree',
+                                        [params], self._service_ver, context)
 
     def run_DomainAnnotation_Sets(self, params, context=None):
         """
@@ -59,9 +58,8 @@ class kb_phylogenomics(object):
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.run_DomainAnnotation_Sets',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.run_DomainAnnotation_Sets',
+                                        [params], self._service_ver, context)
 
     def view_fxn_profile(self, params, context=None):
         """
@@ -84,9 +82,8 @@ class kb_phylogenomics(object):
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_fxn_profile',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_fxn_profile',
+                                        [params], self._service_ver, context)
 
     def view_fxn_profile_featureSet(self, params, context=None):
         """
@@ -110,9 +107,8 @@ class kb_phylogenomics(object):
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_fxn_profile_featureSet',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_fxn_profile_featureSet',
+                                        [params], self._service_ver, context)
 
     def view_fxn_profile_phylo(self, params, context=None):
         """
@@ -137,9 +133,8 @@ class kb_phylogenomics(object):
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_fxn_profile_phylo',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_fxn_profile_phylo',
+                                        [params], self._service_ver, context)
 
     def view_genome_circle_plot(self, params, context=None):
         """
@@ -152,9 +147,8 @@ class kb_phylogenomics(object):
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_genome_circle_plot',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_genome_circle_plot',
+                                        [params], self._service_ver, context)
 
     def view_pan_circle_plot(self, params, context=None):
         """
@@ -171,9 +165,8 @@ class kb_phylogenomics(object):
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_pan_circle_plot',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_pan_circle_plot',
+                                        [params], self._service_ver, context)
 
     def view_pan_accumulation_plot(self, params, context=None):
         """
@@ -187,9 +180,8 @@ class kb_phylogenomics(object):
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_pan_accumulation_plot',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_pan_accumulation_plot',
+                                        [params], self._service_ver, context)
 
     def view_pan_flower_venn(self, params, context=None):
         """
@@ -203,9 +195,8 @@ class kb_phylogenomics(object):
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_pan_flower_venn',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_pan_flower_venn',
+                                        [params], self._service_ver, context)
 
     def view_pan_pairwise_overlap(self, params, context=None):
         """
@@ -219,9 +210,8 @@ class kb_phylogenomics(object):
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_pan_pairwise_overlap',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_pan_pairwise_overlap',
+                                        [params], self._service_ver, context)
 
     def view_pan_phylo(self, params, context=None):
         """
@@ -235,9 +225,8 @@ class kb_phylogenomics(object):
         :returns: instance of type "view_pan_phylo_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.view_pan_phylo',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.view_pan_phylo',
+                                        [params], self._service_ver, context)
 
     def find_homologs_with_genome_context(self, params, context=None):
         """
@@ -250,15 +239,15 @@ class kb_phylogenomics(object):
            "input_featureSet_ref" of type "data_obj_ref", parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "save_per_genome_featureSets" of type "bool", parameter
-           "ident_thresh" of Double, parameter "overlap_fraction" of Double,
-           parameter "e_value" of Double, parameter "bitscore" of Double
+           "neighbor_thresh" of Long, parameter "ident_thresh" of Double,
+           parameter "overlap_fraction" of Double, parameter "e_value" of
+           Double, parameter "bitscore" of Double
         :returns: instance of type "find_homologs_with_genome_context_Output"
            -> structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
-        return self._client.call_method(
-            'kb_phylogenomics.find_homologs_with_genome_context',
-            [params], self._service_ver, context)
+        return self._client.call_method('kb_phylogenomics.find_homologs_with_genome_context',
+                                        [params], self._service_ver, context)
 
     def status(self, context=None):
         return self._client.call_method('kb_phylogenomics.status',

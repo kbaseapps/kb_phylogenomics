@@ -47,7 +47,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.3.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "ac11efce671136f3f4f513ba737650efa2c8b76d"
+    GIT_COMMIT_HASH = "3d8945eb45907fc3fbc679e7e174b7dd3347e16a"
 
     #BEGIN_CLASS_HEADER
 
@@ -5939,8 +5939,9 @@ This module contains methods for running and visualizing results of phylogenomic
            "input_featureSet_ref" of type "data_obj_ref", parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "save_per_genome_featureSets" of type "bool", parameter
-           "ident_thresh" of Double, parameter "overlap_fraction" of Double,
-           parameter "e_value" of Double, parameter "bitscore" of Double
+           "neighbor_thresh" of Long, parameter "ident_thresh" of Double,
+           parameter "overlap_fraction" of Double, parameter "e_value" of
+           Double, parameter "bitscore" of Double
         :returns: instance of type "find_homologs_with_genome_context_Output"
            -> structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -6074,9 +6075,11 @@ This module contains methods for running and visualizing results of phylogenomic
         except Exception as e:
             raise ValueError("Unable to list GenomeSet objects from workspace: " + str(intree_ws_id) + " " + str(e))
         genomeSet_repeat = False
+        genomeSet_ref = None
         for info in genomeSet_obj_info_list:
             if info[NAME_I] == tree_GS_name:
                 genomeSet_repeat = True
+                genomeSet_ref = '/'.join([info[WSID_I],info[OBJID_I],info[VERSION_I]])
                 break
         if not genomeSet_repeat:
             try:
@@ -6102,6 +6105,8 @@ This module contains methods for running and visualizing results of phylogenomic
             except Exception as e:
                 raise ValueError ("unable to save GenomeSet from Tree object: " + str(e))
                 #to get the full stack trace: traceback.format_exc()
+        else:
+            tree_derived_genomeSet_ref = genomeSet_ref
 
 
         #### STEP 4: if labels defined, make separate newick-labels file
