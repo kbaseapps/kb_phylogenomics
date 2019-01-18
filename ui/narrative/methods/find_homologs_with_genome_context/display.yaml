@@ -70,6 +70,11 @@ parameters :
             Bit Score
         short-hint : |
             threshold for hits
+    neighbor_thresh :
+        ui-name : |
+            Gene neighbor distance
+        short-hint : |
+            How close a gene needs to be to be a neighbor
 
 description : |
     <p>Find Homologs with Genome Context.</p>

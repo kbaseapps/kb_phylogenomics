@@ -106,6 +106,19 @@
                 "validate_as": "float",
                 "min_integer" : 25
             }
+        },
+        {
+            "id": "neighbor_thresh",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "10" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_integer" : 1,
+		"max_integer" : 1000
+            }
         }
     ],
     "behavior": {
@@ -147,6 +160,10 @@
                 {
                     "input_parameter": "bitscore",
                     "target_property": "bitscore"
+                },
+
+                    "input_parameter": "neighbor_thresh",
+                    "target_property": "neighbor_thresh"
                 }
             ],
             "output_mapping": [
