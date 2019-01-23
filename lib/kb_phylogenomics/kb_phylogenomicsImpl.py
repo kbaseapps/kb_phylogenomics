@@ -6597,15 +6597,15 @@ This module contains methods for running and visualizing results of phylogenomic
         t.ladderize()
 
         # customize
-        branch_vertical_margin = 5
+        branch_vertical_margin = 10
         hit_cnt_scaling = 1.0
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
-        #ts.branch_vertical_margin = round(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling, 1)  # pixels between adjacent branches
-        ts.branch_vertical_margin = branch_vertical_margin # pixels between adjacent branches
+        ts.branch_vertical_margin = int(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling)  # pixels between adjacent branches
+        #ts.branch_vertical_margin = branch_vertical_margin # pixels between adjacent branches
         title_disp = intree_name
         if 'desc' in params and params['desc'] != None and params['desc'] != '':
             title_disp += ': ' + params['desc']
@@ -6634,8 +6634,8 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in t.traverse():
             if n.is_leaf():
                 style = copy.copy(leaf_style)
-                if "User Genome" in n.name:
-                    style["bgcolor"] = "#fafcc2"
+                #if "User Genome" in n.name:
+                #    style["bgcolor"] = "#fafcc2"
             else:
                 style = copy.copy(node_style)
 
