@@ -241,7 +241,8 @@ class kb_phylogenomics(object):
            "save_per_genome_featureSets" of type "bool", parameter
            "neighbor_thresh" of Long, parameter "ident_thresh" of Double,
            parameter "overlap_fraction" of Double, parameter "e_value" of
-           Double, parameter "bitscore" of Double
+           Double, parameter "bitscore" of Double, parameter "color_seed" of
+           Double
         :returns: instance of type "find_homologs_with_genome_context_Output"
            -> structure: parameter "report_name" of String, parameter
            "report_ref" of String

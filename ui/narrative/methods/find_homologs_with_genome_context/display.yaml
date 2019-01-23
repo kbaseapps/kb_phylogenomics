@@ -75,6 +75,11 @@ parameters :
             Gene neighbor distance
         short-hint : |
             How close a gene needs to be to be a neighbor
+    color_seed :
+        ui-name : |
+            Color random seed
+        short-hint : |
+            Repeatable colors with same seed
 
 description : |
     <p>Find Homologs with Genome Context.</p>
