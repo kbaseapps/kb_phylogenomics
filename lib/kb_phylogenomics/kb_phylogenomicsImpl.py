@@ -6246,7 +6246,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # read features
             for f in genome_obj['features']:
-                fid = f[id]
+                fid = f['id']
                 contig_id = str(f['location'][CONTIG_ID_I])
                 if f['location'][BEG_I] < f['location'][END_I]:
                     start_pos = f['location'][BEG_I]
