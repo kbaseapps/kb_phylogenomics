@@ -67,19 +67,19 @@ This module contains methods for running and visualizing results of phylogenomic
         print(message)
         sys.stdout.flush()
 
-    def _get_pretty_html_color(self, index, seed):
+    def _get_dark_pretty_html_color(self, index, seed):
         #if index == -1:
         #    if seed != None:
         #        random
 
-        pretty_html_colors = [
+        dark_pretty_html_colors = [
             #"AliceBlue",
             #"AntiqueWhite",
             #"Aqua",
-            "Aquamarine",
+            #"Aquamarine",
             #"Azure",
             #"Beige",
-            "Bisque",
+            #"Bisque",
             #"Black",
             #"BlanchedAlmond",
             "Blue",
@@ -87,13 +87,13 @@ This module contains methods for running and visualizing results of phylogenomic
             "Brown",
             #"BurlyWood",
             "CadetBlue",
-            "Chartreuse",
+            #"Chartreuse",
             "Chocolate",
             "Coral",
             "CornflowerBlue",
             #"Cornsilk",
             "Crimson",
-            "Cyan",
+            #"Cyan",
             "DarkBlue",
             "DarkCyan",
             "DarkGoldenRod",
@@ -138,7 +138,7 @@ This module contains methods for running and visualizing results of phylogenomic
             #"Khaki",
             #"Lavender",
             #"LavenderBlush",
-            "LawnGreen",
+            #"LawnGreen",
             #"LemonChiffon",
             "LightBlue",
             "LightCoral",
@@ -182,21 +182,21 @@ This module contains methods for running and visualizing results of phylogenomic
             "OrangeRed",
             "Orchid",
             #"PaleGoldenRod",
-            "PaleGreen",
-            "PaleTurquoise",
+            #"PaleGreen",
+            #"PaleTurquoise",
             "PaleVioletRed",
             #"PapayaWhip",
             #"PeachPuff",
             "Peru",
-            "Pink",
+            #"Pink",
             "Plum",
-            "PowderBlue",
+            #"PowderBlue",
             "Purple",
             "RebeccaPurple",
             "Red",
             #"RosyBrown",
             "RoyalBlue",
-            "SaddleBrown",
+            #"SaddleBrown",
             "Salmon",
             "SandyBrown",
             "SeaGreen",
@@ -208,11 +208,11 @@ This module contains methods for running and visualizing results of phylogenomic
             #"SlateGray",
             #"SlateGrey",
             #"Snow",
-            "SpringGreen",
+            #"SpringGreen",
             "SteelBlue",
             #"Tan",
             "Teal",
-            "Thistle",
+            #"Thistle",
             "Tomato",
             "Turquoise",
             "Violet",
@@ -223,8 +223,8 @@ This module contains methods for running and visualizing results of phylogenomic
             "YellowGreen"
         ]
 
-        index = index % len(pretty_html_colors)
-        return pretty_html_colors[index]
+        index = index % len(dark_pretty_html_colors)
+        return dark_pretty_html_colors[index]
 
     def _check_SEED_function_defined_in_feature(self, feature):
         if feature.get('function') or feature.get('functions'):
@@ -6721,7 +6721,7 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+tree_top_row_buffer+tree_bottom_row_buffer)+' valign=top align=left>']
         hit_table_html += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
         hit_table_html += ['</td>']
-        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'>&nbsp;</td>']
+        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
         hit_table_html += ['</tr>']
         for row_i in range(tree_top_row_buffer-1):
             hit_table_html += ['<tr>']
@@ -6768,7 +6768,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             color_seed = int(params['color_seed'])
                         else:
                             color_seed = None
-                        cell_bg_color = self._get_pretty_html_color(genome_i, color_seed)
+                        cell_bg_color = self._get_dark_pretty_html_color(genome_i, color_seed)
 
                         disp_hit_id = hit_id
                         if len(hit_id) < longest_feature_id_by_query[query_full_feature_id]:
