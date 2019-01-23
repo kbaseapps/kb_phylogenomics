@@ -6630,13 +6630,15 @@ This module contains methods for running and visualizing results of phylogenomic
         img_html_width = img_pix_width // 4
         branch_vertical_margin = 31
         #branch_vertical_margin = 35
-        hit_cnt_scaling = 1.0
+        hit_cnt_scaling = 0.5
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
-        ts.branch_vertical_margin = int(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling)  # pixels between adjacent branches
+        ts.branch_vertical_margin = branch_vertical_margin
+        if max_hit_cnt > 1:
+            ts.branch_vertical_margin = int(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling)  # pixels between adjacent branches
         #ts.branch_vertical_margin = branch_vertical_margin # pixels between adjacent branches
         title_disp = intree_name
         if 'desc' in params and params['desc'] != None and params['desc'] != '':
