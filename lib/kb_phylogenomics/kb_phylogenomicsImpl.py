@@ -6501,11 +6501,13 @@ This module contains methods for running and visualizing results of phylogenomic
         #### STEP 9: run BLASTp searches to get homologs
         ##
         hits_by_query_and_genome_ref = dict()
+        longest_feature_id_by_query = dict()
         max_hit_cnt = 0
         #hits_by_full_feature_id = dict()
         #feature_included = dict()
         #for query_i,individual_FS_ref in enumerate(individual_featureSet_refs):
         for query_i,query_full_feature_id in enumerate(input_full_feature_ids):
+            longest_feature_id_by_query[query_full_feature_id] = 0
 
             #hits_by_full_feature_id[query_full_feature_id] = dict()
 
@@ -6545,6 +6547,13 @@ This module contains methods for running and visualizing results of phylogenomic
             hits_by_query_and_genome_ref[query_full_feature_id] = dict()
             hit_cnt_by_genome_ref = dict()
             for hit_feature_id in hits_obj['elements'].keys():
+
+                # record string length of feature ids
+                if longest_feature_id_by_query[query_full_feature_id] < len(hit_feature_id):
+                    longest_feature_id_by_query[query_full_feature_id] = len(hit_feature_id)
+
+                
+                # store hits by query and record number of hits to each genome
                 for genome_ref in hits_obj['elements'][hit_feature_id]:
                     if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                         hits_by_query_and_genome_ref[query_full_feature_id][genome_ref] = []
@@ -6733,7 +6742,7 @@ This module contains methods for running and visualizing results of phylogenomic
             hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+disp_label+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
-                    hit_table_html += ['<td valign=top align=center bgcolor='+'#ffffff'+'> - </td>']
+                    hit_table_html += ['<td valign=top align=center bgcolor='+'#ffffff'+'> --- </td>']
                 else:
                     hit_table_html += ['<td valign=top align=center bgcolor='+row_bg_color+'>']
                     hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
@@ -6747,7 +6756,18 @@ This module contains methods for running and visualizing results of phylogenomic
                         else:
                             color_seed = None
                         cell_bg_color = self._get_pretty_html_color(genome_i, color_seed)
-                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+str(hit_id)+'</font>'+'</td></tr>']
+
+                        disp_hit_id = hit_id
+                        if len(hit_id) < longest_feature_id_by_query[query_full_feature_id]:
+                           space_margin = longest_feature_id_by_query[query_full_feature_id] - len(hit_id)
+                           if (space_margin % 2) == 1:
+                               space_margin += 1
+                           spaces = ''
+                           for space_i in range(space_margin/2):
+                               spaces += '&nbsp;'
+                           disp_hit_id = spaces + disp_hit_id + spaces
+
+                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+disp_hit_id+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
