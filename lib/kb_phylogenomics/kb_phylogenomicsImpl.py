@@ -6226,7 +6226,9 @@ This module contains methods for running and visualizing results of phylogenomic
             contig_id_by_genome_by_fid[genome_ref]                = dict()
             sorted_contig_ids_by_genome[genome_ref]               = []
             gene_fid_by_genome_by_contig_by_start_pos[genome_ref] = dict()
+
             try:
+                self.log (console, "reading Genome "+str(genome_ref))
                 genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]['data']
             except:
                 raise ValueError("unable to fetch genome: " + genome_ref)
@@ -6244,12 +6246,6 @@ This module contains methods for running and visualizing results of phylogenomic
                 for contig_id in contig_ids_by_len[contig_len]:
                     sorted_contig_ids_by_genome[genome_ref].append(contig_id)
 
-            # instantiate gene_fid start pos dicts
-            try:
-                start_pos_dict = gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id]
-            except:
-                gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id] = dict()
-
             # read features
             for f in genome_obj['features']:
                 fid = f['id']
@@ -6260,9 +6256,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     start_pos = f['location'][0][END_I]
                     #stop_pos  = f['location'][0][BEG_I]
-                try:
-                    start_pos_list = gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos][0]
-                except:
+
+                if contig_id not in gene_fid_by_genome_by_contig_by_start_pos[genome_ref]:
+                    gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id] = dict()
+                if start_pos not in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id]:
                     gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos] = []
 
                 gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos].append(fid)
