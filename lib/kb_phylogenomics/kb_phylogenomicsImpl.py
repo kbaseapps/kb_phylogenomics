@@ -6214,7 +6214,64 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError ("Species Tree missing genomes from FeatureSet.  Missing Genomes: "+", ".join(genomes_missing_from_tree))
 
 
-        #### STEP 7: make a separate featureSet with a single feature to run searches
+        #### STEP 7: determine feature order
+        ##
+        contig_id_by_genome_by_fid                = dict()
+        sorted_contig_ids_by_genome               = dict()
+        gene_fid_by_genome_by_contig_by_start_pos = dict()
+        gene_order_by_genome_by_contig            = dict()
+        [CONTIG_ID_I, BEG_I, STRAND_I, END_I]     = range(4)  # location tuple (string,int,string,int)
+
+        for genome_ref in genome_ref_order:
+            contig_id_by_genome_by_fid[genome_ref]                = dict()
+            sorted_contig_ids_by_genome[genome_ref]               = []
+            gene_fid_by_genome_by_contig_by_start_pos[genome_ref] = dict()
+            try:
+                genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]['data']
+            except:
+                raise ValueError("unable to fetch genome: " + genome_ref)
+
+            # put contig ids in order by length
+            contig_ids_by_len = dict()
+            for contig_i,contig_id in enumerate(genome_obj['contig_ids']):
+                contig_len = genome_obj['contig_lengths'][contig_i]
+                try:
+                    len_seen = contig_ids_by_len[contig_len][0]
+                except:
+                    contig_ids_by_len[contig_len] = []
+                contig_ids_by_len[contig_len].append(contig_id)
+            for contig_len in sorted(contig_ids_by_len.keys(), reverse=True):
+                for contig_id in contig_ids_by_len[contig_len]:
+                    sorted_contig_id_by_genome[genome_ref].append(contig_id)
+
+            # read features
+            for f in genome_obj['features']:
+                fid = f[id]
+                contig_id = str(f['location'][CONTIG_ID_I])
+                if f['location'][BEG_I] < f['location'][END_I]:
+                    start_pos = f['location'][BEG_I]
+                    stop_pos  = f['location'][END_I]
+                else:
+                    start_pos = f['location'][END_I]
+                    stop_pos  = f['location'][BEG_I]
+                try:
+                    start_pos_list = gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos][0]
+                except:
+                    gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos] = []
+
+                gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos].append(fid)
+                contig_id_by_genome_by_fid[genome_ref][fid] = contig_id
+
+            # sort genes by start pos within each contig
+            gene_order_by_genome_by_contig[genome_ref] = dict()
+            for contig_id in gene_start_pos_by_genome_by_contig[genome_ref].keys():
+                gene_order_by_genome_by_contig[genome_ref][contig_id] = []
+                for start_pos in sorted(gene_start_pos_by_genome_by_contig[genome_ref][contig_id].keys()):
+                    for fid in gene_start_pos_by_genome_by_contig[genome_ref][contig_id][start_pos]:
+                        gene_order_by_genome_by_contig[genome_ref][contig_id].append(fid)
+
+
+        #### STEP 8: make a separate featureSet with a single feature to run searches
         ##  Kludge until change BLASTp to accept multi-feature FeatureSet queries
         ##
         input_full_feature_ids = []
@@ -6222,51 +6279,51 @@ This module contains methods for running and visualizing results of phylogenomic
         individual_featureSet_names = []
         genome_ref_feature_id_delim = '.f:'
 
-        for element_id in featureSet_obj['elements'].keys():
-            genome_ref = featureSet_obj['elements'][element_id][0]
-            full_feature_id = genome_ref + genome_ref_feature_id_delim + element_id
-            individual_FS_name = genome_ref.replace('/','_')+'_'+element_id+'.FeatureSet'
+        for element_id in sorted(featureSet_obj['elements'].keys()):
+            for genome_ref in featureSet_obj['elements'][element_id]:
+                full_feature_id = genome_ref + genome_ref_feature_id_delim + element_id
+                individual_FS_name = genome_ref.replace('/','_')+'_'+element_id+'.FeatureSet'
 
-            individual_FS_prov = [{}]
-            if 'provenance' in ctx:
-                individual_FS_prov = ctx['provenance']
-            # add additional info to provenance here, in this case the input data object reference
-            individual_FS_prov[0]['input_ws_objects'] = []
-            individual_FS_prov[0]['input_ws_objects'].append(params['input_featureSet_ref'])
-            individual_FS_prov[0]['service'] = 'kb_phylogenomics'
-            individual_FS_prov[0]['method'] = 'find_homologs_with_genome_context'
+                individual_FS_prov = [{}]
+                if 'provenance' in ctx:
+                    individual_FS_prov = ctx['provenance']
+                # add additional info to provenance here, in this case the input data object reference
+                individual_FS_prov[0]['input_ws_objects'] = []
+                individual_FS_prov[0]['input_ws_objects'].append(params['input_featureSet_ref'])
+                individual_FS_prov[0]['service'] = 'kb_phylogenomics'
+                individual_FS_prov[0]['method'] = 'find_homologs_with_genome_context'
             
-            individual_FS_obj = {
-                'description': featureSet_obj['description']+' - '+element_id,
-                'elements': { 
-                    element_id: [genome_ref]
+                individual_FS_obj = {
+                    'description': featureSet_obj['description']+' - '+element_id,
+                    'elements': { 
+                        element_id: [genome_ref]
+                    }
                 }
-            }
 
-            individual_FS_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
-                                                            'objects': [
-                                                                {
-                                                                    'type':'KBaseCollections.FeatureSet',
-                                                                    'data':individual_FS_obj,
-                                                                    'name':individual_FS_name,
-                                                                    'meta':{},
-                                                                    'provenance':individual_FS_prov,
-                                                                    'hidden':1  # 1=True
-                                                                }]
-                                                        })[0]
-            #pprint(individual_FS_obj_info)
-            self.log(console, "saved query feature as FS "+str(individual_FS_name))
-            self.log(console, "OBJ_INFO: "+pformat(individual_FS_obj_info))
-            self.log(console, "OBJ_DATA: "+pformat(individual_FS_obj))
+                individual_FS_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                                                'objects': [
+                                                                    {
+                                                                        'type':'KBaseCollections.FeatureSet',
+                                                                        'data':individual_FS_obj,
+                                                                        'name':individual_FS_name,
+                                                                        'meta':{},
+                                                                        'provenance':individual_FS_prov,
+                                                                        'hidden':1  # 1=True
+                                                                    }]
+                                                            })[0]
+                #pprint(individual_FS_obj_info)
+                self.log(console, "saved query feature as FS "+str(individual_FS_name))
+                #self.log(console, "OBJ_INFO: "+pformat(individual_FS_obj_info))
+                #self.log(console, "OBJ_DATA: "+pformat(individual_FS_obj))
 
-            individual_FS_ref = str(individual_FS_obj_info[WSID_I])+'/'+str(individual_FS_obj_info[OBJID_I])+'/'+str(individual_FS_obj_info[VERSION_I])
+                individual_FS_ref = str(individual_FS_obj_info[WSID_I])+'/'+str(individual_FS_obj_info[OBJID_I])+'/'+str(individual_FS_obj_info[VERSION_I])
 
-            individual_featureSet_refs.append (individual_FS_ref)
-            individual_featureSet_names.append (individual_FS_name)
-            input_full_feature_ids.append (full_feature_id)
+                individual_featureSet_refs.append (individual_FS_ref)
+                individual_featureSet_names.append (individual_FS_name)
+                input_full_feature_ids.append (full_feature_id)
 
 
-        #### STEP 8: run BLASTp searches to get homologs
+        #### STEP 9: run BLASTp searches to get homologs
         ##
         hits_by_query_and_genome_ref = dict()
         max_hit_cnt = 0
@@ -6334,8 +6391,27 @@ This module contains methods for running and visualizing results of phylogenomic
                     if hit_cnt_by_genome_ref[genome_ref] > max_hit_cnt:
                         max_hit_cnt = hit_cnt_by_genome_ref[genome_ref]
 
+        
+        #### STEP 10: Determine proximity-based clusters within each contig
+        ##
+        hits_by_genome_ref = dict()
+        for query_full_feature_id in hits_by_query_and_genome_ref.keys():
+            for genome_ref in hits_by_query_and_genome_ref[query_full_feature_id].keys():
+                try:
+                    hit_list = hits_by_genome_ref[genome_ref]
+                except:
+                    hits_by_genome_ref[genome_ref] = dict()                    
+                for fid in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
+                    hits_by_genome_ref[genome_ref][fid] = True
+        for genome_ref in hits_by_genome_ref.keys():
+            for fid in hits_by_genome_ref[genome_ref].keys():
+                contig_id = contig_id_by_genome_ref_and_fid[genome_ref][fid]
 
-        #### STEP 9: Create tree image in html dir
+                # look up and downstream and capture all proximal hit fids
+                # HERE
+
+
+        #### STEP 10: Create tree image in html dir
         ##
         html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
         if not os.path.exists(html_output_dir):
@@ -6425,7 +6501,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
 
-        #### STEP 10: build HTML table for hits
+        #### STEP 11: build HTML table for hits
         ##
         border=0
         cellpadding=5
@@ -6477,14 +6553,14 @@ This module contains methods for running and visualizing results of phylogenomic
                         cell_bg_color = '#cccccc'
                         hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+str(hit_id)+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
-                        for blank_cell_i in range(0,max_hit_cnt-len(hit_ids)):
+                        for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
                     hit_table_html += ['</table></td>']
             hit_table_html += ['</tr>']
         hit_table_html += ['</table>']
 
 
-        #### STEP 11: make html report
+        #### STEP 12: make html report
         ##
         html_file = intree_name + '-homologs_chromosomal_context' + '.html'
         output_html_file_path = os.path.join(html_output_dir, html_file)
