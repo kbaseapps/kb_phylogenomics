@@ -6595,7 +6595,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 # HERE
 
 
-        #### STEP 10: Create tree image in html dir
+        #### STEP 11: Create tree image in html dir
         ##
         html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
         if not os.path.exists(html_output_dir):
@@ -6626,7 +6626,8 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
         img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
-        branch_vertical_margin = 31
+        #branch_vertical_margin = 31
+        branch_vertical_margin = 35
         hit_cnt_scaling = 1.0
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
@@ -6685,7 +6686,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
 
-        #### STEP 11: build HTML table for hits
+        #### STEP 12: build HTML table for hits
         ##
         border=0
         cellpadding=5
@@ -6693,6 +6694,7 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_cellpadding=5
         hit_cellspacing=2
         fontsize=2
+        hit_text_color="#ffffff"
         #header_row_color="#ccccff"
         header_row_color="#eeeeee"
         #even_row_color="#ffffff"
@@ -6714,10 +6716,15 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # add tree image
         #hit_table_html += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
-        hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+1)+' valign=top align=left>']
+        hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+2)+' valign=top align=left>']
         hit_table_html += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
         hit_table_html += ['</td>']
-        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'></td>']
+        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'>&nbsp;</td>']
+        hit_table_html += ['</tr>']
+        hit_table_html += ['<tr>']
+        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'>&nbsp;</td>']
+        hit_table_html += ['</tr>']
+
 
         # add genome rows
         for genome_i,genome_ref in enumerate(genome_ref_order):
@@ -6773,7 +6780,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             bold_open = '<b>'
                             bold_close = '</b>'
 
-                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+bold_open+disp_hit_id+bold_close+'</font>'+'</td></tr>']
+                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+bold_open+disp_hit_id+bold_close+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
@@ -6782,7 +6789,7 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_table_html += ['</table>']
 
 
-        #### STEP 12: make html report
+        #### STEP 13: make html report
         ##
         html_file = intree_name + '-homologs_chromosomal_context' + '.html'
         output_html_file_path = os.path.join(html_output_dir, html_file)
@@ -6821,7 +6828,7 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError('error uploading html report to shock')
 
 
-        #### STEP 12: Create report obj
+        #### STEP 14: Create report obj
         ##
         reportName = 'blast_report_' + str(uuid.uuid4())
         #report += output_newick_buf+"\n"
