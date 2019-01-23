@@ -6599,8 +6599,8 @@ This module contains methods for running and visualizing results of phylogenomic
         # customize
         branch_vertical_margin = 5
         hit_cnt_scaling = 1.0
-        ts.show_leaf_name = True
-        #ts.show_leaf_name = False
+        #ts.show_leaf_name = True
+        ts.show_leaf_name = False
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
