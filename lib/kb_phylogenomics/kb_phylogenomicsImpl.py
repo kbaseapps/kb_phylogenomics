@@ -6763,7 +6763,7 @@ This module contains methods for running and visualizing results of phylogenomic
                            if (space_margin % 2) == 1:
                                space_margin += 1
                            spaces = ''
-                           for space_i in range(space_margin/2):
+                           for space_i in range(int(space_margin/2)):
                                spaces += '&nbsp;'
                            disp_hit_id = spaces + disp_hit_id + spaces
 
