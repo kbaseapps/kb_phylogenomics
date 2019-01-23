@@ -6244,16 +6244,22 @@ This module contains methods for running and visualizing results of phylogenomic
                 for contig_id in contig_ids_by_len[contig_len]:
                     sorted_contig_ids_by_genome[genome_ref].append(contig_id)
 
+            # instantiate gene_fid start pos dicts
+            try:
+                start_pos_dict = gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id]
+            except:
+                gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id] = dict()
+
             # read features
             for f in genome_obj['features']:
                 fid = f['id']
-                contig_id = str(f['location'][CONTIG_ID_I])
-                if f['location'][BEG_I] < f['location'][END_I]:
-                    start_pos = f['location'][BEG_I]
-                    stop_pos  = f['location'][END_I]
+                contig_id = f['location'][0][CONTIG_ID_I]
+                if f['location'][0][BEG_I] < f['location'][0][END_I]:
+                    start_pos = f['location'][0][BEG_I]
+                    #stop_pos  = f['location'][0][END_I]
                 else:
-                    start_pos = f['location'][END_I]
-                    stop_pos  = f['location'][BEG_I]
+                    start_pos = f['location'][0][END_I]
+                    #stop_pos  = f['location'][0][BEG_I]
                 try:
                     start_pos_list = gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos][0]
                 except:
