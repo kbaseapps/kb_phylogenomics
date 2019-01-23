@@ -6685,7 +6685,7 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_cellspacing=2
         fontsize=2
         #header_row_color="#ccccff"
-        header_row_color="#cccccc"
+        header_row_color="#eeeeee"
         #even_row_color="#ffffff"
         #odd_row_color="#eeeeee"
         hit_table_html = []
@@ -6694,6 +6694,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # add header row with bait genes
         row_bg_color = header_row_color
         hit_table_html += ['<tr>']
+        hit_table_html += ['<td></td>']
         hit_table_html += ['<td bgcolor='+'#ffffff'+' valign=middle align=right><b><font size='+str(fontsize)+'>'+'BAIT GENE'+'</font></b></td>']
         sorted_input_full_feature_ids = sorted(input_full_feature_ids)
         for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
@@ -6701,6 +6702,13 @@ This module contains methods for running and visualizing results of phylogenomic
             bait_function = query_feature_function[genome_ref][query_feature_id]
             hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=center>'+'<font size='+str(fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'<br>'+bait_function+'</font>'+'</td>']
         hit_table_html += ['</tr>']
+
+        # add tree image
+#        hit_table_html += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
+        hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+1)+' valign=top align=left>']
+        hit_table_html += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
+        hit_table_html += ['</td>']
+        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+'></td>']
 
         # add genome rows
         for genome_i,genome_ref in enumerate(genome_ref_order):
@@ -6756,15 +6764,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<html>']
         html_report_lines += ['<head><title>KBase Homologs Chromosomal Context: ' + intree_name + '</title></head>']
         html_report_lines += ['<body bgcolor="white">']
-        html_report_lines += ['<table border=0>']
-#        html_report_lines += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
-        html_report_lines += ['<tr><td valign=top>']
-        html_report_lines += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
-        html_report_lines += ['</td>']
-        html_report_lines += ['<td valign=top>']
         html_report_lines += hit_table_html
-        html_report_lines += ['</td></tr>']
-        html_report_lines += ['</table>']
         html_report_lines += ['</body>']
         html_report_lines += ['</html>']
 
