@@ -67,7 +67,7 @@ This module contains methods for running and visualizing results of phylogenomic
         print(message)
         sys.stdout.flush()
 
-    def _get_random_pretty_html_color(self, index, seed):
+    def _get_pretty_html_color(self, index, seed):
         #if index == -1:
         #    if seed != None:
         #        random
@@ -223,8 +223,8 @@ This module contains methods for running and visualizing results of phylogenomic
             "YellowGreen"
         ]
 
+        index = index % len(colors)
         return color[index]
-
 
     def _check_SEED_function_defined_in_feature(self, feature):
         if feature.get('function') or feature.get('functions'):
@@ -6338,7 +6338,7 @@ This module contains methods for running and visualizing results of phylogenomic
         try:
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
-            input_featureSet_namee = input_obj_info[NAME_I]
+            input_featureSet_name = input_obj_info[NAME_I]
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
         accepted_input_types = ["KBaseCollections.FeatureSet"]
@@ -6354,10 +6354,10 @@ This module contains methods for running and visualizing results of phylogenomic
         genome_refs = []
         genome_ref_seen = dict()
         for element_id in featureSet_obj['elements'].keys():
-            genome_ref = featureSet_obj['elements'][element_id][0]
-            if genome_ref not in genome_ref_seen:
-                genome_ref_seen[genome_ref] = True
-                genome_refs.append(genome_ref)
+            for genome_ref in featureSet_obj['elements'][element_id]:
+                if genome_ref not in genome_ref_seen:
+                    genome_ref_seen[genome_ref] = True
+                    genome_refs.append(genome_ref)
         genomes_missing_from_tree = []
         for genome_ref in genome_ref_seen.keys():
             try:
@@ -6371,6 +6371,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
         if len(genomes_missing_from_tree) > 0:
             raise ValueError ("Species Tree missing genomes from FeatureSet.  Missing Genomes: "+", ".join(genomes_missing_from_tree))
+
+        # store query features for later function lookup when genomes are pulled
+        query_feature_function = dict()
+        for element_id in featureSet_obj['elements'].keys():
+            for genome_ref in featureSet_obj['elements'][element_id]:
+                if genome_ref not in query_feature_function:
+                    query_feature_function[genome_ref] = dict()
+                query_feature_function[genome_ref][element_id] = 'unknown'
 
 
         #### STEP 7: determine feature order
@@ -6423,6 +6431,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos].append(fid)
                 contig_id_by_genome_by_fid[genome_ref][fid] = contig_id
+
+                # capture function if a query gene
+                if fid in query_feature_function[genome_ref]:
+                    query_feature_function[genome_ref][fid] = f['functions'][0]
 
             # sort genes by start pos within each contig
             gene_order_by_genome_by_contig[genome_ref] = dict()
@@ -6604,7 +6616,7 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
         img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
-        branch_vertical_margin = 30
+        branch_vertical_margin = 31
         hit_cnt_scaling = 1.0
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
@@ -6671,9 +6683,10 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_cellpadding=5
         hit_cellspacing=2
         fontsize=2
-        header_row_color="#ccccff"
-        even_row_color="#ffffff"
-        odd_row_color="#eeeeee"
+        #header_row_color="#ccccff"
+        header_row_color="#cccccc"
+        #even_row_color="#ffffff"
+        #odd_row_color="#eeeeee"
         hit_table_html = []
         hit_table_html += ['<table border='+str(border)+' cellpadding='+str(cellpadding)+' cellspacing='+str(cellspacing)+'>']
 
@@ -6684,7 +6697,8 @@ This module contains methods for running and visualizing results of phylogenomic
         sorted_input_full_feature_ids = sorted(input_full_feature_ids)
         for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
             [genome_ref,query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
-            hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=center>'+'<font size='+str(fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'</font>'+'</td>']
+            bait_function = query_feature_function[genome_ref][query_feature_id]
+            hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=center>'+'<font size='+str(fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'<br>'+bait_function+'</font>'+'</td>']
         hit_table_html += ['</tr>']
 
         # add genome rows
@@ -6718,7 +6732,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     for hit_id in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
                         hit_ids.append(hit_id)
                         #cell_bg_color = cell_bg_color[hit_id]
-                        cell_bg_color = '#cccccc'
+                        #cell_bg_color = '#cccccc'
+                        if 'color_seed' in params:
+                            color_seed = int(params['color_seed'])
+                        else:
+                            color_seed = None
+                        cell_bg_color = self._get_pretty_html_color(genome_i, color_seed)
                         hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+str(hit_id)+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
