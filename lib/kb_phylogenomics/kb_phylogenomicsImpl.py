@@ -6694,6 +6694,7 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_cellpadding=5
         hit_cellspacing=2
         fontsize=2
+        genome_text_color='black'
         hit_text_color="#ffffff"
         #header_row_color="#ccccff"
         header_row_color="#eeeeee"
@@ -6718,12 +6719,18 @@ This module contains methods for running and visualizing results of phylogenomic
         tree_top_row_buffer = 1
         tree_bottom_row_buffer = 2
         #hit_table_html += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
-        hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+tree_top_row_buffer+tree_bottom_row_buffer)+' valign=top align=left>']
+        hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+tree_top_row_buffer+tree_bottom_row_buffer+max_hit_cnt)+' valign=top align=left>']
         hit_table_html += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
         hit_table_html += ['</td>']
+
+        # add blank rows to get the vert spacing of the tree image against the hit rows right
         hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
         hit_table_html += ['</tr>']
         for row_i in range(tree_top_row_buffer-1):
+            hit_table_html += ['<tr>']
+            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
+            hit_table_html += ['</tr>']
+        for row_i in range(max_hit_cnt):
             hit_table_html += ['<tr>']
             hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
             hit_table_html += ['</tr>']
@@ -6749,7 +6756,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 disp_label = '<b><i>'+part_1+'</i></b>'+'<br>'+'('+part_2
             else:
                 disp_label = '<b><i>'+label+'</i></b>'
-            link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'">'
+            link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'" target="'+str(genome_ref)+'" style="color:'+genome_text_color+'">'
             link_close = '</A>'
             
             hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
@@ -6794,11 +6801,7 @@ This module contains methods for running and visualizing results of phylogenomic
             hit_table_html += ['</tr>']
 
         # add bottom buffer to stretch to tree image
-        for row_i in range(max_hit_cnt):
-            hit_table_html += ['<tr>']
-            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
-            hit_table_html += ['</tr>']
-        for row_i in range(tree_bottom_row_buffer-1):
+        for row_i in range(tree_bottom_row_buffer):
             hit_table_html += ['<tr>']
             hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
             hit_table_html += ['</tr>']
