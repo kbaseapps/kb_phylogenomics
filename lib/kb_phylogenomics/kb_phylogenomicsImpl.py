@@ -6604,7 +6604,7 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
         img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
-        branch_vertical_margin = 25
+        branch_vertical_margin = 45
         hit_cnt_scaling = 1.0
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
@@ -6701,7 +6701,11 @@ This module contains methods for running and visualizing results of phylogenomic
 
             hit_table_html += ['<tr>']
             #hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
-            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
+            disp_label = label
+            if '(User Genome' in label:
+                [part_1, part_2] = label.split('(User Genome')
+                disp_label = part_1+'<br>'+'(User Genome'+part_2
+            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+disp_label+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                     hit_table_html += ['<td valign=top align=center bgcolor='+'#ffffff'+'> - </td>']
