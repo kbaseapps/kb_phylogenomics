@@ -6433,8 +6433,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 contig_id_by_genome_by_fid[genome_ref][fid] = contig_id
 
                 # capture function if a query gene
-                if fid in query_feature_function[genome_ref]:
-                    query_feature_function[genome_ref][fid] = f['functions'][0]
+                if genome_ref in query_feature_function:
+                    if fid in query_feature_function[genome_ref]:
+                        query_feature_function[genome_ref][fid] = f['functions'][0]
 
             # sort genes by start pos within each contig
             gene_order_by_genome_by_contig[genome_ref] = dict()
