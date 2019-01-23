@@ -6626,8 +6626,8 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
         img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
-        #branch_vertical_margin = 31
-        branch_vertical_margin = 35
+        branch_vertical_margin = 31
+        #branch_vertical_margin = 35
         hit_cnt_scaling = 1.0
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
@@ -6715,15 +6715,18 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_table_html += ['</tr>']
 
         # add tree image
+        tree_top_row_buffer = 2
+        tree_bottom_row_buffer = 2
         #hit_table_html += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
-        hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+2)+' valign=top align=left>']
+        hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+tree_top_row_buffer+tree_bottom_row_buffer)+' valign=top align=left>']
         hit_table_html += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
         hit_table_html += ['</td>']
         hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'>&nbsp;</td>']
         hit_table_html += ['</tr>']
-        hit_table_html += ['<tr>']
-        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'>&nbsp;</td>']
-        hit_table_html += ['</tr>']
+        for row_i in range(tree_top_row_buffer-1):
+            hit_table_html += ['<tr>']
+            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'>&nbsp;</td>']
+            hit_table_html += ['</tr>']
 
 
         # add genome rows
@@ -6786,6 +6789,15 @@ This module contains methods for running and visualizing results of phylogenomic
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
                     hit_table_html += ['</table></td>']
             hit_table_html += ['</tr>']
+
+        # add bottom buffer to stretch to tree image
+        for row_i in range(tree_bottom_row_buffer):
+            hit_table_html += ['<tr>']
+            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'>&nbsp;</td>']
+            hit_table_html += ['</tr>']
+
+
+
         hit_table_html += ['</table>']
 
 
