@@ -6713,11 +6713,11 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_table_html += ['</tr>']
 
         # add tree image
-#        hit_table_html += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
+        #hit_table_html += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
         hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+1)+' valign=top align=left>']
         hit_table_html += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
         hit_table_html += ['</td>']
-        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+'></td>']
+        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'></td>']
 
         # add genome rows
         for genome_i,genome_ref in enumerate(genome_ref_order):
