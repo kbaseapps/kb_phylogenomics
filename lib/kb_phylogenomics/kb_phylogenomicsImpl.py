@@ -6715,7 +6715,7 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_table_html += ['</tr>']
 
         # add tree image
-        tree_top_row_buffer = 2
+        tree_top_row_buffer = 1
         tree_bottom_row_buffer = 2
         #hit_table_html += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
         hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+tree_top_row_buffer+tree_bottom_row_buffer)+' valign=top align=left>']
@@ -6725,7 +6725,7 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_table_html += ['</tr>']
         for row_i in range(tree_top_row_buffer-1):
             hit_table_html += ['<tr>']
-            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'>&nbsp;</td>']
+            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
             hit_table_html += ['</tr>']
 
 
@@ -6777,13 +6777,13 @@ This module contains methods for running and visualizing results of phylogenomic
                                spaces += '&nbsp;'
                            disp_hit_id = spaces + disp_hit_id + spaces
 
-                        bold_open = ''
-                        bold_close = ''
+                        ital_open = ''
+                        ital_close = ''
                         if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
-                            bold_open = '<b>'
-                            bold_close = '</b>'
+                            ital_open = '<i>'
+                            ital_close = '</i>'
 
-                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+bold_open+disp_hit_id+bold_close+'</font>'+'</td></tr>']
+                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+'<pre>'+ital_open+disp_hit_id+ital_close+'</pre>'+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
@@ -6791,12 +6791,14 @@ This module contains methods for running and visualizing results of phylogenomic
             hit_table_html += ['</tr>']
 
         # add bottom buffer to stretch to tree image
-        for row_i in range(tree_bottom_row_buffer):
+        for row_i in range(max_hit_cnt):
             hit_table_html += ['<tr>']
-            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids))+'>&nbsp;</td>']
+            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
             hit_table_html += ['</tr>']
-
-
+        for row_i in range(tree_bottom_row_buffer-1):
+            hit_table_html += ['<tr>']
+            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
+            hit_table_html += ['</tr>']
 
         hit_table_html += ['</table>']
 
