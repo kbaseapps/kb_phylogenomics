@@ -72,7 +72,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #    if seed != None:
         #        random
 
-        colors = [
+        pretty_html_colors = [
             "AliceBlue",
             "AntiqueWhite",
             "Aqua",
@@ -223,8 +223,8 @@ This module contains methods for running and visualizing results of phylogenomic
             "YellowGreen"
         ]
 
-        index = index % len(colors)
-        return color[index]
+        index = index % len(pretty_html_colors)
+        return pretty_html_colors[index]
 
     def _check_SEED_function_defined_in_feature(self, feature):
         if feature.get('function') or feature.get('functions'):
