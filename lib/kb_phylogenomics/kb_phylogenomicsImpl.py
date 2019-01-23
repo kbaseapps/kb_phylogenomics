@@ -6749,7 +6749,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 disp_label = '<b><i>'+part_1+'</i></b>'+'<br>'+'('+part_2
             else:
                 disp_label = '<b><i>'+label+'</i></b>'
-            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+disp_label+'</font>'+'</td>']
+            link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'">'
+            link_close = '</A>'
+            
+            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                     hit_table_html += ['<td valign=top align=center bgcolor='+'#ffffff'+'> --- </td>']
