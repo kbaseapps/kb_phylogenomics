@@ -6767,7 +6767,13 @@ This module contains methods for running and visualizing results of phylogenomic
                                spaces += '&nbsp;'
                            disp_hit_id = spaces + disp_hit_id + spaces
 
-                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+disp_hit_id+'</font>'+'</td></tr>']
+                        bold_open = ''
+                        bold_close = ''
+                        if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
+                            bold_open = '<b>'
+                            bold_close = '</b>'
+
+                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+'>'+bold_open+disp_hit_id+bold_close+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
