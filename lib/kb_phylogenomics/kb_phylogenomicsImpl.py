@@ -9,6 +9,7 @@ import os
 import re
 import sys
 import uuid
+import random
 from datetime import datetime
 from pprint import pformat
 
@@ -47,7 +48,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.3.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "3d8945eb45907fc3fbc679e7e174b7dd3347e16a"
+    GIT_COMMIT_HASH = "9961eed04a51a8ee03494342b6e689d368e0a9e9"
 
     #BEGIN_CLASS_HEADER
 
@@ -68,9 +69,9 @@ This module contains methods for running and visualizing results of phylogenomic
         sys.stdout.flush()
 
     def _get_dark_pretty_html_color(self, index, seed):
-        #if index == -1:
-        #    if seed != None:
-        #        random
+        if seed == None:
+            raise ValueError ("seed required for _get_dark_pretty_html_color()")
+        random.seed(seed)
 
         dark_pretty_html_colors = [
             #"AliceBlue",
@@ -6100,7 +6101,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "save_per_genome_featureSets" of type "bool", parameter
            "neighbor_thresh" of Long, parameter "ident_thresh" of Double,
            parameter "overlap_fraction" of Double, parameter "e_value" of
-           Double, parameter "bitscore" of Double
+           Double, parameter "bitscore" of Double, parameter "color_seed" of
+           Double
         :returns: instance of type "find_homologs_with_genome_context_Output"
            -> structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -6730,7 +6732,8 @@ This module contains methods for running and visualizing results of phylogenomic
             hit_table_html += ['<tr>']
             hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
             hit_table_html += ['</tr>']
-        for row_i in range(max_hit_cnt):
+        extra_rows = int(max_hit_cnt/2) - 1
+        for row_i in range(extra_rows):
             hit_table_html += ['<tr>']
             hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
             hit_table_html += ['</tr>']
@@ -6756,7 +6759,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 disp_label = '<b><i>'+part_1+'</i></b>'+'<br>'+'('+part_2
             else:
                 disp_label = '<b><i>'+label+'</i></b>'
-            link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'" target="'+str(genome_ref)+'" style="color:'+genome_text_color+'">'
+            link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'" target="'+str(genome_ref)+'" style="color:'+genome_text_color+';text-decoration:none">'
             link_close = '</A>'
             
             hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
@@ -6774,7 +6777,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         if 'color_seed' in params:
                             color_seed = int(params['color_seed'])
                         else:
-                            color_seed = None
+                            color_seed = 1
                         cell_bg_color = self._get_dark_pretty_html_color(genome_i, color_seed)
 
                         disp_hit_id = hit_id

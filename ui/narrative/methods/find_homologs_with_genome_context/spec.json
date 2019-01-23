@@ -119,6 +119,18 @@
                 "min_int" : 1,
 		"max_int" : 1000
             }
+        },
+        {
+            "id": "color_seed",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "1" ],
+            "field_type": "text",
+            "text_options": {
+                "validate_as": "int",
+                "min_int" : 1
+            }
         }
     ],
     "behavior": {
@@ -164,6 +176,10 @@
 		{
                     "input_parameter": "neighbor_thresh",
                     "target_property": "neighbor_thresh"
+                },
+		{
+                    "input_parameter": "color_seed",
+                    "target_property": "color_seed"
                 }
             ],
             "output_mapping": [

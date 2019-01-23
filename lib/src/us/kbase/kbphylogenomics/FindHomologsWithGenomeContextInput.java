@@ -31,7 +31,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "ident_thresh",
     "overlap_fraction",
     "e_value",
-    "bitscore"
+    "bitscore",
+    "color_seed"
 })
 public class FindHomologsWithGenomeContextInput {
 
@@ -53,6 +54,8 @@ public class FindHomologsWithGenomeContextInput {
     private Double eValue;
     @JsonProperty("bitscore")
     private Double bitscore;
+    @JsonProperty("color_seed")
+    private Double colorSeed;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -190,6 +193,21 @@ public class FindHomologsWithGenomeContextInput {
         return this;
     }
 
+    @JsonProperty("color_seed")
+    public Double getColorSeed() {
+        return colorSeed;
+    }
+
+    @JsonProperty("color_seed")
+    public void setColorSeed(Double colorSeed) {
+        this.colorSeed = colorSeed;
+    }
+
+    public FindHomologsWithGenomeContextInput withColorSeed(Double colorSeed) {
+        this.colorSeed = colorSeed;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -202,7 +220,7 @@ public class FindHomologsWithGenomeContextInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((("FindHomologsWithGenomeContextInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", savePerGenomeFeatureSets=")+ savePerGenomeFeatureSets)+", neighborThresh=")+ neighborThresh)+", identThresh=")+ identThresh)+", overlapFraction=")+ overlapFraction)+", eValue=")+ eValue)+", bitscore=")+ bitscore)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((("FindHomologsWithGenomeContextInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", savePerGenomeFeatureSets=")+ savePerGenomeFeatureSets)+", neighborThresh=")+ neighborThresh)+", identThresh=")+ identThresh)+", overlapFraction=")+ overlapFraction)+", eValue=")+ eValue)+", bitscore=")+ bitscore)+", colorSeed=")+ colorSeed)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

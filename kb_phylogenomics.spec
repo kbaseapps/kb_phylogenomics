@@ -296,6 +296,7 @@ module kb_phylogenomics {
 	float          overlap_fraction;
 	float          e_value;
 	float          bitscore;
+	float          color_seed;
     } find_homologs_with_genome_context_Input;
 
     typedef structure {

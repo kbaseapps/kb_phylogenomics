@@ -1335,6 +1335,7 @@ find_homologs_with_genome_context_Input is a reference to a hash where the follo
 	overlap_fraction has a value which is a float
 	e_value has a value which is a float
 	bitscore has a value which is a float
+	color_seed has a value which is a float
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1360,6 +1361,7 @@ find_homologs_with_genome_context_Input is a reference to a hash where the follo
 	overlap_fraction has a value which is a float
 	e_value has a value which is a float
 	bitscore has a value which is a float
+	color_seed has a value which is a float
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -2550,6 +2552,7 @@ ident_thresh has a value which is a float
 overlap_fraction has a value which is a float
 e_value has a value which is a float
 bitscore has a value which is a float
+color_seed has a value which is a float
 
 </pre>
 
@@ -2567,6 +2570,7 @@ ident_thresh has a value which is a float
 overlap_fraction has a value which is a float
 e_value has a value which is a float
 bitscore has a value which is a float
+color_seed has a value which is a float
 
 
 =end text
