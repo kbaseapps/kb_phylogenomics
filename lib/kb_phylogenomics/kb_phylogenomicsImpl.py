@@ -6270,10 +6270,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # sort genes by start pos within each contig
             gene_order_by_genome_by_contig[genome_ref] = dict()
-            for contig_id in gene_start_pos_by_genome_by_contig[genome_ref].keys():
+            for contig_id in gene_fid_by_genome_by_contig_by_start_pos[genome_ref].keys():
                 gene_order_by_genome_by_contig[genome_ref][contig_id] = []
-                for start_pos in sorted(gene_start_pos_by_genome_by_contig[genome_ref][contig_id].keys()):
-                    for fid in gene_start_pos_by_genome_by_contig[genome_ref][contig_id][start_pos]:
+                for start_pos in sorted(gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id].keys()):
+                    for fid in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos]:
                         gene_order_by_genome_by_contig[genome_ref][contig_id].append(fid)
 
 
