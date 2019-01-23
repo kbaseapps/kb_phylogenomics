@@ -6597,7 +6597,14 @@ This module contains methods for running and visualizing results of phylogenomic
         t.ladderize()
 
         # customize
-        branch_vertical_margin = 10
+        dpi = 300
+        img_units = "in"
+        img_pix_width = 1200
+        height_to_genome_scaling = 1.00
+        img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
+        img_in_width = round(float(img_pix_width) / float(dpi), 1)
+        img_html_width = img_pix_width // 4
+        branch_vertical_margin = 25
         hit_cnt_scaling = 1.0
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
@@ -6651,13 +6658,6 @@ This module contains methods for running and visualizing results of phylogenomic
             n.set_style(style)
 
         # save tree images
-        dpi = 300
-        img_units = "in"
-        img_pix_width = 1200
-        height_to_genome_scaling = 1.00
-        img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
-        img_in_width = round(float(img_pix_width) / float(dpi), 1)
-        img_html_width = img_pix_width // 4
         #t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
         t.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
         #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
@@ -6700,8 +6700,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 label = node_id
 
             hit_table_html += ['<tr>']
-            hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
-            #hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
+            #hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
+            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+label+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                     hit_table_html += ['<td valign=top align=center bgcolor='+'#ffffff'+'> - </td>']
