@@ -6242,7 +6242,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 contig_ids_by_len[contig_len].append(contig_id)
             for contig_len in sorted(contig_ids_by_len.keys(), reverse=True):
                 for contig_id in contig_ids_by_len[contig_len]:
-                    sorted_contig_id_by_genome[genome_ref].append(contig_id)
+                    sorted_contig_ids_by_genome[genome_ref].append(contig_id)
 
             # read features
             for f in genome_obj['features']:
