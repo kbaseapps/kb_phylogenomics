@@ -9,6 +9,7 @@ import os
 import re
 import sys
 import uuid
+import random
 from datetime import datetime
 from pprint import pformat
 
@@ -68,9 +69,9 @@ This module contains methods for running and visualizing results of phylogenomic
         sys.stdout.flush()
 
     def _get_dark_pretty_html_color(self, index, seed):
-        #if index == -1:
-        #    if seed != None:
-        #        random
+        if seed == None:
+            raise ValueError ("seed required for _get_dark_pretty_html_color()")
+        random.seed(seed)
 
         dark_pretty_html_colors = [
             #"AliceBlue",
@@ -6731,7 +6732,8 @@ This module contains methods for running and visualizing results of phylogenomic
             hit_table_html += ['<tr>']
             hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
             hit_table_html += ['</tr>']
-        for row_i in range(max_hit_cnt):
+        extra_rows = int(max_hit_cnt/2) - 1
+        for row_i in range(extra_rows):
             hit_table_html += ['<tr>']
             hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
             hit_table_html += ['</tr>']
@@ -6757,7 +6759,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 disp_label = '<b><i>'+part_1+'</i></b>'+'<br>'+'('+part_2
             else:
                 disp_label = '<b><i>'+label+'</i></b>'
-            link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'" target="'+str(genome_ref)+'" style="color:'+genome_text_color+'">'
+            link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'" target="'+str(genome_ref)+'" style="color:'+genome_text_color+';text-decoration:none">'
             link_close = '</A>'
             
             hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
@@ -6775,7 +6777,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         if 'color_seed' in params:
                             color_seed = int(params['color_seed'])
                         else:
-                            color_seed = None
+                            color_seed = 1
                         cell_bg_color = self._get_dark_pretty_html_color(genome_i, color_seed)
 
                         disp_hit_id = hit_id
