@@ -6598,6 +6598,15 @@ This module contains methods for running and visualizing results of phylogenomic
                 # look up and downstream and capture all proximal hit fids
                 # HERE
 
+            gene_order_by_genome_by_contig[genome_ref] = dict()
+            for contig_id in gene_fid_by_genome_by_contig_by_start_pos[genome_ref].keys():
+                gene_order_by_genome_by_contig[genome_ref][contig_id] = []
+                for start_pos in sorted(gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id].keys()):
+                    for fid in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos]:
+                        gene_order_by_genome_by_contig[genome_ref][contig_id].append(fid)
+
+
+
 
         #### STEP 11: Create tree image in html dir
         ##
@@ -6794,21 +6803,23 @@ This module contains methods for running and visualizing results of phylogenomic
                             for space_i in range(int(space_margin/2)):
                                 spaces += '&nbsp;'
                             spaces = '<pre>'+spaces+'</pre>'   
-                            disp_hit_id = spaces + disp_hit_id + spaces
+                            disp_hit_id = '<nobr><pre>'+spaces+'</pre>'+disp_hit_id+'<pre>'+spaces+'</pre></nobr>'
 
                         if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
-                            cell_border = 2
-                            cell_padding = hit_cellpadding
-                            cell_spacing = cell_border
                             cell_border_color = 'gray'
+                            cell_border = 2
+                            bordered_cell_padding = hit_cellpadding-cell_border
+                            bordered_cell_spacing = 0
+                            #bordered_cell_padding = hit_cellpadding
+                            #bordered_cell_spacing = cell_border
                             hit_table_html += ['<tr>']
                             hit_table_html += ['<td valign=middle align=center bgcolor='+cell_border_color+'>']
-                            hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding-cell_border)+' cellspacing='+str(cell_spacing)+' bgcolor='+cell_border_color+'>']
+                            hit_table_html += ['<table border=0 cellpadding='+str(bordered_cell_padding)+' cellspacing='+str(bordered_cell_spacing)+' bgcolor='+cell_border_color+'>']
                             hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
                             hit_table_html += ['</table>']
                             hit_table_html += ['</tr>']
                         else:
-                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' >'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+'<pre>'+disp_hit_id+'</pre>'+'</font>'+'</td></tr>']
+                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' >'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
