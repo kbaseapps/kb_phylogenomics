@@ -6597,7 +6597,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 # look up and downstream and capture all proximal hit fids
                 # HERE
-
+                
+            """
             gene_order_by_genome_by_contig[genome_ref] = dict()
             for contig_id in gene_fid_by_genome_by_contig_by_start_pos[genome_ref].keys():
                 gene_order_by_genome_by_contig[genome_ref][contig_id] = []
@@ -6605,7 +6606,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     for fid in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos]:
                         gene_order_by_genome_by_contig[genome_ref][contig_id].append(fid)
 
-
+            """
 
 
         #### STEP 11: Create tree image in html dir
