@@ -6693,7 +6693,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 12: build HTML table for hits
         ##
-        border=1
+        border=0
         cellpadding=5
         cellspacing=5
         hit_cellpadding=5
