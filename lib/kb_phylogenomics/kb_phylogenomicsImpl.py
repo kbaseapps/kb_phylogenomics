@@ -69,9 +69,6 @@ This module contains methods for running and visualizing results of phylogenomic
         sys.stdout.flush()
 
     def _get_dark_pretty_html_color(self, index, seed):
-        if seed == None:
-            raise ValueError ("seed required for _get_dark_pretty_html_color()")
-        random.seed(seed)
 
         dark_pretty_html_colors = [
             #"AliceBlue",
@@ -224,7 +221,12 @@ This module contains methods for running and visualizing results of phylogenomic
             "YellowGreen"
         ]
 
-        index = index % len(dark_pretty_html_colors)
+        if seed != None:
+            random.seed(index * seed)
+            index = random.randint (0,len(dark_pretty_html_colors))
+        else:
+            index = index % len(dark_pretty_html_colors)
+
         return dark_pretty_html_colors[index]
 
     def _check_SEED_function_defined_in_feature(self, feature):
