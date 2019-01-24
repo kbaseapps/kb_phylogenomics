@@ -6631,7 +6631,7 @@ This module contains methods for running and visualizing results of phylogenomic
         branch_vertical_margin = 31
         #branch_vertical_margin = 35
         #hit_cnt_scaling = 0.5
-        hit_cnt_scaling = 0.75
+        hit_cnt_scaling = 0.70
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
@@ -6798,7 +6798,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             cell_border_color = 'gray'
                             hit_table_html += ['<tr>']
                             hit_table_html += ['<td valign=middle align=center>']
-                            hit_table_html += ['<table border='+str(cell_border)+' cellpadding=0 cellspacing=0>']
+                            hit_table_html += ['<table border='+str(cell_border)+' cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
                             hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' bordercolor='+cell_border_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+'<pre>'+disp_hit_id+'</pre>'+'</font>'+'</td></tr>']
                             hit_table_html += ['</table>']
                             hit_table_html += ['</tr>']
