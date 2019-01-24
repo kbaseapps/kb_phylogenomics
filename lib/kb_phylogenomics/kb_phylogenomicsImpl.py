@@ -6630,7 +6630,8 @@ This module contains methods for running and visualizing results of phylogenomic
         img_html_width = img_pix_width // 4
         branch_vertical_margin = 31
         #branch_vertical_margin = 35
-        hit_cnt_scaling = 0.5
+        #hit_cnt_scaling = 0.5
+        hit_cnt_scaling = 0.75
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
@@ -6792,13 +6793,17 @@ This module contains methods for running and visualizing results of phylogenomic
                                spaces += '&nbsp;'
                            disp_hit_id = spaces + disp_hit_id + spaces
 
-                        ital_open = ''
-                        ital_close = ''
                         if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
-                            ital_open = '<i>'
-                            ital_close = '</i>'
-
-                        hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+'<pre>'+ital_open+disp_hit_id+ital_close+'</pre>'+'</font>'+'</td></tr>']
+                            cell_border='3'
+                            cell_border_color = 'gray'
+                            hit_table_html += ['<tr>']
+                            hit_table_html += ['<td valign=middle align=center>']
+                            hit_table_html += ['<table border='+str(cell_border)+' cellpadding=0 cellspacing=0>']
+                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' bordercolor='+cell_border_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+'<pre>'+disp_hit_id+'</pre>'+'</font>'+'</td></tr>']
+                            hit_table_html += ['</table>']
+                            hit_table_html += ['</tr>']
+                        else:
+                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' >'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+'<pre>'+disp_hit_id+'</pre>'+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
