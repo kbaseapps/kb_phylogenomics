@@ -6158,7 +6158,9 @@ This module contains methods for running and visualizing results of phylogenomic
                            'ident_thresh',
                            'e_value',
                            'bitscore',
-                           'overlap_fraction'
+                           'overlap_fraction',
+                           'neighbor_thresh',
+                           'color_seed'
                            ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
@@ -6582,7 +6584,10 @@ This module contains methods for running and visualizing results of phylogenomic
         
         #### STEP 10: Determine proximity-based clusters within each contig
         ##
+        cluster_by_genome_by_fid = dict()
         hits_by_genome_ref = dict()
+
+        # store hits by genome
         for query_full_feature_id in hits_by_query_and_genome_ref.keys():
             for genome_ref in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                 try:
@@ -6591,22 +6596,28 @@ This module contains methods for running and visualizing results of phylogenomic
                     hits_by_genome_ref[genome_ref] = dict()                    
                 for fid in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
                     hits_by_genome_ref[genome_ref][fid] = True
-        for genome_ref in hits_by_genome_ref.keys():
-            for fid in hits_by_genome_ref[genome_ref].keys():
-                contig_id = contig_id_by_genome_by_fid[genome_ref][fid]
 
-                # look up and downstream and capture all proximal hit fids
-                # HERE
-                
-            """
-            gene_order_by_genome_by_contig[genome_ref] = dict()
-            for contig_id in gene_fid_by_genome_by_contig_by_start_pos[genome_ref].keys():
-                gene_order_by_genome_by_contig[genome_ref][contig_id] = []
-                for start_pos in sorted(gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id].keys()):
-                    for fid in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos]:
-                        gene_order_by_genome_by_contig[genome_ref][contig_id].append(fid)
+        # go through genomes and increment cluster when find hit fids
+        cluster_i = 0
+        prox_i = 0
+        prox_thresh = int(params[neighbor_thresh])
+        for genome_ref in sorted(gene_order_by_genome_by_contig.keys()):
+            for contig_id in sorted(gene_order_by_genome_by_contig[genome_ref].keys()):
+                for fid in gene_order_by_genome_by_contig[genome_ref][contig_id]:
+                    try:
+                        hit = hits_by_genome_ref[genome_ref][fid]
+                        if prox_i > prox_thresh:
+                            cluster_i += 1
+                        try:
+                            genome_ref_hit_set = cluster_by_genome_by_fid[genome_ref]
+                        except:
+                            cluster_by_genome_by_fid[genome_ref] = dict()
 
-            """
+                        cluster_by_genome_by_fid[genome_ref][fid] = cluster_i
+                        prox_i = 0
+
+                    except:
+                        prox_i += 1
 
 
         #### STEP 11: Create tree image in html dir
@@ -6793,7 +6804,8 @@ This module contains methods for running and visualizing results of phylogenomic
                             color_seed = int(params['color_seed'])
                         else:
                             color_seed = 1
-                        cell_bg_color = self._get_dark_pretty_html_color(genome_i, color_seed)
+                        cluster_index = cluster_by_genome_by_fid[genome_ref][hit_id]
+                        cell_bg_color = self._get_dark_pretty_html_color(cluster_index, color_seed)
 
                         disp_hit_id = hit_id
                         if len(hit_id) < longest_feature_id_by_query[query_full_feature_id]:
@@ -6804,7 +6816,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             for space_i in range(int(space_margin/2)):
                                 spaces += '&nbsp;'
                             spaces = '<pre>'+spaces+'</pre>'   
-                            disp_hit_id = '<nobr><pre>'+spaces+'</pre>'+disp_hit_id+'<pre>'+spaces+'</pre></nobr>'
+                            disp_hit_id = '<nobr>'+spaces + disp_hit_id + spaces+'</nobr>'
 
                         if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
                             cell_border_color = 'gray'
