@@ -6633,7 +6633,7 @@ This module contains methods for running and visualizing results of phylogenomic
         branch_vertical_margin = 31
         #branch_vertical_margin = 35
         #hit_cnt_scaling = 0.5
-        hit_cnt_scaling = 0.70
+        hit_cnt_scaling = 0.65
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
@@ -6787,21 +6787,24 @@ This module contains methods for running and visualizing results of phylogenomic
 
                         disp_hit_id = hit_id
                         if len(hit_id) < longest_feature_id_by_query[query_full_feature_id]:
-                           space_margin = longest_feature_id_by_query[query_full_feature_id] - len(hit_id)
-                           if (space_margin % 2) == 1:
-                               space_margin += 1
-                           spaces = ''
-                           for space_i in range(int(space_margin/2)):
-                               spaces += '&nbsp;'
-                           disp_hit_id = spaces + disp_hit_id + spaces
+                            space_margin = longest_feature_id_by_query[query_full_feature_id] - len(hit_id)
+                            if (space_margin % 2) == 1:
+                                space_margin += 1
+                            spaces = ''
+                            for space_i in range(int(space_margin/2)):
+                                spaces += '&nbsp;'
+                            spaces = '<pre>'+spaces+'</pre>'   
+                            disp_hit_id = spaces + disp_hit_id + spaces
 
                         if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
-                            cell_border='3'
+                            cell_border = 2
+                            cell_padding = hit_cellpadding
+                            cell_spacing = cell_border
                             cell_border_color = 'gray'
                             hit_table_html += ['<tr>']
-                            hit_table_html += ['<td valign=middle align=center>']
-                            hit_table_html += ['<table border='+str(cell_border)+' cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
-                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' bordercolor='+cell_border_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+'<pre>'+disp_hit_id+'</pre>'+'</font>'+'</td></tr>']
+                            hit_table_html += ['<td valign=middle align=center bgcolor='+cell_border_color+'>']
+                            hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding-cell_border)+' cellspacing='+str(cell_spacing)+' bgcolor='+cell_border_color+'>']
+                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
                             hit_table_html += ['</table>']
                             hit_table_html += ['</tr>']
                         else:
