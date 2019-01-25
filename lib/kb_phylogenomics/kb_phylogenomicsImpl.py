@@ -6117,6 +6117,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ##
         console = []
         invalid_msgs = []
+        created_objects = []
         self.log(console, 'Running find_homologs_with_genome_context() with params=')
         self.log(console, "\n" + pformat(params))
         report = ''
@@ -6273,8 +6274,19 @@ This module contains methods for running and visualizing results of phylogenomic
         else:
             tree_derived_genomeSet_ref = genomeSet_ref
 
+        
+        #### STEP 4: get genome names from tree
+        ##
+        genome_names = dict()
+        for genome_ref in genomes_in_tree.keys():
+            try:
+                genome_obj_info = wsClient.get_object_info_new({'objects': [{'ref': genome_ref}]})[0]
+                genome_names[genome_ref] = genome_obj_info[NAME_I]
+            except Exception as e:
+                raise ValueError('Unable to get genome object from workspace: (' + genome_ref + ')' + str(e))
+            
 
-        #### STEP 4: if labels defined, make separate newick-labels file
+        #### STEP 5: if labels defined, make separate newick-labels file
         ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
         ##
         if 'default_node_labels' in tree_in:
@@ -6327,7 +6339,7 @@ This module contains methods for running and visualizing results of phylogenomic
             """
 
 
-        #### STEP 5: read genome order in tree, ladderize to make row order consistent
+        #### STEP 6: read genome order in tree, ladderize to make row order consistent
         ##
         genome_ref_order = []
         newick_buf = tree_in['tree']
@@ -6337,7 +6349,7 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_ref_order.append(genome_node_id_to_ref[genome_id])
 
 
-        #### STEP 6: get query features from featureSet object
+        #### STEP 7: get query features from featureSet object
         ##
         input_ref = params['input_featureSet_ref']
         input_featureSet_name = None
@@ -6387,7 +6399,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 query_feature_function[genome_ref][element_id] = 'unknown'
 
 
-        #### STEP 7: determine feature order
+        #### STEP 8: determine feature order
         ##
         contig_id_by_genome_by_fid                = dict()
         sorted_contig_ids_by_genome               = dict()
@@ -6452,7 +6464,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         gene_order_by_genome_by_contig[genome_ref][contig_id].append(fid)
 
 
-        #### STEP 8: make a separate featureSet with a single feature to run searches
+        #### STEP 9: make a separate featureSet with a single feature to run searches
         ##  Kludge until change BLASTp to accept multi-feature FeatureSet queries
         ##
         input_full_feature_ids = []
@@ -6504,7 +6516,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 input_full_feature_ids.append (full_feature_id)
 
 
-        #### STEP 9: run BLASTp searches to get homologs
+        #### STEP 10: run BLASTp searches to get homologs
         ##
         hits_by_query_and_genome_ref = dict()
         longest_feature_id_by_query = dict()
@@ -6514,6 +6526,9 @@ This module contains methods for running and visualizing results of phylogenomic
         #for query_i,individual_FS_ref in enumerate(individual_featureSet_refs):
         for query_i,query_full_feature_id in enumerate(input_full_feature_ids):
             longest_feature_id_by_query[query_full_feature_id] = 0
+
+            [query_genome_ref, query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
+            query_genome_label = tree_in['default_node_labels'][genome_ref_to_node_id[query_genome_ref]]
 
             #hits_by_full_feature_id[query_full_feature_id] = dict()
 
@@ -6546,6 +6561,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # read hits and store hits for each genome
             hits_ref = this_report_obj['objects_created'][0]['ref']
+            objects_created.append({'ref': hits_ref, 'description': 'Homologs of '+query_genome_label+' '+query_feature_id})
             try:
                 hits_obj = wsClient.get_objects([{'ref': hits_ref}])[0]['data']
             except:
@@ -6582,7 +6598,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         max_hit_cnt = hit_cnt_by_genome_ref[genome_ref]
 
         
-        #### STEP 10: Determine proximity-based clusters within each contig
+        #### STEP 11: Determine proximity-based clusters within each contig
         ##
         cluster_by_genome_by_fid = dict()
         hits_by_genome_ref = dict()
@@ -6600,7 +6616,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # go through genomes and increment cluster when find hit fids
         cluster_i = 0
         prox_i = 0
-        prox_thresh = int(params[neighbor_thresh])
+        prox_thresh = int(params['neighbor_thresh'])
         for genome_ref in sorted(gene_order_by_genome_by_contig.keys()):
             for contig_id in sorted(gene_order_by_genome_by_contig[genome_ref].keys()):
                 for fid in gene_order_by_genome_by_contig[genome_ref][contig_id]:
@@ -6620,7 +6636,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         prox_i += 1
 
 
-        #### STEP 11: Create tree image in html dir
+        #### STEP 12: Create tree image in html dir
         ##
         html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
         if not os.path.exists(html_output_dir):
@@ -6654,7 +6670,7 @@ This module contains methods for running and visualizing results of phylogenomic
         branch_vertical_margin = 31
         #branch_vertical_margin = 35
         #hit_cnt_scaling = 0.5
-        hit_cnt_scaling = 0.65
+        hit_cnt_scaling = 0.67
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
@@ -6714,7 +6730,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
 
-        #### STEP 12: build HTML table for hits
+        #### STEP 13: build HTML table for hits
         ##
         border=0
         cellpadding=5
@@ -6848,7 +6864,7 @@ This module contains methods for running and visualizing results of phylogenomic
         hit_table_html += ['</table>']
 
 
-        #### STEP 13: make html report
+        #### STEP 14: make html report
         ##
         html_file = intree_name + '-homologs_chromosomal_context' + '.html'
         output_html_file_path = os.path.join(html_output_dir, html_file)
@@ -6887,7 +6903,54 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError('error uploading html report to shock')
 
 
-        #### STEP 14: Create report obj
+        #### STEP 15: Create per-genome featureSets
+        ##
+        if int(params.get('save_per_genome_featureSets')) == 1:
+            for genome_ref in genome_ref_order:
+                per_genome_featureSet_elements = {}
+                hits_to_genome = False
+                for hit_id in sorted(hits_by_genome_ref[genome_ref]):
+                    hits_to_genome = True
+                    per_genome_featureSet_elements[hit_id] = [genome_ref]
+                if not hits_to_genome:
+                    continue
+        
+                per_genome_FS_prov = [{}]
+                if 'provenance' in ctx:
+                    per_genome_FS_prov = ctx['provenance']
+                # add additional info to provenance here, in this case the input data object reference
+                per_genome_FS_prov[0]['input_ws_objects'] = []
+                per_genome_FS_prov[0]['input_ws_objects'].append(params['input_featureSet_ref'])
+                per_genome_FS_prov[0]['input_ws_objects'].append(params['genome_ref'])
+                per_genome_FS_prov[0]['service'] = 'kb_phylogenomics'
+                per_genome_FS_prov[0]['method'] = 'find_homologs_with_genome_context'
+            
+                per_genome_FS_obj = {
+                    'description': 'Hits to Genome '+genome_ref+' by '+input_featureSet_name,
+                    'elements': per_genome_featureSet_elements
+                }
+                per_genome_FS_name = genome_names[genome_ref]+'-Homologs_of-'+input_featureSet_name
+                try:
+                    per_genome_FS_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                                                    'objects': [
+                                                                        {
+                                                                            'type':'KBaseCollections.FeatureSet',
+                                                                            'data':per_genome_FS_obj,
+                                                                            'name':per_genome_FS_name,
+                                                                            'meta':{},
+                                                                            'provenance':per_genome_FS_prov,
+                                                                            'hidden':0  # 1=True
+                                                                        }]
+                                                                })[0]
+                except Exception as e:
+                    raise ValueError('Unable to save per genome featureSet object to workspace: (' + per_genome_FS_name + ')' + str(e))
+                self.log(console, "saved per genome hits as FS "+str(per_genome_FS_name))
+                per_genome_FS_ref = str(per_genome_FS_obj_info[WSID_I])+'/'+str(per_genome_FS_obj_info[OBJID_I])+'/'+str(per_genome_FS_obj_info[VERSION_I])
+
+                created_objects.append({'ref': per_genome_FS_ref, 'description': 'Hits to Genome '+genome_names[genome_ref]})
+
+
+        #### STEP 16: Create report obj
         ##
         reportName = 'blast_report_' + str(uuid.uuid4())
         #report += output_newick_buf+"\n"
@@ -6899,6 +6962,7 @@ This module contains methods for running and visualizing results of phylogenomic
                      'report_object_name': reportName
                      }
         #reportObj['objects_created'].append({'ref': str(params['workspace_name'])+'/'+str(params['output_name']),'description': params['output_name']+' Tree'})
+        reportObj['objects_created'] = created_objects
         reportObj['html_links'] = [{'shock_id': html_upload_ret['shock_id'],
                                     'name': html_file,
                                     'label': intree_name + ' scanned by '+ input_featureSet_name + ' HTML'
