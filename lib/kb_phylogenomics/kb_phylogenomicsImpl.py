@@ -6561,7 +6561,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # read hits and store hits for each genome
             hits_ref = this_report_obj['objects_created'][0]['ref']
-            objects_created.append({'ref': hits_ref, 'description': 'Homologs of '+query_genome_label+' '+query_feature_id})
+            created_objects.append({'ref': hits_ref, 'description': 'Homologs of '+query_genome_label+' '+query_feature_id})
             try:
                 hits_obj = wsClient.get_objects([{'ref': hits_ref}])[0]['data']
             except:
