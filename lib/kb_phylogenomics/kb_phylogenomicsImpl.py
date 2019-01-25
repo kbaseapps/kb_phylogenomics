@@ -6463,7 +6463,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 for start_pos in sorted(gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id].keys()):
                     for fid in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos]:
                         gene_order_by_genome_by_contig[genome_ref][contig_id].append(fid)
-
+                        # DEBUG
+                        if fid.startswith('DVU084'):
+                            self.log(console, "GENE "+fid+" STARTPOS: "+str(start_pos))
 
         #### STEP 9: make a separate featureSet with a single feature to run searches
         ##  Kludge until change BLASTp to accept multi-feature FeatureSet queries
@@ -6677,7 +6679,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #branch_vertical_margin = 31
         branch_vertical_margin = 35
         #hit_cnt_scaling = 0.5
-        hit_cnt_scaling = 0.67
+        hit_cnt_scaling = 0.65
+        #hit_cnt_scaling = 0.67
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
@@ -6933,7 +6936,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 # add additional info to provenance here, in this case the input data object reference
                 per_genome_FS_prov[0]['input_ws_objects'] = []
                 per_genome_FS_prov[0]['input_ws_objects'].append(params['input_featureSet_ref'])
-                per_genome_FS_prov[0]['input_ws_objects'].append(params['genome_ref'])
+                per_genome_FS_prov[0]['input_ws_objects'].append(genome_ref)
                 per_genome_FS_prov[0]['service'] = 'kb_phylogenomics'
                 per_genome_FS_prov[0]['method'] = 'find_homologs_with_genome_context'
             
