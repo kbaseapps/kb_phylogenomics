@@ -6436,17 +6436,18 @@ This module contains methods for running and visualizing results of phylogenomic
             for f in genome_obj['features']:
                 fid = f['id']
                 contig_id = f['location'][0][CONTIG_ID_I]
+                start_pos = f['location'][0][BEG_I]
+                """ note END_I is actually nucleotide length of gene, not stop pos
                 if f['location'][0][BEG_I] < f['location'][0][END_I]:
                     start_pos = f['location'][0][BEG_I]
                     #stop_pos  = f['location'][0][END_I]
                 else:
                     start_pos = f['location'][0][END_I]
                     #stop_pos  = f['location'][0][BEG_I]
-
                 # DEBUG
-                if fid.startswith('DVU084'):
-                    self.log(console,"INITIAL GENE READ "+fid+" START_POS: "+str(start_pos))
-
+                #if fid.startswith('DVU084'):
+                #    self.log(console,"INITIAL GENE READ "+fid+" START_POS: "+str(start_pos))
+                """
                 if contig_id not in gene_fid_by_genome_by_contig_by_start_pos[genome_ref]:
                     gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id] = dict()
                 if start_pos not in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id]:
@@ -6468,8 +6469,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     for fid in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos]:
                         gene_order_by_genome_by_contig[genome_ref][contig_id].append(fid)
                         # DEBUG
-                        if fid.startswith('DVU084'):
-                            self.log(console, "GENE "+fid+" STARTPOS: "+str(start_pos))
+                        #if fid.startswith('DVU084'):
+                        #    self.log(console, "GENE "+fid+" STARTPOS: "+str(start_pos))
 
         #### STEP 9: make a separate featureSet with a single feature to run searches
         ##  Kludge until change BLASTp to accept multi-feature FeatureSet queries
@@ -6629,8 +6630,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 for f_i,fid in enumerate(gene_order_by_genome_by_contig[genome_ref][contig_id]):
 
                     # DEBUG
-                    if fid.startswith('DVU084'):
-                        self.log(console,"GENE ORDER "+genome_ref+" "+str(contig_id)+" "+fid+" "+str(f_i))
+                    #if fid.startswith('DVU084'):
+                    #    self.log(console,"GENE ORDER "+genome_ref+" "+str(contig_id)+" "+fid+" "+str(f_i))
 
                     try:
                         hit = hits_by_genome_ref[genome_ref][fid]
@@ -6683,7 +6684,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #branch_vertical_margin = 31
         branch_vertical_margin = 35
         #hit_cnt_scaling = 0.65
-        hit_cnt_scaling = 0.645
+        hit_cnt_scaling = 0.6475
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
@@ -6837,7 +6838,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         else:
                             color_seed = 1
                         cluster_index = cluster_by_genome_by_fid[genome_ref][hit_id]
-                        self.log(console, "CLUSTER_INDEX for "+genome_ref+" HIT ID "+hit_id+": "+str(cluster_index))  # DEBUG
+                        #self.log(console, "CLUSTER_INDEX for "+genome_ref+" HIT ID "+hit_id+": "+str(cluster_index))  # DEBUG
                         cell_bg_color = self._get_dark_pretty_html_color(cluster_index, color_seed)
 
                         disp_hit_id = hit_id
@@ -6926,12 +6927,12 @@ This module contains methods for running and visualizing results of phylogenomic
         if int(params.get('save_per_genome_featureSets')) == 1:
             for genome_ref in genome_ref_order:
                 per_genome_featureSet_elements = {}
-                hits_to_genome = False
-                for hit_id in sorted(hits_by_genome_ref[genome_ref]):
-                    hits_to_genome = True
-                    per_genome_featureSet_elements[hit_id] = [genome_ref]
-                if not hits_to_genome:
+                try:
+                    hits_to_this_genome = hits_by_genome_ref[genome_ref]
+                except:
                     continue
+                for hit_id in sorted(hits_by_genome_ref[genome_ref]):
+                    per_genome_featureSet_elements[hit_id] = [genome_ref]
         
                 per_genome_FS_prov = [{}]
                 if 'provenance' in ctx:
