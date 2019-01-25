@@ -70,6 +70,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
     def _get_dark_pretty_html_color(self, index, seed):
 
+        # colors from https://www.w3schools.com/colors/colors_names.asp
+
         dark_pretty_html_colors = [
             #"AliceBlue",
             #"AntiqueWhite",
@@ -127,7 +129,7 @@ This module contains methods for running and visualizing results of phylogenomic
             #"Gray",
             #"Grey",
             "Green",
-            "GreenYellow",
+            #"GreenYellow",
             #"HoneyDew",
             "HotPink",
             "IndianRed",
@@ -153,7 +155,7 @@ This module contains methods for running and visualizing results of phylogenomic
             #"LightSlateGrey",
             #"LightSteelBlue",
             #"LightYellow",
-            "Lime",
+            #"Lime",
             "LimeGreen",
             #"Linen",
             "Magenta",
@@ -6160,8 +6162,7 @@ This module contains methods for running and visualizing results of phylogenomic
                            'e_value',
                            'bitscore',
                            'overlap_fraction',
-                           'neighbor_thresh',
-                           'color_seed'
+                           'neighbor_thresh'
                            ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
@@ -6737,7 +6738,10 @@ This module contains methods for running and visualizing results of phylogenomic
         cellspacing=5
         hit_cellpadding=5
         hit_cellspacing=2
-        fontsize=2
+        #fontsize=2
+        header_fontsize=2
+        genome_fontsize=3
+        hit_fontsize=3
         genome_text_color='black'
         hit_text_color="#ffffff"
         #header_row_color="#ccccff"
@@ -6751,12 +6755,12 @@ This module contains methods for running and visualizing results of phylogenomic
         row_bg_color = header_row_color
         hit_table_html += ['<tr>']
         hit_table_html += ['<td></td>']
-        hit_table_html += ['<td bgcolor='+'#ffffff'+' valign=middle align=right><b><font size='+str(fontsize)+'>'+'BAIT GENE'+'</font></b></td>']
+        hit_table_html += ['<td bgcolor='+'#ffffff'+' valign=middle align=right><b><font size='+str(header_fontsize)+'>'+'BAIT GENE'+'</font></b></td>']
         sorted_input_full_feature_ids = sorted(input_full_feature_ids)
         for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
             [genome_ref,query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
             bait_function = query_feature_function[genome_ref][query_feature_id]
-            hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=center>'+'<font size='+str(fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'<br>'+bait_function+'</font>'+'</td>']
+            hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=center>'+'<font size='+str(header_fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'<br>'+bait_function+'</font>'+'</td>']
         hit_table_html += ['</tr>']
 
         # add tree image
@@ -6804,7 +6808,7 @@ This module contains methods for running and visualizing results of phylogenomic
             link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'" target="'+str(genome_ref)+'" style="color:'+genome_text_color+';text-decoration:none">'
             link_close = '</A>'
             
-            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
+            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(genome_fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                     hit_table_html += ['<td valign=top align=center bgcolor='+'#ffffff'+'> --- </td>']
@@ -6831,8 +6835,8 @@ This module contains methods for running and visualizing results of phylogenomic
                             spaces = ''
                             for space_i in range(int(space_margin/2)):
                                 spaces += '&nbsp;'
-                            spaces = '<pre>'+spaces+'</pre>'   
-                            disp_hit_id = '<nobr>'+spaces + disp_hit_id + spaces+'</nobr>'
+                            #spaces = '<pre>'+spaces+'</pre>'   
+                            disp_hit_id = '<nobr><pre>'+spaces + disp_hit_id + spaces+'</pre></nobr>'
 
                         if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
                             cell_border_color = 'gray'
@@ -6844,11 +6848,11 @@ This module contains methods for running and visualizing results of phylogenomic
                             hit_table_html += ['<tr>']
                             hit_table_html += ['<td valign=middle align=center bgcolor='+cell_border_color+'>']
                             hit_table_html += ['<table border=0 cellpadding='+str(bordered_cell_padding)+' cellspacing='+str(bordered_cell_spacing)+' bgcolor='+cell_border_color+'>']
-                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
+                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(hit_fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
                             hit_table_html += ['</table>']
                             hit_table_html += ['</tr>']
                         else:
-                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' >'+'<font size='+str(fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
+                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' >'+'<font size='+str(hit_fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
                             hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
