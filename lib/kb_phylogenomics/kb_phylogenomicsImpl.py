@@ -6529,7 +6529,6 @@ This module contains methods for running and visualizing results of phylogenomic
             longest_feature_id_by_query[query_full_feature_id] = 0
 
             [query_genome_ref, query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
-            query_genome_label = tree_in['default_node_labels'][genome_ref_to_node_id[query_genome_ref]]
 
             #hits_by_full_feature_id[query_full_feature_id] = dict()
 
@@ -6562,7 +6561,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # read hits and store hits for each genome
             hits_ref = this_report_obj['objects_created'][0]['ref']
-            created_objects.append({'ref': hits_ref, 'description': 'Homologs of '+query_genome_label+' '+query_feature_id})
+            created_objects.append({'ref': hits_ref, 'description': 'Homologs of '+genome_names[query_genome_ref]+' '+query_feature_id})
             try:
                 hits_obj = wsClient.get_objects([{'ref': hits_ref}])[0]['data']
             except:
@@ -6668,8 +6667,8 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
         img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
-        branch_vertical_margin = 31
-        #branch_vertical_margin = 35
+        #branch_vertical_margin = 31
+        branch_vertical_margin = 35
         #hit_cnt_scaling = 0.5
         hit_cnt_scaling = 0.67
         #ts.show_leaf_name = True
@@ -6825,6 +6824,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         else:
                             color_seed = 1
                         cluster_index = cluster_by_genome_by_fid[genome_ref][hit_id]
+                        self.log(console, "CLUSTER_INDEX for "+genome_ref+" HIT ID "+hit_id+": "+str(cluster_index))  # DEBUG
                         cell_bg_color = self._get_dark_pretty_html_color(cluster_index, color_seed)
 
                         disp_hit_id = hit_id
@@ -6836,8 +6836,9 @@ This module contains methods for running and visualizing results of phylogenomic
                             for space_i in range(int(space_margin/2)):
                                 spaces += '&nbsp;'
                             #spaces = '<pre>'+spaces+'</pre>'   
-                            disp_hit_id = '<nobr><pre>'+spaces + disp_hit_id + spaces+'</pre></nobr>'
+                            disp_hit_id = '<nobr>'+spaces + disp_hit_id + spaces+'</nobr>'
 
+                        disp_hit_id = '<pre>' + disp_hit_id + '</pre>'
                         if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
                             cell_border_color = 'gray'
                             cell_border = 2
