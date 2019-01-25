@@ -6443,6 +6443,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     start_pos = f['location'][0][END_I]
                     #stop_pos  = f['location'][0][BEG_I]
 
+                # DEBUG
+                if fid.startswith('DVU084'):
+                    self.log(console,"INITIAL GENE READ "+fid+" START_POS: "+str(start_pos))
+
                 if contig_id not in gene_fid_by_genome_by_contig_by_start_pos[genome_ref]:
                     gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id] = dict()
                 if start_pos not in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id]:
@@ -6678,9 +6682,8 @@ This module contains methods for running and visualizing results of phylogenomic
         img_html_width = img_pix_width // 4
         #branch_vertical_margin = 31
         branch_vertical_margin = 35
-        #hit_cnt_scaling = 0.5
-        hit_cnt_scaling = 0.65
-        #hit_cnt_scaling = 0.67
+        #hit_cnt_scaling = 0.65
+        hit_cnt_scaling = 0.645
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
