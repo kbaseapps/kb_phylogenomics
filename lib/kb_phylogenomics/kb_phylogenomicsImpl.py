@@ -6614,26 +6614,33 @@ This module contains methods for running and visualizing results of phylogenomic
                     hits_by_genome_ref[genome_ref][fid] = True
 
         # go through genomes and increment cluster when find hit fids
-        cluster_i = 0
+        cluster_n = 0
         prox_i = 0
         prox_thresh = int(params['neighbor_thresh'])
         for genome_ref in sorted(gene_order_by_genome_by_contig.keys()):
             for contig_id in sorted(gene_order_by_genome_by_contig[genome_ref].keys()):
-                for fid in gene_order_by_genome_by_contig[genome_ref][contig_id]:
+                #for fid in gene_order_by_genome_by_contig[genome_ref][contig_id]:
+                for f_i,fid in enumerate(gene_order_by_genome_by_contig[genome_ref][contig_id]):
+
+                    # DEBUG
+                    if fid.startswith('DVU084'):
+                        self.log(console,"GENE ORDER "+genome_ref+" "+str(contig_id)+" "+fid+" "+str(f_i))
+
                     try:
                         hit = hits_by_genome_ref[genome_ref][fid]
-                        if prox_i > prox_thresh:
-                            cluster_i += 1
-                        try:
-                            genome_ref_hit_set = cluster_by_genome_by_fid[genome_ref]
-                        except:
-                            cluster_by_genome_by_fid[genome_ref] = dict()
-
-                        cluster_by_genome_by_fid[genome_ref][fid] = cluster_i
-                        prox_i = 0
-
                     except:
                         prox_i += 1
+                        continue
+
+                    if prox_i > prox_thresh:
+                        cluster_n += 1
+                    try:
+                        genome_ref_hit_set = cluster_by_genome_by_fid[genome_ref]
+                    except:
+                        cluster_by_genome_by_fid[genome_ref] = dict()
+
+                    cluster_by_genome_by_fid[genome_ref][fid] = cluster_n
+                    prox_i = 0
 
 
         #### STEP 12: Create tree image in html dir
@@ -6856,7 +6863,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' >'+'<font size='+str(hit_fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
                     if len(hit_ids) < max_hit_cnt:
                         for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
-                            hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(fontsize)+'>&nbsp;</font></td></tr>']
+                            hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(hit_fontsize)+'>&nbsp;</font></td></tr>']
                     hit_table_html += ['</table></td>']
             hit_table_html += ['</tr>']
 
