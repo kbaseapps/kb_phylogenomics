@@ -225,7 +225,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         if seed != None:
             random.seed(index * seed)
-            index = random.randint (0,len(dark_pretty_html_colors))
+            index = random.randint (0,len(dark_pretty_html_colors)-1)
         else:
             index = index % len(dark_pretty_html_colors)
 
@@ -6609,6 +6609,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ##
         cluster_by_genome_by_fid = dict()
         hits_by_genome_ref = dict()
+        cluster_size_by_cluster_id = dict()
 
         # store hits by genome
         for query_full_feature_id in hits_by_query_and_genome_ref.keys():
@@ -6622,6 +6623,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # go through genomes and increment cluster when find hit fids
         cluster_n = 0
+        cluster_size_by_cluster_id[cluster_n] = 0
         prox_i = 0
         prox_thresh = int(params['neighbor_thresh'])
         for genome_ref in sorted(gene_order_by_genome_by_contig.keys()):
@@ -6641,12 +6643,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     if prox_i > prox_thresh:
                         cluster_n += 1
+                        cluster_size_by_cluster_id[cluster_n] = 0
                     try:
                         genome_ref_hit_set = cluster_by_genome_by_fid[genome_ref]
                     except:
                         cluster_by_genome_by_fid[genome_ref] = dict()
 
                     cluster_by_genome_by_fid[genome_ref][fid] = cluster_n
+                    cluster_size_by_cluster_id[cluster_n] += 1
                     prox_i = 0
 
 
@@ -6839,7 +6843,10 @@ This module contains methods for running and visualizing results of phylogenomic
                             color_seed = 1
                         cluster_index = cluster_by_genome_by_fid[genome_ref][hit_id]
                         #self.log(console, "CLUSTER_INDEX for "+genome_ref+" HIT ID "+hit_id+": "+str(cluster_index))  # DEBUG
-                        cell_bg_color = self._get_dark_pretty_html_color(cluster_index, color_seed)
+                        if cluster_size_by_cluster_id[cluster_index] > 1:
+                            cell_bg_color = self._get_dark_pretty_html_color(cluster_index, color_seed)
+                        else:
+                            cell_bg_color = 'Gray'
 
                         disp_hit_id = hit_id
                         if len(hit_id) < longest_feature_id_by_query[query_full_feature_id]:
@@ -6854,7 +6861,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                         disp_hit_id = '<pre>' + disp_hit_id + '</pre>'
                         if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
-                            cell_border_color = 'gray'
+                            cell_border_color = 'DarkGray'
                             cell_border = 2
                             bordered_cell_padding = hit_cellpadding-cell_border
                             bordered_cell_spacing = 0
