@@ -18,14 +18,11 @@ import matplotlib.pyplot as pyplot  # use this instead
 from matplotlib.patches import Arc
 from matplotlib.patches import Rectangle
 
-#from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
-#from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
-#from KBaseReport.KBaseReportClient import KBaseReport
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.DataFileUtilClient import DataFileUtil as DFUClient
 from installed_clients.DomainAnnotationClient import DomainAnnotation
 from installed_clients.kb_blastClient import kb_blast
-from Workspace.WorkspaceClient import Workspace as workspaceService
+from installed_clients.WorkspaceClient import Workspace as workspaceService
 #END_HEADER
 
 
@@ -46,9 +43,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.3.0"
-    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "9961eed04a51a8ee03494342b6e689d368e0a9e9"
+    VERSION = "1.3.1"
+    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
+    GIT_COMMIT_HASH = "230e29e996351d9b434dee53ea3d7316fe79df33"
 
     #BEGIN_CLASS_HEADER
 
@@ -296,7 +293,13 @@ This module contains methods for running and visualizing results of phylogenomic
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        wsClient = workspaceService(self.workspaceURL, token=ctx['token'])
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
 
         #### STEP 1: do some basic checks
         ##
@@ -548,7 +551,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                          'label': intree_name + ' PDF'
                                          }])
 
-        SERVICE_VER = 'release'
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         report_info = reportClient.create_extended_report(reportObj)
 
@@ -588,14 +590,17 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running run_DomainAnnotation_Sets() with params=')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
 
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         ### STEP 1: basic parameter checks + parsing
         required_params = ['workspace_name',
@@ -686,7 +691,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         ### STEP 4: run DomainAnnotation on each genome in set
         try:
-            SERVICE_VER = 'dev'  # DEBUG
+            #SERVICE_VER = 'dev'  # DEBUG
+            SERVICE_VER = 'release'
             daClient = DomainAnnotation(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
             #daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
@@ -736,6 +742,7 @@ This module contains methods for running and visualizing results of phylogenomic
             'objects_created': [],
             'text_message': report_text
         }
+        SERVICE_VER = 'release'
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         report_info = reportClient.create({'report': reportObj, 'workspace_name': params['workspace_name']})
 
@@ -781,14 +788,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_fxn_profile(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_genomeSet_ref',
@@ -1933,14 +1942,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_fxn_profile_featureSet(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_featureSet_ref',
@@ -3107,14 +3118,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_fxn_profile_phylo(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_speciesTree_ref',
@@ -4395,14 +4408,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_pan_circle_plot(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_genome_ref',
@@ -5423,14 +5438,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_pan_phylo(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_speciesTree_ref',
@@ -6128,19 +6145,21 @@ This module contains methods for running and visualizing results of phylogenomic
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'beta'
+        #SERVICE_VER = 'release'
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
         token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
 
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
-        try:
-            wsClient = workspaceService(self.workspaceURL, token=token)
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-             WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-        except:
-            raise ValueError("unable to instantiate wsClient")
+        # additional clients
         try:
             dfuClient = DFUClient(self.callbackURL)
         except:
@@ -7016,7 +7035,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                          }])
         """
 
-        SERVICE_VER = 'release'
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         report_info = reportClient.create_extended_report(reportObj)
 
