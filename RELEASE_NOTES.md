@@ -1,3 +1,7 @@
+### Version 1.3.1
+__Changes__
+- patched SDK_LOCAL client libs
+
 ### Version 1.3.0
 __Changes__
 - added find_homologs_with_genome_context() method

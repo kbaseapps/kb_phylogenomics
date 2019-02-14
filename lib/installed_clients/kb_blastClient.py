@@ -12,10 +12,9 @@ from __future__ import print_function
 try:
     # baseclient and this client are in a package
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
-except:
+except ImportError:
     # no they aren't
     from baseclient import BaseClient as _BaseClient  # @Reimport
-import time
 
 
 class kb_blast(object):
@@ -39,14 +38,6 @@ class kb_blast(object):
             async_job_check_time_ms=async_job_check_time_ms,
             async_job_check_time_scale_percent=async_job_check_time_scale_percent,
             async_job_check_max_time_ms=async_job_check_max_time_ms)
-
-    def _check_job(self, job_id):
-        return self._client._check_job('kb_blast', job_id)
-
-    def _BLASTn_Search_submit(self, params, context=None):
-        return self._client._submit_job(
-             'kb_blast.BLASTn_Search', [params],
-             self._service_ver, context)
 
     def BLASTn_Search(self, params, context=None):
         """
@@ -79,22 +70,8 @@ class kb_blast(object):
            structure: parameter "report_name" of type "data_obj_name",
            parameter "report_ref" of type "data_obj_ref"
         """
-        job_id = self._BLASTn_Search_submit(params, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
-
-    def _BLASTp_Search_submit(self, params, context=None):
-        return self._client._submit_job(
-             'kb_blast.BLASTp_Search', [params],
-             self._service_ver, context)
+        return self._client.run_job('kb_blast.BLASTn_Search',
+                                    [params], self._service_ver, context)
 
     def BLASTp_Search(self, params, context=None):
         """
@@ -121,22 +98,8 @@ class kb_blast(object):
            structure: parameter "report_name" of type "data_obj_name",
            parameter "report_ref" of type "data_obj_ref"
         """
-        job_id = self._BLASTp_Search_submit(params, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
-
-    def _BLASTx_Search_submit(self, params, context=None):
-        return self._client._submit_job(
-             'kb_blast.BLASTx_Search', [params],
-             self._service_ver, context)
+        return self._client.run_job('kb_blast.BLASTp_Search',
+                                    [params], self._service_ver, context)
 
     def BLASTx_Search(self, params, context=None):
         """
@@ -163,22 +126,8 @@ class kb_blast(object):
            structure: parameter "report_name" of type "data_obj_name",
            parameter "report_ref" of type "data_obj_ref"
         """
-        job_id = self._BLASTx_Search_submit(params, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
-
-    def _tBLASTn_Search_submit(self, params, context=None):
-        return self._client._submit_job(
-             'kb_blast.tBLASTn_Search', [params],
-             self._service_ver, context)
+        return self._client.run_job('kb_blast.BLASTx_Search',
+                                    [params], self._service_ver, context)
 
     def tBLASTn_Search(self, params, context=None):
         """
@@ -205,22 +154,8 @@ class kb_blast(object):
            structure: parameter "report_name" of type "data_obj_name",
            parameter "report_ref" of type "data_obj_ref"
         """
-        job_id = self._tBLASTn_Search_submit(params, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
-
-    def _tBLASTx_Search_submit(self, params, context=None):
-        return self._client._submit_job(
-             'kb_blast.tBLASTx_Search', [params],
-             self._service_ver, context)
+        return self._client.run_job('kb_blast.tBLASTn_Search',
+                                    [params], self._service_ver, context)
 
     def tBLASTx_Search(self, params, context=None):
         """
@@ -247,22 +182,8 @@ class kb_blast(object):
            structure: parameter "report_name" of type "data_obj_name",
            parameter "report_ref" of type "data_obj_ref"
         """
-        job_id = self._tBLASTx_Search_submit(params, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
-
-    def _psiBLAST_msa_start_Search_submit(self, params, context=None):
-        return self._client._submit_job(
-             'kb_blast.psiBLAST_msa_start_Search', [params],
-             self._service_ver, context)
+        return self._client.run_job('kb_blast.tBLASTx_Search',
+                                    [params], self._service_ver, context)
 
     def psiBLAST_msa_start_Search(self, params, context=None):
         """
@@ -289,28 +210,9 @@ class kb_blast(object):
            structure: parameter "report_name" of type "data_obj_name",
            parameter "report_ref" of type "data_obj_ref"
         """
-        job_id = self._psiBLAST_msa_start_Search_submit(params, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
+        return self._client.run_job('kb_blast.psiBLAST_msa_start_Search',
+                                    [params], self._service_ver, context)
 
     def status(self, context=None):
-        job_id = self._client._submit_job('kb_blast.status', 
-            [], self._service_ver, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
+        return self._client.run_job('kb_blast.status',
+                                    [], self._service_ver, context)

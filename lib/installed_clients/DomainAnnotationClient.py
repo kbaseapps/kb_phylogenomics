@@ -12,10 +12,9 @@ from __future__ import print_function
 try:
     # baseclient and this client are in a package
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
-except:
+except ImportError:
     # no they aren't
     from baseclient import BaseClient as _BaseClient  # @Reimport
-import time
 
 
 class DomainAnnotation(object):
@@ -40,14 +39,6 @@ class DomainAnnotation(object):
             async_job_check_time_scale_percent=async_job_check_time_scale_percent,
             async_job_check_max_time_ms=async_job_check_max_time_ms)
 
-    def _check_job(self, job_id):
-        return self._client._check_job('DomainAnnotation', job_id)
-
-    def _search_domains_submit(self, input, context=None):
-        return self._client._submit_job(
-             'DomainAnnotation.search_domains', [input],
-             self._service_ver, context)
-
     def search_domains(self, input, context=None):
         """
         Search for domains in a genome
@@ -67,22 +58,8 @@ class DomainAnnotation(object):
            KBaseGeneFamilies.DomainAnnotation), parameter "report_name" of
            String, parameter "report_ref" of String
         """
-        job_id = self._search_domains_submit(input, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
-
-    def _search_domains_ga_submit(self, input, context=None):
-        return self._client._submit_job(
-             'DomainAnnotation.search_domains_ga', [input],
-             self._service_ver, context)
+        return self._client.run_job('DomainAnnotation.search_domains',
+                                    [input], self._service_ver, context)
 
     def search_domains_ga(self, input, context=None):
         """
@@ -105,22 +82,8 @@ class DomainAnnotation(object):
            KBaseGenomeAnnotations.GenomeAnnotation), parameter "report_name"
            of String, parameter "report_ref" of String
         """
-        job_id = self._search_domains_ga_submit(input, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
-
-    def _export_csv_submit(self, params, context=None):
-        return self._client._submit_job(
-             'DomainAnnotation.export_csv', [params],
-             self._service_ver, context)
+        return self._client.run_job('DomainAnnotation.search_domains_ga',
+                                    [input], self._service_ver, context)
 
     def export_csv(self, params, context=None):
         """
@@ -130,50 +93,17 @@ class DomainAnnotation(object):
         :returns: instance of type "ExportResult" -> structure: parameter
            "shock_id" of String
         """
-        job_id = self._export_csv_submit(params, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
-
-    def _version_submit(self, context=None):
-        return self._client._submit_job(
-             'DomainAnnotation.version', [],
-             self._service_ver, context)
+        return self._client.run_job('DomainAnnotation.export_csv',
+                                    [params], self._service_ver, context)
 
     def version(self, context=None):
         """
         returns version number of service
         :returns: instance of String
         """
-        job_id = self._version_submit(context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
+        return self._client.run_job('DomainAnnotation.version',
+                                    [], self._service_ver, context)
 
     def status(self, context=None):
-        job_id = self._client._submit_job('DomainAnnotation.status', 
-            [], self._service_ver, context)
-        async_job_check_time = self._client.async_job_check_time
-        while True:
-            time.sleep(async_job_check_time)
-            async_job_check_time = (async_job_check_time *
-                self._client.async_job_check_time_scale_percent / 100.0)
-            if async_job_check_time > self._client.async_job_check_max_time:
-                async_job_check_time = self._client.async_job_check_max_time
-            job_state = self._check_job(job_id)
-            if job_state['finished']:
-                return job_state['result'][0]
+        return self._client.run_job('DomainAnnotation.status',
+                                    [], self._service_ver, context)

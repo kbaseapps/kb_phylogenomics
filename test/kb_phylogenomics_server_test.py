@@ -14,9 +14,7 @@ except:
 
 from pprint import pprint  # noqa: F401
 
-#from biokbase.workspace.client import Workspace as workspaceService
-from Workspace.WorkspaceClient import Workspace as workspaceService
-#from GenomeFileUtil.GenomeFileUtilClient import GenomeFileUtil
+from installed_clients.WorkspaceClient import Workspace as workspaceService
 from installed_clients.GenomeFileUtilClient import GenomeFileUtil
 from kb_phylogenomics.kb_phylogenomicsImpl import kb_phylogenomics
 from kb_phylogenomics.kb_phylogenomicsServer import MethodContext
@@ -332,7 +330,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
-    @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_01(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -436,7 +434,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for GenomeSet
     ##
-    @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
     def test_view_fxn_profile_01(self):
         method = 'view_fxn_profile'
 
@@ -543,7 +541,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for FeatureSet
     ##
-    @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
     def test_view_fxn_profile_featureSet_01(self):
         method = 'view_fxn_profile_featureSet'
 
@@ -651,7 +649,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for Tree
     ##
-    @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
     def test_view_fxn_profile_phylo_01(self):
         method = 'view_fxn_profile_phylo'
 
@@ -724,7 +722,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome Circle Plot
     ##
-    @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
     def test_view_pan_circle_plot_01(self):
         method = 'view_pan_circle_plot'
 
@@ -785,7 +783,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome on Tree
     ##
-    @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
     def test_view_pan_phylo_01(self):
         method = 'view_pan_phylo'
 
@@ -845,7 +843,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Tree
     ##
-    @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
     def test_view_tree_01(self):
         method = 'view_tree'
 
@@ -896,9 +894,9 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
 
 
-    #### 
+    #### Find Homologs with Genome Context
     ##
-    # HIDE @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
     def test_find_homologs_with_genome_context_01(self):
         method = 'find_homologs_with_genome_context'
 
@@ -980,10 +978,12 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'input_speciesTree_ref': tree_ref,
                    'input_featureSet_ref': query_featureSet_ref,
                    'save_per_genome_featureSets': 0,
+                   'neighbor_thresh': 10,
                    'ident_thresh': 40.0,
                    'e_value': .001,
                    'bitscore': 50,
-                   'overlap_fraction': 50.0
+                   'overlap_fraction': 50.0,
+                   'color_seed': 1
                }
         ret = self.getImpl().find_homologs_with_genome_context(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])
