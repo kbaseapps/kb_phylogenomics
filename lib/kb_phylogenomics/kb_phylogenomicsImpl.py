@@ -6145,10 +6145,6 @@ This module contains methods for running and visualizing results of phylogenomic
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        headers = {'Authorization': 'OAuth ' + token}
-        env = os.environ.copy()
-        env['KB_AUTH_TOKEN'] = token
-
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'beta'
         #SERVICE_VER = 'release'
@@ -6159,6 +6155,11 @@ This module contains methods for running and visualizing results of phylogenomic
             wsClient = workspaceService(self.workspaceURL, token=token)
         except:
             raise ValueError("unable to instantiate wsClient")
+        headers = {'Authorization': 'OAuth ' + token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+        # additional clients
         try:
             dfuClient = DFUClient(self.callbackURL)
         except:
