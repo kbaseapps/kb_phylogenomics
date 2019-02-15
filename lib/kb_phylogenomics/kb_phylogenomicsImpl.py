@@ -6723,8 +6723,8 @@ This module contains methods for running and visualizing results of phylogenomic
         b = 35.0 - 6.0 * (y2 - 35.0) / 15.0
         branch_vertical_margin = m * N_genomes + b
         
-        ##hit_cnt_scaling = 0.65
-        #hit_cnt_scaling = 0.6475
+        #hit_cnt_scaling = 0.65
+        hit_cnt_scaling = 0.6475
 
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
