@@ -6721,20 +6721,25 @@ This module contains methods for running and visualizing results of phylogenomic
         y2 = 44.0
         m = (y2 - 35.0) / 15.0
         b = 35.0 - 6.0 * (y2 - 35.0) / 15.0
-        branch_vertical_margin = m * N_genomes + b
-        
+
         #hit_cnt_scaling = 0.65
         hit_cnt_scaling = 0.6475
+        if max_hit_cnt > 1:
+            branch_vertical_margin_float = m * N_genomes * max_hit_cnt * hit_cnt_scaling + b
+        else:
+            branch_vertical_margin_float = m * N_genomes + b
+        branch_vertical_margin = int(branch_vertical_margin_float)
 
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
         ts.show_branch_support = True
         #ts.scale = 50 # 50 pixels per branch length unit
-        ts.branch_vertical_margin = int(branch_vertical_margin + 0.5)
-        if max_hit_cnt > 1:
-            ts.branch_vertical_margin = int(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling + 0.5)  # pixels between adjacent branches
+        ts.branch_vertical_gmargin = branch_vertical_margin
+        #if max_hit_cnt > 1:
+        #    ts.branch_vertical_margin = int(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling + 0.5)  # pixels between adjacent branches
         #ts.branch_vertical_margin = branch_vertical_margin # pixels between adjacent branches
+
         title_disp = intree_name
         if 'desc' in params and params['desc'] != None and params['desc'] != '':
             title_disp += ': ' + params['desc']
