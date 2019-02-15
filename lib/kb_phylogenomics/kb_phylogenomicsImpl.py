@@ -6367,6 +6367,7 @@ This module contains methods for running and visualizing results of phylogenomic
         t_without_labels.ladderize()
         for genome_id in t_without_labels.get_leaf_names():
             genome_ref_order.append(genome_node_id_to_ref[genome_id])
+        N_genomes = len(genome_ref_order)
 
 
         #### STEP 7: get query features from featureSet object
@@ -6704,10 +6705,27 @@ This module contains methods for running and visualizing results of phylogenomic
         img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
         img_in_width = round(float(img_pix_width) / float(dpi), 1)
         img_html_width = img_pix_width // 4
-        #branch_vertical_margin = 31
-        branch_vertical_margin = 35
-        #hit_cnt_scaling = 0.65
-        hit_cnt_scaling = 0.6475
+
+        ##branch_vertical_margin = 31
+        #branch_vertical_margin = 35
+
+        # y: branch_vertical_margin
+        # x: N_genomes
+        # y = m * x + b
+        # 35 = m * 6 + b
+        # y2 = m * 21 + b
+        # 35 - m*6 = y2 - m*21 -> m*15 = y2 - 35 -> m = (y2 - 35) / 15
+        # b = 35 - m*6 = 35 - 6*(y2 - 35) / 15
+
+        # guess y2=40
+        y2 = 40
+        m = (y2 - 35.0) / 15.0
+        b = 35.0 - 6.0 * (y2 - 35.0) / 15.0
+        branch_vertical_margin = m * N_genomes + b
+        
+        ##hit_cnt_scaling = 0.65
+        #hit_cnt_scaling = 0.6475
+
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
         ts.show_branch_length = False
