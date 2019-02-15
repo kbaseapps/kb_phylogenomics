@@ -6725,10 +6725,11 @@ This module contains methods for running and visualizing results of phylogenomic
         #hit_cnt_scaling = 0.65
         hit_cnt_scaling = 0.6475
         if max_hit_cnt > 1:
-            branch_vertical_margin_float = m * N_genomes * max_hit_cnt * hit_cnt_scaling + b
+            #branch_vertical_margin_float = m * N_genomes * max_hit_cnt * hit_cnt_scaling + b
+            branch_vertical_margin_float = (m * N_genomes + b) * max_hit_cnt * hit_cnt_scaling
         else:
             branch_vertical_margin_float = m * N_genomes + b
-        branch_vertical_margin = int(branch_vertical_margin_float)
+        branch_vertical_margin = int(branch_vertical_margin_float + 0.5)
 
         #ts.show_leaf_name = True
         ts.show_leaf_name = False
