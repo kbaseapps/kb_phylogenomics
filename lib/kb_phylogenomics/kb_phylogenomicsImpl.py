@@ -6718,7 +6718,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # b = 35 - m*6 = 35 - 6*(y2 - 35) / 15
 
         # guess y2=40
-        y2 = 44.5
+        y2 = 44.0
         m = (y2 - 35.0) / 15.0
         b = 35.0 - 6.0 * (y2 - 35.0) / 15.0
         branch_vertical_margin = m * N_genomes + b
