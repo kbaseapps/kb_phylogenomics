@@ -6735,8 +6735,10 @@ This module contains methods for running and visualizing results of phylogenomic
             # 3.885 - mh*6 = y2 - mh*5 -> mh = 3.885 - y2
             # bh = 3.885 - mh*6 = 3.885 - 6*(3.885 - y2) = 6*y2 - 5*3.885 = 6*y2 - 19.425
         
+            # guess y2=3.2375
             # guess y2=3.25
-            y2 = 3.25
+            # guess y2=3.20
+            y2 = 3.20
             mh = 3.885 - y2
             bh = 6*y2 - 19.425
             hit_cnt_scaling = mh * max_hit_cnt + bh
