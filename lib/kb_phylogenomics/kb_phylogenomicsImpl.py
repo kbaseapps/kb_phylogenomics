@@ -6711,24 +6711,40 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # y: branch_vertical_margin
         # x: N_genomes
-        # y = m * x + b
-        # 35 = m * 6 + b
-        # y2 = m * 21 + b
-        # 35 - m*6 = y2 - m*21 -> m*15 = y2 - 35 -> m = (y2 - 35) / 15
-        # b = 35 - m*6 = 35 - 6*(y2 - 35) / 15
+        # y = mg * x + bg
+        # 35 = mg * 6 + bg
+        # y2 = mg * 21 + bg
+        # 35 - mg*6 = y2 - mg*21 -> mg*15 = y2 - 35 -> mg = (y2 - 35) / 15
+        # bg = 35 - mg*6 = 35 - 6*(y2 - 35) / 15
 
         # guess y2=40
         y2 = 44.0
-        m = (y2 - 35.0) / 15.0
-        b = 35.0 - 6.0 * (y2 - 35.0) / 15.0
+        mg = (y2 - 35.0) / 15.0
+        bg = 35.0 - 6.0 * (y2 - 35.0) / 15.0
+        branch_vertical_margin_float = mg * N_genomes + bg
 
-        #hit_cnt_scaling = 0.65
-        hit_cnt_scaling = 0.6475
         if max_hit_cnt > 1:
-            #branch_vertical_margin_float = m * N_genomes * max_hit_cnt * hit_cnt_scaling + b
-            branch_vertical_margin_float = (m * N_genomes + b) * max_hit_cnt * hit_cnt_scaling
-        else:
-            branch_vertical_margin_float = m * N_genomes + b
+            ##hit_cnt_scaling = 0.65
+            #hit_cnt_scaling = 0.6475
+
+            # y: hit_cnt_scaling
+            # x: max_hit_cnt
+            # y = mh * x + bh
+            # 0.6475*6 = 3.885 = mh * 6 + bh
+            # y2 = mh * 5 + bh
+            # 3.885 - mh*6 = y2 - mh*5 -> mh = 3.885 - y2
+            # bh = 3.885 - mh*6 = 3.885 - 6*(3.885 - y2) = 6*y2 - 5*3.885 = 6*y2 - 19.425
+        
+            # guess y2=3.25
+            y2 = 3.25
+            mh = 3.885 - y2
+            bh = 6*y2 - 19.425
+            hit_cnt_scaling = mh * max_hit_cnt + bh
+
+            ##branch_vertical_margin_float = mg * N_genomes * max_hit_cnt * hit_cnt_scaling + bg
+            #branch_vertical_margin_float = (mg * N_genomes + bg) * max_hit_cnt * hit_cnt_scaling
+            branch_vertical_margin_float *= hit_cnt_scaling
+
         branch_vertical_margin = int(branch_vertical_margin_float + 0.5)
 
         #ts.show_leaf_name = True
