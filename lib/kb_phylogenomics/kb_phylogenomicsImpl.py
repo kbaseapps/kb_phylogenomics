@@ -6836,6 +6836,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
             [genome_ref,query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
             bait_function = query_feature_function[genome_ref][query_feature_id]
+            bait_function = bait_function.replace('(EC ','<br>(EC ')
             hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=center>'+'<font size='+str(header_fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'<br>'+bait_function+'</font>'+'</td>']
         hit_table_html += ['</tr>']
 
