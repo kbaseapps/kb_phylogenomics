@@ -6890,7 +6890,12 @@ This module contains methods for running and visualizing results of phylogenomic
             hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(genome_fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
-                    hit_table_html += ['<td valign=top align=center bgcolor='+'#ffffff'+'> --- </td>']
+                    hit_table_html += ['<td valign=top align=center bgcolor='+row_bg_color+'>']
+                    hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
+                    hit_table_html += ['<tr><td valign=top align=center bgcolor='+row_bg_color+'> --- </td></tr>']
+                    for blank_cell_i in range(max_hit_cnt-1):
+                        hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(hit_fontsize)+'>&nbsp;</font></td></tr>']
+                    hit_table_html += ['</table></td>']
                 else:
                     hit_table_html += ['<td valign=top align=center bgcolor='+row_bg_color+'>']
                     hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
