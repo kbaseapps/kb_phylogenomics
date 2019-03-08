@@ -1426,6 +1426,176 @@ find_homologs_with_genome_context_Output is a reference to a hash where the foll
     }
 }
  
+
+
+=head2 get_configure_categories
+
+  $output = $obj->get_configure_categories($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_phylogenomics.get_configure_categories_Input
+$output is a kb_phylogenomics.get_configure_categories_Output
+get_configure_categories_Input is a reference to a hash where the following keys are defined:
+	params has a value which is a kb_phylogenomics.view_fxn_profile_Input
+view_fxn_profile_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	namespace has a value which is a string
+	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	count_category has a value which is a string
+	heatmap has a value which is a kb_phylogenomics.bool
+	vertical has a value which is a kb_phylogenomics.bool
+	top_hit has a value which is a kb_phylogenomics.bool
+	e_value has a value which is a float
+	log_base has a value which is a float
+	show_blanks has a value which is a kb_phylogenomics.bool
+workspace_name is a string
+data_obj_ref is a string
+CustomTargetFams is a reference to a hash where the following keys are defined:
+	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+bool is an int
+get_configure_categories_Output is a reference to a hash where the following keys are defined:
+	cats has a value which is a reference to a list where each element is a string
+	cat2name has a value which is a kb_phylogenomics.Cat2Name
+	cat2group has a value which is a kb_phylogenomics.Cat2Group
+	domfam2cat has a value which is a kb_phylogenomics.DomFam2Cat
+	cat2domfams has a value which is a kb_phylogenomics.Cat2DomFams
+Cat2Name is a reference to a hash where the following keys are defined:
+	namespace has a value which is a kb_phylogenomics.domain_source
+	cat has a value which is a kb_phylogenomics.category
+domain_source is a string
+category is a string
+Cat2Group is a reference to a hash where the following keys are defined:
+	namespace has a value which is a kb_phylogenomics.domain_source
+	cat has a value which is a kb_phylogenomics.category
+DomFam2Cat is a reference to a hash where the following keys are defined:
+	namespace has a value which is a kb_phylogenomics.domain_source
+	domfam has a value which is a kb_phylogenomics.domainfamily
+domainfamily is a string
+Cat2DomFams is a reference to a hash where the following keys are defined:
+	namespace has a value which is a kb_phylogenomics.domain_source
+	cat has a value which is a kb_phylogenomics.category
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_phylogenomics.get_configure_categories_Input
+$output is a kb_phylogenomics.get_configure_categories_Output
+get_configure_categories_Input is a reference to a hash where the following keys are defined:
+	params has a value which is a kb_phylogenomics.view_fxn_profile_Input
+view_fxn_profile_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	namespace has a value which is a string
+	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	count_category has a value which is a string
+	heatmap has a value which is a kb_phylogenomics.bool
+	vertical has a value which is a kb_phylogenomics.bool
+	top_hit has a value which is a kb_phylogenomics.bool
+	e_value has a value which is a float
+	log_base has a value which is a float
+	show_blanks has a value which is a kb_phylogenomics.bool
+workspace_name is a string
+data_obj_ref is a string
+CustomTargetFams is a reference to a hash where the following keys are defined:
+	target_fams has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_COG has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_PFAM has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_TIGR has a value which is a reference to a list where each element is a string
+	extra_target_fam_groups_SEED has a value which is a reference to a list where each element is a string
+bool is an int
+get_configure_categories_Output is a reference to a hash where the following keys are defined:
+	cats has a value which is a reference to a list where each element is a string
+	cat2name has a value which is a kb_phylogenomics.Cat2Name
+	cat2group has a value which is a kb_phylogenomics.Cat2Group
+	domfam2cat has a value which is a kb_phylogenomics.DomFam2Cat
+	cat2domfams has a value which is a kb_phylogenomics.Cat2DomFams
+Cat2Name is a reference to a hash where the following keys are defined:
+	namespace has a value which is a kb_phylogenomics.domain_source
+	cat has a value which is a kb_phylogenomics.category
+domain_source is a string
+category is a string
+Cat2Group is a reference to a hash where the following keys are defined:
+	namespace has a value which is a kb_phylogenomics.domain_source
+	cat has a value which is a kb_phylogenomics.category
+DomFam2Cat is a reference to a hash where the following keys are defined:
+	namespace has a value which is a kb_phylogenomics.domain_source
+	domfam has a value which is a kb_phylogenomics.domainfamily
+domainfamily is a string
+Cat2DomFams is a reference to a hash where the following keys are defined:
+	namespace has a value which is a kb_phylogenomics.domain_source
+	cat has a value which is a kb_phylogenomics.category
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub get_configure_categories
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function get_configure_categories (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to get_configure_categories:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'get_configure_categories');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_phylogenomics.get_configure_categories",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'get_configure_categories',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method get_configure_categories",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'get_configure_categories',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -1469,16 +1639,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'find_homologs_with_genome_context',
+                method_name => 'get_configure_categories',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method find_homologs_with_genome_context",
+            error => "Error invoking method get_configure_categories",
             status_line => $self->{client}->status_line,
-            method_name => 'find_homologs_with_genome_context',
+            method_name => 'get_configure_categories',
         );
     }
 }
@@ -2603,6 +2773,322 @@ report_ref has a value which is a string
 a reference to a hash where the following keys are defined:
 report_name has a value which is a string
 report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 domain_source
+
+=over 4
+
+
+
+=item Description
+
+COG, PF, TIGR, SEED
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a string
+</pre>
+
+=end html
+
+=begin text
+
+a string
+
+=end text
+
+=back
+
+
+
+=head2 category
+
+=over 4
+
+
+
+=item Description
+
+Categories
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a string
+</pre>
+
+=end html
+
+=begin text
+
+a string
+
+=end text
+
+=back
+
+
+
+=head2 domainfamily
+
+=over 4
+
+
+
+=item Description
+
+Domains
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a string
+</pre>
+
+=end html
+
+=begin text
+
+a string
+
+=end text
+
+=back
+
+
+
+=head2 Cat2Name
+
+=over 4
+
+
+
+=item Description
+
+category to name
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+namespace has a value which is a kb_phylogenomics.domain_source
+cat has a value which is a kb_phylogenomics.category
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+namespace has a value which is a kb_phylogenomics.domain_source
+cat has a value which is a kb_phylogenomics.category
+
+
+=end text
+
+=back
+
+
+
+=head2 Cat2Group
+
+=over 4
+
+
+
+=item Description
+
+category to group
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+namespace has a value which is a kb_phylogenomics.domain_source
+cat has a value which is a kb_phylogenomics.category
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+namespace has a value which is a kb_phylogenomics.domain_source
+cat has a value which is a kb_phylogenomics.category
+
+
+=end text
+
+=back
+
+
+
+=head2 DomFam2Cat
+
+=over 4
+
+
+
+=item Description
+
+domain family to category
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+namespace has a value which is a kb_phylogenomics.domain_source
+domfam has a value which is a kb_phylogenomics.domainfamily
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+namespace has a value which is a kb_phylogenomics.domain_source
+domfam has a value which is a kb_phylogenomics.domainfamily
+
+
+=end text
+
+=back
+
+
+
+=head2 Cat2DomFams
+
+=over 4
+
+
+
+=item Description
+
+category to domain family
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+namespace has a value which is a kb_phylogenomics.domain_source
+cat has a value which is a kb_phylogenomics.category
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+namespace has a value which is a kb_phylogenomics.domain_source
+cat has a value which is a kb_phylogenomics.category
+
+
+=end text
+
+=back
+
+
+
+=head2 get_configure_categories_Input
+
+=over 4
+
+
+
+=item Description
+
+get_configure_categories()
+**
+** configure the domain categorie names and descriptions
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+params has a value which is a kb_phylogenomics.view_fxn_profile_Input
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+params has a value which is a kb_phylogenomics.view_fxn_profile_Input
+
+
+=end text
+
+=back
+
+
+
+=head2 get_configure_categories_Output
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+cats has a value which is a reference to a list where each element is a string
+cat2name has a value which is a kb_phylogenomics.Cat2Name
+cat2group has a value which is a kb_phylogenomics.Cat2Group
+domfam2cat has a value which is a kb_phylogenomics.DomFam2Cat
+cat2domfams has a value which is a kb_phylogenomics.Cat2DomFams
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+cats has a value which is a reference to a list where each element is a string
+cat2name has a value which is a kb_phylogenomics.Cat2Name
+cat2group has a value which is a kb_phylogenomics.Cat2Group
+domfam2cat has a value which is a kb_phylogenomics.DomFam2Cat
+cat2domfams has a value which is a kb_phylogenomics.Cat2DomFams
 
 
 =end text

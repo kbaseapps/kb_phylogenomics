@@ -367,6 +367,23 @@ public class KbPhylogenomicsClient {
         return res.get(0);
     }
 
+    /**
+     * <p>Original spec-file function name: get_configure_categories</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.GetConfigureCategoriesInput GetConfigureCategoriesInput} (original type "get_configure_categories_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.GetConfigureCategoriesOutput GetConfigureCategoriesOutput} (original type "get_configure_categories_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public GetConfigureCategoriesOutput getConfigureCategories(GetConfigureCategoriesInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<GetConfigureCategoriesOutput>> retType = new TypeReference<List<GetConfigureCategoriesOutput>>() {};
+        List<GetConfigureCategoriesOutput> res = caller.jsonrpcCall("kb_phylogenomics.get_configure_categories", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
     public Map<String, Object> status(RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         TypeReference<List<Map<String, Object>>> retType = new TypeReference<List<Map<String, Object>>>() {};

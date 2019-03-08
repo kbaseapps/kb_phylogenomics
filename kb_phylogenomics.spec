@@ -36,6 +36,7 @@ module kb_phylogenomics {
         authentication required;
 
 
+
     /* run_DomainAnnotation_Sets()
     **
     ** run the DomainAnnotation App against a GenomeSet
@@ -306,6 +307,67 @@ module kb_phylogenomics {
 
     funcdef find_homologs_with_genome_context(find_homologs_with_genome_context_Input params) 
         returns (find_homologs_with_genome_context_Output output) 
+        authentication required;
+
+    /*
+    COG, PF, TIGR, SEED
+    */
+        typedef string domain_source;
+    /*
+    Categories
+    */
+        typedef string category;
+    /*
+    Domains
+    */
+        typedef string domainfamily;
+ 
+    /*  category to name
+    */
+    typedef structure {
+        domain_source namespace;
+        category   cat;
+    } Cat2Name;
+    
+    /* category to group
+    */
+    typedef structure {
+        domain_source namespace;
+        category      cat;
+    } Cat2Group;
+ 
+    /* domain family to category
+    */
+    typedef structure {
+        domain_source namespace;
+        domainfamily      domfam;
+    } DomFam2Cat;
+ 
+    /*  category to domain family
+    */
+    typedef structure {
+        domain_source namespace;
+        category      cat;
+    } Cat2DomFams;
+   
+    /* get_configure_categories()
+    **
+    ** configure the domain categorie names and descriptions
+    */
+    typedef structure {
+        view_fxn_profile_Input params;
+    } get_configure_categories_Input;
+
+    typedef structure {
+        list<string> cats;
+        Cat2Name     cat2name;
+        Cat2Group    cat2group;
+        DomFam2Cat   domfam2cat;
+        Cat2DomFams  cat2domfams;
+    } get_configure_categories_Output;
+
+    funcdef get_configure_categories(get_configure_categories_Input params) 
+        returns (get_configure_categories_Output output) 
         authentication required;
 
 };

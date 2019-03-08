@@ -386,6 +386,10 @@ class Application(object):
                              name='kb_phylogenomics.find_homologs_with_genome_context',
                              types=[dict])
         self.method_authentication['kb_phylogenomics.find_homologs_with_genome_context'] = 'required'  # noqa
+        self.rpc_service.add(impl_kb_phylogenomics.get_configure_categories,
+                             name='kb_phylogenomics.get_configure_categories',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.get_configure_categories'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.status,
                              name='kb_phylogenomics.status',
                              types=[dict])

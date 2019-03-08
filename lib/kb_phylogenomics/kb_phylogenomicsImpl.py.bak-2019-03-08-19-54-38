@@ -44,8 +44,8 @@ This module contains methods for running and visualizing results of phylogenomic
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.3.1"
-    GIT_URL = "https://github.com/landml/kb_phylogenomics"
-    GIT_COMMIT_HASH = "3004111292f95480b92a138df6b6778642287318"
+    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
+    GIT_COMMIT_HASH = "230e29e996351d9b434dee53ea3d7316fe79df33"
 
     #BEGIN_CLASS_HEADER
 
@@ -1060,6 +1060,7 @@ This module contains methods for running and visualizing results of phylogenomic
                              'output is not type dict as required.')
         # return the results
         return [output]
+    
 
     def view_fxn_profile(self, ctx, params):
         """
@@ -6530,73 +6531,6 @@ This module contains methods for running and visualizing results of phylogenomic
                              'output is not type dict as required.')
         # return the results
         return [output]
-
-    def get_configure_categories(self, ctx, params):
-        """
-        :param params: instance of type "get_configure_categories_Input"
-           (get_configure_categories() ** ** configure the domain categorie
-           names and descriptions) -> structure: parameter "params" of type
-           "view_fxn_profile_Input" (view_fxn_profile() ** ** show a
-           table/heatmap of general categories or custom gene families for a
-           set of Genomes) -> structure: parameter "workspace_name" of type
-           "workspace_name" (** Common types), parameter
-           "input_genomeSet_ref" of type "data_obj_ref", parameter
-           "namespace" of String, parameter "custom_target_fams" of type
-           "CustomTargetFams" (parameter groups) -> structure: parameter
-           "target_fams" of list of String, parameter
-           "extra_target_fam_groups_COG" of list of String, parameter
-           "extra_target_fam_groups_PFAM" of list of String, parameter
-           "extra_target_fam_groups_TIGR" of list of String, parameter
-           "extra_target_fam_groups_SEED" of list of String, parameter
-           "count_category" of String, parameter "heatmap" of type "bool",
-           parameter "vertical" of type "bool", parameter "top_hit" of type
-           "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool"
-        :returns: instance of type "get_configure_categories_Output" ->
-           structure: parameter "cats" of list of String, parameter
-           "cat2name" of type "Cat2Name" (category to name) -> structure:
-           parameter "namespace" of type "domain_source" (COG, PF, TIGR,
-           SEED), parameter "cat" of type "category" (Categories), parameter
-           "cat2group" of type "Cat2Group" (category to group) -> structure:
-           parameter "namespace" of type "domain_source" (COG, PF, TIGR,
-           SEED), parameter "cat" of type "category" (Categories), parameter
-           "domfam2cat" of type "DomFam2Cat" (domain family to category) ->
-           structure: parameter "namespace" of type "domain_source" (COG, PF,
-           TIGR, SEED), parameter "domfam" of type "domainfamily" (Domains),
-           parameter "cat2domfams" of type "Cat2DomFams" (category to domain
-           family) -> structure: parameter "namespace" of type
-           "domain_source" (COG, PF, TIGR, SEED), parameter "cat" of type
-           "category" (Categories)
-        """
-        # ctx is the context object
-        # return variables are: output
-        #BEGIN get_configure_categories
-
-        # configure categories
-        #
-
-        params['namespace'] = 'SEED'
-        params['custom_target_fams'] = dict()
-        
-        (cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading,
-         extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name) = self._configure_categories(params)
-        
-        output = dict()
-        output['cats'] = cats
-        output['cat2name'] = cat2name
-        output['cat2group'] = cat2group
-        output['domfam2cat'] = domfam2cat
-        output['cat2domfams'] = cat2domfams
-        
-        #END get_configure_categories
-
-        # At some point might do deeper type checking...
-        if not isinstance(output, dict):
-            raise ValueError('Method get_configure_categories return value ' +
-                             'output is not type dict as required.')
-        # return the results
-        return [output]
-            
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",
