@@ -1,3 +1,7 @@
+### Version 1.3.2
+__Changes__
+Change the catagory configuration into a function for use by other apps
+
 ### Version 1.3.1
 __Changes__
 - patched SDK_LOCAL client libs
