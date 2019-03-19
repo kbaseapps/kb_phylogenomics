@@ -1213,7 +1213,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                  "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
-
+            
             try:
                 genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
             except:
@@ -1469,9 +1469,12 @@ This module contains methods for running and visualizing results of phylogenomic
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
-
-                    table_data[genome_ref][cat] /= float(total_genes)
-                    table_data[genome_ref][cat] *= 100.0
+ 
+                    if total_genes > 0:
+                        table_data[genome_ref][cat] /= float(total_genes)
+                        table_data[genome_ref][cat] *= 100.0
+                    else:
+                        table_data[genome_ref][cat] = 0
 
         # determine high and low val
         for genome_ref in genome_refs:
@@ -2354,8 +2357,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
 
-                    table_data[genome_ref][cat] /= float(total_genes)
-                    table_data[genome_ref][cat] *= 100.0
+                    if total_genes > 0:
+                        table_data[genome_ref][cat] /= float(total_genes)
+                        table_data[genome_ref][cat] *= 100.0
+                    else:
+                        table_data[genome_ref][cat] = 0
 
         # determine high and low val
         for genome_ref in genome_refs:
@@ -3244,8 +3250,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
 
-                    table_data[genome_ref][cat] /= float(total_genes)
-                    table_data[genome_ref][cat] *= 100.0
+                    if total_genes > 0:
+                        table_data[genome_ref][cat] /= float(total_genes)
+                        table_data[genome_ref][cat] *= 100.0
+                    else:
+                        table_data[genome_ref][cat] = 0
 
         # determine high and low val
         for genome_ref in genome_refs:
