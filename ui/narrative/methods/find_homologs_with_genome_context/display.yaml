@@ -1,0 +1,93 @@
+#
+# define display information
+#
+name: Homolog Genome Context - v1.3.1
+
+tooltip: |
+    Find Homologs for a Collection of Genes and View in Genome Context
+
+screenshots: []
+
+icon: homolog_context-purple.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_featureSet_ref :
+        ui-name : |
+            Query Features
+        short-hint : |
+            The FeatureSet that contains the query features
+        long-hint  : |
+            The FeatureSet that contains the query features (not necessarily from one genome)
+    input_speciesTree_ref :
+        ui-name : |
+            Species Tree
+        short-hint : |
+            The Species Tree of the Genomes being searched
+        long-hint  : |
+            The Species Tree of the Genomes being searched (must include all query genomes)
+    save_per_genome_featureSets :
+        ui-name : |
+            Save homologs by genome
+        short-hint : |
+            Save a separate FeatureSet for each genome
+        long-hint  : |
+            Save a separate FeatureSet for each genome (homolog sets will be saved automatically)
+    e_value:
+        ui-name : |
+            E-value
+        short-hint : |
+            threshold for hits
+    ident_thresh:
+        ui-name : |
+            Identity Threshold (%)
+        short-hint : |
+            threshold for hits
+    overlap_fraction:
+        ui-name : |
+            Alignment Overlap Threshold (%)
+        short-hint : |
+            threshold for hits
+    bitscore:
+        ui-name : |
+            Bit Score
+        short-hint : |
+            threshold for hits
+    neighbor_thresh :
+        ui-name : |
+            Gene neighbor distance
+        short-hint : |
+            How close a gene needs to be to be a neighbor
+    color_seed :
+        ui-name : |
+            Color random seed
+        short-hint : |
+            Repeatable colors with same seed
+
+description : |
+    <p>Find Homologs with Genome Context.</p>
+
+    <p>Find Homologs with Genome Context App written by Dylan Chivian (DCChivian@lbl.gov), using Trees from the Species Tree builder by Roman Sutormin (RSutormin@lbl.gov) and Paramvir Dehal (PSDehal@lbl.gov).  Uses BLASTp App written by Dylan Chivian (DCChivian@lbl.gov) and KGB Genome Browser written by Dylan Chivian (DCChivian@lbl.gov).
+
+publications :
+    -
+        display-text: |
+            Arkin AP, Cottingham RW, Henry CS, Harris NL, Stevens RL, Maslov S, et al. KBase: The United States Department of Energy Systems Biology Knowledgebase. Nature Biotechnology. 2018;36: 566. doi: 10.1038/nbt.4163
+        link: https://www.nature.com/articles/nbt.4163

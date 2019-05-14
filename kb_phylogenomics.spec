@@ -36,6 +36,7 @@ module kb_phylogenomics {
         authentication required;
 
 
+
     /* run_DomainAnnotation_Sets()
     **
     ** run the DomainAnnotation App against a GenomeSet
@@ -279,6 +280,94 @@ module kb_phylogenomics {
 
     funcdef view_pan_phylo(view_pan_phylo_Input params) 
         returns (view_pan_phylo_Output output) 
+        authentication required;
+
+
+    /* find_homologs_with_genome_context()
+    **
+    ** show homolgous genes across multiple genomes within genome context against species tree
+    */
+    typedef structure {
+        workspace_name workspace_name;
+	data_obj_ref   input_featureSet_ref;
+	data_obj_ref   input_speciesTree_ref;
+	bool           save_per_genome_featureSets;
+	int            neighbor_thresh;
+	float          ident_thresh;
+	float          overlap_fraction;
+	float          e_value;
+	float          bitscore;
+	float          color_seed;
+    } find_homologs_with_genome_context_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } find_homologs_with_genome_context_Output;
+
+    funcdef find_homologs_with_genome_context(find_homologs_with_genome_context_Input params) 
+        returns (find_homologs_with_genome_context_Output output) 
+        authentication required;
+
+    /*
+    COG, PF, TIGR, SEED
+    */
+        typedef string domain_source;
+    /*
+    Categories
+    */
+        typedef string category;
+    /*
+    Domains
+    */
+        typedef string domainfamily;
+ 
+    /*  category to name
+    */
+    typedef structure {
+        domain_source namespace;
+        category   cat;
+    } Cat2Name;
+    
+    /* category to group
+    */
+    typedef structure {
+        domain_source namespace;
+        category      cat;
+    } Cat2Group;
+ 
+    /* domain family to category
+    */
+    typedef structure {
+        domain_source namespace;
+        domainfamily      domfam;
+    } DomFam2Cat;
+ 
+    /*  category to domain family
+    */
+    typedef structure {
+        domain_source namespace;
+        category      cat;
+    } Cat2DomFams;
+   
+    /* get_configure_categories()
+    **
+    ** configure the domain categorie names and descriptions
+    */
+    typedef structure {
+        view_fxn_profile_Input params;
+    } get_configure_categories_Input;
+
+    typedef structure {
+        list<string> cats;
+        Cat2Name     cat2name;
+        Cat2Group    cat2group;
+        DomFam2Cat   domfam2cat;
+        Cat2DomFams  cat2domfams;
+    } get_configure_categories_Output;
+
+    funcdef get_configure_categories(get_configure_categories_Input params) 
+        returns (get_configure_categories_Output output) 
         authentication required;
 
 };

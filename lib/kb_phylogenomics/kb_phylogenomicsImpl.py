@@ -9,6 +9,7 @@ import os
 import re
 import sys
 import uuid
+import random
 from datetime import datetime
 from pprint import pformat
 
@@ -17,10 +18,11 @@ import matplotlib.pyplot as pyplot  # use this instead
 from matplotlib.patches import Arc
 from matplotlib.patches import Rectangle
 
-from DataFileUtil.DataFileUtilClient import DataFileUtil as DFUClient
-from DomainAnnotation.DomainAnnotationClient import DomainAnnotation
-from KBaseReport.KBaseReportClient import KBaseReport
-from Workspace.WorkspaceClient import Workspace as workspaceService
+from installed_clients.KBaseReportClient import KBaseReport
+from installed_clients.DataFileUtilClient import DataFileUtil as DFUClient
+from installed_clients.DomainAnnotationClient import DomainAnnotation
+from installed_clients.kb_blastClient import kb_blast
+from installed_clients.WorkspaceClient import Workspace as workspaceService
 #END_HEADER
 
 
@@ -41,17 +43,190 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.2.2"
-    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "43733230d3f70a2eccc123b3867e99775b0d9f4c"
+    VERSION = "1.3.1"
+    GIT_URL = "https://github.com/landml/kb_phylogenomics"
+    GIT_COMMIT_HASH = "3004111292f95480b92a138df6b6778642287318"
 
     #BEGIN_CLASS_HEADER
 
+    def now_ISO(self):
+#        now_timestamp = datetime.datetime.now()
+#        now_secs_from_epoch = (end_timestamp - datetime.datetime(1970,1,1)).total_seconds()
+#        now_timestamp_in_iso = datetime.datetime.fromtimestamp(int(now_secs_from_epoch)).strftime('%Y-%m-%d_%T')
+        now_timestamp = datetime.now()
+        now_secs_from_epoch = (now_timestamp - datetime(1970,1,1)).total_seconds()
+        now_timestamp_in_iso = datetime.fromtimestamp(int(now_secs_from_epoch)).strftime('%Y-%m-%d_%T')
+        return now_timestamp_in_iso
+
     def log(self, target, message):
+        message = '['+self.now_ISO()+'] '+message
         if target is not None:
             target.append(message)
         print(message)
         sys.stdout.flush()
+
+    def _get_dark_pretty_html_color(self, index, seed):
+
+        # colors from https://www.w3schools.com/colors/colors_names.asp
+
+        dark_pretty_html_colors = [
+            #"AliceBlue",
+            #"AntiqueWhite",
+            #"Aqua",
+            #"Aquamarine",
+            #"Azure",
+            #"Beige",
+            #"Bisque",
+            #"Black",
+            #"BlanchedAlmond",
+            "Blue",
+            "BlueViolet",
+            "Brown",
+            #"BurlyWood",
+            "CadetBlue",
+            #"Chartreuse",
+            "Chocolate",
+            "Coral",
+            "CornflowerBlue",
+            #"Cornsilk",
+            "Crimson",
+            #"Cyan",
+            "DarkBlue",
+            "DarkCyan",
+            "DarkGoldenRod",
+            #"DarkGray",
+            #"DarkGrey",
+            "DarkGreen",
+            #"DarkKhaki",
+            "DarkMagenta",
+            #"DarkOliveGreen",
+            "DarkOrange",
+            "DarkOrchid",
+            "DarkRed",
+            "DarkSalmon",
+            #"DarkSeaGreen",
+            "DarkSlateBlue",
+            #"DarkSlateGray",
+            #"DarkSlateGrey",
+            "DarkTurquoise",
+            "DarkViolet",
+            "DeepPink",
+            "DeepSkyBlue",
+            #"DimGray",
+            #"DimGrey",
+            "DodgerBlue",
+            "FireBrick",
+            #"FloralWhite",
+            "ForestGreen",
+            "Fuchsia",
+            #"Gainsboro",
+            #"GhostWhite",
+            "Gold",
+            "GoldenRod",
+            #"Gray",
+            #"Grey",
+            "Green",
+            #"GreenYellow",
+            #"HoneyDew",
+            "HotPink",
+            "IndianRed",
+            "Indigo",
+            #"Ivory",
+            #"Khaki",
+            #"Lavender",
+            #"LavenderBlush",
+            #"LawnGreen",
+            #"LemonChiffon",
+            "LightBlue",
+            "LightCoral",
+            #"LightCyan",
+            #"LightGoldenRodYellow",
+            #"LightGray",
+            #"LightGrey",
+            "LightGreen",
+            "LightPink",
+            "LightSalmon",
+            "LightSeaGreen",
+            "LightSkyBlue",
+            #"LightSlateGray",
+            #"LightSlateGrey",
+            #"LightSteelBlue",
+            #"LightYellow",
+            #"Lime",
+            "LimeGreen",
+            #"Linen",
+            "Magenta",
+            "Maroon",
+            "MediumAquaMarine",
+            "MediumBlue",
+            "MediumOrchid",
+            "MediumPurple",
+            "MediumSeaGreen",
+            "MediumSlateBlue",
+            "MediumSpringGreen",
+            "MediumTurquoise",
+            "MediumVioletRed",
+            "MidnightBlue",
+            #"MintCream",
+            #"MistyRose",
+            #"Moccasin",
+            #"NavajoWhite",
+            "Navy",
+            #"OldLace",
+            #"Olive",
+            #"OliveDrab",
+            "Orange",
+            "OrangeRed",
+            "Orchid",
+            #"PaleGoldenRod",
+            #"PaleGreen",
+            #"PaleTurquoise",
+            "PaleVioletRed",
+            #"PapayaWhip",
+            #"PeachPuff",
+            "Peru",
+            #"Pink",
+            "Plum",
+            #"PowderBlue",
+            "Purple",
+            "RebeccaPurple",
+            "Red",
+            #"RosyBrown",
+            "RoyalBlue",
+            #"SaddleBrown",
+            "Salmon",
+            "SandyBrown",
+            "SeaGreen",
+            #"SeaShell",
+            "Sienna",
+            #"Silver",
+            "SkyBlue",
+            "SlateBlue",
+            #"SlateGray",
+            #"SlateGrey",
+            #"Snow",
+            #"SpringGreen",
+            "SteelBlue",
+            #"Tan",
+            "Teal",
+            #"Thistle",
+            "Tomato",
+            "Turquoise",
+            "Violet",
+            #"Wheat",
+            #"White",
+            #"WhiteSmoke",
+            #"Yellow",
+            "YellowGreen"
+        ]
+
+        if seed != None:
+            random.seed(index * seed)
+            index = random.randint (0,len(dark_pretty_html_colors)-1)
+        else:
+            index = index % len(dark_pretty_html_colors)
+
+        return dark_pretty_html_colors[index]
 
     def _check_SEED_function_defined_in_feature(self, feature):
         if feature.get('function') or feature.get('functions'):
@@ -66,6 +241,309 @@ This module contains methods for running and visualizing results of phylogenomic
         elif feature.get('functions'):
             annot_set = feature['functions']
         return annot_set
+
+    def _configure_categories(self, params):
+
+        domain_desc_basepath = os.path.abspath('/kb/module/data/domain_desc')
+        domain_to_cat_map_path = dict()
+        domain_cat_names_path = dict()
+        domain_fam_names_path = dict()
+        domain_to_cat_map_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_cat_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
+        domain_fam_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
+        domain_to_cat_map_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_cat_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
+        domain_fam_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
+        domain_to_cat_map_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
+        domain_cat_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
+        #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
+        domain_fam_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
+        domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
+        domain_cat_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
+        #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
+        domain_fam_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
+        
+        cats = []
+        cat2name = dict()
+        cat2group = dict()
+        domfam2cat = dict()
+        cat2domfams = dict()
+        namespaces_reading = dict()
+
+        # categories are high-level summations
+        if params['namespace'] != 'custom':
+            for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
+                if params['namespace'] == namespace:
+                    namespaces_reading[namespace] = True
+
+        # read all mappings between groups and domfams
+        for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
+
+            cat2name[namespace] = dict()
+            cat2group[namespace] = dict()
+            domfam2cat[namespace] = dict()
+            cat2domfams[namespace] = dict()
+
+            # get high-level cats
+            tigrrole_id2cat = dict()
+            with open(domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
+                for line in dom_cat_handle.readlines():
+                    line = line.strip()
+
+                    if namespace == 'COG':
+                        [cat, cat_group, cat_name] = line.split("\t")[0:3]
+                        if namespace == params['namespace'] and cat not in cats:
+                            cats.append(cat)
+                        cat2name[namespace][cat] = cat_name
+                        cat2group[namespace][cat] = cat_group
+
+                    elif namespace == 'PF':
+                        [cat, cat_name] = line.split("\t")[0:2]
+                        if namespace == params['namespace'] and cat not in cats:
+                            cats.append(cat)
+                        cat2name[namespace][cat] = cat_name
+                        cat2group[namespace][cat] = None
+
+                    elif namespace == 'TIGR':
+                        if line.startswith('!'):
+                            continue
+                        [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")[0:4]
+                        tigrrole_id2cat[cat_id] = cat
+                        if namespace == params['namespace'] and cat not in cats:
+                            cats.append(cat)
+                        cat_name = re.sub(' *\> GO:.*$', '', cat_name_plus_go_terms)
+                        cat2name[namespace][cat] = cat_name
+                        cat2group[namespace][cat] = cat_group
+
+                    elif namespace == 'SEED':
+                        #[cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
+                        [cat_group, cat] = line.split("\t")[0:2]
+                        if namespace == params['namespace'] and cat not in cats:
+                            cats.append(cat)
+                        cat_disp = re.sub('_', ' ', cat)
+                        cat2name[namespace][cat] = cat_disp
+                        cat2group[namespace][cat] = cat_group
+
+            # get domfam to cat map, and vice versa
+            with open(domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
+                for line in dom2cat_map_handle.readlines():
+                    line = line.strip()
+
+                    if namespace == 'COG':
+                        [domfam, cat_str, cat_name] = line.split("\t")[0:3]
+                        cat = cat_str[0]  # only use first cat
+
+                    elif namespace == 'PF':
+                        [domfam, cat, cat_name, dom_id, dom_name] = line.split("\t")[0:5]
+
+                    elif namespace == 'TIGR':
+                        if line.startswith('!'):
+                            continue
+                        [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
+                        if cat_id != '' and int(cat_id) != 0 and cat_id in tigrrole_id2cat:
+                            cat = tigrrole_id2cat[cat_id]
+                        else:
+                            continue
+
+                    elif namespace == 'SEED':
+                        [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
+                        domfam = domfam.strip()
+                        domfam = re.sub(' *\#.*$', '', domfam)
+                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                        domfam = re.sub(' ', '_', domfam)
+                        domfam = 'SEED' + domfam
+
+                    domfam2cat[namespace][domfam] = cat
+                    if cat not in cat2domfams[namespace]:
+                        cat2domfams[namespace][cat] = []
+                    cat2domfams[namespace][cat].append(domfam)
+
+        # add extra target fams
+        extra_target_fams = []
+        extra_target_fam_groups = []
+        domfam2group = dict()
+        domfam2name = dict()
+        
+        # custom domains
+        if params['namespace'] == 'custom':
+
+            # add target fams
+            target_fams = []
+            if 'target_fams' in params['custom_target_fams'] and params['custom_target_fams']['target_fams']:
+                for target_fam in params['custom_target_fams']['target_fams']:
+                    target_fam = target_fam.strip()
+                    if target_fam == '':
+                        continue
+
+                    target_fam = re.sub("^cog", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^pf", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^seed", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
+
+                    target_fam = re.sub("^COG:", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG-", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG_", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^COG *", "COG", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF:", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF-", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF_", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^PF *", "PF", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
+                    target_fam = re.sub("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
+
+                    num_id_len = dict()
+                    num_id_len['COG'] = 4
+                    num_id_len['PF'] = 5
+                    num_id_len['TIGR'] = 5
+
+                    #self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
+
+                    if target_fam.startswith('SEED'):
+                        namespaces_reading['SEED'] = True
+                        target_fam = target_fam.strip()
+                        target_fam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
+                        target_fam = re.sub(' ', '_', target_fam)
+                    else:
+                        namespace_found = False
+                        for namespace_iter in ['COG', 'PF', 'TIGR']:
+                            if target_fam.startswith(namespace_iter):
+                                this_namespace = namespace_iter
+                                namespaces_reading[this_namespace] = True
+                                target_fam = re.sub(this_namespace, "", target_fam)
+                                namespace_found = True
+                                break
+                        if not namespace_found:
+                            raise ValueError("unrecognized custom domain family: '" + str(target_fam) + "'")
+                        leading_zeros = ''
+                        for c_i in range(num_id_len[this_namespace] - len(str(target_fam))):
+                            leading_zeros += '0'
+                        target_fam = this_namespace + leading_zeros + target_fam
+
+                    #self.log (console, "TARGET_FAM B: '"+target_fam+"'")  # DEBUG
+
+                    target_fams.append(target_fam)
+
+
+            for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_PFAM', 'extra_target_fam_groups_TIGR', 'extra_target_fam_groups_SEED']:
+                if target_set in params['custom_target_fams'] and params['custom_target_fams'][target_set]:
+                    extra_target_fam_groups.extend(params['custom_target_fams'][target_set])
+
+            if extra_target_fam_groups:
+                for target_group in extra_target_fam_groups:
+                    target_group = target_group.strip()
+                    if target_group == '':
+                        continue
+
+                    namespace = re.sub(":.*$", "", target_group)
+                    namespaces_reading[namespace] = True
+
+                    if namespace == 'COG':
+                        this_group = re.sub("COG: ", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
+                    elif namespace == 'PF':
+                        this_group = re.sub("PF: Clan ", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
+                    elif namespace == 'TIGR':
+                        this_group = re.sub("TIGR: role:", "", target_group)
+                        this_group = re.sub(":.*$", "", this_group)
+                        this_group = 'TIGR_role:' + this_group
+                    elif namespace == 'SEED':
+                        this_group = re.sub("SEED: ", "", target_group)
+
+                    for domfam in cat2domfams[namespace][this_group]:
+                        extra_target_fams.append(domfam)
+                        domfam2group[domfam] = target_group
+
+            # we have our targets
+            cats = target_fams + extra_target_fams
+
+            # store names of targets
+            for namespace in namespaces_reading.keys():
+                domfam2name[namespace] = dict()
+
+                if namespace == 'COG':
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                        for line in dom_fam_handle.readlines():
+                            line = line.strip()
+                            [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
+                            domfam2name[namespace][domfam] = domfam_name
+
+                elif namespace == 'PF':
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                        for line in dom_fam_handle.readlines():
+                            line = line.strip()
+                            [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
+                            if domfam_name.startswith(domfam_id):
+                                combo_name = domfam_name
+                            else:
+                                combo_name = domfam_id + ': ' + domfam_name
+                            domfam2name[namespace][domfam] = combo_name
+
+                elif namespace == 'TIGR':
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                        for line in dom_fam_handle.readlines():
+                            line = line.strip()
+                            if line.startswith('!'):
+                                continue
+                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[
+                                0:7]
+                            if domfam_name != '':
+                                if domfam_desc.startswith(domfam_name):
+                                    combo_name = domfam_desc
+                                else:
+                                    combo_name = domfam_name + ': ' + domfam_desc
+                            else:
+                                if domfam_desc.startswith(domfam_id):
+                                    combo_name = domfam_desc
+                                else:
+                                    combo_name = domfam_id + ': ' + domfam_desc
+                            if ec_id != '':
+                                combo_name += ' (EC ' + ec_id + ')'
+
+                            domfam2name[namespace][domfam] = combo_name
+
+                elif namespace == 'SEED':
+                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                        for line in dom_fam_handle.readlines():
+                            line = line.strip()
+                            [level1, level2, level3, domfam] = line.split("\t")[0:4]
+
+                            domfam_desc = domfam
+                            domfam = domfam.strip()
+                            domfam = re.sub(' *\#.*$', '', domfam)
+                            domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+                            domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+                            domfam = re.sub(' ', '_', domfam)
+                            domfam = 'SEED' + domfam
+                            if domfam in domfam2name[namespace]:
+                                if len(domfam_desc) > len(domfam2name[namespace][domfam]):
+                                    domfam2name[namespace][domfam] = domfam_desc
+                            else:
+                                domfam2name[namespace][domfam] = domfam_desc
+
+        # just in case
+        elif params['namespace'] != 'COG' \
+                and params['namespace'] != 'PF' \
+                and params['namespace'] != 'TIGR' \
+                and params['namespace'] != 'SEED':
+            raise ValueError("Unknown namespace: '" + str(params['namespace']) + "'")
+        
+        return(cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading,
+               extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name)
 
     #END_CLASS_HEADER
 
@@ -89,6 +567,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #END_CONSTRUCTOR
         pass
+
 
     def view_tree(self, ctx, params):
         """
@@ -117,6 +596,14 @@ This module contains methods for running and visualizing results of phylogenomic
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
+
         #### STEP 1: do some basic checks
         ##
         if 'workspace_name' not in params:
@@ -141,8 +628,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #### STEP 3: Get tree and save as newick file
         ##
         try:
-            ws = workspaceService(self.workspaceURL, token=ctx['token'])
-            objects = ws.get_objects([{'ref': params['input_tree_ref']}])
+            objects = wsClient.get_objects([{'ref': params['input_tree_ref']}])
             data = objects[0]['data']
             info = objects[0]['info']
             intree_name = info[1]
@@ -368,7 +854,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                          'label': intree_name + ' PDF'
                                          }])
 
-        SERVICE_VER = 'release'
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         report_info = reportClient.create_extended_report(reportObj)
 
@@ -385,33 +870,6 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method view_tree return value ' +
-                             'output is not type dict as required.')
-        # return the results
-        return [output]
-
-    def trim_tree_to_genomeSet(self, ctx, params):
-        """
-        :param params: instance of type "trim_tree_to_genomeSet_Input"
-           (trim_tree_to_genomeSet() ** ** trim a KBase Tree to match
-           genomeset, and make newick and images downloadable) -> structure:
-           parameter "workspace_name" of type "workspace_name" (** Common
-           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
-           parameter "input_tree_ref" of type "data_obj_ref", parameter
-           "desc" of String
-        :returns: instance of type "trim_tree_to_genomeSet_Output" ->
-           structure: parameter "report_name" of String, parameter
-           "report_ref" of String
-        """
-        # ctx is the context object
-        # return variables are: output
-        #BEGIN trim_tree_to_genomeSet
-        output = {}
-        raise NotImplementedError
-        #END trim_tree_to_genomeSet
-
-        # At some point might do deeper type checking...
-        if not isinstance(output, dict):
-            raise ValueError('Method trim_tree_to_genomeSet return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]
@@ -435,14 +893,17 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running run_DomainAnnotation_Sets() with params=')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
 
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         ### STEP 1: basic parameter checks + parsing
         required_params = ['workspace_name',
@@ -533,7 +994,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         ### STEP 4: run DomainAnnotation on each genome in set
         try:
-            SERVICE_VER = 'dev'  # DEBUG
+            #SERVICE_VER = 'dev'  # DEBUG
+            SERVICE_VER = 'release'
             daClient = DomainAnnotation(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
             #daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
@@ -583,6 +1045,7 @@ This module contains methods for running and visualizing results of phylogenomic
             'objects_created': [],
             'text_message': report_text
         }
+        SERVICE_VER = 'release'
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         report_info = reportClient.create({'report': reportObj, 'workspace_name': params['workspace_name']})
 
@@ -628,14 +1091,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_fxn_profile(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_genomeSet_ref',
@@ -671,25 +1136,6 @@ This module contains methods for running and visualizing results of phylogenomic
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        domain_desc_basepath = os.path.abspath('/kb/module/data/domain_desc')
-        domain_to_cat_map_path = dict()
-        domain_cat_names_path = dict()
-        domain_fam_names_path = dict()
-        domain_to_cat_map_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_cat_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
-        domain_fam_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_to_cat_map_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
-        domain_cat_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
-        domain_fam_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
-        domain_to_cat_map_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
-        domain_cat_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
-        #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
-        domain_fam_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
-        domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_cat_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
-        #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_fam_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-
         # load provenance
         provenance = [{}]
         if 'provenance' in ctx:
@@ -704,283 +1150,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # configure categories
         #
-        cats = []
-        cat2name = dict()
-        cat2group = dict()
-        domfam2cat = dict()
-        cat2domfams = dict()
-        namespaces_reading = dict()
-
-        # categories are high-level summations
-        if params['namespace'] != 'custom':
-            for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
-                if params['namespace'] == namespace:
-                    namespaces_reading[namespace] = True
-
-        # read all mappings between groups and domfams
-        for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
-
-            cat2name[namespace] = dict()
-            cat2group[namespace] = dict()
-            domfam2cat[namespace] = dict()
-            cat2domfams[namespace] = dict()
-
-            # get high-level cats
-            tigrrole_id2cat = dict()
-            with open(domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
-                for line in dom_cat_handle.readlines():
-                    line = line.strip()
-
-                    if namespace == 'COG':
-                        [cat, cat_group, cat_name] = line.split("\t")[0:3]
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat2name[namespace][cat] = cat_name
-                        cat2group[namespace][cat] = cat_group
-
-                    elif namespace == 'PF':
-                        [cat, cat_name] = line.split("\t")[0:2]
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat2name[namespace][cat] = cat_name
-                        cat2group[namespace][cat] = None
-
-                    elif namespace == 'TIGR':
-                        if line.startswith('!'):
-                            continue
-                        [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")[0:4]
-                        tigrrole_id2cat[cat_id] = cat
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat_name = re.sub(' *\> GO:.*$', '', cat_name_plus_go_terms)
-                        cat2name[namespace][cat] = cat_name
-                        cat2group[namespace][cat] = cat_group
-
-                    elif namespace == 'SEED':
-                        #[cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                        [cat_group, cat] = line.split("\t")[0:2]
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat_disp = re.sub('_', ' ', cat)
-                        cat2name[namespace][cat] = cat_disp
-                        cat2group[namespace][cat] = cat_group
-
-            # get domfam to cat map, and vice versa
-            with open(domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
-                for line in dom2cat_map_handle.readlines():
-                    line = line.strip()
-
-                    if namespace == 'COG':
-                        [domfam, cat_str, cat_name] = line.split("\t")[0:3]
-                        cat = cat_str[0]  # only use first cat
-
-                    elif namespace == 'PF':
-                        [domfam, cat, cat_name, dom_id, dom_name] = line.split("\t")[0:5]
-
-                    elif namespace == 'TIGR':
-                        if line.startswith('!'):
-                            continue
-                        [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
-                        if cat_id != '' and int(cat_id) != 0 and cat_id in tigrrole_id2cat:
-                            cat = tigrrole_id2cat[cat_id]
-                        else:
-                            continue
-
-                    elif namespace == 'SEED':
-                        [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                        domfam = domfam.strip()
-                        domfam = re.sub(' *\#.*$', '', domfam)
-                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub(' ', '_', domfam)
-                        domfam = 'SEED' + domfam
-
-                    domfam2cat[namespace][domfam] = cat
-                    if cat not in cat2domfams[namespace]:
-                        cat2domfams[namespace][cat] = []
-                    cat2domfams[namespace][cat].append(domfam)
-
-        # custom domains
-        if params['namespace'] == 'custom':
-
-            # add target fams
-            target_fams = []
-            if 'target_fams' in params['custom_target_fams'] and params['custom_target_fams']['target_fams']:
-                for target_fam in params['custom_target_fams']['target_fams']:
-                    target_fam = target_fam.strip()
-                    if target_fam == '':
-                        continue
-
-                    target_fam = re.sub("^cog", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^pf", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^seed", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-
-                    target_fam = re.sub("^COG:", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^COG-", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^COG_", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^COG *", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF:", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF-", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF_", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF *", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
-
-                    num_id_len = dict()
-                    num_id_len['COG'] = 4
-                    num_id_len['PF'] = 5
-                    num_id_len['TIGR'] = 5
-
-                    #self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
-
-                    if target_fam.startswith('SEED'):
-                        namespaces_reading['SEED'] = True
-                        target_fam = target_fam.strip()
-                        target_fam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub(' ', '_', target_fam)
-                    else:
-                        namespace_found = False
-                        for namespace_iter in ['COG', 'PF', 'TIGR']:
-                            if target_fam.startswith(namespace_iter):
-                                this_namespace = namespace_iter
-                                namespaces_reading[this_namespace] = True
-                                target_fam = re.sub(this_namespace, "", target_fam)
-                                namespace_found = True
-                                break
-                        if not namespace_found:
-                            raise ValueError("unrecognized custom domain family: '" + str(target_fam) + "'")
-                        leading_zeros = ''
-                        for c_i in range(num_id_len[this_namespace] - len(str(target_fam))):
-                            leading_zeros += '0'
-                        target_fam = this_namespace + leading_zeros + target_fam
-
-                    #self.log (console, "TARGET_FAM B: '"+target_fam+"'")  # DEBUG
-
-                    target_fams.append(target_fam)
-
-            # add extra target fams
-            extra_target_fams = []
-            extra_target_fam_groups = []
-            domfam2group = dict()
-            for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_PFAM', 'extra_target_fam_groups_TIGR', 'extra_target_fam_groups_SEED']:
-                if target_set in params['custom_target_fams'] and params['custom_target_fams'][target_set]:
-                    extra_target_fam_groups.extend(params['custom_target_fams'][target_set])
-
-            if extra_target_fam_groups:
-                for target_group in extra_target_fam_groups:
-                    target_group = target_group.strip()
-                    if target_group == '':
-                        continue
-
-                    namespace = re.sub(":.*$", "", target_group)
-                    namespaces_reading[namespace] = True
-
-                    if namespace == 'COG':
-                        this_group = re.sub("COG: ", "", target_group)
-                        this_group = re.sub(":.*$", "", this_group)
-                    elif namespace == 'PF':
-                        this_group = re.sub("PF: Clan ", "", target_group)
-                        this_group = re.sub(":.*$", "", this_group)
-                    elif namespace == 'TIGR':
-                        this_group = re.sub("TIGR: role:", "", target_group)
-                        this_group = re.sub(":.*$", "", this_group)
-                        this_group = 'TIGR_role:' + this_group
-                    elif namespace == 'SEED':
-                        this_group = re.sub("SEED: ", "", target_group)
-
-                    for domfam in cat2domfams[namespace][this_group]:
-                        extra_target_fams.append(domfam)
-                        domfam2group[domfam] = target_group
-
-            # we have our targets
-            cats = target_fams + extra_target_fams
-
-            # store names of targets
-            domfam2name = dict()
-            for namespace in namespaces_reading.keys():
-                domfam2name[namespace] = dict()
-
-                if namespace == 'COG':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
-                            domfam2name[namespace][domfam] = domfam_name
-
-                elif namespace == 'PF':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
-                            if domfam_name.startswith(domfam_id):
-                                combo_name = domfam_name
-                            else:
-                                combo_name = domfam_id + ': ' + domfam_name
-                            domfam2name[namespace][domfam] = combo_name
-
-                elif namespace == 'TIGR':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            if line.startswith('!'):
-                                continue
-                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[
-                                0:7]
-                            if domfam_name != '':
-                                if domfam_desc.startswith(domfam_name):
-                                    combo_name = domfam_desc
-                                else:
-                                    combo_name = domfam_name + ': ' + domfam_desc
-                            else:
-                                if domfam_desc.startswith(domfam_id):
-                                    combo_name = domfam_desc
-                                else:
-                                    combo_name = domfam_id + ': ' + domfam_desc
-                            if ec_id != '':
-                                combo_name += ' (EC ' + ec_id + ')'
-
-                            domfam2name[namespace][domfam] = combo_name
-
-                elif namespace == 'SEED':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            [level1, level2, level3, domfam] = line.split("\t")[0:4]
-
-                            domfam_desc = domfam
-                            domfam = domfam.strip()
-                            domfam = re.sub(' *\#.*$', '', domfam)
-                            domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub(' ', '_', domfam)
-                            domfam = 'SEED' + domfam
-                            if domfam in domfam2name[namespace]:
-                                if len(domfam_desc) > len(domfam2name[namespace][domfam]):
-                                    domfam2name[namespace][domfam] = domfam_desc
-                            else:
-                                domfam2name[namespace][domfam] = domfam_desc
-
-        # just in case
-        elif params['namespace'] != 'COG' \
-                and params['namespace'] != 'PF' \
-                and params['namespace'] != 'TIGR' \
-                and params['namespace'] != 'SEED':
-            raise ValueError("Unknown namespace: '" + str(params['namespace']) + "'")
-
+        (cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading,
+         extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name) = self._configure_categories(params)
+        
+        # STEP 1 - Get the Data
         # get genome set
         #
         input_ref = params['input_genomeSet_ref']
@@ -1040,7 +1213,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                  "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
-
+            
             try:
                 genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
             except:
@@ -1239,6 +1412,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
+        # STEP 2 - Analysis
         # calculate table
         #
         table_data = dict()
@@ -1295,9 +1469,12 @@ This module contains methods for running and visualizing results of phylogenomic
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
-
-                    table_data[genome_ref][cat] /= float(total_genes)
-                    table_data[genome_ref][cat] *= 100.0
+ 
+                    if total_genes > 0:
+                        table_data[genome_ref][cat] /= float(total_genes)
+                        table_data[genome_ref][cat] *= 100.0
+                    else:
+                        table_data[genome_ref][cat] = 0
 
         # determine high and low val
         for genome_ref in genome_refs:
@@ -1381,7 +1558,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
 
-        # build report
+        # STEP 3 - build report
         #
         reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
         reportObj = {'objects_created': [],
@@ -1780,14 +1957,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_fxn_profile_featureSet(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_featureSet_ref',
@@ -1823,25 +2002,6 @@ This module contains methods for running and visualizing results of phylogenomic
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        domain_desc_basepath = os.path.abspath('/kb/module/data/domain_desc')
-        domain_to_cat_map_path = dict()
-        domain_cat_names_path = dict()
-        domain_fam_names_path = dict()
-        domain_to_cat_map_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_cat_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
-        domain_fam_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_to_cat_map_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
-        domain_cat_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
-        domain_fam_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
-        domain_to_cat_map_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
-        domain_cat_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
-        #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
-        domain_fam_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
-        domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_cat_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
-        #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_fam_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-
         # load provenance
         provenance = [{}]
         if 'provenance' in ctx:
@@ -1856,283 +2016,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # configure categories
         #
-        cats = []
-        cat2name = dict()
-        cat2group = dict()
-        domfam2cat = dict()
-        cat2domfams = dict()
-        namespaces_reading = dict()
-
-        # categories are high-level summations
-        if params['namespace'] != 'custom':
-            for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
-                if params['namespace'] == namespace:
-                    namespaces_reading[namespace] = True
-
-        # read all mappings between groups and domfams
-        for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
-
-            cat2name[namespace] = dict()
-            cat2group[namespace] = dict()
-            domfam2cat[namespace] = dict()
-            cat2domfams[namespace] = dict()
-
-            # get high-level cats
-            tigrrole_id2cat = dict()
-            with open(domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
-                for line in dom_cat_handle.readlines():
-                    line = line.strip()
-
-                    if namespace == 'COG':
-                        [cat, cat_group, cat_name] = line.split("\t")[0:3]
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat2name[namespace][cat] = cat_name
-                        cat2group[namespace][cat] = cat_group
-
-                    elif namespace == 'PF':
-                        [cat, cat_name] = line.split("\t")[0:2]
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat2name[namespace][cat] = cat_name
-                        cat2group[namespace][cat] = None
-
-                    elif namespace == 'TIGR':
-                        if line.startswith('!'):
-                            continue
-                        [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")[0:4]
-                        tigrrole_id2cat[cat_id] = cat
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat_name = re.sub(' *\> GO:.*$', '', cat_name_plus_go_terms)
-                        cat2name[namespace][cat] = cat_name
-                        cat2group[namespace][cat] = cat_group
-
-                    elif namespace == 'SEED':
-                        #[cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                        [cat_group, cat] = line.split("\t")[0:2]
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat_disp = re.sub('_', ' ', cat)
-                        cat2name[namespace][cat] = cat_disp
-                        cat2group[namespace][cat] = cat_group
-
-            # get domfam to cat map, and vice versa
-            with open(domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
-                for line in dom2cat_map_handle.readlines():
-                    line = line.strip()
-
-                    if namespace == 'COG':
-                        [domfam, cat_str, cat_name] = line.split("\t")[0:3]
-                        cat = cat_str[0]  # only use first cat
-
-                    elif namespace == 'PF':
-                        [domfam, cat, cat_name, dom_id, dom_name] = line.split("\t")[0:5]
-
-                    elif namespace == 'TIGR':
-                        if line.startswith('!'):
-                            continue
-                        [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
-                        if cat_id != '' and int(cat_id) != 0 and cat_id in tigrrole_id2cat:
-                            cat = tigrrole_id2cat[cat_id]
-                        else:
-                            continue
-
-                    elif namespace == 'SEED':
-                        [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                        domfam = domfam.strip()
-                        domfam = re.sub(' *\#.*$', '', domfam)
-                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub(' ', '_', domfam)
-                        domfam = 'SEED' + domfam
-
-                    domfam2cat[namespace][domfam] = cat
-                    if cat not in cat2domfams[namespace]:
-                        cat2domfams[namespace][cat] = []
-                    cat2domfams[namespace][cat].append(domfam)
-
-        # custom domains
-        if params['namespace'] == 'custom':
-
-            # add target fams
-            target_fams = []
-            if 'target_fams' in params['custom_target_fams'] and params['custom_target_fams']['target_fams']:
-                for target_fam in params['custom_target_fams']['target_fams']:
-                    target_fam = target_fam.strip()
-                    if target_fam == '':
-                        continue
-
-                    target_fam = re.sub("^cog", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^pf", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^seed", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-
-                    target_fam = re.sub("^COG:", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^COG-", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^COG_", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^COG *", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF:", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF-", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF_", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF *", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
-
-                    num_id_len = dict()
-                    num_id_len['COG'] = 4
-                    num_id_len['PF'] = 5
-                    num_id_len['TIGR'] = 5
-
-                    #self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
-
-                    if target_fam.startswith('SEED'):
-                        namespaces_reading['SEED'] = True
-                        target_fam = target_fam.strip()
-                        target_fam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub(' ', '_', target_fam)
-                    else:
-                        namespace_found = False
-                        for namespace_iter in ['COG', 'PF', 'TIGR']:
-                            if target_fam.startswith(namespace_iter):
-                                this_namespace = namespace_iter
-                                namespaces_reading[this_namespace] = True
-                                target_fam = re.sub(this_namespace, "", target_fam)
-                                namespace_found = True
-                                break
-                        if not namespace_found:
-                            raise ValueError("unrecognized custom domain family: '" + str(target_fam) + "'")
-                        leading_zeros = ''
-                        for c_i in range(num_id_len[this_namespace] - len(str(target_fam))):
-                            leading_zeros += '0'
-                        target_fam = this_namespace + leading_zeros + target_fam
-
-                    #self.log (console, "TARGET_FAM B: '"+target_fam+"'")  # DEBUG
-
-                    target_fams.append(target_fam)
-
-            # add extra target fams
-            extra_target_fams = []
-            extra_target_fam_groups = []
-            domfam2group = dict()
-            for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_PFAM', 'extra_target_fam_groups_TIGR', 'extra_target_fam_groups_SEED']:
-                if target_set in params['custom_target_fams'] and params['custom_target_fams'][target_set]:
-                    extra_target_fam_groups.extend(params['custom_target_fams'][target_set])
-
-            if extra_target_fam_groups:
-                for target_group in extra_target_fam_groups:
-                    target_group = target_group.strip()
-                    if target_group == '':
-                        continue
-
-                    namespace = re.sub(":.*$", "", target_group)
-                    namespaces_reading[namespace] = True
-
-                    if namespace == 'COG':
-                        this_group = re.sub("COG: ", "", target_group)
-                        this_group = re.sub(":.*$", "", this_group)
-                    elif namespace == 'PF':
-                        this_group = re.sub("PF: Clan ", "", target_group)
-                        this_group = re.sub(":.*$", "", this_group)
-                    elif namespace == 'TIGR':
-                        this_group = re.sub("TIGR: role:", "", target_group)
-                        this_group = re.sub(":.*$", "", this_group)
-                        this_group = 'TIGR_role:' + this_group
-                    elif namespace == 'SEED':
-                        this_group = re.sub("SEED: ", "", target_group)
-
-                    for domfam in cat2domfams[namespace][this_group]:
-                        extra_target_fams.append(domfam)
-                        domfam2group[domfam] = target_group
-
-            # we have our targets
-            cats = target_fams + extra_target_fams
-
-            # store names of targets
-            domfam2name = dict()
-            for namespace in namespaces_reading.keys():
-                domfam2name[namespace] = dict()
-
-                if namespace == 'COG':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
-                            domfam2name[namespace][domfam] = domfam_name
-
-                elif namespace == 'PF':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
-                            if domfam_name.startswith(domfam_id):
-                                combo_name = domfam_name
-                            else:
-                                combo_name = domfam_id + ': ' + domfam_name
-                            domfam2name[namespace][domfam] = combo_name
-
-                elif namespace == 'TIGR':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            if line.startswith('!'):
-                                continue
-                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[
-                                0:7]
-                            if domfam_name != '':
-                                if domfam_desc.startswith(domfam_name):
-                                    combo_name = domfam_desc
-                                else:
-                                    combo_name = domfam_name + ': ' + domfam_desc
-                            else:
-                                if domfam_desc.startswith(domfam_id):
-                                    combo_name = domfam_desc
-                                else:
-                                    combo_name = domfam_id + ': ' + domfam_desc
-                            if ec_id != '':
-                                combo_name += ' (EC ' + ec_id + ')'
-
-                            domfam2name[namespace][domfam] = combo_name
-
-                elif namespace == 'SEED':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            [level1, level2, level3, domfam] = line.split("\t")[0:4]
-
-                            domfam_desc = domfam
-                            domfam = domfam.strip()
-                            domfam = re.sub(' *\#.*$', '', domfam)
-                            domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub(' ', '_', domfam)
-                            domfam = 'SEED' + domfam
-                            if domfam in domfam2name[namespace]:
-                                if len(domfam_desc) > len(domfam2name[namespace][domfam]):
-                                    domfam2name[namespace][domfam] = domfam_desc
-                            else:
-                                domfam2name[namespace][domfam] = domfam_desc
-
-        # just in case
-        elif params['namespace'] != 'COG' \
-                and params['namespace'] != 'PF' \
-                and params['namespace'] != 'TIGR' \
-                and params['namespace'] != 'SEED':
-            raise ValueError("Unknown namespace: '" + str(params['namespace']) + "'")
-
+        (cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading,
+         extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name) = self._configure_categories(params)
+        
+        # STEP 1 - Get the Data
         # get genome set from featureSet
         #
         input_ref = params['input_featureSet_ref']
@@ -2412,6 +2299,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
+        # STEP 2 - Analysis
         # calculate table
         #
         table_data = dict()
@@ -2469,8 +2357,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
 
-                    table_data[genome_ref][cat] /= float(total_genes)
-                    table_data[genome_ref][cat] *= 100.0
+                    if total_genes > 0:
+                        table_data[genome_ref][cat] /= float(total_genes)
+                        table_data[genome_ref][cat] *= 100.0
+                    else:
+                        table_data[genome_ref][cat] = 0
 
         # determine high and low val
         for genome_ref in genome_refs:
@@ -2554,7 +2445,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
 
-        # build report
+        # STEP 3 - build report
         #
         reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
         reportObj = {'objects_created': [],
@@ -2954,14 +2845,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_fxn_profile_phylo(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_speciesTree_ref',
@@ -2997,25 +2890,6 @@ This module contains methods for running and visualizing results of phylogenomic
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        domain_desc_basepath = os.path.abspath('/kb/module/data/domain_desc')
-        domain_to_cat_map_path = dict()
-        domain_cat_names_path = dict()
-        domain_fam_names_path = dict()
-        domain_to_cat_map_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_cat_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014_funcat.tsv')
-        domain_fam_names_path['COG'] = os.path.join(domain_desc_basepath, 'COG_2014.tsv')
-        domain_to_cat_map_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
-        domain_cat_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans_names.tsv')
-        domain_fam_names_path['PF'] = os.path.join(domain_desc_basepath, 'Pfam-A.clans.tsv')
-        domain_to_cat_map_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
-        domain_cat_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'tigrrole2go.txt')
-        #domain_fam_names_path['TIGR']  = os.path.join(domain_desc_basepath, 'tigrfams2go.txt')
-        domain_fam_names_path['TIGR'] = os.path.join(domain_desc_basepath, 'TIGRInfo.tsv')
-        domain_to_cat_map_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_cat_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
-        #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        domain_fam_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-
         # load provenance
         provenance = [{}]
         if 'provenance' in ctx:
@@ -3033,286 +2907,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # configure categories
         #
-        cats = []
-        cat2name = dict()
-        cat2group = dict()
-        domfam2cat = dict()
-        cat2domfams = dict()
-        namespaces_reading = dict()
+        (cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading,
+         extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name) = self._configure_categories(params)
 
-        # categories are high-level summations
-        if params['namespace'] != 'custom':
-            for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
-                if params['namespace'] == namespace:
-                    namespaces_reading[namespace] = True
-
-        # read all mappings between groups and domfams
-        for namespace in ['COG', 'PF', 'TIGR', 'SEED']:
-
-            cat2name[namespace] = dict()
-            cat2group[namespace] = dict()
-            domfam2cat[namespace] = dict()
-            cat2domfams[namespace] = dict()
-
-            # get high-level cats
-            tigrrole_id2cat = dict()
-            with open(domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
-                for line in dom_cat_handle.readlines():
-                    line = line.strip()
-
-                    if namespace == 'COG':
-                        [cat, cat_group, cat_name] = line.split("\t")[0:3]
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat2name[namespace][cat] = cat_name
-                        cat2group[namespace][cat] = cat_group
-
-                    elif namespace == 'PF':
-                        [cat, cat_name] = line.split("\t")[0:2]
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat2name[namespace][cat] = cat_name
-                        cat2group[namespace][cat] = None
-
-                    elif namespace == 'TIGR':
-                        if line.startswith('!'):
-                            continue
-                        [cat, cat_id, cat_group, cat_name_plus_go_terms] = line.split("\t")[0:4]
-                        tigrrole_id2cat[cat_id] = cat
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat_name = re.sub(' *\> GO:.*$', '', cat_name_plus_go_terms)
-                        cat2name[namespace][cat] = cat_name
-                        cat2group[namespace][cat] = cat_group
-
-                        # DEBUG
-                        #self.log(console, "CAT: '"+str(cat)+"' NAME: '"+str(cat_name)+"' GROUP: '"+str(cat_group)+"'")
-
-                    elif namespace == 'SEED':
-                        #[cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                        [cat_group, cat] = line.split("\t")[0:2]
-                        if namespace == params['namespace'] and cat not in cats:
-                            cats.append(cat)
-                        cat_disp = re.sub('_', ' ', cat)
-                        cat2name[namespace][cat] = cat_disp
-                        cat2group[namespace][cat] = cat_group
-
-            # get domfam to cat map, and vice versa
-            with open(domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
-                for line in dom2cat_map_handle.readlines():
-                    line = line.strip()
-
-                    if namespace == 'COG':
-                        [domfam, cat_str, cat_name] = line.split("\t")[0:3]
-                        cat = cat_str[0]  # only use first cat
-
-                    elif namespace == 'PF':
-                        [domfam, cat, cat_name, dom_id, dom_name] = line.split("\t")[0:5]
-
-                    elif namespace == 'TIGR':
-                        if line.startswith('!'):
-                            continue
-                        [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[0:7]
-                        if cat_id != '' and int(cat_id) != 0 and cat_id in tigrrole_id2cat:
-                            cat = tigrrole_id2cat[cat_id]
-                        else:
-                            continue
-
-                    elif namespace == 'SEED':
-                        [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                        domfam = domfam.strip()
-                        domfam = re.sub(' *\#.*$', '', domfam)
-                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub(' ', '_', domfam)
-                        domfam = 'SEED' + domfam
-
-                    domfam2cat[namespace][domfam] = cat
-                    if cat not in cat2domfams[namespace]:
-                        cat2domfams[namespace][cat] = []
-                    cat2domfams[namespace][cat].append(domfam)
-
-        # custom domains
-        if params['namespace'] == 'custom':
-
-            # add target fams
-            target_fams = []
-            if 'target_fams' in params['custom_target_fams'] and params['custom_target_fams']['target_fams']:
-                for target_fam in params['custom_target_fams']['target_fams']:
-                    target_fam = target_fam.strip()
-                    if target_fam == '':
-                        continue
-
-                    target_fam = re.sub("^cog", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^pf", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^tigr", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^seed", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PFAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^P-FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^P_FAM", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGRFAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR-FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR_FAM", "TIGR", target_fam, flags=re.IGNORECASE)
-
-                    target_fam = re.sub("^COG:", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^COG-", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^COG_", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^COG *", "COG", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF:", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF-", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF_", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^PF *", "PF", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR:", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR-", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR_", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^TIGR *", "TIGR", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED:", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED-", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED_", "SEED", target_fam, flags=re.IGNORECASE)
-                    target_fam = re.sub("^SEED *", "SEED", target_fam, flags=re.IGNORECASE)
-
-                    num_id_len = dict()
-                    num_id_len['COG'] = 4
-                    num_id_len['PF'] = 5
-                    num_id_len['TIGR'] = 5
-
-                    #self.log (console, "TARGET_FAM A: '"+target_fam+"'")  # DEBUG
-
-                    if target_fam.startswith('SEED'):
-                        namespaces_reading['SEED'] = True
-                        target_fam = target_fam.strip()
-                        target_fam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', target_fam)
-                        target_fam = re.sub(' ', '_', target_fam)
-                    else:
-                        namespace_found = False
-                        for namespace_iter in ['COG', 'PF', 'TIGR']:
-                            if target_fam.startswith(namespace_iter):
-                                this_namespace = namespace_iter
-                                namespaces_reading[this_namespace] = True
-                                target_fam = re.sub(this_namespace, "", target_fam)
-                                namespace_found = True
-                                break
-                        if not namespace_found:
-                            raise ValueError("unrecognized custom domain family: '" + str(target_fam) + "'")
-                        leading_zeros = ''
-                        for c_i in range(num_id_len[this_namespace] - len(str(target_fam))):
-                            leading_zeros += '0'
-                        target_fam = this_namespace + leading_zeros + target_fam
-
-                    #self.log (console, "TARGET_FAM B: '"+target_fam+"'")  # DEBUG
-
-                    target_fams.append(target_fam)
-
-            # add extra target fams
-            extra_target_fams = []
-            extra_target_fam_groups = []
-            domfam2group = dict()
-            for target_set in ['extra_target_fam_groups_COG', 'extra_target_fam_groups_PFAM', 'extra_target_fam_groups_TIGR', 'extra_target_fam_groups_SEED']:
-                if target_set in params['custom_target_fams'] and params['custom_target_fams'][target_set]:
-                    extra_target_fam_groups.extend(params['custom_target_fams'][target_set])
-
-            if extra_target_fam_groups:
-                for target_group in extra_target_fam_groups:
-                    target_group = target_group.strip()
-                    if target_group == '':
-                        continue
-
-                    namespace = re.sub(":.*$", "", target_group)
-                    namespaces_reading[namespace] = True
-
-                    if namespace == 'COG':
-                        this_group = re.sub("COG: ", "", target_group)
-                        this_group = re.sub(":.*$", "", this_group)
-                    elif namespace == 'PF':
-                        this_group = re.sub("PF: Clan ", "", target_group)
-                        this_group = re.sub(":.*$", "", this_group)
-                    elif namespace == 'TIGR':
-                        this_group = re.sub("TIGR: role:", "", target_group)
-                        this_group = re.sub(":.*$", "", this_group)
-                        this_group = 'TIGR_role:' + this_group
-                    elif namespace == 'SEED':
-                        this_group = re.sub("SEED: ", "", target_group)
-
-                    for domfam in cat2domfams[namespace][this_group]:
-                        extra_target_fams.append(domfam)
-                        domfam2group[domfam] = target_group
-
-            # we have our targets
-            cats = target_fams + extra_target_fams
-
-            # store names of targets
-            domfam2name = dict()
-            for namespace in namespaces_reading.keys():
-                domfam2name[namespace] = dict()
-
-                if namespace == 'COG':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
-                            domfam2name[namespace][domfam] = domfam_name
-
-                elif namespace == 'PF':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
-                            if domfam_name.startswith(domfam_id):
-                                combo_name = domfam_name
-                            else:
-                                combo_name = domfam_id + ': ' + domfam_name
-                            domfam2name[namespace][domfam] = combo_name
-
-                elif namespace == 'TIGR':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            if line.startswith('!'):
-                                continue
-                            [domfam_id, domfam, cat_group, cat_id, domfam_name, ec_id, domfam_desc] = line.split("\t")[
-                                0:7]
-                            if domfam_name != '':
-                                if domfam_desc.startswith(domfam_name):
-                                    combo_name = domfam_desc
-                                else:
-                                    combo_name = domfam_name + ': ' + domfam_desc
-                            else:
-                                if domfam_desc.startswith(domfam_id):
-                                    combo_name = domfam_desc
-                                else:
-                                    combo_name = domfam_id + ': ' + domfam_desc
-                            if ec_id != '':
-                                combo_name += ' (EC ' + ec_id + ')'
-
-                            domfam2name[namespace][domfam] = combo_name
-
-                elif namespace == 'SEED':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
-                        for line in dom_fam_handle.readlines():
-                            line = line.strip()
-                            [level1, level2, level3, domfam] = line.split("\t")[0:4]
-
-                            domfam_desc = domfam
-                            domfam = domfam.strip()
-                            domfam = re.sub(' *\#.*$', '', domfam)
-                            domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub(' ', '_', domfam)
-                            domfam = 'SEED' + domfam
-                            if domfam in domfam2name[namespace]:
-                                if len(domfam_desc) > len(domfam2name[namespace][domfam]):
-                                    domfam2name[namespace][domfam] = domfam_desc
-                            else:
-                                domfam2name[namespace][domfam] = domfam_desc
-
-        # just in case
-        elif params['namespace'] != 'COG' \
-                and params['namespace'] != 'PF' \
-                and params['namespace'] != 'TIGR' \
-                and params['namespace'] != 'SEED':
-            raise ValueError("Unknown namespace: '" + str(params['namespace']) + "'")
-
+        # STEP 1 - Get the Data
         # get speciesTree
         #
         input_ref = params['input_speciesTree_ref']
@@ -3585,6 +3183,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
+        # STEP 2 - Analysis
         # calculate table
         #
         table_data = dict()
@@ -3651,8 +3250,11 @@ This module contains methods for running and visualizing results of phylogenomic
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
 
-                    table_data[genome_ref][cat] /= float(total_genes)
-                    table_data[genome_ref][cat] *= 100.0
+                    if total_genes > 0:
+                        table_data[genome_ref][cat] /= float(total_genes)
+                        table_data[genome_ref][cat] *= 100.0
+                    else:
+                        table_data[genome_ref][cat] = 0
 
         # determine high and low val
         for genome_ref in genome_refs:
@@ -3807,7 +3409,7 @@ This module contains methods for running and visualizing results of phylogenomic
         species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
         species_tree.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
-        # build report
+        # STEP 3 - build report
         #
         reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
         reportObj = {'objects_created': [],
@@ -4242,14 +3844,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_pan_circle_plot(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_genome_ref',
@@ -5270,14 +4874,16 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_pan_phylo(): ')
         self.log(console, "\n" + pformat(params))
 
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
         token = ctx['token']
-        wsClient = workspaceService(self.workspaceURL, token=token)
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
-
-        #SERVICE_VER = 'dev'  # DEBUG
-        SERVICE_VER = 'release'
 
         # param checks
         required_params = ['input_speciesTree_ref',
@@ -5939,6 +5545,1067 @@ This module contains methods for running and visualizing results of phylogenomic
         # return the results
         return [output]
 
+    def find_homologs_with_genome_context(self, ctx, params):
+        """
+        :param params: instance of type
+           "find_homologs_with_genome_context_Input"
+           (find_homologs_with_genome_context() ** ** show homolgous genes
+           across multiple genomes within genome context against species
+           tree) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter
+           "input_featureSet_ref" of type "data_obj_ref", parameter
+           "input_speciesTree_ref" of type "data_obj_ref", parameter
+           "save_per_genome_featureSets" of type "bool", parameter
+           "neighbor_thresh" of Long, parameter "ident_thresh" of Double,
+           parameter "overlap_fraction" of Double, parameter "e_value" of
+           Double, parameter "bitscore" of Double, parameter "color_seed" of
+           Double
+        :returns: instance of type "find_homologs_with_genome_context_Output"
+           -> structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN find_homologs_with_genome_context
+
+        #### STEP 0: init
+        ##
+        console = []
+        invalid_msgs = []
+        created_objects = []
+        self.log(console, 'Running find_homologs_with_genome_context() with params=')
+        self.log(console, "\n" + pformat(params))
+        report = ''
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'beta'
+        #SERVICE_VER = 'release'
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
+        headers = {'Authorization': 'OAuth ' + token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+        # additional clients
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except:
+            raise ValueError("unable to instantiate dfuClient")
+        try:
+            blastClient = kb_blast(url=self.callbackURL, token=token, service_ver=SERVICE_VER)  # SDK Local
+            #blastClient = kb_blast(url=self.serviceWizardURL, token=token, service_ver=SERVICE_VER)  # Dynamic service
+        except:
+            raise ValueError("unable to instantiate blastClient")
+
+
+        #### STEP 1: do some basic checks
+        ##
+        # param checks
+        required_params = ['workspace_name',
+                           'input_featureSet_ref',
+                           'input_speciesTree_ref',
+                           'ident_thresh',
+                           'e_value',
+                           'bitscore',
+                           'overlap_fraction',
+                           'neighbor_thresh'
+                           ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
+
+
+        #### STEP 2: load the method provenance from the context object
+        ##
+        self.log(console, "SETTING PROVENANCE")  # DEBUG
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects'] = []
+        provenance[0]['input_ws_objects'].append(params['input_featureSet_ref'])
+        provenance[0]['input_ws_objects'].append(params['input_speciesTree_ref'])
+        provenance[0]['service'] = 'kb_phylogenomics'
+        provenance[0]['method'] = 'find_homologs_with_genome_context'
+
+
+        #### STEP 3: Get tree and save as newick file and create GenomeSet object
+        ##
+        intree_ws_id = None
+        try:
+            objects = wsClient.get_objects([{'ref': params['input_speciesTree_ref']}])
+            data = objects[0]['data']
+            info = objects[0]['info']
+            intree_name = info[NAME_I]
+            intree_type_name = info[TYPE_I].split('.')[1].split('-')[0]
+            intree_ws_id = info[WSID_I]
+
+        except Exception as e:
+            raise ValueError('Unable to fetch input_speciesTree_ref object from workspace: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+
+        if intree_type_name == 'Tree':
+            tree_in = data
+        else:
+            raise ValueError('Cannot yet handle input_tree type of: ' + intree_type_name)
+
+        # store which genomes are in tree and save in GenomeSet object, store order
+        genomes_in_tree = dict()
+        genome_node_id_to_ref = dict()
+        genome_ref_to_node_id = dict()
+        tree_GS_name = intree_name+'.GenomeSet'
+        tree_GS_obj = {'description': 'GenomeSet for '+intree_name,
+                       'elements': dict()
+                      }
+        if 'ws_refs' not in tree_in:
+            raise ValueError ("Species Tree missing ws_refs field.  Cannot continue.  Exiting...")
+        for node_id in tree_in['ws_refs'].keys():
+            genome_ref = tree_in['ws_refs'][node_id]['g'][0]
+            genomes_in_tree[genome_ref] = node_id
+            tree_GS_obj['elements'][node_id] = {'ref': genome_ref}
+            genome_node_id_to_ref[node_id] = genome_ref
+            genome_ref_to_node_id[genome_ref] = node_id
+
+        # save newick file
+        intree_newick_file_path = os.path.join(output_dir, intree_name + ".newick")
+        self.log(console, 'writing intree file: ' + intree_newick_file_path)
+        with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
+            intree_newick_file_handle.write(tree_in['tree'])
+
+        """
+        # upload newick
+        try:
+            newick_upload_ret = dfuClient.file_to_shock({'file_path': intree_newick_file_path,
+                                                  #'pack': 'zip'})
+                                                   'make_handle': 0})
+        except:
+            raise ValueError('error uploading newick file to shock')
+        """
+        # save GenomeSet object for Tree
+        try:
+            genomeSet_obj_info_list = wsClient.list_objects(
+                    {'ids': [intree_ws_id], 'type': "KBaseSearch.GenomeSet"})
+        except Exception as e:
+            raise ValueError("Unable to list GenomeSet objects from workspace: " + str(intree_ws_id) + " " + str(e))
+        genomeSet_repeat = False
+        genomeSet_ref = None
+        for info in genomeSet_obj_info_list:
+            if info[NAME_I] == tree_GS_name:
+                genomeSet_repeat = True
+                genomeSet_ref = '/'.join([str(info[WSID_I]),str(info[OBJID_I]),str(info[VERSION_I])])
+                break
+        if not genomeSet_repeat:
+            try:
+                genomeSet_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                                            'objects': [
+                                                                { 
+                                                                    'type':'KBaseSearch.GenomeSet',
+                                                                    'data':tree_GS_obj,
+                                                                    'name':tree_GS_name,
+                                                                    'meta':{},
+                                                                    'provenance':[
+                                                                        {
+                                                                            'service':'kb_phylogenomics',
+                                                                            'method':'find_homologs_with_genome_context',
+                                                                            'input_ws_objects': [params['input_speciesTree_ref']]
+                                                                            
+                                                                        }
+                                                                    ]
+                                                                }]
+                                                        })[0]
+                tree_derived_genomeSet_ref = str(genomeSet_obj_info[WSID_I])+'/'+str(genomeSet_obj_info[OBJID_I])+'/'+str(genomeSet_obj_info[VERSION_I])
+                
+            except Exception as e:
+                raise ValueError ("unable to save GenomeSet from Tree object: " + str(e))
+                #to get the full stack trace: traceback.format_exc()
+        else:
+            tree_derived_genomeSet_ref = genomeSet_ref
+
+        
+        #### STEP 4: get genome names from tree
+        ##
+        genome_names = dict()
+        for genome_ref in genomes_in_tree.keys():
+            try:
+                genome_obj_info = wsClient.get_object_info_new({'objects': [{'ref': genome_ref}]})[0]
+                genome_names[genome_ref] = genome_obj_info[NAME_I]
+            except Exception as e:
+                raise ValueError('Unable to get genome object from workspace: (' + genome_ref + ')' + str(e))
+            
+
+        #### STEP 5: if labels defined, make separate newick-labels file
+        ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
+        ##
+        if 'default_node_labels' in tree_in:
+            newick_labels_file = intree_name + '-labels.newick'
+            output_newick_labels_file_path = os.path.join(output_dir, newick_labels_file)
+            #default_row_ids = tree_in['default_row_labels']
+            #new_ids = dict()
+            #for row_id in default_row_ids.keys():
+            #    new_ids[row_id] = default_row_ids[row_id]
+
+            mod_newick_buf = tree_in['tree']
+            mod_newick_buf = re.sub('\|', '%' + '|'.encode("hex"), mod_newick_buf)
+            #for row_id in new_ids.keys():
+            for node_id in tree_in['default_node_labels'].keys():
+                label = tree_in['default_node_labels'][node_id]
+
+                #self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
+                label = re.sub(' \(kb[^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
+                label = re.sub('\s', '_', label)
+                #label = re.sub('\/','%'+'/'.encode("hex"), label)
+                #label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
+                #label = re.sub('\[','%'+'['.encode("hex"), label)
+                #label = re.sub('\]','%'+']'.encode("hex"), label)
+                label = re.sub('\(', '[', label)
+                label = re.sub('\)', ']', label)
+                label = re.sub('\:', '%' + ':'.encode("hex"), label)
+                label = re.sub('\;', '%' + ';'.encode("hex"), label)
+                label = re.sub('\|', '%' + '|'.encode("hex"), label)
+                #self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
+                #self.log (console, "NEWICK B4: '"+mod_newick_buf+"'")  # DEBUG
+                mod_node_id = re.sub('\|', '%' + '|'.encode("hex"), node_id)
+                mod_newick_buf = re.sub('\(' + mod_node_id + '\:', '(' + label + ':', mod_newick_buf)
+                mod_newick_buf = re.sub('\,' + mod_node_id + '\:', ',' + label + ':', mod_newick_buf)
+                #self.log (console, "NEWICK AF: '"+mod_newick_buf+"'")  # DEBUG
+
+                #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
+
+            mod_newick_buf = re.sub('_', ' ', mod_newick_buf)
+            with open(output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
+                output_newick_labels_file_handle.write(mod_newick_buf)
+
+            """
+            # upload
+            try:
+                newick_labels_upload_ret = dfuClient.file_to_shock({'file_path': output_newick_labels_file_path,
+                                                              #'pack': 'zip'})
+                                                              'make_handle': 0})
+            except:
+                raise ValueError('error uploading newick labels file to shock')
+            """
+
+
+        #### STEP 6: read genome order in tree, ladderize to make row order consistent
+        ##
+        genome_ref_order = []
+        newick_buf = tree_in['tree']
+        t_without_labels = ete3.Tree(newick_buf)
+        t_without_labels.ladderize()
+        for genome_id in t_without_labels.get_leaf_names():
+            genome_ref_order.append(genome_node_id_to_ref[genome_id])
+        N_genomes = len(genome_ref_order)
+
+
+        #### STEP 7: get query features from featureSet object
+        ##
+        input_ref = params['input_featureSet_ref']
+        input_featureSet_name = None
+        try:
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            input_featureSet_name = input_obj_info[NAME_I]
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseCollections.FeatureSet"]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError("Input object " + input_featureSet_name + " of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
+        try:
+            featureSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
+        except:
+            raise ValueError("unable to fetch featureSet: " + input_ref)
+
+        # validate all genomes can be found in species tree
+        genome_refs = []
+        genome_ref_seen = dict()
+        for element_id in featureSet_obj['elements'].keys():
+            for genome_ref in featureSet_obj['elements'][element_id]:
+                if genome_ref not in genome_ref_seen:
+                    genome_ref_seen[genome_ref] = True
+                    genome_refs.append(genome_ref)
+        genomes_missing_from_tree = []
+        for genome_ref in genome_ref_seen.keys():
+            try:
+                found_in_tree = genomes_in_tree[genome_ref]
+            except:
+                missing_genome_message = genomes_in_tree[genome_ref]+" ("+str(genome_ref)+")"
+                if 'default_node_labels' in tree_in:
+                    node_id = genomes_in_tree[genome_ref]
+                    missing_genome_message += ' '+tree_in['default_node_labels'][node_id]
+                genomes_missing_from_tree.append(missing_genome_message)
+
+        if len(genomes_missing_from_tree) > 0:
+            raise ValueError ("Species Tree missing genomes from FeatureSet.  Missing Genomes: "+", ".join(genomes_missing_from_tree))
+
+        # store query features for later function lookup when genomes are pulled
+        query_feature_function = dict()
+        for element_id in featureSet_obj['elements'].keys():
+            for genome_ref in featureSet_obj['elements'][element_id]:
+                if genome_ref not in query_feature_function:
+                    query_feature_function[genome_ref] = dict()
+                query_feature_function[genome_ref][element_id] = 'unknown'
+
+
+        #### STEP 8: determine feature order
+        ##
+        contig_id_by_genome_by_fid                = dict()
+        sorted_contig_ids_by_genome               = dict()
+        gene_fid_by_genome_by_contig_by_start_pos = dict()
+        gene_order_by_genome_by_contig            = dict()
+        [CONTIG_ID_I, BEG_I, STRAND_I, END_I]     = range(4)  # location tuple (string,int,string,int)
+
+        for genome_ref in genome_ref_order:
+            contig_id_by_genome_by_fid[genome_ref]                = dict()
+            sorted_contig_ids_by_genome[genome_ref]               = []
+            gene_fid_by_genome_by_contig_by_start_pos[genome_ref] = dict()
+
+            try:
+                self.log (console, "reading Genome "+str(genome_ref))
+                genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]['data']
+            except:
+                raise ValueError("unable to fetch genome: " + genome_ref)
+
+            # put contig ids in order by length
+            contig_ids_by_len = dict()
+            for contig_i,contig_id in enumerate(genome_obj['contig_ids']):
+                contig_len = genome_obj['contig_lengths'][contig_i]
+                try:
+                    len_seen = contig_ids_by_len[contig_len][0]
+                except:
+                    contig_ids_by_len[contig_len] = []
+                contig_ids_by_len[contig_len].append(contig_id)
+            for contig_len in sorted(contig_ids_by_len.keys(), reverse=True):
+                for contig_id in contig_ids_by_len[contig_len]:
+                    sorted_contig_ids_by_genome[genome_ref].append(contig_id)
+
+            # read features
+            for f in genome_obj['features']:
+                fid = f['id']
+                contig_id = f['location'][0][CONTIG_ID_I]
+                start_pos = f['location'][0][BEG_I]
+                """ note END_I is actually nucleotide length of gene, not stop pos
+                if f['location'][0][BEG_I] < f['location'][0][END_I]:
+                    start_pos = f['location'][0][BEG_I]
+                    #stop_pos  = f['location'][0][END_I]
+                else:
+                    start_pos = f['location'][0][END_I]
+                    #stop_pos  = f['location'][0][BEG_I]
+                # DEBUG
+                #if fid.startswith('DVU084'):
+                #    self.log(console,"INITIAL GENE READ "+fid+" START_POS: "+str(start_pos))
+                """
+                if contig_id not in gene_fid_by_genome_by_contig_by_start_pos[genome_ref]:
+                    gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id] = dict()
+                if start_pos not in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id]:
+                    gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos] = []
+
+                gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos].append(fid)
+                contig_id_by_genome_by_fid[genome_ref][fid] = contig_id
+
+                # capture function if a query gene
+                if genome_ref in query_feature_function:
+                    if fid in query_feature_function[genome_ref]:
+                        query_feature_function[genome_ref][fid] = f['functions'][0]
+
+            # sort genes by start pos within each contig
+            gene_order_by_genome_by_contig[genome_ref] = dict()
+            for contig_id in gene_fid_by_genome_by_contig_by_start_pos[genome_ref].keys():
+                gene_order_by_genome_by_contig[genome_ref][contig_id] = []
+                for start_pos in sorted(gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id].keys()):
+                    for fid in gene_fid_by_genome_by_contig_by_start_pos[genome_ref][contig_id][start_pos]:
+                        gene_order_by_genome_by_contig[genome_ref][contig_id].append(fid)
+                        # DEBUG
+                        #if fid.startswith('DVU084'):
+                        #    self.log(console, "GENE "+fid+" STARTPOS: "+str(start_pos))
+
+        #### STEP 9: make a separate featureSet with a single feature to run searches
+        ##  Kludge until change BLASTp to accept multi-feature FeatureSet queries
+        ##
+        input_full_feature_ids = []
+        individual_featureSet_refs = []
+        individual_featureSet_names = []
+        genome_ref_feature_id_delim = '.f:'
+
+        for element_id in sorted(featureSet_obj['elements'].keys()):
+            for genome_ref in featureSet_obj['elements'][element_id]:
+                full_feature_id = genome_ref + genome_ref_feature_id_delim + element_id
+                individual_FS_name = genome_ref.replace('/','_')+'_'+element_id+'.FeatureSet'
+
+                individual_FS_prov = [{}]
+                if 'provenance' in ctx:
+                    individual_FS_prov = ctx['provenance']
+                # add additional info to provenance here, in this case the input data object reference
+                individual_FS_prov[0]['input_ws_objects'] = []
+                individual_FS_prov[0]['input_ws_objects'].append(params['input_featureSet_ref'])
+                individual_FS_prov[0]['service'] = 'kb_phylogenomics'
+                individual_FS_prov[0]['method'] = 'find_homologs_with_genome_context'
+            
+                individual_FS_obj = {
+                    'description': featureSet_obj['description']+' - '+element_id,
+                    'elements': { 
+                        element_id: [genome_ref]
+                    }
+                }
+
+                individual_FS_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                                                'objects': [
+                                                                    {
+                                                                        'type':'KBaseCollections.FeatureSet',
+                                                                        'data':individual_FS_obj,
+                                                                        'name':individual_FS_name,
+                                                                        'meta':{},
+                                                                        'provenance':individual_FS_prov,
+                                                                        'hidden':1  # 1=True
+                                                                    }]
+                                                            })[0]
+                #pprint(individual_FS_obj_info)
+                self.log(console, "saved query feature as FS "+str(individual_FS_name))
+                #self.log(console, "OBJ_INFO: "+pformat(individual_FS_obj_info))
+                #self.log(console, "OBJ_DATA: "+pformat(individual_FS_obj))
+
+                individual_FS_ref = str(individual_FS_obj_info[WSID_I])+'/'+str(individual_FS_obj_info[OBJID_I])+'/'+str(individual_FS_obj_info[VERSION_I])
+
+                individual_featureSet_refs.append (individual_FS_ref)
+                individual_featureSet_names.append (individual_FS_name)
+                input_full_feature_ids.append (full_feature_id)
+
+
+        #### STEP 10: run BLASTp searches to get homologs
+        ##
+        hits_by_query_and_genome_ref = dict()
+        longest_feature_id_by_query = dict()
+        max_hit_cnt = 0
+        #hits_by_full_feature_id = dict()
+        #feature_included = dict()
+        #for query_i,individual_FS_ref in enumerate(individual_featureSet_refs):
+        for query_i,query_full_feature_id in enumerate(input_full_feature_ids):
+            longest_feature_id_by_query[query_full_feature_id] = 0
+
+            [query_genome_ref, query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
+
+            #hits_by_full_feature_id[query_full_feature_id] = dict()
+
+            input_individual_FS_ref = individual_featureSet_refs[query_i]
+            input_individual_FS_name = individual_featureSet_names[query_i]
+            output_individual_FS_name = input_individual_FS_name+'-'+intree_name+'.BLASTp_homologs'
+
+            BLASTp_Params = {'workspace_name':       params['workspace_name'],
+                             'input_one_ref':        input_individual_FS_ref,
+                             'input_many_ref':       tree_derived_genomeSet_ref,
+                             'output_filtered_name': output_individual_FS_name,
+                             'ident_thresh':         params['ident_thresh'],
+                             'e_value':              params['e_value'],
+                             'bitscore':             params['bitscore'],
+                             'overlap_fraction':     params['overlap_fraction'],
+                             'maxaccepts':           1000  # hopefully won't exceed 1000 genomes!
+                             }
+
+            self.log (console, "running BLASTp for "+input_individual_FS_name)
+            #self.log(console, "\n" + pformat(BLASTp_Params))
+
+            blast_retVal = blastClient.BLASTp_Search(BLASTp_Params)
+            this_report_name = blast_retVal['report_name']
+            this_report_ref = blast_retVal['report_ref']
+
+            try:
+                this_report_obj = wsClient.get_objects([{'ref': this_report_ref}])[0]['data']
+            except:
+                raise ValueError("unable to fetch report: " + this_report_ref)
+
+            # read hits and store hits for each genome
+            hits_ref = this_report_obj['objects_created'][0]['ref']
+            created_objects.append({'ref': hits_ref, 'description': 'Homologs of '+genome_names[query_genome_ref]+' '+query_feature_id})
+            try:
+                hits_obj = wsClient.get_objects([{'ref': hits_ref}])[0]['data']
+            except:
+                raise ValueError("unable to fetch hits for " + output_individual_FS_name+'('+hits_ref+')')
+            hits_by_query_and_genome_ref[query_full_feature_id] = dict()
+            hit_cnt_by_genome_ref = dict()
+            for hit_feature_id in hits_obj['elements'].keys():
+
+                # record string length of feature ids
+                if longest_feature_id_by_query[query_full_feature_id] < len(hit_feature_id):
+                    longest_feature_id_by_query[query_full_feature_id] = len(hit_feature_id)
+
+                
+                # store hits by query and record number of hits to each genome
+                for genome_ref in hits_obj['elements'][hit_feature_id]:
+                    if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
+                        hits_by_query_and_genome_ref[query_full_feature_id][genome_ref] = []
+                        hit_cnt_by_genome_ref[genome_ref] = 0
+                        
+                    hits_by_query_and_genome_ref[query_full_feature_id][genome_ref].append(hit_feature_id)
+                    hit_cnt_by_genome_ref[genome_ref] += 1
+                    """
+                    # handle duplicate queries
+                    hit_full_feature_id = genome_ref + genome_ref_feature_id_delim + hit_feature_id
+                    try:
+                        included = feature_included[hit_full_feature_id]
+                    except:
+                        feature_included[hit_full_feature_id] = True
+                        hits_by_full_feature_id[query_full_feature_id][hit_full_feature_id] = True
+                    """
+            for genome_ref in genome_ref_order:
+                if genome_ref in hit_cnt_by_genome_ref:
+                    if hit_cnt_by_genome_ref[genome_ref] > max_hit_cnt:
+                        max_hit_cnt = hit_cnt_by_genome_ref[genome_ref]
+
+        
+        #### STEP 11: Determine proximity-based clusters within each contig
+        ##
+        cluster_by_genome_by_fid = dict()
+        hits_by_genome_ref = dict()
+        cluster_size_by_cluster_id = dict()
+
+        # store hits by genome
+        for query_full_feature_id in hits_by_query_and_genome_ref.keys():
+            for genome_ref in hits_by_query_and_genome_ref[query_full_feature_id].keys():
+                try:
+                    hit_list = hits_by_genome_ref[genome_ref]
+                except:
+                    hits_by_genome_ref[genome_ref] = dict()                    
+                for fid in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
+                    hits_by_genome_ref[genome_ref][fid] = True
+
+        # go through genomes and increment cluster when find hit fids
+        cluster_n = 0
+        cluster_size_by_cluster_id[cluster_n] = 0
+        prox_i = 0
+        prox_thresh = int(params['neighbor_thresh'])
+        for genome_ref in sorted(gene_order_by_genome_by_contig.keys()):
+            for contig_id in sorted(gene_order_by_genome_by_contig[genome_ref].keys()):
+                #for fid in gene_order_by_genome_by_contig[genome_ref][contig_id]:
+                for f_i,fid in enumerate(gene_order_by_genome_by_contig[genome_ref][contig_id]):
+
+                    # DEBUG
+                    #if fid.startswith('DVU084'):
+                    #    self.log(console,"GENE ORDER "+genome_ref+" "+str(contig_id)+" "+fid+" "+str(f_i))
+
+                    try:
+                        hit = hits_by_genome_ref[genome_ref][fid]
+                    except:
+                        prox_i += 1
+                        continue
+
+                    if prox_i > prox_thresh:
+                        cluster_n += 1
+                        cluster_size_by_cluster_id[cluster_n] = 0
+                    try:
+                        genome_ref_hit_set = cluster_by_genome_by_fid[genome_ref]
+                    except:
+                        cluster_by_genome_by_fid[genome_ref] = dict()
+
+                    cluster_by_genome_by_fid[genome_ref][fid] = cluster_n
+                    cluster_size_by_cluster_id[cluster_n] += 1
+                    prox_i = 0
+
+
+        #### STEP 12: Create tree image in html dir
+        ##
+        html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
+        if not os.path.exists(html_output_dir):
+            os.makedirs(html_output_dir)
+        png_file = intree_name + '.png'
+        #pdf_file = intree_name + '.pdf'
+        output_png_file_path = os.path.join(html_output_dir, png_file)
+        #output_pdf_file_path = os.path.join(output_dir, pdf_file)
+        newick_buf = tree_in['tree']
+
+        # switch to labels
+        if 'default_node_labels' in tree_in:
+            newick_buf = mod_newick_buf
+        self.log(console, "NEWICK_BUF: '" + newick_buf + "'")
+
+        # init ETE3 objects
+        t = ete3.Tree(newick_buf)
+        ts = ete3.TreeStyle()
+
+        # ladderize to make row order consistent
+        t.ladderize()
+
+        # customize
+        dpi = 300
+        img_units = "in"
+        img_pix_width = 1200
+        height_to_genome_scaling = 1.00
+        img_in_height = round(height_to_genome_scaling * max_hit_cnt * len(genome_ref_order) * float(img_pix_width) / float(dpi), 1)
+        img_in_width = round(float(img_pix_width) / float(dpi), 1)
+        img_html_width = img_pix_width // 4
+
+        ##branch_vertical_margin = 31
+        #branch_vertical_margin = 35
+
+        # y: branch_vertical_margin
+        # x: N_genomes
+        # y = mg * x + bg
+        # 35 = mg * 6 + bg
+        # y2 = mg * 21 + bg
+        # 35 - mg*6 = y2 - mg*21 -> mg*15 = y2 - 35 -> mg = (y2 - 35) / 15
+        # bg = 35 - mg*6 = 35 - 6*(y2 - 35) / 15
+
+        # guess y2=40
+        y2 = 44.0
+        mg = (y2 - 35.0) / 15.0
+        bg = 35.0 - 6.0 * (y2 - 35.0) / 15.0
+        branch_vertical_margin_float = mg * N_genomes + bg
+
+        if max_hit_cnt > 1:
+            ##hit_cnt_scaling = 0.65
+            #hit_cnt_scaling = 0.6475
+
+            # y: hit_cnt_scaling
+            # x: max_hit_cnt
+            # y = mh * x + bh
+            # 0.6475*6 = 3.885 = mh * 6 + bh
+            # y2 = mh * 5 + bh
+            # 3.885 - mh*6 = y2 - mh*5 -> mh = 3.885 - y2
+            # bh = 3.885 - mh*6 = 3.885 - 6*(3.885 - y2) = 6*y2 - 5*3.885 = 6*y2 - 19.425
+        
+            # guess y2=3.2375
+            # guess y2=3.25
+            # guess y2=3.20
+            y2 = 3.20
+            mh = 3.885 - y2
+            bh = 6*y2 - 19.425
+            hit_cnt_scaling = mh * max_hit_cnt + bh
+
+            ##branch_vertical_margin_float = mg * N_genomes * max_hit_cnt * hit_cnt_scaling + bg
+            #branch_vertical_margin_float = (mg * N_genomes + bg) * max_hit_cnt * hit_cnt_scaling
+            branch_vertical_margin_float *= hit_cnt_scaling
+
+        branch_vertical_margin = int(branch_vertical_margin_float + 0.5)
+
+        #ts.show_leaf_name = True
+        ts.show_leaf_name = False
+        ts.show_branch_length = False
+        ts.show_branch_support = True
+        #ts.scale = 50 # 50 pixels per branch length unit
+        ts.branch_vertical_margin = branch_vertical_margin
+        #if max_hit_cnt > 1:
+        #    ts.branch_vertical_margin = int(branch_vertical_margin * max_hit_cnt * hit_cnt_scaling + 0.5)  # pixels between adjacent branches
+        #ts.branch_vertical_margin = branch_vertical_margin # pixels between adjacent branches
+
+        title_disp = intree_name
+        if 'desc' in params and params['desc'] != None and params['desc'] != '':
+            title_disp += ': ' + params['desc']
+        ts.title.add_face(ete3.TextFace(title_disp, fsize=10), column=0)
+
+        node_style = ete3.NodeStyle()
+        node_style["fgcolor"] = "#606060"  # for node balls
+        node_style["size"] = 10  # for node balls (gets reset based on support)
+        node_style["vt_line_color"] = "#606060"
+        node_style["hz_line_color"] = "#606060"
+        node_style["vt_line_width"] = 2
+        node_style["hz_line_width"] = 2
+        node_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
+        node_style["hz_line_type"] = 0
+
+        leaf_style = ete3.NodeStyle()
+        leaf_style["fgcolor"] = "#ffffff"  # for node balls
+        leaf_style["size"] = 2  # for node balls (we're using it to add space)
+        leaf_style["vt_line_color"] = "#606060"  # unecessary
+        leaf_style["hz_line_color"] = "#606060"
+        leaf_style["vt_line_width"] = 2
+        leaf_style["hz_line_width"] = 2
+        leaf_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
+        leaf_style["hz_line_type"] = 0
+
+        for n in t.traverse():
+            if n.is_leaf():
+                style = copy.copy(leaf_style)
+                #if "User Genome" in n.name:
+                #    style["bgcolor"] = "#fafcc2"
+            else:
+                style = copy.copy(node_style)
+
+                if n.support > 0.95:
+                    style["size"] = 6
+                elif n.support > 0.90:
+                    style["size"] = 5
+                elif n.support > 0.80:
+                    style["size"] = 4
+                else:
+                    style["size"] = 2
+
+            n.set_style(style)
+
+        # save tree images
+        #t.render(output_png_file_path, h=img_in_height, units=img_units, dpi=dpi, tree_style=ts)
+        t.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
+        #t.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
+
+
+        #### STEP 13: build HTML table for hits
+        ##
+        border=0
+        cellpadding=5
+        cellspacing=5
+        hit_cellpadding=5
+        hit_cellspacing=2
+        #fontsize=2
+        header_fontsize=2
+        genome_fontsize=3
+        hit_fontsize=3
+        genome_text_color='black'
+        hit_text_color="#ffffff"
+        #header_row_color="#ccccff"
+        header_row_color="#eeeeee"
+        #even_row_color="#ffffff"
+        #odd_row_color="#eeeeee"
+        hit_table_html = []
+        hit_table_html += ['<table border='+str(border)+' cellpadding='+str(cellpadding)+' cellspacing='+str(cellspacing)+'>']
+
+        # add header row with bait genes
+        row_bg_color = header_row_color
+        hit_table_html += ['<tr>']
+        hit_table_html += ['<td></td>']
+        hit_table_html += ['<td bgcolor='+'#ffffff'+' valign=middle align=right><b><font size='+str(header_fontsize)+'>'+'BAIT GENE'+'</font></b></td>']
+        sorted_input_full_feature_ids = sorted(input_full_feature_ids)
+        for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
+            [genome_ref,query_feature_id] = query_full_feature_id.split(genome_ref_feature_id_delim)
+            bait_function = query_feature_function[genome_ref][query_feature_id]
+            bait_function = bait_function.replace('(EC ','<br>(EC ')
+            hit_table_html += ['<td bgcolor='+row_bg_color+' valign=middle align=center>'+'<font size='+str(header_fontsize)+'>'+'<b>'+query_feature_id+'</b>'+'<br>'+bait_function+'</font>'+'</td>']
+        hit_table_html += ['</tr>']
+
+        # add tree image
+        tree_top_row_buffer = 1
+        tree_bottom_row_buffer = 2
+        #hit_table_html += ['<tr><td valign=top rowspan='+str(len(tree_GS_obj['elements'].keys()))+'>']
+        hit_table_html += ['<tr><td colspan=1 rowspan='+str(len(genome_ref_order)+tree_top_row_buffer+tree_bottom_row_buffer+max_hit_cnt)+' valign=top align=left>']
+        hit_table_html += ['<img width=' + str(img_html_width) + ' src="' + png_file + '">']
+        hit_table_html += ['</td>']
+
+        # add blank rows to get the vert spacing of the tree image against the hit rows right
+        hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
+        hit_table_html += ['</tr>']
+        for row_i in range(tree_top_row_buffer-1):
+            hit_table_html += ['<tr>']
+            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
+            hit_table_html += ['</tr>']
+        extra_rows = int(max_hit_cnt/2) - 1
+        for row_i in range(extra_rows):
+            hit_table_html += ['<tr>']
+            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
+            hit_table_html += ['</tr>']
+
+
+        # add genome rows
+        for genome_i,genome_ref in enumerate(genome_ref_order):
+            #row_bg_color = odd_row_color
+            #if (genome_i % 2) == 0:
+            #    row_bg_color = even_row_color
+            row_bg_color='#ffffff'
+            node_id = genome_ref_to_node_id[genome_ref]
+            if 'default_node_labels' in tree_in:
+                label = tree_in['default_node_labels'][node_id]
+            else:
+                label = node_id
+
+            hit_table_html += ['<tr>']
+            #hit_table_html += ['<td bgcolor='+'#ffffff'+'></td>']
+            disp_label = label
+            if '(' in label:
+                [part_1, part_2] = label.split('(')
+                disp_label = '<b><i>'+part_1+'</i></b>'+'<br>'+'('+part_2
+            else:
+                disp_label = '<b><i>'+label+'</i></b>'
+            link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'" target="'+str(genome_ref)+'" style="color:'+genome_text_color+';text-decoration:none">'
+            link_close = '</A>'
+            
+            hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(genome_fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
+            for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
+                if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
+                    hit_table_html += ['<td valign=top align=center bgcolor='+row_bg_color+'>']
+                    hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
+                    hit_table_html += ['<tr><td valign=top align=center bgcolor='+row_bg_color+'> --- </td></tr>']
+                    for blank_cell_i in range(max_hit_cnt-1):
+                        hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(hit_fontsize)+'>&nbsp;</font></td></tr>']
+                    hit_table_html += ['</table></td>']
+                else:
+                    hit_table_html += ['<td valign=top align=center bgcolor='+row_bg_color+'>']
+                    hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
+                    hit_ids = []
+                    for hit_id in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
+                        hit_ids.append(hit_id)
+                        #cell_bg_color = cell_bg_color[hit_id]
+                        #cell_bg_color = '#cccccc'
+                        if 'color_seed' in params:
+                            color_seed = int(params['color_seed'])
+                        else:
+                            color_seed = 1
+                        cluster_index = cluster_by_genome_by_fid[genome_ref][hit_id]
+                        #self.log(console, "CLUSTER_INDEX for "+genome_ref+" HIT ID "+hit_id+": "+str(cluster_index))  # DEBUG
+                        if cluster_size_by_cluster_id[cluster_index] > 1:
+                            cell_bg_color = self._get_dark_pretty_html_color(cluster_index, color_seed)
+                        else:
+                            cell_bg_color = 'Gray'
+
+                        disp_hit_id = hit_id
+                        if len(hit_id) < longest_feature_id_by_query[query_full_feature_id]:
+                            space_margin = longest_feature_id_by_query[query_full_feature_id] - len(hit_id)
+                            if (space_margin % 2) == 1:
+                                space_margin += 1
+                            spaces = ''
+                            for space_i in range(int(space_margin/2)):
+                                spaces += '&nbsp;'
+                            #spaces = '<pre>'+spaces+'</pre>'   
+                            disp_hit_id = '<nobr>'+spaces + disp_hit_id + spaces+'</nobr>'
+
+                        disp_hit_id = '<pre>' + disp_hit_id + '</pre>'
+                        if genome_ref+genome_ref_feature_id_delim+hit_id == query_full_feature_id:
+                            cell_border_color = 'DarkGray'
+                            cell_border = 2
+                            bordered_cell_padding = hit_cellpadding-cell_border
+                            bordered_cell_spacing = 0
+                            #bordered_cell_padding = hit_cellpadding
+                            #bordered_cell_spacing = cell_border
+                            hit_table_html += ['<tr>']
+                            hit_table_html += ['<td valign=middle align=center bgcolor='+cell_border_color+'>']
+                            hit_table_html += ['<table border=0 cellpadding='+str(bordered_cell_padding)+' cellspacing='+str(bordered_cell_spacing)+' bgcolor='+cell_border_color+'>']
+                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+'>'+'<font size='+str(hit_fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
+                            hit_table_html += ['</table>']
+                            hit_table_html += ['</tr>']
+                        else:
+                            hit_table_html += ['<tr><td valign=middle align=center bgcolor='+cell_bg_color+' >'+'<font size='+str(hit_fontsize)+' color='+hit_text_color+'>'+disp_hit_id+'</font>'+'</td></tr>']
+                    if len(hit_ids) < max_hit_cnt:
+                        for blank_cell_i in range(max_hit_cnt-len(hit_ids)):
+                            hit_table_html += ['<tr><td bgcolor='+str(row_bg_color)+'><font size='+str(hit_fontsize)+'>&nbsp;</font></td></tr>']
+                    hit_table_html += ['</table></td>']
+            hit_table_html += ['</tr>']
+
+        # add bottom buffer to stretch to tree image
+        for row_i in range(tree_bottom_row_buffer):
+            hit_table_html += ['<tr>']
+            hit_table_html += ['<td rowspan=1 colspan='+str(len(input_full_feature_ids)+1)+'>&nbsp;</td>']
+            hit_table_html += ['</tr>']
+
+        hit_table_html += ['</table>']
+
+
+        #### STEP 14: make html report
+        ##
+        html_file = intree_name + '-homologs_chromosomal_context' + '.html'
+        output_html_file_path = os.path.join(html_output_dir, html_file)
+        html_report_lines = []
+        html_report_lines += ['<html>']
+        html_report_lines += ['<head><title>KBase Homologs Chromosomal Context: ' + intree_name + '</title></head>']
+        html_report_lines += ['<body bgcolor="white">']
+        html_report_lines += hit_table_html
+        html_report_lines += ['</body>']
+        html_report_lines += ['</html>']
+
+        html_report_str = "\n".join(html_report_lines)
+        with open(output_html_file_path, 'w', 0) as html_handle:
+            html_handle.write(html_report_str)
+
+        """
+        # upload images and html
+        try:
+            png_upload_ret = dfuClient.file_to_shock({'file_path': output_png_file_path,
+                                                #'pack': 'zip'})
+                                                'make_handle': 0})
+        except:
+            raise ValueError('error uploading png file to shock')
+        try:
+            pdf_upload_ret = dfuClient.file_to_shock({'file_path': output_pdf_file_path,
+                                                #'pack': 'zip'})
+                                                'make_handle': 0})
+        except:
+            raise ValueError('error uploading pdf file to shock')
+        """
+        try:
+            html_upload_ret = dfuClient.file_to_shock({'file_path': html_output_dir,
+                                                       'make_handle': 0,
+                                                       'pack': 'zip'})
+        except:
+            raise ValueError('error uploading html report to shock')
+
+
+        #### STEP 15: Create per-genome featureSets
+        ##
+        if int(params.get('save_per_genome_featureSets')) == 1:
+            for genome_ref in genome_ref_order:
+                per_genome_featureSet_elements = {}
+                try:
+                    hits_to_this_genome = hits_by_genome_ref[genome_ref]
+                except:
+                    continue
+                for hit_id in sorted(hits_by_genome_ref[genome_ref]):
+                    per_genome_featureSet_elements[hit_id] = [genome_ref]
+        
+                per_genome_FS_prov = [{}]
+                if 'provenance' in ctx:
+                    per_genome_FS_prov = ctx['provenance']
+                # add additional info to provenance here, in this case the input data object reference
+                per_genome_FS_prov[0]['input_ws_objects'] = []
+                per_genome_FS_prov[0]['input_ws_objects'].append(params['input_featureSet_ref'])
+                per_genome_FS_prov[0]['input_ws_objects'].append(genome_ref)
+                per_genome_FS_prov[0]['service'] = 'kb_phylogenomics'
+                per_genome_FS_prov[0]['method'] = 'find_homologs_with_genome_context'
+            
+                per_genome_FS_obj = {
+                    'description': 'Hits to Genome '+genome_ref+' by '+input_featureSet_name,
+                    'elements': per_genome_featureSet_elements
+                }
+                per_genome_FS_name = genome_names[genome_ref]+'-Homologs_of-'+input_featureSet_name
+                try:
+                    per_genome_FS_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                                                    'objects': [
+                                                                        {
+                                                                            'type':'KBaseCollections.FeatureSet',
+                                                                            'data':per_genome_FS_obj,
+                                                                            'name':per_genome_FS_name,
+                                                                            'meta':{},
+                                                                            'provenance':per_genome_FS_prov,
+                                                                            'hidden':0  # 1=True
+                                                                        }]
+                                                                })[0]
+                except Exception as e:
+                    raise ValueError('Unable to save per genome featureSet object to workspace: (' + per_genome_FS_name + ')' + str(e))
+                self.log(console, "saved per genome hits as FS "+str(per_genome_FS_name))
+                per_genome_FS_ref = str(per_genome_FS_obj_info[WSID_I])+'/'+str(per_genome_FS_obj_info[OBJID_I])+'/'+str(per_genome_FS_obj_info[VERSION_I])
+
+                created_objects.append({'ref': per_genome_FS_ref, 'description': 'Hits to Genome '+genome_names[genome_ref]})
+
+
+        #### STEP 16: Create report obj
+        ##
+        reportName = 'blast_report_' + str(uuid.uuid4())
+        #report += output_newick_buf+"\n"
+        reportObj = {'objects_created': [],
+                     'direct_html_link_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+                     }
+        #reportObj['objects_created'].append({'ref': str(params['workspace_name'])+'/'+str(params['output_name']),'description': params['output_name']+' Tree'})
+        reportObj['objects_created'] = created_objects
+        reportObj['html_links'] = [{'shock_id': html_upload_ret['shock_id'],
+                                    'name': html_file,
+                                    'label': intree_name + ' scanned by '+ input_featureSet_name + ' HTML'
+                                    }
+                                   ]
+        """
+        reportObj['file_links'] = [{'shock_id': newick_upload_ret['shock_id'],
+                                    'name': intree_name + '.newick',
+                                    'label': intree_name + ' NEWICK'
+                                    }
+                                   ]
+        if 'default_node_labels' in tree_in:
+            reportObj['file_links'].append({'shock_id': newick_labels_upload_ret['shock_id'],
+                                            'name': intree_name + '-labels.newick',
+                                            'label': intree_name + ' NEWICK (with labels)'
+                                            })
+
+        reportObj['file_links'].extend([{'shock_id': png_upload_ret['shock_id'],
+                                         'name': intree_name + '.png',
+                                         'label': intree_name + ' PNG'
+                                         },
+                                        {'shock_id': pdf_upload_ret['shock_id'],
+                                         'name': intree_name + '.pdf',
+                                         'label': intree_name + ' PDF'
+                                         }])
+        """
+
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        report_info = reportClient.create_extended_report(reportObj)
+
+
+        # Done
+        #
+        self.log(console, "BUILDING RETURN OBJECT")
+        output = {'report_name': report_info['name'],
+                  'report_ref': report_info['ref']
+                  }
+
+        self.log(console, "find_homologs_with_genome_context() DONE")
+        #END find_homologs_with_genome_context
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method find_homologs_with_genome_context return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def get_configure_categories(self, ctx, params):
+        """
+        :param params: instance of type "get_configure_categories_Input"
+           (get_configure_categories() ** ** configure the domain categorie
+           names and descriptions) -> structure: parameter "params" of type
+           "view_fxn_profile_Input" (view_fxn_profile() ** ** show a
+           table/heatmap of general categories or custom gene families for a
+           set of Genomes) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter
+           "input_genomeSet_ref" of type "data_obj_ref", parameter
+           "namespace" of String, parameter "custom_target_fams" of type
+           "CustomTargetFams" (parameter groups) -> structure: parameter
+           "target_fams" of list of String, parameter
+           "extra_target_fam_groups_COG" of list of String, parameter
+           "extra_target_fam_groups_PFAM" of list of String, parameter
+           "extra_target_fam_groups_TIGR" of list of String, parameter
+           "extra_target_fam_groups_SEED" of list of String, parameter
+           "count_category" of String, parameter "heatmap" of type "bool",
+           parameter "vertical" of type "bool", parameter "top_hit" of type
+           "bool", parameter "e_value" of Double, parameter "log_base" of
+           Double, parameter "show_blanks" of type "bool"
+        :returns: instance of type "get_configure_categories_Output" ->
+           structure: parameter "cats" of list of String, parameter
+           "cat2name" of type "Cat2Name" (category to name) -> structure:
+           parameter "namespace" of type "domain_source" (COG, PF, TIGR,
+           SEED), parameter "cat" of type "category" (Categories), parameter
+           "cat2group" of type "Cat2Group" (category to group) -> structure:
+           parameter "namespace" of type "domain_source" (COG, PF, TIGR,
+           SEED), parameter "cat" of type "category" (Categories), parameter
+           "domfam2cat" of type "DomFam2Cat" (domain family to category) ->
+           structure: parameter "namespace" of type "domain_source" (COG, PF,
+           TIGR, SEED), parameter "domfam" of type "domainfamily" (Domains),
+           parameter "cat2domfams" of type "Cat2DomFams" (category to domain
+           family) -> structure: parameter "namespace" of type
+           "domain_source" (COG, PF, TIGR, SEED), parameter "cat" of type
+           "category" (Categories)
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN get_configure_categories
+
+        # configure categories
+        #
+
+        params['namespace'] = 'SEED'
+        params['custom_target_fams'] = dict()
+        
+        (cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading,
+         extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name) = self._configure_categories(params)
+        
+        output = dict()
+        output['cats'] = cats
+        output['cat2name'] = cat2name
+        output['cat2group'] = cat2group
+        output['domfam2cat'] = domfam2cat
+        output['cat2domfams'] = cat2domfams
+        
+        #END get_configure_categories
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method get_configure_categories return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+            
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

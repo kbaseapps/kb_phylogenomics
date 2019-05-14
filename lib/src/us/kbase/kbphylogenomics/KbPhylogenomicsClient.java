@@ -181,23 +181,6 @@ public class KbPhylogenomicsClient {
     }
 
     /**
-     * <p>Original spec-file function name: trim_tree_to_genomeSet</p>
-     * <pre>
-     * </pre>
-     * @param   params   instance of type {@link us.kbase.kbphylogenomics.TrimTreeToGenomeSetInput TrimTreeToGenomeSetInput} (original type "trim_tree_to_genomeSet_Input")
-     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.TrimTreeToGenomeSetOutput TrimTreeToGenomeSetOutput} (original type "trim_tree_to_genomeSet_Output")
-     * @throws IOException if an IO exception occurs
-     * @throws JsonClientException if a JSON RPC exception occurs
-     */
-    public TrimTreeToGenomeSetOutput trimTreeToGenomeSet(TrimTreeToGenomeSetInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
-        List<Object> args = new ArrayList<Object>();
-        args.add(params);
-        TypeReference<List<TrimTreeToGenomeSetOutput>> retType = new TypeReference<List<TrimTreeToGenomeSetOutput>>() {};
-        List<TrimTreeToGenomeSetOutput> res = caller.jsonrpcCall("kb_phylogenomics.trim_tree_to_genomeSet", args, retType, true, true, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
-    }
-
-    /**
      * <p>Original spec-file function name: run_DomainAnnotation_Sets</p>
      * <pre>
      * </pre>
@@ -364,6 +347,40 @@ public class KbPhylogenomicsClient {
         args.add(params);
         TypeReference<List<ViewPanPhyloOutput>> retType = new TypeReference<List<ViewPanPhyloOutput>>() {};
         List<ViewPanPhyloOutput> res = caller.jsonrpcCall("kb_phylogenomics.view_pan_phylo", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: find_homologs_with_genome_context</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.FindHomologsWithGenomeContextInput FindHomologsWithGenomeContextInput} (original type "find_homologs_with_genome_context_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.FindHomologsWithGenomeContextOutput FindHomologsWithGenomeContextOutput} (original type "find_homologs_with_genome_context_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public FindHomologsWithGenomeContextOutput findHomologsWithGenomeContext(FindHomologsWithGenomeContextInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<FindHomologsWithGenomeContextOutput>> retType = new TypeReference<List<FindHomologsWithGenomeContextOutput>>() {};
+        List<FindHomologsWithGenomeContextOutput> res = caller.jsonrpcCall("kb_phylogenomics.find_homologs_with_genome_context", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: get_configure_categories</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.GetConfigureCategoriesInput GetConfigureCategoriesInput} (original type "get_configure_categories_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.GetConfigureCategoriesOutput GetConfigureCategoriesOutput} (original type "get_configure_categories_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public GetConfigureCategoriesOutput getConfigureCategories(GetConfigureCategoriesInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<GetConfigureCategoriesOutput>> retType = new TypeReference<List<GetConfigureCategoriesOutput>>() {};
+        List<GetConfigureCategoriesOutput> res = caller.jsonrpcCall("kb_phylogenomics.get_configure_categories", args, retType, true, true, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 
