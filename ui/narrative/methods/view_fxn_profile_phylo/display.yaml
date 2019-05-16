@@ -1,10 +1,10 @@
 #
 # define display information
 #
-name: View Function Profile Phylo - v1.2.2
+name: View Function Profile for a Phylogenetic Tree - v1.2.2
 
 tooltip: |
-    Examine the general functional distribution or specific functional gene families for the Genomes in a Species Tree
+    Examine the distribution of functional gene families for organisms in a phylogenetic SpeciesTree.
 
 screenshots: []
 
@@ -31,102 +31,74 @@ suggestions:
 parameters :
     input_speciesTree_ref :
         ui-name : |
-            Species Tree
+            Tree
         short-hint : |
-            The Species Tree of Genomes to examine
-        long-hint  : |
-            The Species Tree of Genomes to examine
+            Select a phylogenetic SpeciesTree with domain-annotated Genomes to view with the functional profiler.
     namespace :
         ui-name : |
-            Domain Namespace
+            Domain Selection
         short-hint : |
-            Do top-level analysis or Custom Domain Families?
-        long-hint  : |
-            Do top-level analysis or Custom Domain Families?
+            Select between using a top-level domain source for viewing all possible domains, or choose a subset of custom doamins.
     target_fams :
         ui-name : |
             Custom Domains
         short-hint : |
-            Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
-        long-hint  : |
-            Domain Families to target in the analysis, e.g. PF00007, COG0007 (default: top-level functional category report)
+            Specify domain families to display in the viewer using a comma to separate terms, e.g. PF00007, COG0007. The default is to display all annotated domains.
     extra_target_fam_groups_COG :
         ui-name : |
             Custom Domain Groups (COG)
         short-hint : |
-            Domain Families from particular namespace groups to target in the analysis
-        long-hint  : |
-            Domain Families from particular namespace groups to target in the analysis
+            Select COG domain group from the dropdown list, e.g., N:Cell Motility, for displaying hits in the viewer.
     extra_target_fam_groups_PFAM :
         ui-name : |
             Custom Domain Groups (PFAM)
         short-hint : |
-            Domain Families from particular namespace groups to target in the analysis
-        long-hint  : |
-            Domain Families from particular namespace groups to target in the analysis
+            Select PFAM clan from the dropdown list, e.g., CL0181:ABC-2-transporter-like clan, for displaying hits in the viewer.
     extra_target_fam_groups_TIGR :
         ui-name : |
             Custom Domain Groups (TIGRFAM)
         short-hint : |
-            Domain Families from particular namespace groups to target in the analysis
-        long-hint  : |
-            Domain Families from particular namespace groups to target in the analysis
+            Select TIGR role from the dropdown list, e.g., role 13010:Biosynthesis, for displaying hits in the viewer.
     extra_target_fam_groups_SEED :
         ui-name : |
-            Custom Domain Groups (SEED)
+            SEED Functional Group
         short-hint : |
-            Domain Families from particular namespace groups to target in the analysis
-        long-hint  : |
-            Domain Families from particular namespace groups to target in the analysis
+            Select SEED-defined Functional Category from the dropdown list, e.g., Alanine Biosynthesis, for displaying hits in the viewer. Requires RAST annotated genomes.
     count_category :
         ui-name : |
             View values as
         short-hint : |
-            Calculate numbers as percentages or raw counts
-        long-hint  : |
-            Calculate numbers as percentages or raw counts
+            Calculate hits as percentages of total genes or as raw counts of genes.
     heatmap :
         ui-name : |
             View table as
         short-hint : |
-            Display as heatmap or numerical table
-        long-hint  : |
-            Display as heatmap or numerical table
+            Display as color heatmap or numerical table of domain hit counts.
     log_base :
         ui-name : |
             Heatmap Log Base (optional)
         short-hint : |
-            Set if you want the heatmap to show colors using a log scale
-        long-hint  : |
-            Set if you want the heatmap to show colors using a log scale
+            To switch from linear (default) to log base, set a log base for rendering the heatmap values.
     e_value :
         ui-name : |
-            E-value lower limit
+            E-value Upper Limit
         short-hint : |
-            Ignore domain hits below e-value threshold
-        long-hint  : |
-            Ignore domain hits below e-value threshold
+            Hit count calculation ignores domain hits above the specified e-value threshold.
     vertical :
         ui-name : |
             View genomes as
         short-hint : |
-            Show table with genomes as rows
-        long-hint  : |
-            Show table with genomes as rows
+            Show table with genomes as rows.
     top_hit :
         ui-name : |
             Count annotated genes using
         short-hint : |
-            Count only the top hit per gene within a namespace (e.g. Pfam)
-        long-hint  : |
-            Count only the top hit per gene within a namespace (e.g. Pfam)
+            Count only the top hit per gene within a namespace (e.g. Pfam).
     show_blanks :
         ui-name : |
             Empty categories
         short-hint : |
-            Show categories or families that have no counts
-        long-hint  : |
-            Show categories or families that have no counts
+            Show categories or families that have no counts.
 
 #
 # Configure the display and description of parameters
@@ -134,16 +106,16 @@ parameters :
 parameter-groups :
     custom_target_fams :
         ui-name : |
-            Custom Domains (including namespace groups)
+            Custom Domains and Namespace Groups
         short-hint : |
-            Define custom domains to use
-        long-hint  : |
-            Define custom domains to use
+            Enable and define custom domains for the viewer. The default is to display all annotated domains.
 
 description : |
-    <p>After Speces Tree construction and DomainAnnotation, you can use this method to examine the general functional distribution or specific functional gene families for the Genomes in the Species Tree.</p>
+    <p>This App constructs a heatmap or numeric table showing protein domains that are present in the genomes of all the organisms contained in a phylogenetic species tree. It is recommended to use genomes annotated with RAST if you want to analyze SEED roles, but genomes annotated with Prokka or other tools are fine for other domain namespaces. To use this App, you must first construct a tree with your genomes using either the <a href=”https://narrative.kbase.us/#appcatalog/app/SpeciesTreeBuilder/insert_set_of_genomes_into_species_tree/release”>Insert Genome Into Species Tree</a> or the <a href=”https://narrative.kbase.us/#appcatalog/app/SpeciesTreeBuilder/insert_genomeset_into_species_tree/release”>Insert Set of Genomes Into Species Tree</a> Apps. It is recommended that you set those tree building apps to “Copy public genomes to your workspace” and use the genome set created by these Apps to facilitate success in the next steps to use this viewer. Next, you must perform domain annotation on all of the genomes in your tree, by using the <a href=”https://narrative.kbase.us/#appcatalog/app/kb_phylogenomics/run_DomainAnnotation_Sets/release”>Annotate Domains in a GenomeSet</a> App on the genome set associated with your species tree. If there are any genomes present in the tree that are not annotated with domains, the app will fail. The error message “MISSING DOMAIN ANNOTATION FOR: 43454/34/1” indicates which genome in the Data Panel needs domain annotation. Check that all of the genomes in the tree have corresponding Genome and Domain Annotation objects in your Data Panel. Run the <a href=”https://narrative.kbase.us/#appcatalog/app/DomainAnnotation/annotate_domains_in_a_genome/release”>Annotate Domains in a Genome</a> App on any genomes that lack a corresponding Domain Annotation object. These steps are required to ensure this viewer will function properly.</p>
 
-    <p>View Fxn Profile Phylo App written by Dylan Chivian (DCChivian@lbl.gov) using DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov) and Species Tree Builder App by Roman Sutormin and Paramvir Dehal (PSDehal@lbl.gov).</p>
+    <p>You can use this App to examine the general domain distribution or specific functional gene families for all the genomes in the species tree, sorted according to their position in the tree. Choose a Domain Namespace to view hits for all protein domain terms from COG Functional Categories, Pfam A Clans, TIGRfam Roles, and SEED Roles. Enable and set the Custom Domains parameters to limit the report to a subselection of terms. The output report can be a heatmap to visualize the degree of hits for genes that correspond to motifs associated with protein domains, or a numeric table containing the count of hits. The output report also provides a key for the functional domain terms from each of these databases; terms not associated with any hits will appear with grey background color.</p>
+
+    <p><strong>Team members who developed &amp; deployed App in KBase:</strong> Dylan Chivian, using the DomainAnnotation App by John-Marc Chandonia, Pavel Novichkov, and Roman Sutormin, and the Species Tree Builder App by Roman Sutormin and Paramvir Dehal. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
 
 publications :
     -

@@ -4,9 +4,10 @@
 name: Pangenome Circle Plot - v1.2.0
 
 tooltip: |
-    View a Microbial Pangenome as a Circle Plot
+    View a microbial Pangenome as a circle plot.
 
-screenshots: []
+screenshots:
+    - pangenome_circle_plot-report_example.png
 
 icon: pan_circle-purple.png
 
@@ -18,7 +19,7 @@ suggestions:
         related:
             []
         next:
-            []
+            [kb_phylogenomics.view_fxn_profile_featureSet,kb_SetUtilities.KButil_Slice_FeatureSets_by_Genomes,kb_SetUtilities.KButil_Merge_FeatureSet_Collection,kb_SetUtilities.KButil_Logical_Slice_Two_FeatureSets]
     methods:
         related:
             []
@@ -33,42 +34,70 @@ parameters :
         ui-name : |
             Base Genome
         short-hint : |
-            The Genome to use as the base of the circle plot
-        long-hint  : |
-            The Genome to use as the base of the circle plot
+            The Genome to use as the base of the circle plot.
     input_pangenome_ref :
         ui-name : |
             Pangenome
         short-hint : |
-            The Pangenome to view against the Base Genome
-        long-hint  : |
-            The Pangenome to view against the Base Genome
+            The Pangenome to view against the base Genome.
     input_compare_genome_refs :
         ui-name : |
             Custom Compare Genome(s)
         short-hint : |
-            The Genome(s) to compare against the base
-        long-hint  : |
-            The Genome(s) to compare against the base
+            The Genome(s) to compare against the base.
     input_outgroup_genome_refs :
         ui-name : |
             Outgroup Genome(s)
         short-hint : |
-            The Genome(s) to use as outgroup to distinguish clade-specific core
-        long-hint  : |
-            The Genome(s) to use as outgroup to distinguish clade-specific core
+            The Genome(s) to use as outgroup to distinguish clade-specific core.
     save_featuresets :
         ui-name : |
-            Save pangenome feature sets
+            Save pangenome FeatureSets
         short-hint : |
-            The Pangenome Core, Singleton, and Partial Pangenome FeatureSet objects
-        long-hint  : |
-            The Pangenome Core, Singleton, and Partial Pangenome FeatureSet objects
+            The Pangenome core, singleton, and partial pangenome FeatureSet objects.
 
 description : |
-    <p>After Pangenome calculation, you can use this method to view the overlapping membership of genes against a base genome.</p>
+    <p>After performing a <b><i>Pangenome</i></b> calculation, you can use this App to view the overlapping membership of genes against a base genome. Additionally, this App will split the Pangenome into <b><i>Feature Sets</i></b> corresponding to the <i>Core</i>, <i>Clade-specific Core</i>, <i>Singleton</i>, and <i>Partial</i> (non-core & non-singleton fraction) pangenomes.</p>
 
-    <p>View Pangenome Circle Plot App written by Dylan Chivian (DCChivian@lbl.gov), using Pangenome Calculator OrthoMCL
+    <hr>
+
+    <p><h3>Pangenome Categories</h3></p>
+    <p>The Pangenome represents the collection of all genes found in a collection of related organisms, grouped by sequence homology. Methods like OrthoMCL attempt to distinguish which genes are true orthologs and vertically inherited as opposed to lineage derived paralogous expansions by duplication. Homologous gene collections are typically categorized into <i>Core</i>, <i>Clade-specific Core</i>, and <i>Singleton</i>, with the remaining ortholog sets just considered the “rest” of the Pangenome (here termed the “<i>Partial</i> Pangenome”).</p>
+
+    <p><b>Core:</b> Those ortholog sets with at least one gene from the ortholog set with a gene in each of the genomes. It is most likely that the common ancestor of the species clade contained the ancestral form of the gene that each of the modern genomes inherited. Furthermore, given that the gene has been retained by all of the modern species, it is likely required, or at least sufficiently beneficial to lifestyle, to be retained. The rule used by <b>Pangenome Circle Plot</b> to determine if a homolog set should be considered “Core” is that a gene is found in all N genomes. When using incomplete genomes, the 100% presence rule may be too strict given that the gene may exist but not be observed. Rather than impose flexible thresholds for presence, we recommend instead that the user only include the most complete genomes possible in pangenome calculations.</p>
+
+    <p><b>Clade-specific Core:</b> Core gene ortholog clusters contain functions that are universal to all life and therefore one often wishes to separate out those “housekeeping” functions from those which characterize the core function of a given clade. To accomplish this, one should include a distinct outgroup species in the Pangenome calculation, either distinguished by its lack of a given functionality and/or phylogenetically distant (e.g. Escherichia coli K-12 MG1655 if one is calculating the Pangenome for a set of Clostridia). The outgroup distance shouldn’t be so great that orthology calculations are likely to fail due to sequence divergence being too great (e.g. Archaea should not be used as outgroups for Bacterial pangenomes). This App includes an optional field to specify which genomes in the input Pangenome obect should be considered outgroups and, if provided, will split the <i>Core</i> fraction of the Pangenome into <i>Clade-specific Core</i> and <i>Non-specific Core</i>. The rule used is <i>Non-specific Core</i> is present in all genomes, whereas <i>Clade-specific Core</i> is present in all but the outgroup genomes.</p>
+
+    <p><b>Singleton:</b> The Pangenome calculation will find a large number of genes with no sequence homology to genes in any other genomes. These are categorized as <i>Singletons</i>. The rule is presence in one and only one genome. They may represent generation of novel functions, horizontal transfer from distal lineages not included in the Pangenome calculation, or missing proximal lineages that perhaps should have been included in the Pangenome calculation. If the set of genomes in the Pangenome calculation contains a broad phylogenetic sampling of the clade of interest, then the last candidate hypothesis is less likely.</p>
+
+    <p><b>Partial Pangenome:</b> In between Core and Singleton are those ortholog clusters present in more than one genome and fewer than all. If using incomplete genomes, these sets may contain ortholog clusters that would otherwise be calculated as core functions, so exercise caution when using incomplete genomes (absence of evidence is not evidence of absence!). Whether these functions are introduced into a branch of the lineage or represent fluctuating capabilities of the clade can be determined by placing the Pangenome Analysis against the <b><i>Species Tree</i></b> using the related App <b>Phylogenetic Pangenome Accumulation</b>.</p>
+
+    <hr>
+
+    <p><h3>Configuration</h3></p>
+    <p><b>Base Genome:</b> The base Genome is used to order the ortholog clusters into a ring in the output visualization, following the order of the genes in the base genome. The order of the genes in the rest of the pangenome is aligned to the position of its ortholog in the base genome. The base genome must be one of the genomes in the pangenome object. Only one genome can be used as the base.</p>
+
+    <p><b>Pangenome:</b> The pre-calculated pangenome object (containing the orthology relationships between the genes) to use for the visualization. Only one pangenome object can be used.</p>
+
+    <p><b>Custom Compare Genome(s):</b> [advanced] The default behavior is to show all the genomes in the pangenome object, as well as use all of them for the Core, Singleton, etc. calculations. However, one can select only a subset of the genomes in the Pangenome object for visualization and Pangenome breadth calculation. By definition, the Base Genome will be included in the calculation, and one or more additional genomes can be added here. Just click on the &quot;+&quot; symbol to add each Genome object you wish to include in the Pangenome comparison.</p>
+
+    <p><b>Outgroup Genome(s):</b> [advanced] As discussed above, one may add one or more outgroup genomes to split the calculation of the Core set to split Clade-specific from Non-specific Core. Any outgroup Genomes must have been among the genomes included previously in the creation of the Pangenome object.</p>
+
+    <p><b>Save Pangenome FeatureSets:</b> FeatureSets containing Core (with outgroup Genome(s) this will be split into Clade-specific Core and Non-specific Core), Singleton, and Partial Pangenome (see above) gene members from the ortholog clusters are created if this option is set.</p>
+
+    <p><strong>Team members who developed &amp; deployed App in KBase:</strong> Dylan Chivian, using Pangenome Calculator OrthoMCL. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+
+results : |
+    <p><ul>
+      <li><b>Feature Sets</b> corresponding to the Core, Singleton, and Partial Pangenome (see above) may be created.</li>
+      <li><b>PDF and PNG</b> images of the Pangenome Circle Plot are available for download.</li>
+      <li><b>HTML Report</b> with the Pangenome Circle Plot image and the names of the genomes for each ring is available and can be saved using your browser’s “Save” functionality.</li>
+    </ul>
+    </p>
+
+    <p>The base Genome is represented by the outermost ring, with the order of the genes taken from the order in the base genome.  The base Genome ring has each gene indicated by a colored line, with genes colored by their membership in the pangenome categories, with <b><font color=”red”>red</font></b> for <b><i>singletons</i></b>, <b><font color=”darkblue”>dark blue</font></b> for <b><i>core</i></b> (non-specific core if an outgroup is used), <b><font color=”magenta”>magenta</font></b> for <b><i>clade-specific core</i></b> (if an outgroup is used), and <b><font color=”cyan”>cyan</font></b> for <b><i>partial</i></b> pangenome.</b></p>
+
+    <p>Each additional Genome requested of the Pangenome are represented by the inner rings. The order of the rings is determined by the fractional overlap in the ortholog clusters against the base genome, from the most similar to the base closer to the outer ring. The position of each gene, indicated by a line, is aligned to its ortholog in the base genome, not by its position in the source genome. Genes are colored by their membership in the pangenome categories, with <b><font color=”darkblue”>dark blue</font></b> for <b><i>core</i></b> (non-specific core if an outgroup is used), <b><font color=”magenta”>magenta</font></b> for <b><i>clade-specific core</i></b> (if an outgroup is used), and <b><font color=”gray”>gray</font></b> for <b><i>partial</i></b> pangenome.</b> Singletons from non-base genomes are not included in the plot as they do not align to any genes in the base genome, but they are included in the Singleton Feature Set output object.</p>
 
 publications :
     -

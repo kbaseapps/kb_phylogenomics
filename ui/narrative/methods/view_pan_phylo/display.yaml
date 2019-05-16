@@ -4,9 +4,9 @@
 name: Phylogenetic Pangenome Accumulation - v1.2.0
 
 tooltip: |
-    View the Pangenome in a Phylogenetic context
+    View a Pangenome in a phylogenetic context.
 
-screenshots: []
+screenshots: [phylo_pan_accum-report_example.png]
 
 icon: pan_phylo-purple.png
 
@@ -18,7 +18,7 @@ suggestions:
         related:
             []
         next:
-            []
+            [kb_phylogenomics.view_fxn_profile_featureSet,kb_SetUtilities.KButil_Slice_FeatureSets_by_Genomes,kb_SetUtilities.KButil_Merge_FeatureSet_Collection,kb_SetUtilities.KButil_Logical_Slice_Two_FeatureSets]
     methods:
         related:
             []
@@ -33,28 +33,55 @@ parameters :
         ui-name : |
             Pangenome
         short-hint : |
-            The Pangenome that contains the homolog relationships
-        long-hint  : |
-            The Pangenome that contains the homolog relationships
+            The Pangenome that contains the homolog relationships.
     input_speciesTree_ref :
         ui-name : |
             Species Tree
         short-hint : |
-            The Species Tree of the Pangenome members
-        long-hint  : |
-            The Species Tree of the Pangenome members
+            The Species Tree of the Pangenome members.
     save_featuresets :
         ui-name : |
-            Save pangenome feature sets
+            Save Pangenome FeatureSets
         short-hint : |
-            The Pangenome Core, Singleton, and Partial Pangenome FeatureSet objects
-        long-hint  : |
-            The Pangenome Core, Singleton, and Partial Pangenome FeatureSet objects
+            The Pangenome core, singleton, and partial pangenome FeatureSet objects.
 
 description : |
-    <p>View the Pangenome in a Phylogenetic Context.</p>
+    <p>View a Pangenome in a phylogenetic context. Allows the dissection of Pangenome categories using the Species Tree so that one can determine when gene families entered or left a branch of interest.</p>
 
-    <p>Phylogenetic Pangenome App written by Dylan Chivian (DCChivian@lbl.gov), using Trees from the Species Tree builder by Roman Sutormin (RSutormin@lbl.gov) and Paramvir Dehal (PSDehal@lbl.gov) and the Pangenome Calculator OrthoMCL 
+    <hr>
+
+    <p><h3>Pangenome Categories</h3></p>
+    <p>A Pangenome is the set of all genes found in a collection of related organisms, typically members of a species clade, which are then grouped or associated by sequence homology across species. Some methods that determine pangenomes, such as <a href=”https://narrative.kbase.us/#catalog/apps/PangenomeOrthomcl/build_pangenome_with_orthomcl/release”>OrthoMCL</a>, attempt to distinguish which homologous genes are true orthologs and vertically inherited from those with lineage derived paralogous expansions by duplication.</p>
+
+    <p>Orthologous gene sets within a pangenome are typically partitioned into three categories: <i>Core</i>, <i>Singleton</i>, and the remaining ortholog sets just considered the “rest” of the Pangenome (here termed the “<i>Partial</i> Pangenome”).</p>
+
+    <p>The <b>Core</b> are those ortholog sets whose members are found in all of the collected genomes; ie each genome contains at least one gene from the ortholog set. Therefore it is most likely that the common ancestor of the species clade contained the ancestral form of the gene that each of the modern genomes inherited. Furthermore, given that the gene has been retained by all of the modern species, it is likely required, or at least sufficiently beneficial to lifestyle, to be retained. The rule used by <b>Phylogenetic Pangenome Accumulation</b> to determine if a homolog set should be considered “Core” is that a gene is found in all N genomes of the branch. When using incomplete genomes, the 100% presence rule may be too strict given that the gene may exist but not be observed. Rather than impose flexible thresholds for presence, we recommend instead that the user only include the most complete genomes possible in pangenome calculations.</p>
+
+    <p><b>Singleton:</b> The Pangenome calculation will find a large number of genes with no sequence homology to genes in any other genomes. These are categorized as <i>Singletons</i>. The rule is presence in one and only one genome. They may represent generation of novel functions, horizontal transfer from distal lineages not included in the Pangenome calculation, or missing proximal lineages that perhaps should have been included in the Pangenome calculation. If the set of genomes in the Pangenome calculation contains a broad phylogenetic sampling of the clade of interest, then the last candidate hypothesis is less likely.</p>
+
+    <p><b>Partial Pangenome:</b> In between Core and Singleton are those ortholog clusters present in more than one genome and fewer than all. If using incomplete genomes, these sets may contain ortholog clusters that would otherwise be calculated as core functions, so exercise caution when using incomplete genomes (absence of evidence is not evidence of absence!).</p>
+
+    <hr>
+
+    <p><h3>Configuration</h3></p>
+    <p><b>Pangenome:</b> The pre-calculated pangenome object (containing the orthology relationships between the genes) to use for the visualization. Only one Pangenome object can be used.</p>
+
+    <p><b>Species Tree:</b> The phylogenetic pangenome accumulation is determined within the context of the Species Tree. Every Genome in the Species Tree must be contained within the Pangenome object (but not every Genome in the Pangenome object needs to be in the Species Tree). The same Narrative must be used for the Genomes found in the Pangenome and the Species Tree. Only one species Tree can be used at a time.</p>
+
+    <p><b>Save Pangenome feature sets:</b> Feature Sets containing Core, Singleton, and Partial Pangenome (see above) gene members from the ortholog clusters are created if this option is set. These categories are calculated and generated for each node in the Species Tree, using the collection of genomes for which that node represents the ancestor (i.e. the leaves of that branch).</p>
+
+    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> Dylan Chivian. Species Tree Builder by Roman Sutormin and Paramvir Dehal. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+
+results : |
+    <p><b>Feature Sets</b> corresponding to the Core, Singleton, and Partial Pangenome (see above) may be created. These three categories are represented for each node in the tree, except for those joining two genomes where only Singleton or Core categories can be determined (or if there are no genes corresponding to the given category for that node).</p>
+
+    <p><b>PDF and PNG</b> images of the Phylogenetic Pangenome Accumulation are available for download.</p>
+
+    <p><b>HTML Report</b> with the Phylogenetic Pangenome Accumulation image and bar plots of the pangenome category accumulation of ortholog clusters for each node of the Species Tree. The HTML Report can be saved using your browser’s “Save” functionality.</p>
+
+    <p>The Species Tree is shown with the ancestral nodes numbered, starting from zero at the root.  Each node additionally has a pie chart showing the pangenome accumulation proportions at each node. The Pangenome object is sliced by the genomes corresponding to each node (leaves of the children branches), and the rules for Core (present in all N genomes), Singleton (present in only one genome), and Partial (present in between 1 and N genomes) categories are applied to that node-specific Pangenome. The trend from leaves to root is that the fraction of Core decreases as more genomes are added to the Pangenome calculation, whereas Singleton and Partial both increase (Partial requires at least 3 genomes, so there are no counts for nodes ancestral to just 2 genomes).</p>
+
+    <p>Bar charts are also shown with the raw counts of the number of ortholog clusters in each category (not the total number of genes in the categories, although that is equivalent for Singletons). For each node, there is a corresponding output Feature Set object for the genes in each of these categories.</p>
 
 publications :
     -
