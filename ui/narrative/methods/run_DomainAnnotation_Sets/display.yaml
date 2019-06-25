@@ -4,7 +4,7 @@
 name: Annotate Domains in a GenomeSet
 
 tooltip: |
-    Run DomainAnnotation on a Genome Set
+    Annotate domains in every Genome within a GenomeSet using protein domains from widely used domain libraries.
 
 screenshots: []
 
@@ -16,7 +16,7 @@ icon: domains-red.png
 suggestions:
     apps:
         related:
-            []
+            [annotate_domain_in_a_genome]
         next:
             []
     methods:
@@ -31,23 +31,23 @@ suggestions:
 parameters :
     input_genomeSet_ref :
         ui-name : |
-            Genome Set
+            GenomeSet
         short-hint : |
-            The Set of Genomes upon which to run DomainAnnotation
-        long-hint  : |
-            The Set of Genomes upon which to run DomainAnnotation
+            Select a GenomeSet from your data panel to annotate with domains. All Genomes in the GenomeSet must already have annotated protein-encoding genes.
     override_annot :
         ui-name : |
             Override Existing Domain Annotations
         short-hint : |
-            Whether to redo or skip DomainAnnotations that have already been done
-        long-hint  : |
-            Whether to redo or skip DomainAnnotations that have already been done
+            If "skip repeat annotations" (the default) is selected, this App will skip the annotation of any Genome that already has an object with its domain annotations in your data panel. If "overwrite domain annotations" is selected, this App will redo domain annotation on these Genomes, potentially overwriting older domain annotations.
 
 description : |
-    <p>run DomainAnnotation runs the DomainAnnotation App on all the members of a Genome Set.</p>
+    <p>This App uses the same process as the <a href="https://kbase.us/applist/apps/DomainAnnotation/annotate_domains_in_a_genome/release">Annotate Domains in a Genome</a> App, but does so on all Genomes within a GenomeSet.</p>
 
-    <p>DomainAnnotation App by John-Marc Chandonia (JMChandonia@lbl.gov), Pavel Novichkov (PSNovichkov@lbl.gov), and Roman Sutormin (RSutormin@lbl.gov).</p>
+    <p>This App identifies protein domains from widely used domain libraries. It requires a Genome as input, which must already have annotated protein-encoding genes (e.g., those identified using the <a href=”https://narrative.kbase.us/#catalog/apps/RAST_SDK/reannotate_microbial_genome/release”>Annotate Microbial Genome</a> or <a href=”https://narrative.kbase.us/#catalog/apps/RAST_SDK/annotate_contigset/release”>Annotate Microbial Assembly</a> Apps).</p>
+
+    <p>Each Genome is annotated with domains from all available domain libraries (for a complete list, see the documentation linked above).  This may take several hours per genome, depending on the genome size.
+
+    <p><strong>Team members who developed &amp; deployed this App in KBase:</strong> Dylan Chivian. <i>Annotate Domains in a Genome</i> was developed by John-Marc Chandonia, Roman Sutormin, and Pavel Novichkov. For questions, please <a href="http://kbase.us/contact-us/">contact us</a>.</p>
 
 publications :
     -
