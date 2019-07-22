@@ -330,7 +330,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
-    #@unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
+    @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_01(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -434,8 +434,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for GenomeSet
     ##
-    # HIDE
-    #@unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
     def test_view_fxn_profile_01(self):
         method = 'view_fxn_profile'
 
@@ -525,7 +524,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'top_hit': "1",
                    'e_value': "0.001",
                    'log_base': "",
-                   'show_blanks': "0"
+                   'show_blanks': "0",
+                   'enforce_genome_version_match': "0"
                }
         ret = self.getImpl().view_fxn_profile(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])
@@ -542,8 +542,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for FeatureSet
     ##
-    # HIDE
-    #@unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
     def test_view_fxn_profile_featureSet_01(self):
         method = 'view_fxn_profile_featureSet'
 
@@ -634,7 +633,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'top_hit': "1",
                    'e_value': "0.001",
                    'log_base': "",
-                   'show_blanks': "0"
+                   'show_blanks': "0",
+                   'enforce_genome_version_match': "0"
                }
         ret = self.getImpl().view_fxn_profile_featureSet(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])
@@ -651,8 +651,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for Tree
     ##
-    # HIDE
-    #@unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
     def test_view_fxn_profile_phylo_01(self):
         method = 'view_fxn_profile_phylo'
 
@@ -708,7 +707,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'top_hit': "1",
                    'e_value': "0.001",
                    'log_base': "",
-                   'show_blanks': "0"
+                   'show_blanks': "0",
+                   'enforce_genome_version_match': "0"
                }
         ret = self.getImpl().view_fxn_profile_phylo(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])
@@ -725,8 +725,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome Circle Plot
     ##
-    # HIDE
-    #@unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
     def test_view_pan_circle_plot_01(self):
         method = 'view_pan_circle_plot'
 
@@ -787,8 +786,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome on Tree
     ##
-    # HIDE
-    #@unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
     def test_view_pan_phylo_01(self):
         method = 'view_pan_phylo'
 
@@ -831,7 +829,9 @@ class kb_phylogenomicsTest(unittest.TestCase):
         params = { 'workspace_name':        self.getWsName(),
                    'input_pangenome_ref':   pangenome_ref,
                    'input_speciesTree_ref': tree_ref,
-                   'save_featuresets':      1
+                   'save_featuresets':      1,
+                   'skip_missing_genomes': "0",
+                   'enforce_genome_version_match': "0"
                }
         ret = self.getImpl().view_pan_phylo(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])
