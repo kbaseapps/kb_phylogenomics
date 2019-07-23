@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: View Function Profile for FeatureSet - v1.2.2
+name: View Function Profile for FeatureSet - v1.4.0
 
 tooltip: |
     Examine the general functional distribution or specific functional gene families for a given FeatureSet.
@@ -100,6 +100,16 @@ parameters :
             Empty categories
         short-hint : |
             Show categories or families that have no counts.
+    skip_missing_genomes :
+        ui-name : |
+            Skip missing genomes
+        short-hint : |
+            Remove genomes from analysis if no corresponding Domain Annotation object found.
+    enforce_genome_version_match :
+        ui-name : |
+            Enforce genome version match
+        short-hint : |
+            Require that the genome version used matches the genome version found in the Domain Annotation. Default is to use newest Genome version found in Narrative.
 
 #
 # Configure the display and description of parameters
@@ -116,7 +126,7 @@ description : |
 
     <p>Functions and domains are annotated on the genomes before the FeatureSet is created. In this App, the SEED Roles come from RAST annotation on the source genomes. The domains are created using the <a href=”https://narrative.kbase.us/#catalog/apps/DomainAnnotation/annotate_domains_in_a_genome/release”>Annotate Domains in a Genome</a> or <a href=”https://narrative.kbase.us/#appcatalog/app/kb_phylogenomics/run_DomainAnnotation_Sets/release”>Annotate Domains in a GenomeSet</a>. If you intend to use this App for both the SEED Roles and the domains, run the RAST annotation first and run the domain annotation on the RAST output genomes.</p>
 
-    <p>If there are any genomes present in the feature set that are not annotated with domains, the App will fail. The error message “MISSING DOMAIN ANNOTATION FOR: 43454/34/1” indicates which genome in the Data Panel needs domain annotation. Run the <a href=”https://narrative.kbase.us/#appcatalog/app/DomainAnnotation/annotate_domains_in_a_genome/release”>Annotate Domains in a Genome</a> App on any genomes that lack a corresponding Domain Annotation object. These steps are required to ensure this viewer will function properly.</p>
+    <p>If there are any genomes present in the feature set that are not annotated with domains, the App will fail. The error message “MISSING DOMAIN ANNOTATION FOR: 43454/34/1” indicates which genome in the Data Panel needs domain annotation. Run the <a href=”https://narrative.kbase.us/#appcatalog/app/DomainAnnotation/annotate_domains_in_a_genome/release”>Annotate Domains in a Genome</a> App on any genomes that lack a corresponding Domain Annotation object. These steps are required to ensure this viewer will function properly. The user can choose to ignore genomes which are missing corresponding Domain Annotations by setting <i>Skip missing genomes</i>. Additionally, the Domain Annotation objects are linked to the version of the Genome object that was annotated, but it may be that the version of the Genome object has incremented, so the default behavior is to use the newest version of the Genome found in the workspace.</p>
 
     <p>You can use this App to examine the general domain distribution or specific functional gene families for all the genomes in the species tree, sorted according to their position in the tree. Choose a Domain Namespace to view hits for all protein domain terms from COG Functional Categories, Pfam A Clans, TIGRfam Roles, and SEED Roles. Enable and set the Custom Domains parameters to limit the report to a subselection of terms. The output report can be a heatmap to visualize the degree of hits for genes that correspond to motifs associated with protein domains, or a numeric table containing the count of hits. The output report also provides a key for the functional domain terms from each of these databases; terms not associated with any hits will appear with grey background color.</p>
 

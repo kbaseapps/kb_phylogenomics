@@ -1,5 +1,5 @@
 {
-    "ver": "1.2.0",
+    "ver": "1.4.0",
     "authors": [
         "dylan"
     ],
@@ -56,6 +56,54 @@
                                 }
                 ]
             }
+        },
+        {
+            "id": "skip_missing_genomes",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "1",
+					"display": "require all genomes be in Pangenome",
+					"id": "show",
+					"ui-name": "show"
+				},
+				{
+					"value": "0",
+					"display": "ignore genomes not in Pangenome",
+					"id": "hide",
+					"ui-name": "hide"
+				}
+		]
+            }
+        },
+        {
+            "id": "enforce_genome_version_match",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "1",
+					"display": "require genome version match",
+					"id": "show",
+					"ui-name": "show"
+				},
+				{
+					"value": "0",
+					"display": "use newest genome version",
+					"id": "hide",
+					"ui-name": "hide"
+				}
+		]
+            }
         }
     ],
     "behavior": {
@@ -81,6 +129,14 @@
                 {
                     "input_parameter": "save_featuresets",
 		    "target_property": "save_featuresets"
+                },
+                {
+                    "input_parameter": "skip_missing_genomes",
+		    "target_property": "skip_missing_genomes"
+                },
+                {
+                    "input_parameter": "enforce_genome_version_match",
+		    "target_property": "enforce_genome_version_match"
                 }
             ],
             "output_mapping": [

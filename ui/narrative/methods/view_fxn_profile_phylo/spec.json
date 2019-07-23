@@ -1,5 +1,5 @@
 {
-    "ver": "1.2.2",
+    "ver": "1.4.0",
     "authors": [
         "dylan"
     ],
@@ -8606,6 +8606,54 @@
 				}
 		]
             }
+        },
+        {
+            "id": "skip_missing_genomes",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "1",
+					"display": "require all genomes have a Domain Annotation",
+					"id": "show",
+					"ui-name": "show"
+				},
+				{
+					"value": "0",
+					"display": "ignore genomes without a DomainAnnotation",
+					"id": "hide",
+					"ui-name": "hide"
+				}
+		]
+            }
+        },
+        {
+            "id": "enforce_genome_version_match",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "1",
+					"display": "require genome version match",
+					"id": "show",
+					"ui-name": "show"
+				},
+				{
+					"value": "0",
+					"display": "use newest genome version",
+					"id": "hide",
+					"ui-name": "hide"
+				}
+		]
+            }
         }
     ],
 
@@ -8669,6 +8717,14 @@
                 {
                     "input_parameter": "show_blanks",
 		    "target_property": "show_blanks"
+                },
+                {
+                    "input_parameter": "skip_missing_genomes",
+		    "target_property": "skip_missing_genomes"
+                },
+                {
+                    "input_parameter": "enforce_genome_version_match",
+		    "target_property": "enforce_genome_version_match"
                 }
             ],
             "output_mapping": [

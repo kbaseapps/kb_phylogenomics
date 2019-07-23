@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Phylogenetic Pangenome Accumulation - v1.2.0
+name: Phylogenetic Pangenome Accumulation - v1.4.0
 
 tooltip: |
     View a Pangenome in a phylogenetic context.
@@ -44,6 +44,17 @@ parameters :
             Save Pangenome FeatureSets
         short-hint : |
             The Pangenome core, singleton, and partial pangenome FeatureSet objects.
+    skip_missing_genomes :
+        ui-name : |
+            Skip missing genomes
+        short-hint : |
+            Remove genomes from Species Tree visualization if missing from Pangenome calculation.
+    enforce_genome_version_match :
+        ui-name : |
+            Enforce genome version match
+        short-hint : |
+            Require that the Genome version used in the Species Tree matches the Genome version used to calculate the Pangenome.
+
 
 description : |
     <p>View a Pangenome in a phylogenetic context. Allows the dissection of Pangenome categories using the Species Tree so that one can determine when gene families entered or left a branch of interest.</p>
@@ -63,7 +74,7 @@ description : |
     <p><h3>Configuration</h3></p>
     <p><b>Pangenome:</b> The pre-calculated pangenome object (containing the orthology relationships between the genes) to use for the visualization. Only one Pangenome object can be used.</p>
 
-    <p><b>Species Tree:</b> The phylogenetic pangenome accumulation is determined within the context of the Species Tree. Every Genome in the Species Tree must be contained within the Pangenome object (but not every Genome in the Pangenome object needs to be in the Species Tree). The same Narrative must be used for the Genomes found in the Pangenome and the Species Tree. Only one species Tree can be used at a time.</p>
+    <p><b>Species Tree:</b> The phylogenetic pangenome accumulation is determined within the context of the Species Tree. Unless you select the <i>skip missing genomes</i> option, every Genome in the Species Tree must be contained within the Pangenome object (but not every Genome in the Pangenome object needs to be in the Species Tree). The same Narrative must be used for the Genomes found in the Pangenome and the Species Tree.  Additionally, the user may choose to require that the versions of the Genome objects that were included in the Species Tree and the Pangenome must match with the <i>Enforce Genome version match</i> option.  Only one species Tree can be used at a time.</p>
 
     <p><b>Save Pangenome feature sets:</b> Feature Sets containing Core, Singleton, and Partial Pangenome (see above) gene members from the ortholog clusters are created if this option is set. These categories are calculated and generated for each node in the Species Tree, using the collection of genomes for which that node represents the ancestor (i.e. the leaves of that branch).</p>
 

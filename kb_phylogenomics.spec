@@ -87,6 +87,8 @@ module kb_phylogenomics {
 	float            e_value;
 	float            log_base;
 	bool             show_blanks;
+	bool             skip_missing_genomes;
+	bool             enforce_genome_version_match;
     } view_fxn_profile_Input;
 
     typedef structure {
@@ -117,6 +119,8 @@ module kb_phylogenomics {
 	float            e_value;
 	float            log_base;
 	bool             show_blanks;
+	bool             skip_missing_genomes;
+	bool             enforce_genome_version_match;
     } view_fxn_profile_featureSet_Input;
 
     typedef structure {
@@ -148,6 +152,8 @@ module kb_phylogenomics {
 	float            e_value;
 	float            log_base;
 	bool             show_blanks;
+	bool             skip_missing_genomes;
+	bool             enforce_genome_version_match;
     } view_fxn_profile_phylo_Input;
 
     typedef structure {
@@ -271,6 +277,8 @@ module kb_phylogenomics {
 	data_obj_ref   input_pangenome_ref;
 	data_obj_ref   input_speciesTree_ref;
 	bool           save_featuresets;
+	bool           skip_missing_genomes;
+	bool           enforce_genome_version_match;
     } view_pan_phylo_Input;
 
     typedef structure {
