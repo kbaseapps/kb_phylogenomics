@@ -1323,12 +1323,17 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
-                    if genome_ref not in genome_refs:
-                        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                    if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                        # skip extra domainannots
+                        if genome_ref not in genome_refs:  
                             continue
-                        else:
-                            (ws_id, obj_id, version) = genome_ref.split('/')
-                            genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
+                    else:
+                        (ws_id, obj_id, version) = genome_ref.split('/')
+                        genome_ref_versionless = ws_id+'/'+obj_id
+                        # skip extra domainannots
+                        if genome_ref_versionless not in genome_ref_by_versionless:
+                            continue
+                        genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                     dom_annot_found[genome_ref] = True
 
@@ -2229,12 +2234,17 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
-                    if genome_ref not in genome_refs:
-                        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                    if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                        # skip extra domainannots
+                        if genome_ref not in genome_refs:
                             continue
-                        else:
-                            (ws_id, obj_id, version) = genome_ref.split('/')
-                            genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
+                    else:
+                        (ws_id, obj_id, version) = genome_ref.split('/')
+                        genome_ref_versionless = ws_id+'/'+obj_id
+                        # skip extra domainannots
+                        if genome_ref_versionless not in genome_ref_by_versionless:
+                            continue
+                        genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                     dom_annot_found[genome_ref] = True
 
@@ -3144,12 +3154,17 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
-                    if genome_ref not in genome_refs:
-                        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                    if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                        # skip extra domainannots
+                        if genome_ref not in genome_refs:
                             continue
-                        else:
-                            (ws_id, obj_id, version) = genome_ref.split('/')
-                            genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
+                    else:
+                        (ws_id, obj_id, version) = genome_ref.split('/')
+                        genome_ref_versionless = ws_id+'/'+obj_id
+                        # skip extra domainannots
+                        if genome_ref_versionless not in genome_ref_by_versionless:
+                            continue
+                        genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                     dom_annot_found[genome_ref] = True
 
