@@ -62,18 +62,18 @@
             "optional": false,
             "advanced": true,
             "allow_multiple": false,
-            "default_values": [ "1" ],
+            "default_values": [ "0" ],
             "field_type": "dropdown",
             "dropdown_options": {
 	    	"options": [
 				{
-					"value": "1",
+					"value": "0",
 					"display": "require all genomes be in Pangenome",
 					"id": "show",
 					"ui-name": "show"
 				},
 				{
-					"value": "0",
+					"value": "1",
 					"display": "ignore genomes not in Pangenome",
 					"id": "hide",
 					"ui-name": "hide"
