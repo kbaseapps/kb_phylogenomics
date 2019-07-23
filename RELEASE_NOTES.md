@@ -1,13 +1,13 @@
 ### Version 1.4.0
 __Changes__
+- View Functional Profile Apps: skip Genomes for which a DomainAnnotation is not found
 - View Functional Profile Apps: add option to not require perfect agreement of version of Genome and DomainAnnotation object
-- View Functional Profile Apps: save FeatureSet for custom domain family queries
-- Phylogenetic Pangenome Accumulation: skip Genomes from tree not found in Pangenome
-- Phylogenetic Pangenome Accumulation: add option to not require perfect agreement of version of Genome in Species Tree and Pangenome object
+- Phylogenetic Pangenome Accumulation App: skip Genomes from tree not found in Pangenome
+- Phylogenetic Pangenome Accumulation App: add option to not require perfect agreement of version of Genome in Species Tree and Pangenome object
 
 ### Version 1.3.2
 __Changes__
-- Change the catagory configuration into a function for use by other apps
+- Change the category configuration into a function for use by other apps
 
 ### Version 1.3.1
 __Changes__

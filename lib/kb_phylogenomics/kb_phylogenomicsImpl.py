@@ -43,8 +43,8 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.3.1"
-    GIT_URL = "https://github.com/landml/kb_phylogenomics"
+    VERSION = "1.4.0"
+    GIT_URL = "https://github.com/kbaseaps/kb_phylogenomics"
     GIT_COMMIT_HASH = "3004111292f95480b92a138df6b6778642287318"
 
     #BEGIN_CLASS_HEADER
@@ -1182,6 +1182,11 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_id in genome_ids:
             genome_refs.append(genomeSet_obj['elements'][genome_id]['ref'])
 
+        genome_ref_by_versionless = dict()
+        for genome_ref in genome_refs:
+            (ws_id, obj_id, version) = genome_ref.split('/')
+            genome_ref_by_versionless[ws_id+'/'+obj_id] = genome_ref
+
         genome_obj_name_by_ref = dict()
         genome_sci_name_by_ref = dict()
         genome_CDS_count_by_ref = dict()
@@ -1319,7 +1324,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
                     if genome_ref not in genome_refs:
-                        continue
+                        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                            continue
+                        else:
+                            (ws_id, obj_id, version) = genome_ref.split('/')
+                            genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
+
                     dom_annot_found[genome_ref] = True
 
                     if genome_ref not in dom_hits:
@@ -1400,14 +1410,29 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # make sure we have domain annotations for all genomes
             missing_annot = []
+            missing_dom_annot_by_genome_ref = dict()
             for genome_ref in genome_refs:
                 if genome_ref not in dom_annot_found:
-                    missing_annot.append("\t" + 'MISSING DOMAIN ANNOTATION FOR: ' + genome_ref)
-            if missing_annot:
-                error_msg = "ABORT: You must run the DomainAnnotation App first\n"
-                error_msg += "\n".join(missing_annot)
-                raise ValueError(error_msg)
+                    missing_annot.append("\t" + 'MISSING DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                    missing_dom_annot_by_genome_ref[genome_ref] = True
 
+            if missing_annot:
+                # if strict, then abort
+                if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                    error_msg = "ABORT: You must run the DomainAnnotation App first\n"
+                    error_msg += "\n".join(missing_annot)
+                    raise ValueError(error_msg)
+                # if skipping, then remove genomes with missing annotations
+                else:
+                    new_genome_refs = []
+                    for genome_ref in genome_refs:
+                        if genome_ref in missing_dom_annot_by_genome_ref:
+                            continue
+                        new_genome_refs.append(genome_ref)
+                    genome_refs = new_genome_refs
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the DomainAnnotation App first")
+                    self.log(console, "\n".join(missing_annot))
+                        
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
@@ -2054,6 +2079,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_ref_seen[genome_ref] = True
                 genome_refs.append(genome_ref)
 
+        genome_ref_by_versionless = dict()
+        for genome_ref in genome_refs:
+            (ws_id, obj_id, version) = genome_ref.split('/')
+            genome_ref_by_versionless[ws_id+'/'+obj_id] = genome_ref
+
         genome_obj_name_by_ref = dict()
         genome_sci_name_by_ref = dict()
         genome_CDS_count_by_ref = dict()
@@ -2200,7 +2230,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
                     if genome_ref not in genome_refs:
-                        continue
+                        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                            continue
+                        else:
+                            (ws_id, obj_id, version) = genome_ref.split('/')
+                            genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
+
                     dom_annot_found[genome_ref] = True
 
                     if genome_ref not in dom_hits:
@@ -2287,13 +2322,28 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # make sure we have domain annotations for all genomes
             missing_annot = []
+            missing_dom_annot_by_genome_ref = dict()
             for genome_ref in genome_refs:
                 if genome_ref not in dom_annot_found:
-                    missing_annot.append("\t" + 'MISSING DOMAIN ANNOTATION FOR: ' + genome_ref)
+                    missing_annot.append("\t" + 'MISSING DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                    missing_dom_annot_by_genome_ref[genome_ref] = True
+
             if missing_annot:
-                error_msg = "ABORT: You must run the DomainAnnotation App first\n"
-                error_msg += "\n".join(missing_annot)
-                raise ValueError(error_msg)
+                # if strict, then abort
+                if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                    error_msg = "ABORT: You must run the DomainAnnotation App first\n"
+                    error_msg += "\n".join(missing_annot)
+                    raise ValueError(error_msg)
+                # if skipping, then remove genomes with missing annotations
+                else:
+                    new_genome_refs = []
+                    for genome_ref in genome_refs:
+                        if genome_ref in missing_dom_annot_by_genome_ref:
+                            continue
+                        new_genome_refs.append(genome_ref)
+                    genome_refs = new_genome_refs
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the DomainAnnotation App first")
+                    self.log(console, "\n".join(missing_annot))
 
         # DEBUG
         #for genome_ref in genome_refs:
@@ -2949,6 +2999,11 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_id in species_tree.get_leaf_names():
             genome_refs.append(genome_ref_by_id[genome_id])
 
+        genome_ref_by_versionless = dict()
+        for genome_ref in genome_refs:
+            (ws_id, obj_id, version) = genome_ref.split('/')
+            genome_ref_by_versionless[ws_id+'/'+obj_id] = genome_ref
+
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_obj_name_by_ref = dict()
@@ -3090,7 +3145,12 @@ This module contains methods for running and visualizing results of phylogenomic
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
                     if genome_ref not in genome_refs:
-                        continue
+                        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                            continue
+                        else:
+                            (ws_id, obj_id, version) = genome_ref.split('/')
+                            genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
+
                     dom_annot_found[genome_ref] = True
 
                     if genome_ref not in dom_hits:
@@ -3171,13 +3231,29 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # make sure we have domain annotations for all genomes
             missing_annot = []
+            missing_dom_annot_by_genome_ref = dict()
             for genome_ref in genome_refs:
                 if genome_ref not in dom_annot_found:
-                    missing_annot.append("\t" + 'MISSING DOMAIN ANNOTATION FOR: ' + genome_ref)
+                    missing_annot.append("\t" + 'MISSING DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                    missing_dom_annot_by_genome_ref[genome_ref] = True
+
             if missing_annot:
-                error_msg = "ABORT: You must run the DomainAnnotation App first\n"
-                error_msg += "\n".join(missing_annot)
-                raise ValueError(error_msg)
+                # if strict, then abort
+                if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                    error_msg = "ABORT: You must run the DomainAnnotation App first\n"
+                    error_msg += "\n".join(missing_annot)
+                    raise ValueError(error_msg)
+                # if skipping, then remove genomes with missing annotations
+                else:
+                    new_genome_refs = []
+                    for genome_ref in genome_refs:
+                        if genome_ref in missing_dom_annot_by_genome_ref:
+                            continue
+                        new_genome_refs.append(genome_ref)
+                    genome_refs = new_genome_refs
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the DomainAnnotation App first")
+                    self.log(console, "\n".join(missing_annot))
+
 
         # DEBUG
         #for genome_ref in genome_refs:
@@ -3376,10 +3452,13 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
         leaf_style["hz_line_type"] = 0
 
+        prune_list = []
         for n in species_tree.traverse():
             if n.is_leaf():
                 style = leaf_style
                 genome_id = n.name
+                if genome_ref_by_id[genome_id] in missing_dom_annot_by_genome_ref:
+                    prune_list.append(n.name)
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
                 leaf_name_disp = genome_sci_name_by_id[genome_id]
@@ -3399,6 +3478,10 @@ This module contains methods for running and visualizing results of phylogenomic
                     style["size"] = 2
 
             n.set_style(style)
+
+        # remove skipped genomes
+        if len(prune_list) > 0:
+            species_tree.prune (prune_list)
 
         # save images
         dpi = 300
@@ -4948,47 +5031,23 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_id in species_tree.get_leaf_names():
             genome_refs.append(genome_ref_by_id[genome_id])
 
-        # get internal node ids based on sorted genome_refs of children
-        #
-        node_ids_by_refs = dict()
-        genome_ref_to_node_ids_by_refs = dict()
-        node_size = dict()
-        node_order_by_ref = []
-        node_num_id = -1
-        for n in species_tree.traverse("preorder"):
-            if n.is_leaf():
-                continue
+        genome_ref_by_versionless = dict()
+        for genome_ref in genome_refs:
+            (ws_id, obj_id, version) = genome_ref.split('/')
+            genome_ref_by_versionless[ws_id+'/'+obj_id] = genome_ref
 
-            node_num_id += 1
-            leaf_refs = []
-            for genome_id in n.get_leaf_names():
-                leaf_refs.append(genome_ref_by_id[genome_id])
-            node_ref_id = "+".join(sorted(leaf_refs))
-            node_size[node_ref_id] = len(leaf_refs)
-            node_order_by_ref.append(node_ref_id)
-            node_ids_by_refs[node_ref_id] = node_num_id
-
-            # point each genome at its nodes
-            for genome_ref in leaf_refs:
-                if genome_ref not in genome_ref_to_node_ids_by_refs:
-                    genome_ref_to_node_ids_by_refs[genome_ref] = []
-                genome_ref_to_node_ids_by_refs[genome_ref].append(node_ref_id)
 
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_obj_name_by_ref = dict()
         genome_sci_name_by_ref = dict()
         genome_sci_name_by_id = dict()
-        genome_CDS_count_by_ref = dict()
         uniq_genome_ws_ids = dict()
 
-        dom_hits = dict()  # initialize dom_hits here because reading SEED within genome
-        genes_with_hits_cnt = dict()
 
+        # get names from genome object
+        #
         for genome_ref in genome_refs:
-
-            dom_hits[genome_ref] = dict()
-            genes_with_hits_cnt[genome_ref] = dict()
 
             # get genome object name
             input_ref = genome_ref
@@ -5018,12 +5077,6 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
             genome_sci_name_by_id[genome_id_by_ref[genome_ref]] = genome_obj['scientific_name']
 
-            # CDS cnt
-            cds_cnt = 0
-            for feature in genome_obj['features']:
-                if 'protein_translation' in feature and feature['protein_translation'] != None and feature['protein_translation'] != '':
-                    cds_cnt += 1
-            genome_CDS_count_by_ref[genome_ref] = cds_cnt
 
         # get pangenome
         #
@@ -5048,10 +5101,88 @@ This module contains methods for running and visualizing results of phylogenomic
         except:
             raise ValueError("unable to fetch genome: " + input_ref)
 
-        # make sure species tree genomes are found in pangenome (reverse not required)
+
+        # check for each species tree genome in pangenome, and possibly adjust 
+        #    species tree if skipping allowed (reverse not required)
+        #
+        missing_in_pangenome = []
+        missing_msg = []
+        updated_pg_genome_refs = []
+        for pg_genome_ref in pg_obj['genome_refs']:
+            (ws_id, obj_id, version) = pg_genome_ref.split('/')
+            genome_ref_versionless = ws_id+'/'+obj_id 
+            if genome_ref_versionless in genome_ref_by_versionless:
+                updated_pg_genome_refs.append(genome_ref_by_versionless[genome_ref_versionless])
         for genome_ref in genome_refs:
-            if genome_ref not in pg_obj['genome_refs']:
-                raise ValueError("genome: '" + str(genome_ref) + "' from SpeciesTree not present in Pangenome object")
+            if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                if genome_ref not in pg_obj['genome_refs']:
+                    missing_in_pangenome.append(genome_ref)
+            else:
+                if genome_ref not in updated_pg_genome_refs:
+                    missing_in_pangenome.append(genome_ref)
+
+        # at least one genome is missing
+        if len(missing_in_pangenome) > 0:
+
+            # if strict, then abort
+            if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                for genome_ref in missing_in_pangenome:
+                    missing_msg.append("\t" + 'MISSING PANGENOME CALCULATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                error_msg = "ABORT: You must include the following additional Genomes in the Pangenome Calculation first, or select the SKIP option\n"
+                error_msg += "\n".join(missing_msg)
+                raise ValueError(error_msg)
+
+            # if skipping, then remove from genome_refs list and from tree
+            else:
+
+                # update list
+                new_genome_refs = []
+                for genome_ref in genome_refs:
+                    if genome_ref in missing_in_pangenome:
+                        continue
+                    new_genome_refs.append(genome_ref)
+                genome_refs = new_genome_refs
+                self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must include in Pangenome Calculation first")
+                self.log(console, "\n".join(missing_annot))
+
+                # update tree
+                prune_list = []
+                for n in species_tree.traverse():
+                    if n.is_leaf():
+                        genome_id = n.name
+                        if genome_ref_by_id[genome_id] in missing_in_pangenome:
+                            prune_list.append(n.name)
+                # remove skipped genomes
+                if len(prune_list) > 0:
+                    species_tree.prune (prune_list)
+
+
+        # get internal node ids based on sorted genome_refs of children
+        #
+        node_ids_by_refs = dict()
+        genome_ref_to_node_ids_by_refs = dict()
+        node_size = dict()
+        node_order_by_ref = []
+        node_num_id = -1
+        for n in species_tree.traverse("preorder"):
+            if n.is_leaf():
+                continue
+
+            node_num_id += 1
+            leaf_refs = []
+            for genome_id in n.get_leaf_names():
+                leaf_refs.append(genome_ref_by_id[genome_id])
+            node_ref_id = "+".join(sorted(leaf_refs))
+            node_size[node_ref_id] = len(leaf_refs)
+            node_order_by_ref.append(node_ref_id)
+            node_ids_by_refs[node_ref_id] = node_num_id
+
+            # point each genome at its nodes
+            for genome_ref in leaf_refs:
+                if genome_ref not in genome_ref_to_node_ids_by_refs:
+                    genome_ref_to_node_ids_by_refs[genome_ref] = []
+                genome_ref_to_node_ids_by_refs[genome_ref].append(node_ref_id)
+
 
         # determine pangenome accumulations of core, partial, and singleton
         #
@@ -5071,6 +5202,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 gene_id = gene[0]
                 probably_gene_len_dont_need = gene[1]
                 genome_ref = gene[2]
+                (ws_id, obj_id, version) = genome_ref.split('/')
+                genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                 if genome_ref not in genome_ref_to_node_ids_by_refs:
                     continue

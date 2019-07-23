@@ -330,7 +330,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
-    @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_01(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -525,6 +525,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'e_value': "0.001",
                    'log_base': "",
                    'show_blanks': "0",
+                   'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
                }
         ret = self.getImpl().view_fxn_profile(self.getContext(),params)[0]
@@ -634,6 +635,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'e_value': "0.001",
                    'log_base': "",
                    'show_blanks': "0",
+                   'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
                }
         ret = self.getImpl().view_fxn_profile_featureSet(self.getContext(),params)[0]
@@ -708,6 +710,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'e_value': "0.001",
                    'log_base': "",
                    'show_blanks': "0",
+                   'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
                }
         ret = self.getImpl().view_fxn_profile_phylo(self.getContext(),params)[0]
@@ -848,8 +851,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Tree
     ##
-    # HIDE
-    #@unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
     def test_view_tree_01(self):
         method = 'view_tree'
 
@@ -902,8 +904,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Find Homologs with Genome Context
     ##
-    # HIDE
-    #@unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
     def test_find_homologs_with_genome_context_01(self):
         method = 'find_homologs_with_genome_context'
 
@@ -1004,10 +1005,10 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
         #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
         
-            #### Find Homologs with Genome Context
+
+    #### Get Categories auto-configure method
     ##
-    # HIDE
-    #@unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
     def test_get_categories(self):
         method = 'get_configure_categories'
 
