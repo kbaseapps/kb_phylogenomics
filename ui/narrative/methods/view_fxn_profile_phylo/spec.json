@@ -8617,14 +8617,14 @@
             "dropdown_options": {
 	    	"options": [
 				{
-					"value": "1",
+					"value": "0",
 					"display": "require all genomes have a Domain Annotation",
 					"id": "show",
 					"ui-name": "show"
 				},
 				{
-					"value": "0",
-					"display": "ignore genomes without a DomainAnnotation",
+					"value": "1",
+					"display": "ignore genomes without a Domain Annotation",
 					"id": "hide",
 					"ui-name": "hide"
 				}
@@ -8648,7 +8648,7 @@
 				},
 				{
 					"value": "0",
-					"display": "use newest genome version",
+					"display": "use genome version from Species Tree",
 					"id": "hide",
 					"ui-name": "hide"
 				}

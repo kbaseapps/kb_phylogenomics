@@ -1323,12 +1323,17 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
-                    if genome_ref not in genome_refs:
-                        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                    if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                        # skip extra domainannots
+                        if genome_ref not in genome_refs:  
                             continue
-                        else:
-                            (ws_id, obj_id, version) = genome_ref.split('/')
-                            genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
+                    else:
+                        (ws_id, obj_id, version) = genome_ref.split('/')
+                        genome_ref_versionless = ws_id+'/'+obj_id
+                        # skip extra domainannots
+                        if genome_ref_versionless not in genome_ref_by_versionless:
+                            continue
+                        genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                     dom_annot_found[genome_ref] = True
 
@@ -2229,12 +2234,17 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
-                    if genome_ref not in genome_refs:
-                        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                    if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                        # skip extra domainannots
+                        if genome_ref not in genome_refs:
                             continue
-                        else:
-                            (ws_id, obj_id, version) = genome_ref.split('/')
-                            genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
+                    else:
+                        (ws_id, obj_id, version) = genome_ref.split('/')
+                        genome_ref_versionless = ws_id+'/'+obj_id
+                        # skip extra domainannots
+                        if genome_ref_versionless not in genome_ref_by_versionless:
+                            continue
+                        genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                     dom_annot_found[genome_ref] = True
 
@@ -3144,12 +3154,17 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     # read domain data object
                     genome_ref = domain_data['genome_ref']
-                    if genome_ref not in genome_refs:
-                        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                    if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+                        # skip extra domainannots
+                        if genome_ref not in genome_refs:
                             continue
-                        else:
-                            (ws_id, obj_id, version) = genome_ref.split('/')
-                            genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
+                    else:
+                        (ws_id, obj_id, version) = genome_ref.split('/')
+                        genome_ref_versionless = ws_id+'/'+obj_id
+                        # skip extra domainannots
+                        if genome_ref_versionless not in genome_ref_by_versionless:
+                            continue
+                        genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                     dom_annot_found[genome_ref] = True
 
@@ -5123,13 +5138,13 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # at least one genome is missing
         if len(missing_in_pangenome) > 0:
+            for genome_ref in missing_in_pangenome:
+                missing_msg.append("\t" + 'MISSING PANGENOME CALCULATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
 
             # if strict, then abort
             if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
-                for genome_ref in missing_in_pangenome:
-                    missing_msg.append("\t" + 'MISSING PANGENOME CALCULATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
-                error_msg = "ABORT: You must include the following additional Genomes in the Pangenome Calculation first, or select the SKIP option\n"
-                error_msg += "\n".join(missing_msg)
+                error_msg = "ABORT: You must include the following additional Genomes in the Pangenome Calculation first (or select the SKIP option)\n<p>\n"
+                error_msg += "\n<br>\n".join(missing_msg)
                 raise ValueError(error_msg)
 
             # if skipping, then remove from genome_refs list and from tree
@@ -5142,8 +5157,8 @@ This module contains methods for running and visualizing results of phylogenomic
                         continue
                     new_genome_refs.append(genome_ref)
                 genome_refs = new_genome_refs
-                self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must include in Pangenome Calculation first")
-                self.log(console, "\n".join(missing_annot))
+                self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must include in Pangenome Calculation first\n")
+                self.log(console, "\n".join(missing_msg))
 
                 # update tree
                 prune_list = []

@@ -67,13 +67,13 @@
             "dropdown_options": {
 	    	"options": [
 				{
-					"value": "1",
+					"value": "0",
 					"display": "require all genomes be in Pangenome",
 					"id": "show",
 					"ui-name": "show"
 				},
 				{
-					"value": "0",
+					"value": "1",
 					"display": "ignore genomes not in Pangenome",
 					"id": "hide",
 					"ui-name": "hide"
@@ -98,7 +98,7 @@
 				},
 				{
 					"value": "0",
-					"display": "use newest genome version",
+					"display": "use genome version from Species Tree",
 					"id": "hide",
 					"ui-name": "hide"
 				}
