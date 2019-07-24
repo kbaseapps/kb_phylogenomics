@@ -1783,8 +1783,12 @@ This module contains methods for running and visualizing results of phylogenomic
                             if log_base <= 1.0:
                                 raise ValueError("log base must be > 1.0")
                             val = math.log(val, log_base)
+                        if overall_high_val == overall_low_val:
+                            denom = 1.0
+                        else: 
+                            denom = float(overall_high_val - overall_low_val)
                         cell_color_i = max_color - \
-                            int(round(max_color * (val - overall_low_val) / float(overall_high_val - overall_low_val)))
+                            int(round(max_color * (val - overall_low_val) / denom))
                         c = color_list[cell_color_i]
                         cell_color = '#' + c + c + c + c + 'FF'
 
@@ -2700,8 +2704,12 @@ This module contains methods for running and visualizing results of phylogenomic
                             if log_base <= 1.0:
                                 raise ValueError("log base must be > 1.0")
                             val = math.log(val, log_base)
+                        if overall_high_val == overall_low_val:
+                            denom = 1.0
+                        else: 
+                            denom = float(overall_high_val - overall_low_val)
                         cell_color_i = max_color - \
-                            int(round(max_color * (val - overall_low_val) / float(overall_high_val - overall_low_val)))
+                                      int(round(max_color * (val - overall_low_val) / denom))
                         c = color_list[cell_color_i]
                         cell_color = '#' + c + c + c + c + 'FF'
 
@@ -3710,8 +3718,12 @@ This module contains methods for running and visualizing results of phylogenomic
                             if log_base <= 1.0:
                                 raise ValueError("log base must be > 1.0")
                             val = math.log(val, log_base)
+                        if overall_high_val == overall_low_val:
+                            denom = 1.0
+                        else: 
+                            denom = float(overall_high_val - overall_low_val)
                         cell_color_i = max_color - \
-                            int(round(max_color * (val - overall_low_val) / float(overall_high_val - overall_low_val)))
+                                      int(round(max_color * (val - overall_low_val) / denom))
                         c = color_list[cell_color_i]
                         cell_color = '#' + c + c + c + c + 'FF'
 
