@@ -1,8 +1,9 @@
 ### Version 1.4.0
 __Changes__
-- View Functional Profile Apps: skip Genomes for which a DomainAnnotation is not found
-- View Functional Profile Apps: add option to not require perfect agreement of version of Genome and DomainAnnotation object
-- Phylogenetic Pangenome Accumulation App: skip Genomes from tree not found in Pangenome
+- View Functional Profile [aka VFP / view_fxn_profile*()] Apps: skip Genomes for which a DomainAnnotation is not found
+- VFP Apps: add option to not require perfect agreement of version of Genome and DomainAnnotation object
+- VFP Apps: fixed bug with Custom Domains that are all SEED not to fail if missing DomainAnnotation object
+- Phylogenetic Pangenome Accumulation [view_pan_phylo()] App: skip Genomes from tree not found in Pangenome
 - Phylogenetic Pangenome Accumulation App: add option to not require perfect agreement of version of Genome in Species Tree and Pangenome object
 
 ### Version 1.3.2
