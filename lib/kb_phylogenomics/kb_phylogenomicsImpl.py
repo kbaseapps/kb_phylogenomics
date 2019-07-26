@@ -1440,6 +1440,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     missing_dom_annot_by_genome_ref[genome_ref] = True
 
             if missing_annot:
+                if len(missing_annot) == len(genome_refs):
+                    raise ValueError("ALL genomes have no matching DomainAnnotations")
+
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
                     error_msg = "ABORT: You must run the DomainAnnotation App first\n"
@@ -2379,6 +2382,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     missing_dom_annot_by_genome_ref[genome_ref] = True
 
             if missing_annot:
+                if len(missing_annot) == len(genome_refs):
+                    raise ValueError("ALL genomes have no matching DomainAnnotations")
+
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
                     error_msg = "ABORT: You must run the DomainAnnotation App first\n"
@@ -3315,6 +3321,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     missing_dom_annot_by_genome_ref[genome_ref] = True
 
             if missing_annot:
+                if len(missing_annot) == len(genome_refs):
+                    raise ValueError("ALL genomes have no matching DomainAnnotations")
+
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
                     error_msg = "ABORT: You must run the DomainAnnotation App first\n"
