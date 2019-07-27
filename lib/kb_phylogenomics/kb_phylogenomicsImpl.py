@@ -1286,24 +1286,27 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # determine if custom domains are not just SEED
         #
-        custom_domains_not_just_SEED = False
-        if params['namespace'] == 'custom':
-            if params['custom_target_fams'].get('extra_target_fam_groups_COG') \
-               or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
-               or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') :
-
-                custom_domains_not_just_SEED = True
+        search_domains_not_just_SEED = False
+        if params['namespace'] != 'SEED':
+            if params['namespace'] != 'custom':
+                search_domains_not_just_SEED = True
             else:
-                for target_fam in params['custom_target_fams']['target_fams']:
-                    if not target_fam.startswith('SEED'):
+                if params['custom_target_fams'].get('extra_target_fam_groups_COG') \
+                   or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
+                   or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') :
+
+                    search_domains_not_just_SEED = True
+                else:
+                    for target_fam in params['custom_target_fams']['target_fams']:
+                        if not target_fam.startswith('SEED'):
                         
-                        custom_domains_not_just_SEED = True
-                        break
+                            search_domains_not_just_SEED = True
+                            break
 
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
-        if params['namespace'] != 'SEED' and custom_domains_not_just_SEED:
+        if search_domains_not_just_SEED:
             dom_annot_found = dict()
 
             KBASE_DOMAINHIT_GENE_ID_I = 0
@@ -2222,24 +2225,27 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # determine if custom domains are not just SEED
         #
-        custom_domains_not_just_SEED = False
-        if params['namespace'] == 'custom':
-            if params['custom_target_fams'].get('extra_target_fam_groups_COG') \
-               or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
-               or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') :
-
-                custom_domains_not_just_SEED = True
+        search_domains_not_just_SEED = False
+        if params['namespace'] != 'SEED':
+            if params['namespace'] != 'custom':
+                search_domains_not_just_SEED = True
             else:
-                for target_fam in params['custom_target_fams']['target_fams']:
-                    if not target_fam.startswith('SEED'):
+                if params['custom_target_fams'].get('extra_target_fam_groups_COG') \
+                   or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
+                   or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') :
+
+                    search_domains_not_just_SEED = True
+                else:
+                    for target_fam in params['custom_target_fams']['target_fams']:
+                        if not target_fam.startswith('SEED'):
                         
-                        custom_domains_not_just_SEED = True
-                        break
+                            search_domains_not_just_SEED = True
+                            break
 
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
-        if params['namespace'] != 'SEED' and custom_domains_not_just_SEED:
+        if search_domains_not_just_SEED:
             dom_annot_found = dict()
 
             KBASE_DOMAINHIT_GENE_ID_I = 0
@@ -3167,24 +3173,27 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # determine if custom domains are not just SEED
         #
-        custom_domains_not_just_SEED = False
-        if params['namespace'] == 'custom':
-            if params['custom_target_fams'].get('extra_target_fam_groups_COG') \
-               or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
-               or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') :
-
-                custom_domains_not_just_SEED = True
+        search_domains_not_just_SEED = False
+        if params['namespace'] != 'SEED':
+            if params['namespace'] != 'custom':
+                search_domains_not_just_SEED = True
             else:
-                for target_fam in params['custom_target_fams']['target_fams']:
-                    if not target_fam.startswith('SEED'):
+                if params['custom_target_fams'].get('extra_target_fam_groups_COG') \
+                   or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
+                   or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') :
+
+                    search_domains_not_just_SEED = True
+                else:
+                    for target_fam in params['custom_target_fams']['target_fams']:
+                        if not target_fam.startswith('SEED'):
                         
-                        custom_domains_not_just_SEED = True
-                        break
+                            search_domains_not_just_SEED = True
+                            break
 
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
-        if params['namespace'] != 'SEED' and custom_domains_not_just_SEED:
+        if search_domains_not_just_SEED:
             dom_annot_found = dict()
 
             KBASE_DOMAINHIT_GENE_ID_I = 0
