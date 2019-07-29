@@ -3509,6 +3509,19 @@ This module contains methods for running and visualizing results of phylogenomic
                         group_size_with_blanks[cat_group] = 0
                     group_size_with_blanks[cat_group] += 1
 
+
+        # Prune tree if any leaf genomes missing domain annotation
+        #
+        prune_retain_list = []  # prune() method takes list of leaves to keep
+        for n in species_tree.traverse():
+            if n.is_leaf():
+                genome_id = n.name
+                if genome_ref_by_id[genome_id] not in missing_dom_annot_by_genome_ref:
+                    prune_retain_list.append(n.name)
+        if len(prune_retain_list) < len(genome_refs):
+            species_tree.prune (prune_retain_list)
+
+
         # Draw tree (we already instantiated Tree above)
         #
         png_file = speciesTree_name + '.png'
@@ -3547,13 +3560,11 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_style["vt_line_type"] = 0  # 0 solid, 1 dashed, 2 dotted
         leaf_style["hz_line_type"] = 0
 
-        prune_list = []
+        # make tree display ready
         for n in species_tree.traverse():
             if n.is_leaf():
                 style = leaf_style
                 genome_id = n.name
-                if genome_ref_by_id[genome_id] in missing_dom_annot_by_genome_ref:
-                    prune_list.append(n.name)
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
                 leaf_name_disp = genome_sci_name_by_id[genome_id]
@@ -3573,10 +3584,6 @@ This module contains methods for running and visualizing results of phylogenomic
                     style["size"] = 2
 
             n.set_style(style)
-
-        # remove skipped genomes
-        if len(prune_list) > 0:
-            species_tree.prune (prune_list)
 
         # save images
         dpi = 300
