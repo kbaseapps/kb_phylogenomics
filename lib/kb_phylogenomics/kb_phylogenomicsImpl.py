@@ -1357,10 +1357,11 @@ This module contains methods for running and visualizing results of phylogenomic
                         # skip extra domainannots
                         if genome_ref_versionless not in genome_ref_by_versionless:
                             continue
+                        source_obj_type = 'GenomeSet'
                         if genome_ref != genome_ref_by_versionless[ws_id+'/'+obj_id]:
-                            self.log(console, "DomainAnnotation object generated from different version of genome found in GenomeSet.  DomainAnnotation for: "+genome_ref+" but using genome version from GenomeSet instead: "+genome_ref_by_versionless[ws_id+'/'+obj_id])
+                            self.log(console, "DomainAnnotation object generated from different version of genome found in "+source_obj_type+".  DomainAnnotation for ref: "+genome_ref+" obj_name: "+genome_obj_name_by_ref[genome_ref]+" sci_name: "+genome_sci_name_by_ref[genome_ref]+" but using genome version from "+source_obj_type+" instead: "+genome_ref_by_versionless[ws_id+'/'+obj_id])
                         else:
-                            self.log(console, "DomainAnnotation object generated from same version of genome "+genome_ref+" as in GenomeSet")
+                            self.log(console, "DomainAnnotation object generated from same version of genome ref: "+genome_ref+" obj_name: "+genome_obj_name_by_ref[genome_ref]+" sci_name: "+genome_sci_name_by_ref[genome_ref]+" as in "+source_obj_type)
 
                         genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
@@ -2304,10 +2305,11 @@ This module contains methods for running and visualizing results of phylogenomic
                         # skip extra domainannots
                         if genome_ref_versionless not in genome_ref_by_versionless:
                             continue
+                        source_obj_type = 'FeatureSet'
                         if genome_ref != genome_ref_by_versionless[ws_id+'/'+obj_id]:
-                            self.log(console, "DomainAnnotation object generated from different version of genome found in FeatureSet.  DomainAnnotation for: "+genome_ref+" but using genome version from FeatureSet instead: "+genome_ref_by_versionless[ws_id+'/'+obj_id])
+                            self.log(console, "DomainAnnotation object generated from different version of genome found in "+source_obj_type+".  DomainAnnotation for ref: "+genome_ref+" obj_name: "+genome_obj_name_by_ref[genome_ref]+" sci_name: "+genome_sci_name_by_ref[genome_ref]+" but using genome version from "+source_obj_type+" instead: "+genome_ref_by_versionless[ws_id+'/'+obj_id])
                         else:
-                            self.log(console, "DomainAnnotation object generated from same version of genome "+genome_ref+" as in FeatureSet")
+                            self.log(console, "DomainAnnotation object generated from same version of genome ref: "+genome_ref+" obj_name: "+genome_obj_name_by_ref[genome_ref]+" sci_name: "+genome_sci_name_by_ref[genome_ref]+" as in "+source_obj_type)
 
                         genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
@@ -3260,10 +3262,11 @@ This module contains methods for running and visualizing results of phylogenomic
                         # skip extra domainannots
                         if genome_ref_versionless not in genome_ref_by_versionless:
                             continue
+                        source_obj_type = 'SpeciesTree'
                         if genome_ref != genome_ref_by_versionless[ws_id+'/'+obj_id]:
-                            self.log(console, "DomainAnnotation object generated from different version of genome found in SpeciesTree.  DomainAnnotation for: "+genome_ref+" but using genome version from SpeciesTree instead: "+genome_ref_by_versionless[ws_id+'/'+obj_id])
+                            self.log(console, "DomainAnnotation object generated from different version of genome found in "+source_obj_type+".  DomainAnnotation for ref: "+genome_ref+" obj_name: "+genome_obj_name_by_ref[genome_ref]+" sci_name: "+genome_sci_name_by_ref[genome_ref]+" but using genome version from "+source_obj_type+" instead: "+genome_ref_by_versionless[ws_id+'/'+obj_id])
                         else:
-                            self.log(console, "DomainAnnotation object generated from same version of genome "+genome_ref+" as in SpeciesTree")
+                            self.log(console, "DomainAnnotation object generated from same version of genome ref: "+genome_ref+" obj_name: "+genome_obj_name_by_ref[genome_ref]+" sci_name: "+genome_sci_name_by_ref[genome_ref]+" as in "+source_obj_type)
 
                         genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
@@ -3544,6 +3547,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     genome_id = n.name
                     if genome_ref_by_id[genome_id] not in missing_dom_annot_by_genome_ref:
                         prune_retain_list.append(n.name)
+                        self.log(console, "Retaining "+n.name) # DEBUG
                     else:
                         prune_remove_list.append(n.name)
             if len(prune_retain_list) < len(genome_refs):
