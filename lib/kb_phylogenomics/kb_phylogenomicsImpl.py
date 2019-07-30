@@ -11,7 +11,7 @@ import sys
 import uuid
 import random
 from datetime import datetime
-from pprint import pformat
+from pprint import pformat,pprint
 
 import ete3
 import matplotlib.pyplot as pyplot  # use this instead
@@ -1306,7 +1306,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
-        if search_domains_not_just_SEED:
+        if not search_domains_not_just_SEED:
+            self.log(console, "Search Domains just SEED.  Not looking for Domain Annotations")
+        else:
+            self.log(console, "Search Domains other than SEED.  Looking for Domain Annotations")
             dom_annot_found = dict()
 
             KBASE_DOMAINHIT_GENE_ID_I = 0
@@ -1354,6 +1357,11 @@ This module contains methods for running and visualizing results of phylogenomic
                         # skip extra domainannots
                         if genome_ref_versionless not in genome_ref_by_versionless:
                             continue
+                        if genome_ref != genome_ref_by_versionless[ws_id+'/'+obj_id]:
+                            self.log(console, "DomainAnnotation object generated from different version of genome found in GenomeSet.  DomainAnnotation for: "+genome_ref+" but using genome version from GenomeSet instead: "+genome_ref_by_versionless[ws_id+'/'+obj_id])
+                        else:
+                            self.log(console, "DomainAnnotation object generated from same version of genome "+genome_ref+" as in GenomeSet")
+
                         genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                     dom_annot_found[genome_ref] = True
@@ -2245,7 +2253,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
-        if search_domains_not_just_SEED:
+        if not search_domains_not_just_SEED:
+            self.log(console, "Search Domains just SEED.  Not looking for Domain Annotations")
+        else:
+            self.log(console, "Search Domains other than SEED.  Looking for Domain Annotations")
             dom_annot_found = dict()
 
             KBASE_DOMAINHIT_GENE_ID_I = 0
@@ -2293,6 +2304,11 @@ This module contains methods for running and visualizing results of phylogenomic
                         # skip extra domainannots
                         if genome_ref_versionless not in genome_ref_by_versionless:
                             continue
+                        if genome_ref != genome_ref_by_versionless[ws_id+'/'+obj_id]:
+                            self.log(console, "DomainAnnotation object generated from different version of genome found in FeatureSet.  DomainAnnotation for: "+genome_ref+" but using genome version from FeatureSet instead: "+genome_ref_by_versionless[ws_id+'/'+obj_id])
+                        else:
+                            self.log(console, "DomainAnnotation object generated from same version of genome "+genome_ref+" as in FeatureSet")
+
                         genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                     dom_annot_found[genome_ref] = True
@@ -3193,7 +3209,10 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
-        if search_domains_not_just_SEED:
+        if not search_domains_not_just_SEED:
+            self.log(console, "Search Domains just SEED.  Not looking for Domain Annotations")
+        else:
+            self.log(console, "Search Domains other than SEED.  Looking for Domain Annotations")
             dom_annot_found = dict()
 
             KBASE_DOMAINHIT_GENE_ID_I = 0
@@ -3241,6 +3260,11 @@ This module contains methods for running and visualizing results of phylogenomic
                         # skip extra domainannots
                         if genome_ref_versionless not in genome_ref_by_versionless:
                             continue
+                        if genome_ref != genome_ref_by_versionless[ws_id+'/'+obj_id]:
+                            self.log(console, "DomainAnnotation object generated from different version of genome found in SpeciesTree.  DomainAnnotation for: "+genome_ref+" but using genome version from SpeciesTree instead: "+genome_ref_by_versionless[ws_id+'/'+obj_id])
+                        else:
+                            self.log(console, "DomainAnnotation object generated from same version of genome "+genome_ref+" as in SpeciesTree")
+
                         genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
 
                     dom_annot_found[genome_ref] = True
@@ -3512,14 +3536,25 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # Prune tree if any leaf genomes missing domain annotation
         #
-        prune_retain_list = []  # prune() method takes list of leaves to keep
-        for n in species_tree.traverse():
-            if n.is_leaf():
-                genome_id = n.name
-                if genome_ref_by_id[genome_id] not in missing_dom_annot_by_genome_ref:
-                    prune_retain_list.append(n.name)
-        if len(prune_retain_list) < len(genome_refs):
-            species_tree.prune (prune_retain_list)
+        if search_domains_not_just_SEED:
+            prune_retain_list = []  # prune() method takes list of leaves to keep
+            prune_remove_list = []
+            for n in species_tree.traverse():
+                if n.is_leaf():
+                    genome_id = n.name
+                    if genome_ref_by_id[genome_id] not in missing_dom_annot_by_genome_ref:
+                        prune_retain_list.append(n.name)
+                    else:
+                        prune_remove_list.append(n.name)
+            if len(prune_retain_list) < len(genome_refs):
+                self.log(console, "Pruning genomes from SpeciesTree that have no corresponding DomainAnnotation object")
+                for genome_id in prune_remove_list:
+                    self.log(console, "\t"+"Removing "+genome_id+" ("+genome_ref_by_id[genome_id]+") "+genome_sci_name_by_ref[genome_ref_by_id[genome_id]])
+
+                # prune() takes keep list, not remove list
+                self.log(console, "BEFORE PRUNE:\n"+pprint(species_tree))
+                species_tree.prune (prune_retain_list)
+                self.log(console, "AFTER PRUNE:\n"+pprint(species_tree))
 
 
         # Draw tree (we already instantiated Tree above)
