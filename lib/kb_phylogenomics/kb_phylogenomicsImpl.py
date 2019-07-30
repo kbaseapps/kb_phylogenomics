@@ -3559,7 +3559,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         self.log(console, "Retaining "+n.name) # DEBUG
                     else:
                         prune_remove_list.append(n.name)
-            if len(prune_retain_list) < len(genome_refs):
+            if len(prune_remove_list) > 0:
                 self.log(console, "Pruning genomes from SpeciesTree that have no corresponding DomainAnnotation object")
                 for genome_id in prune_remove_list:
                     self.log(console, "\t"+"Removing "+genome_id+" ("+genome_ref_by_id[genome_id]+") "+genome_sci_name_by_ref[genome_ref_by_id[genome_id]])
