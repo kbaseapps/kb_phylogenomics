@@ -1360,7 +1360,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                         # report any change in obj version
                         source_obj_type = 'GenomeSet'
-                        source_genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]:
+                        source_genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
                         if genome_ref != source_genome_ref:
                             self.log(console, "DomainAnnotation object generated from different version of genome found in "+source_obj_type+".  DomainAnnotation for ref: "+genome_ref+" obj_name: "+genome_obj_name_by_ref[source_genome_ref]+" sci_name: "+genome_sci_name_by_ref[source_genome_ref]+" but using genome version from "+source_obj_type+" instead: "+source_genome_ref)
                         else:
@@ -2311,7 +2311,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                         # report any change in obj version
                         source_obj_type = 'FeatureSet'
-                        source_genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]:
+                        source_genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
                         if genome_ref != source_genome_ref:
                             self.log(console, "DomainAnnotation object generated from different version of genome found in "+source_obj_type+".  DomainAnnotation for ref: "+genome_ref+" obj_name: "+genome_obj_name_by_ref[source_genome_ref]+" sci_name: "+genome_sci_name_by_ref[source_genome_ref]+" but using genome version from "+source_obj_type+" instead: "+source_genome_ref)
                         else:
@@ -3271,7 +3271,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                         # report any change in obj version
                         source_obj_type = 'SpeciesTree'
-                        source_genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]:
+                        source_genome_ref = genome_ref_by_versionless[ws_id+'/'+obj_id]
                         if genome_ref != source_genome_ref:
                             self.log(console, "DomainAnnotation object generated from different version of genome found in "+source_obj_type+".  DomainAnnotation for ref: "+genome_ref+" obj_name: "+genome_obj_name_by_ref[source_genome_ref]+" sci_name: "+genome_sci_name_by_ref[source_genome_ref]+" but using genome version from "+source_obj_type+" instead: "+source_genome_ref)
                         else:
