@@ -3562,12 +3562,10 @@ This module contains methods for running and visualizing results of phylogenomic
             if len(prune_remove_list) > 0:
                 self.log(console, "Pruning genomes from SpeciesTree that have no corresponding DomainAnnotation object")
                 for genome_id in prune_remove_list:
-                    self.log(console, "\t"+"Removing "+genome_id+" ("+genome_ref_by_id[genome_id]+") "+genome_sci_name_by_ref[genome_ref_by_id[genome_id]])
+                    self.log(console, "\t"+"Removing from SpeciesTree "+genome_id+" ref: "+genome_ref_by_id[genome_id]+" obj_name: "+genome_obj_name_by_ref[genome_ref_by_id[genome_id]]+" sci_name: "+genome_sci_name_by_ref[genome_ref_by_id[genome_id]])
 
                 # prune() takes keep list, not remove list
-                self.log(console, "BEFORE PRUNE:\n"+pprint(species_tree))
                 species_tree.prune (prune_retain_list)
-                self.log(console, "AFTER PRUNE:\n"+pprint(species_tree))
 
 
         # Draw tree (we already instantiated Tree above)
