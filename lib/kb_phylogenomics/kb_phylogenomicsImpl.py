@@ -1831,15 +1831,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                               '; border-bottom:solid 2px ' + border_color + '"><font color="' + text_color + '" size=' + cell_fontsize + '>' + cell_val + '</font></td>']
 
                 html_report_lines += ['</tr>']
-
-                # add a blank row so tree stretches to align with rows properly (scale bar)
-                num_cats_vis = 0
-                for cat in cats:
-                    if not cat_seen[cat] and not show_blanks:
-                        continue
-                    num_cats_vis += 1
-                html_report_lines += ['<tr><td colspan='+str(num_cats_seen)+' border=0 bgcolor=white>&nbsp;</td></tr>']
-
             html_report_lines += ['</table>']
 
         # genomes as columns
