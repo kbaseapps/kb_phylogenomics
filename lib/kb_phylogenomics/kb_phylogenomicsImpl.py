@@ -248,6 +248,7 @@ This module contains methods for running and visualizing results of phylogenomic
         domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
         domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
         domfam = re.sub(' ', '_', domfam)
+        domfam = domfam.lower()
         domfam = 'SEED' + domfam
         return domfam
 
@@ -1460,12 +1461,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
             if missing_annot:
                 if len(missing_annot) == len(genome_refs):
-                    raise ValueError("ALL genomes have no matching DomainAnnotations")
+                    error_msg = "ABORT: ALL genomes have no matching Domain Annotation.  You must run the DomainAnnotation App first\n"
+                    error_msg += "\n".join(missing_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
 
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
-                    error_msg = "ABORT: You must run the DomainAnnotation App first\n"
+                    error_msg = "ABORT: You must run the DomainAnnotation App or use SKIP option on below genomes first\n"
                     error_msg += "\n".join(missing_annot)
+                    self.log(console, error_msg)
                     raise ValueError(error_msg)
                 # if skipping, then remove genomes with missing annotations
                 else:
@@ -2468,12 +2473,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
             if missing_annot:
                 if len(missing_annot) == len(genome_refs):
-                    raise ValueError("ALL genomes have no matching DomainAnnotations")
+                    error_msg = "ABORT: ALL genomes have no matching Domain Annotation.  You must run the DomainAnnotation App first\n"
+                    error_msg += "\n".join(missing_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
 
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
-                    error_msg = "ABORT: You must run the DomainAnnotation App first\n"
+                    error_msg = "ABORT: You must run the DomainAnnotation App or use SKIP option on below genomes first\n"
                     error_msg += "\n".join(missing_annot)
+                    self.log(console, error_msg)
                     raise ValueError(error_msg)
                 # if skipping, then remove genomes with missing annotations
                 else:
@@ -3267,6 +3276,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             for namespace in ['SEED']:
                                 if namespace not in genes_with_hits_cnt[genome_ref]:
                                     genes_with_hits_cnt[genome_ref][namespace] = 0
+                                # hypothetical proteins are getting counted as legit
                                 genes_with_hits_cnt[genome_ref][namespace] += 1
                                 if namespace not in genes_with_validated_vocab_hits_cnt[genome_ref]:
                                     genes_with_validated_vocab_hits_cnt[genome_ref][namespace] = 0
@@ -3283,6 +3293,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                         domfam_list.append(domfam)
                                         if domfam in domfam2cat[namespace]:
                                             validated_vocab = True
+                                        # DEBUG
+                                        #else:
+                                        #    self.log(console, "genome:"+genome_ref+" not recognizing function: "+domfam)
+
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
                                 if validated_vocab:
@@ -3305,12 +3319,13 @@ This module contains methods for running and visualizing results of phylogenomic
         # check for validated vocab if reading SEED
         #
         threshold_fraction_with_validated_annotation = dict()
-        threshold_fraction_with_validated_annotation['SEED'] = 0.75
+        threshold_fraction_with_validated_annotation['SEED'] = 0.50
         missing_SEED_annot_by_genome_ref = dict()
         missing_SEED_annot = []
         if 'SEED' in namespaces_reading:
             namespace = 'SEED'
             for genome_ref in genome_refs:
+                self.log(console, "genome:"+genome_ref+" gene cnt with validated annot:"+str(genes_with_validated_vocab_hits_cnt[genome_ref][namespace])+" gene cnt with annot:"+str(genes_with_hits_cnt[genome_ref][namespace]))  # DEBUG
                 valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
                 if valid_fraction < threshold_fraction_with_validated_annotation[namespace]:
                     missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
@@ -3318,12 +3333,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
             if missing_SEED_annot:
                 if len(missing_SEED_annot) == len(genome_refs):
-                    raise ValueError("ALL genomes have no matching RAST SEED Annotations")
+                    error_msg = "ABORT: ALL genomes are missing RAST SEED Annotation.  You must run the RAST SEED Annotation App first\n"
+                    error_msg += "\n".join(missing_SEED_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
 
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
-                    error_msg = "ABORT: You must run the RAST SEED Annotation App first\n"
+                    error_msg = "ABORT: You must run the RAST SEED Annotation App or use SKIP option on below genomes first\n"
                     error_msg += "\n".join(missing_SEED_annot)
+                    self.log(console, error_msg)
                     raise ValueError(error_msg)
                 # if skipping, then remove genomes with missing annotations
                 else:
@@ -3507,12 +3526,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
             if missing_annot:
                 if len(missing_annot) == len(genome_refs):
-                    raise ValueError("ALL genomes have no matching DomainAnnotations")
+                    error_msg = "ABORT: ALL genomes have no matching Domain Annotation.  You must run the DomainAnnotation App first\n"
+                    error_msg += "\n".join(missing_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
 
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
-                    error_msg = "ABORT: You must run the DomainAnnotation App first\n"
+                    error_msg = "ABORT: You must run the DomainAnnotation App or use SKIP option on below genomes first\n"
                     error_msg += "\n".join(missing_annot)
+                    self.log(console, error_msg)
                     raise ValueError(error_msg)
                 # if skipping, then remove genomes with missing annotations
                 else:
