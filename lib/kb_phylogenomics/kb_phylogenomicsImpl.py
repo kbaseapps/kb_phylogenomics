@@ -2245,6 +2245,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     target_feature = False
                     #featureSet_element_id = genome_ref+self.genome_feature_id_delim+feature['id']
                     featureSet_element_id = feature['id']
+                    gene_name = feature['id']
                     if featureSet_element_id in featureSet_obj['elements']:
                         target_feature = True
 
