@@ -242,6 +242,15 @@ This module contains methods for running and visualizing results of phylogenomic
             annot_set = feature['functions']
         return annot_set
 
+    def _standardize_SEED_subsys_ID (self, domfam_orig):
+        domfam = domfam_orig.strip()
+        domfam = re.sub(' *\#.*$', '', domfam)
+        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
+        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
+        domfam = re.sub(' ', '_', domfam)
+        domfam = 'SEED' + domfam
+        return domfam
+
     def _configure_categories(self, params):
 
         domain_desc_basepath = os.path.abspath('/kb/module/data/domain_desc')
@@ -347,12 +356,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     elif namespace == 'SEED':
                         [cat_group, cat_subgroup, cat, domfam] = line.split("\t")[0:4]
-                        domfam = domfam.strip()
-                        domfam = re.sub(' *\#.*$', '', domfam)
-                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                        domfam = re.sub(' ', '_', domfam)
-                        domfam = 'SEED' + domfam
+                        domfam = self._standardize_SEED_subsys_ID(domfam)
 
                     domfam2cat[namespace][domfam] = cat
                     if cat not in cat2domfams[namespace]:
@@ -523,12 +527,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             [level1, level2, level3, domfam] = line.split("\t")[0:4]
 
                             domfam_desc = domfam
-                            domfam = domfam.strip()
-                            domfam = re.sub(' *\#.*$', '', domfam)
-                            domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                            domfam = re.sub(' ', '_', domfam)
-                            domfam = 'SEED' + domfam
+                            domfam = self._standardize_SEED_subsys_ID(domfam)
                             if domfam in domfam2name[namespace]:
                                 if len(domfam_desc) > len(domfam2name[namespace][domfam]):
                                     domfam2name[namespace][domfam] = domfam_desc
@@ -1272,12 +1271,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 domfam_list = []
                                 for annot in self._get_SEED_annotations(feature):
                                     for annot2 in annot.strip().split('@'):
-                                        domfam = annot2.strip()
-                                        domfam = re.sub(' *\#.*$', '', domfam)
-                                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub(' ', '_', domfam)
-                                        domfam = 'SEED' + domfam
+                                        domfam = self._standardize_SEED_subsys_ID(annot2)
                                         domfam_list.append(domfam)
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
@@ -1299,22 +1293,9 @@ This module contains methods for running and visualizing results of phylogenomic
         # determine if custom domains are not just SEED
         #
         search_domains_not_just_SEED = False
-        if params['namespace'] != 'SEED':
-            if params['namespace'] != 'custom':
-                search_domains_not_just_SEED = True
-            else:
-                if params['custom_target_fams'].get('extra_target_fam_groups_COG') \
-                   or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
-                   or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') :
-
-                    search_domains_not_just_SEED = True
-                else:
-                    for target_fam in params['custom_target_fams']['target_fams']:
-                        if not target_fam.startswith('SEED'):
-                        
-                            search_domains_not_just_SEED = True
-                            break
-
+        for namespace in namespaces_reading.keys():
+            if namespace != 'SEED':
+                search_domains_not_just_SEED = False
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
@@ -2283,12 +2264,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 domfam_list = []
                                 for annot in self._get_SEED_annotations(feature):
                                     for annot2 in annot.strip().split('@'):
-                                        domfam = annot2.strip()
-                                        domfam = re.sub(' *\#.*$', '', domfam)
-                                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub(' ', '_', domfam)
-                                        domfam = 'SEED' + domfam
+                                        domfam = self._standardize_SEED_subsys_ID(annot2)
                                         domfam_list.append(domfam)
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
@@ -2310,22 +2286,9 @@ This module contains methods for running and visualizing results of phylogenomic
         # determine if custom domains are not just SEED
         #
         search_domains_not_just_SEED = False
-        if params['namespace'] != 'SEED':
-            if params['namespace'] != 'custom':
-                search_domains_not_just_SEED = True
-            else:
-                if params['custom_target_fams'].get('extra_target_fam_groups_COG') \
-                   or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
-                   or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') :
-
-                    search_domains_not_just_SEED = True
-                else:
-                    for target_fam in params['custom_target_fams']['target_fams']:
-                        if not target_fam.startswith('SEED'):
-                        
-                            search_domains_not_just_SEED = True
-                            break
-
+        for namespace in namespaces_reading.keys():
+            if namespace != 'SEED':
+                search_domains_not_just_SEED = False
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
@@ -3239,11 +3202,13 @@ This module contains methods for running and visualizing results of phylogenomic
 
         dom_hits = dict()  # initialize dom_hits here because reading SEED within genome
         genes_with_hits_cnt = dict()
+        genes_with_validated_vocab_hits_cnt = dict()  # only used for SEED at this time
 
         for genome_ref in genome_refs:
 
             dom_hits[genome_ref] = dict()
             genes_with_hits_cnt[genome_ref] = dict()
+            genes_with_validated_vocab_hits_cnt[genome_ref] = dict()
 
             # get genome object name
             input_ref = genome_ref
@@ -3303,23 +3268,25 @@ This module contains methods for running and visualizing results of phylogenomic
                                 if namespace not in genes_with_hits_cnt[genome_ref]:
                                     genes_with_hits_cnt[genome_ref][namespace] = 0
                                 genes_with_hits_cnt[genome_ref][namespace] += 1
+                                if namespace not in genes_with_validated_vocab_hits_cnt[genome_ref]:
+                                    genes_with_validated_vocab_hits_cnt[genome_ref][namespace] = 0
 
                                 if gene_name not in dom_hits[genome_ref]:
                                     dom_hits[genome_ref][gene_name] = dict()
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
+                                validated_vocab = False
                                 domfam_list = []
                                 for annot in self._get_SEED_annotations(feature):
                                     for annot2 in annot.strip().split('@'):
-                                        domfam = annot2.strip()
-                                        domfam = re.sub(' *\#.*$', '', domfam)
-                                        domfam = re.sub(' *\(EC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub(' *\(TC [\d\.\-\w]*\) *$', '', domfam)
-                                        domfam = re.sub(' ', '_', domfam)
-                                        domfam = 'SEED' + domfam
+                                        domfam = self._standardize_SEED_subsys_ID(annot2)
                                         domfam_list.append(domfam)
+                                        if domfam in domfam2cat[namespace]:
+                                            validated_vocab = True
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
+                                if validated_vocab:
+                                    genes_with_validated_vocab_hits_cnt[genome_ref][namespace] += 1
 
                                 if top_hit_flag:  # does SEED give more than one function?
                                     domfam_list = domfam_list[0]
@@ -3335,25 +3302,47 @@ This module contains methods for running and visualizing results of phylogenomic
                     #f_cnt += 1  # DEBUG
 
 
+        # check for validated vocab if reading SEED
+        #
+        threshold_fraction_with_validated_annotation = dict()
+        threshold_fraction_with_validated_annotation['SEED'] = 0.75
+        missing_SEED_annot_by_genome_ref = dict()
+        missing_SEED_annot = []
+        if 'SEED' in namespaces_reading:
+            namespace = 'SEED'
+            for genome_ref in genome_refs:
+                valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
+                if valid_fraction < threshold_fraction_with_validated_annotation[namespace]:
+                    missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                    missing_SEED_annot_by_genome_ref[genome_ref] = True
+
+            if missing_SEED_annot:
+                if len(missing_SEED_annot) == len(genome_refs):
+                    raise ValueError("ALL genomes have no matching RAST SEED Annotations")
+
+                # if strict, then abort
+                if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                    error_msg = "ABORT: You must run the RAST SEED Annotation App first\n"
+                    error_msg += "\n".join(missing_SEED_annot)
+                    raise ValueError(error_msg)
+                # if skipping, then remove genomes with missing annotations
+                else:
+                    new_genome_refs = []
+                    for genome_ref in genome_refs:
+                        if genome_ref in missing_SEED_annot_by_genome_ref:
+                            continue
+                        new_genome_refs.append(genome_ref)
+                    genome_refs = new_genome_refs
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the RAST SEED Annotation App first")
+                    self.log(console, "\n".join(missing_SEED_annot))
+
+
         # determine if custom domains are not just SEED
         #
         search_domains_not_just_SEED = False
-        if params['namespace'] != 'SEED':
-            if params['namespace'] != 'custom':
-                search_domains_not_just_SEED = True
-            else:
-                if params['custom_target_fams'].get('extra_target_fam_groups_COG') \
-                   or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
-                   or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') :
-
-                    search_domains_not_just_SEED = True
-                else:
-                    for target_fam in params['custom_target_fams']['target_fams']:
-                        if not target_fam.startswith('SEED'):
-                        
-                            search_domains_not_just_SEED = True
-                            break
-
+        for namespace in namespaces_reading.keys():
+            if namespace != 'SEED':
+                search_domains_not_just_SEED = False
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
