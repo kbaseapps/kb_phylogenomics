@@ -3109,6 +3109,12 @@ This module contains methods for running and visualizing results of phylogenomic
         (cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading, target_fams,
          extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name) = self._configure_categories(params)
 
+        # instantiate custom FeatureSets
+        #
+        features_by_custom_target_fam = dict()
+        custom_target_fam_features_hit = False
+
+        
         # STEP 1 - Get the Data
         # get speciesTree
         #
@@ -3118,6 +3124,7 @@ This module contains methods for running and visualizing results of phylogenomic
             [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
                 WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_name = input_obj_info[NAME_I]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             speciesTree_name = input_obj_info[NAME_I]
         except Exception as e:
@@ -3246,11 +3253,16 @@ This module contains methods for running and visualizing results of phylogenomic
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
 
                                 if top_hit_flag:  # does SEED give more than one function?
-                                    dom_hits[genome_ref][gene_name][namespace][domfam_list[0]] = True
-                                else:
-                                    for domfam in domfam_list:
-                                        dom_hits[genome_ref][gene_name][namespace][domfam] = True
-
+                                    domfam_list = domfam_list[0]
+                                for domfam in domfam_list:
+                                    dom_hits[genome_ref][gene_name][namespace][domfam] = True
+                                    if domfam in target_fams:
+                                        custom_target_fam_features_hit = True
+                                        if domfam not in features_by_custom_target_fam:
+                                            features_by_custom_target_fam[domfam] = dict()
+                                        if genome_ref not in features_by_custom_target_fam[domfam]:
+                                            features_by_custom_target_fam[domfam][genome_ref] = []
+                                        features_by_custom_target_fam[domfam][genome_ref].append(gene_name)
                     #f_cnt += 1  # DEBUG
 
 
@@ -3415,6 +3427,17 @@ This module contains methods for running and visualizing results of phylogenomic
                                             top_hit_dom_by_namespace[namespace]: True}
                                     else:
                                         dom_hits[genome_ref][gene_name][namespace] = dom_hits_by_namespace[namespace]
+
+                                    # store for featureset
+                                    for domfam in dom_hits[genome_ref][gene_name][namespace].keys():                                        
+                                        if domfam in target_fams:
+                                            custom_target_fam_features_hit = True
+                                            if domfam not in features_by_custom_target_fam:
+                                                features_by_custom_target_fam[domfam] = dict()
+                                            if genome_ref not in features_by_custom_target_fam[domfam]:
+                                                features_by_custom_target_fam[domfam][genome_ref] = []
+                                            features_by_custom_target_fam[domfam][genome_ref].append(gene_name)
+
 
             # make sure we have domain annotations for all genomes
             missing_annot = []
@@ -3605,7 +3628,42 @@ This module contains methods for running and visualizing results of phylogenomic
                     group_size_with_blanks[cat_group] += 1
 
 
-        # Prune tree if any leaf genomes missing domain annotation
+        # STEP 3 - Create and save featureSets
+        #
+        objects_created = []
+        if custom_target_fam_features_hit:
+            featureSet_by_custom_target_fam = dict()
+            for target_fam in sorted(features_by_custom_target_fam.keys()):
+                featureSet_by_custom_target_fam[target_fam] = dict()
+                for genome_ref in sorted(features_by_custom_target_fam[target_fam].keys()):
+                    for fid in sorted(features_by_custom_target_fam[target_fam][genome_ref]):
+                        if fid in featureSet_by_custom_target_fam[target_fam]:
+                            featureSet_by_custom_target_fam[target_fam][fid].append(genome_ref)
+                        else:
+                            featureSet_by_custom_target_fam[target_fam][fid] = [genome_ref]
+
+                fs_name = target_fam+'-'+input_obj_name+'.FeatureSet'
+                fs_desc = 'Hits by '+target_fam+' to '+input_obj_name
+                fs_obj = {'description': fs_desc,
+                          'elements': featureSet_by_custom_target_fam[target_fam]
+                         }
+                new_obj_info = wsClient.save_objects({
+                    'workspace': params['workspace_name'],
+                    'objects': [
+                        {'type': 'KBaseCollections.FeatureSet',
+                         'data': fs_obj,
+                         'name': fs_name,
+                         'meta': {},
+                         'provenance': provenance
+                         }]
+                })[0]
+                objects_created.append(
+                    {'ref': str(new_obj_info[6]) + '/' + str(new_obj_info[0]) + '/' + str(new_obj_info[4]), 'description': fs_desc})
+                featureSet_by_custom_target_fam[target_fam] = {}  # free memory
+                fs_obj = {}  # free memory
+
+
+        # STEP 4 - Prune tree if any leaf genomes missing domain annotation
         #
         if search_domains_not_just_SEED:
             prune_retain_list = []  # prune() method takes list of leaves to keep
@@ -3627,7 +3685,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 species_tree.prune (prune_retain_list)
 
 
-        # Draw tree (we already instantiated Tree above)
+        # STEP 5 - Draw tree (we already instantiated Tree above)
         #
         png_file = speciesTree_name + '.png'
         pdf_file = speciesTree_name + '.pdf'
@@ -3699,10 +3757,11 @@ This module contains methods for running and visualizing results of phylogenomic
         species_tree.render(output_png_file_path, w=img_in_width, units=img_units, dpi=dpi, tree_style=ts)
         species_tree.render(output_pdf_file_path, w=img_in_width, units=img_units, tree_style=ts)  # dpi irrelevant
 
-        # STEP 3 - build report
+
+        # STEP 6 - build report
         #
         reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
-        reportObj = {'objects_created': [],
+        reportObj = {'objects_created': objects_created,
                      'direct_html_link_index': 0,
                      'file_links': [],
                      'html_links': [],
