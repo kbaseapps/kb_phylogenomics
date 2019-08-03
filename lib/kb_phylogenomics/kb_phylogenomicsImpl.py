@@ -3276,8 +3276,6 @@ This module contains methods for running and visualizing results of phylogenomic
                             for namespace in ['SEED']:
                                 if namespace not in genes_with_hits_cnt[genome_ref]:
                                     genes_with_hits_cnt[genome_ref][namespace] = 0
-                                # hypothetical proteins are getting counted as legit
-                                genes_with_hits_cnt[genome_ref][namespace] += 1
                                 if namespace not in genes_with_validated_vocab_hits_cnt[genome_ref]:
                                     genes_with_validated_vocab_hits_cnt[genome_ref][namespace] = 0
 
@@ -3285,20 +3283,27 @@ This module contains methods for running and visualizing results of phylogenomic
                                     dom_hits[genome_ref][gene_name] = dict()
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
+                                non_hypothetical_hit = False
                                 validated_vocab = False
                                 domfam_list = []
                                 for annot in self._get_SEED_annotations(feature):
                                     for annot2 in annot.strip().split('@'):
                                         domfam = self._standardize_SEED_subsys_ID(annot2)
                                         domfam_list.append(domfam)
+                                        if not 'hypothetical' in domfam:
+                                            non_hypothetical_hit = True
+                                        else:
+                                            continue
                                         if domfam in domfam2cat[namespace]:
                                             validated_vocab = True
                                         # DEBUG
-                                        #else:
-                                        #    self.log(console, "genome:"+genome_ref+" not recognizing function: "+domfam)
+                                        else:
+                                            self.log(console, "genome:"+genome_ref+" not recognizing function: "+domfam)
 
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
+                                if non_hypothetical_hit:
+                                    genes_with_hits_cnt[genome_ref][namespace] += 1
                                 if validated_vocab:
                                     genes_with_validated_vocab_hits_cnt[genome_ref][namespace] += 1
 
