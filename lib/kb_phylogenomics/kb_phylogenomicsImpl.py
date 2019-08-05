@@ -3559,6 +3559,14 @@ This module contains methods for running and visualizing results of phylogenomic
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
 
+        # shouldn't draw tree with less than 3 leaves
+        #
+        if len(genome_refs) < 3:
+            error_msg = "Too few remaining genomes ("+str(len(genome_refs))+") to draw meaningful tree.  Need at least 3.  Please use 'View Function Profile for Genomes' App instead"
+            self.log(console, error_message)
+            raise ValueError ("ABORT: "+error_msg)
+
+
         # STEP 2 - Analysis
         # calculate table
         #
