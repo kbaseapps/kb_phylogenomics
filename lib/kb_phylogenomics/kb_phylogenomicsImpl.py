@@ -1461,14 +1461,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
             if missing_annot:
                 if len(missing_annot) == len(genome_refs):
-                    error_msg = "ABORT: ALL genomes have no matching Domain Annotation.  You must run the DomainAnnotation App first\n"
+                    error_msg = "ABORT: ALL genomes have no matching Domain Annotation.  You must run the 'Domain Annotation' App first\n"
                     error_msg += "\n".join(missing_annot)
                     self.log(console, error_msg)
                     raise ValueError(error_msg)
 
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
-                    error_msg = "ABORT: You must run the DomainAnnotation App or use SKIP option on below genomes first\n"
+                    error_msg = "ABORT: You must run the 'Domain Annotation' App or use SKIP option on below genomes first\n"
                     error_msg += "\n".join(missing_annot)
                     self.log(console, error_msg)
                     raise ValueError(error_msg)
@@ -1480,7 +1480,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             continue
                         new_genome_refs.append(genome_ref)
                     genome_refs = new_genome_refs
-                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the DomainAnnotation App first")
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the 'Domain Annotation' App first")
                     self.log(console, "\n".join(missing_annot))
                         
         # DEBUG
@@ -2473,14 +2473,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
             if missing_annot:
                 if len(missing_annot) == len(genome_refs):
-                    error_msg = "ABORT: ALL genomes have no matching Domain Annotation.  You must run the DomainAnnotation App first\n"
+                    error_msg = "ABORT: ALL genomes have no matching Domain Annotation.  You must run the 'Domain Annotation' App first\n"
                     error_msg += "\n".join(missing_annot)
                     self.log(console, error_msg)
                     raise ValueError(error_msg)
 
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
-                    error_msg = "ABORT: You must run the DomainAnnotation App or use SKIP option on below genomes first\n"
+                    error_msg = "ABORT: You must run the 'Domain Annotation' App or use SKIP option on below genomes first\n"
                     error_msg += "\n".join(missing_annot)
                     self.log(console, error_msg)
                     raise ValueError(error_msg)
@@ -2492,7 +2492,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             continue
                         new_genome_refs.append(genome_ref)
                     genome_refs = new_genome_refs
-                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the DomainAnnotation App first")
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the 'Domain Annotation' App first")
                     self.log(console, "\n".join(missing_annot))
 
         # DEBUG
@@ -3532,14 +3532,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
             if missing_annot:
                 if len(missing_annot) == len(genome_refs):
-                    error_msg = "ABORT: ALL genomes have no matching Domain Annotation.  You must run the DomainAnnotation App first\n"
+                    error_msg = "ABORT: ALL genomes have no matching Domain Annotation.  You must run the 'Domain Annotation' App first\n"
                     error_msg += "\n".join(missing_annot)
                     self.log(console, error_msg)
                     raise ValueError(error_msg)
 
                 # if strict, then abort
                 if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
-                    error_msg = "ABORT: You must run the DomainAnnotation App or use SKIP option on below genomes first\n"
+                    error_msg = "ABORT: You must run the 'Domain Annotation' App or use SKIP option on below genomes first\n"
                     error_msg += "\n".join(missing_annot)
                     self.log(console, error_msg)
                     raise ValueError(error_msg)
@@ -3551,7 +3551,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             continue
                         new_genome_refs.append(genome_ref)
                     genome_refs = new_genome_refs
-                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the DomainAnnotation App first")
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the 'Domain Annotation' App first")
                     self.log(console, "\n".join(missing_annot))
 
 
