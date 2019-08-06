@@ -1291,6 +1291,61 @@ This module contains methods for running and visualizing results of phylogenomic
                     #f_cnt += 1  # DEBUG
 
 
+        # Make sure we have CDSs
+        #
+        missing_genes = []
+        for genome_ref in genome_refs:
+            if genome_CDS_count_by_ref[genome_ref] == 0:
+                missing_genes.append("\t" + 'MISSING GENES FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                missing_genes_by_genome_ref[genome_ref] = True
+        if missing_genes:
+            error_msg = "ABORT: Some of the Genomes are missing gene calls.  Please run RAST or Prokka App to get Genome objects with Gene calls for the following Genomes\n"
+            error_msg += "\n".join(missing_genes)
+            self.log(console, error_msg)
+            raise ValueError(error_msg)
+
+
+        # check for validated vocab if reading SEED
+        #
+        threshold_fraction_with_validated_annotation = dict()
+        threshold_fraction_with_validated_annotation['SEED'] = 0.33
+        missing_SEED_annot_by_genome_ref = dict()
+        missing_SEED_annot = []
+        if 'SEED' in namespaces_reading:
+            namespace = 'SEED'
+            for genome_ref in genome_refs:
+                self.log(console, "genome:"+genome_ref+" gene cnt with validated annot:"+str(genes_with_validated_vocab_hits_cnt[genome_ref][namespace])+" gene cnt with annot:"+str(genes_with_hits_cnt[genome_ref][namespace]))  # DEBUG
+
+                valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
+                if valid_fraction < threshold_fraction_with_validated_annotation[namespace]:
+                    missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                    missing_SEED_annot_by_genome_ref[genome_ref] = True
+
+            if missing_SEED_annot:
+                if len(missing_SEED_annot) == len(genome_refs):
+                    error_msg = "ABORT: ALL genomes are missing RAST SEED Annotation.  You must run the RAST SEED Annotation App first\n"
+                    error_msg += "\n".join(missing_SEED_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+
+                # if strict, then abort
+                if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                    error_msg = "ABORT: You must run the RAST SEED Annotation App or use SKIP option on below genomes first\n"
+                    error_msg += "\n".join(missing_SEED_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+                # if skipping, then remove genomes with missing annotations
+                else:
+                    new_genome_refs = []
+                    for genome_ref in genome_refs:
+                        if genome_ref in missing_SEED_annot_by_genome_ref:
+                            continue
+                        new_genome_refs.append(genome_ref)
+                    genome_refs = new_genome_refs
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the RAST SEED Annotation App first")
+                    self.log(console, "\n".join(missing_SEED_annot))
+
+
         # determine if custom domains are not just SEED
         #
         search_domains_not_just_SEED = False
@@ -1486,6 +1541,50 @@ This module contains methods for running and visualizing results of phylogenomic
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
+
+
+        # Alert user for any genomes that are missing annotations in a requested namespace
+        #   this can happen even with a DomainAnnotation object if the namespace was skipped
+        #
+        fraction_requiring_annotation = 0.25
+        inadequate_annot = []
+        inadequate_annot_by_genome_ref = dict()
+        for genome_ref in genome_refs:
+            total_genes = genome_CDS_count_by_ref[genome_ref]
+
+            for namespace in sorted(namespaces_reading.keys()):
+                if namespace == 'SEED':
+                    annotation_tool = 'RAST Genome Annotation App'
+                else:
+                    annotation_tool = 'Domain Annotation App'
+                if genes_with_hits_cnt[genome_ref][namespace] < fraction_requiring_annotation * total_genes:
+                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
+                    inadequate_annot_by_genome_ref[genome_ref] = True
+
+            if inadequate_annot:
+                if len(inadequate_annot) == len(genome_refs):
+                    error_msg = "ABORT: ALL genomes have poor Domain Annotation.  You must run the 'Domain Annotation' App first\n"
+                    error_msg += "\n".join(inadequate_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+
+                # if strict, then abort
+                if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                    error_msg = "ABORT: You must run the 'Domain Annotation' App or use SKIP option on below genomes first\n"
+                    error_msg += "\n".join(inadequate_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+                # if skipping, then remove genomes with missing annotations
+                else:
+                    new_genome_refs = []
+                    for genome_ref in genome_refs:
+                        if genome_ref in inadequate_annot_by_genome_ref:
+                            continue
+                        new_genome_refs.append(genome_ref)
+                    genome_refs = new_genome_refs
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the 'Domain Annotation' App first")
+                    self.log(console, "\n".join(inadequate_annot))
+
 
         # STEP 2 - Analysis
         # calculate table
@@ -2288,6 +2387,61 @@ This module contains methods for running and visualizing results of phylogenomic
                     #f_cnt += 1  # DEBUG
 
 
+        # Make sure we have CDSs
+        #
+        missing_genes = []
+        for genome_ref in genome_refs:
+            if genome_CDS_count_by_ref[genome_ref] == 0:
+                missing_genes.append("\t" + 'MISSING GENES FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                missing_genes_by_genome_ref[genome_ref] = True
+        if missing_genes:
+            error_msg = "ABORT: Some of the Genomes are missing gene calls.  Please run RAST or Prokka App to get Genome objects with Gene calls for the following Genomes\n"
+            error_msg += "\n".join(missing_genes)
+            self.log(console, error_msg)
+            raise ValueError(error_msg)
+
+
+        # check for validated vocab if reading SEED
+        #
+        threshold_fraction_with_validated_annotation = dict()
+        threshold_fraction_with_validated_annotation['SEED'] = 0.33
+        missing_SEED_annot_by_genome_ref = dict()
+        missing_SEED_annot = []
+        if 'SEED' in namespaces_reading:
+            namespace = 'SEED'
+            for genome_ref in genome_refs:
+                self.log(console, "genome:"+genome_ref+" gene cnt with validated annot:"+str(genes_with_validated_vocab_hits_cnt[genome_ref][namespace])+" gene cnt with annot:"+str(genes_with_hits_cnt[genome_ref][namespace]))  # DEBUG
+
+                valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
+                if valid_fraction < threshold_fraction_with_validated_annotation[namespace]:
+                    missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                    missing_SEED_annot_by_genome_ref[genome_ref] = True
+
+            if missing_SEED_annot:
+                if len(missing_SEED_annot) == len(genome_refs):
+                    error_msg = "ABORT: ALL genomes are missing RAST SEED Annotation.  You must run the RAST SEED Annotation App first\n"
+                    error_msg += "\n".join(missing_SEED_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+
+                # if strict, then abort
+                if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                    error_msg = "ABORT: You must run the RAST SEED Annotation App or use SKIP option on below genomes first\n"
+                    error_msg += "\n".join(missing_SEED_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+                # if skipping, then remove genomes with missing annotations
+                else:
+                    new_genome_refs = []
+                    for genome_ref in genome_refs:
+                        if genome_ref in missing_SEED_annot_by_genome_ref:
+                            continue
+                        new_genome_refs.append(genome_ref)
+                    genome_refs = new_genome_refs
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the RAST SEED Annotation App first")
+                    self.log(console, "\n".join(missing_SEED_annot))
+
+
         # determine if custom domains are not just SEED
         #
         search_domains_not_just_SEED = False
@@ -2498,6 +2652,49 @@ This module contains methods for running and visualizing results of phylogenomic
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
+
+        # Alert user for any genomes that are missing annotations in a requested namespace
+        #   this can happen even with a DomainAnnotation object if the namespace was skipped
+        #
+        fraction_requiring_annotation = 0.25
+        inadequate_annot = []
+        inadequate_annot_by_genome_ref = dict()
+        for genome_ref in genome_refs:
+            total_genes = genome_CDS_count_by_ref[genome_ref]
+
+            for namespace in sorted(namespaces_reading.keys()):
+                if namespace == 'SEED':
+                    annotation_tool = 'RAST Genome Annotation App'
+                else:
+                    annotation_tool = 'Domain Annotation App'
+                if genes_with_hits_cnt[genome_ref][namespace] < fraction_requiring_annotation * total_genes:
+                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
+                    inadequate_annot_by_genome_ref[genome_ref] = True
+
+            if inadequate_annot:
+                if len(inadequate_annot) == len(genome_refs):
+                    error_msg = "ABORT: ALL genomes have poor Domain Annotation.  You must run the 'Domain Annotation' App first\n"
+                    error_msg += "\n".join(inadequate_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+
+                # if strict, then abort
+                if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                    error_msg = "ABORT: You must run the 'Domain Annotation' App or use SKIP option on below genomes first\n"
+                    error_msg += "\n".join(inadequate_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+                # if skipping, then remove genomes with missing annotations
+                else:
+                    new_genome_refs = []
+                    for genome_ref in genome_refs:
+                        if genome_ref in inadequate_annot_by_genome_ref:
+                            continue
+                        new_genome_refs.append(genome_ref)
+                    genome_refs = new_genome_refs
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the 'Domain Annotation' App first")
+                    self.log(console, "\n".join(inadequate_annot))
+
 
         # STEP 2 - Analysis
         # calculate table
@@ -3321,10 +3518,24 @@ This module contains methods for running and visualizing results of phylogenomic
                     #f_cnt += 1  # DEBUG
 
 
+        # Make sure we have CDSs
+        #
+        missing_genes = []
+        for genome_ref in genome_refs:
+            if genome_CDS_count_by_ref[genome_ref] == 0:
+                missing_genes.append("\t" + 'MISSING GENES FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                missing_genes_by_genome_ref[genome_ref] = True
+        if missing_genes:
+            error_msg = "ABORT: Some of the Genomes are missing gene calls.  Please run RAST or Prokka App to get Genome objects with Gene calls for the following Genomes\n"
+            error_msg += "\n".join(missing_genes)
+            self.log(console, error_msg)
+            raise ValueError(error_msg)
+
+
         # check for validated vocab if reading SEED
         #
         threshold_fraction_with_validated_annotation = dict()
-        threshold_fraction_with_validated_annotation['SEED'] = 0.50
+        threshold_fraction_with_validated_annotation['SEED'] = 0.33
         missing_SEED_annot_by_genome_ref = dict()
         missing_SEED_annot = []
         if 'SEED' in namespaces_reading:
@@ -3558,6 +3769,49 @@ This module contains methods for running and visualizing results of phylogenomic
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
+
+        # Alert user for any genomes that are missing annotations in a requested namespace
+        #   this can happen even with a DomainAnnotation object if the namespace was skipped
+        #
+        fraction_requiring_annotation = 0.25
+        inadequate_annot = []
+        inadequate_annot_by_genome_ref = dict()
+        for genome_ref in genome_refs:
+            total_genes = genome_CDS_count_by_ref[genome_ref]
+
+            for namespace in sorted(namespaces_reading.keys()):
+                if namespace == 'SEED':
+                    annotation_tool = 'RAST Genome Annotation App'
+                else:
+                    annotation_tool = 'Domain Annotation App'
+                if genes_with_hits_cnt[genome_ref][namespace] < fraction_requiring_annotation * total_genes:
+                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
+                    inadequate_annot_by_genome_ref[genome_ref] = True
+
+            if inadequate_annot:
+                if len(inadequate_annot) == len(genome_refs):
+                    error_msg = "ABORT: ALL genomes have poor Domain Annotation.  You must run the 'Domain Annotation' App first\n"
+                    error_msg += "\n".join(inadequate_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+
+                # if strict, then abort
+                if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
+                    error_msg = "ABORT: You must run the 'Domain Annotation' App or use SKIP option on below genomes first\n"
+                    error_msg += "\n".join(inadequate_annot)
+                    self.log(console, error_msg)
+                    raise ValueError(error_msg)
+                # if skipping, then remove genomes with missing annotations
+                else:
+                    new_genome_refs = []
+                    for genome_ref in genome_refs:
+                        if genome_ref in inadequate_annot_by_genome_ref:
+                            continue
+                        new_genome_refs.append(genome_ref)
+                    genome_refs = new_genome_refs
+                    self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the 'Domain Annotation' App first")
+                    self.log(console, "\n".join(inadequate_annot))
+
 
         # shouldn't draw tree with less than 3 leaves
         #
