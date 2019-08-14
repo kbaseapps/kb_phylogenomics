@@ -31,9 +31,9 @@ suggestions:
 parameters :
     input_genomeSet_ref :
         ui-name : |
-            GenomeSet
+            Genomes
         short-hint : |
-            Select a GenomeSet from your data panel to annotate with domains. All Genomes in the GenomeSet must already have annotated protein-encoding genes.
+            Select a GenomeSet or SpeciesTree from your data panel to annotate with domains. All Genomes in the GenomeSet or SpeciesTree must already have annotated protein-encoding genes.
     override_annot :
         ui-name : |
             Override Existing Domain Annotations
