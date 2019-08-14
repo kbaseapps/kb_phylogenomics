@@ -892,6 +892,8 @@ This module contains methods for running and visualizing results of phylogenomic
         console = []
         self.log(console, 'Running run_DomainAnnotation_Sets() with params=')
         self.log(console, "\n" + pformat(params))
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
 
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
@@ -915,43 +917,81 @@ This module contains methods for running and visualizing results of phylogenomic
 
         ### STEP 2: build a list of genomes to iterate through
 
-        # get genome set
+        # get input obj
+        genomeSet_types =  ["KBaseSearch.GenomeSet","KBaseSets.GenomeSet"]
+        tree_types = ["KBaseTrees.Tree"]
         input_ref = params['input_genomeSet_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
-        accepted_input_types = ["KBaseSearch.GenomeSet"]
+        accepted_input_types = genomeSet_types + tree_types
         if input_obj_type not in accepted_input_types:
             raise ValueError("Input object of type '" + input_obj_type +
                              "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
-        # get set obj
-        try:
-            genomeSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
-        except:
-            raise ValueError("unable to fetch genomeSet: " + input_ref)
-
-        # get genome refs and object names
-        genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
+        # get list of genomes
         genome_refs = []
-        for genome_id in genome_ids:
-            genome_refs.append(genomeSet_obj['elements'][genome_id]['ref'])
+        if input_obj_type in genomeSet_types:
+            # get set obj
+            try:
+                genomeSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
+            except:
+                raise ValueError("unable to fetch genomeSet: " + input_ref)
 
+            # get genome refs and object names
+            genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
+            for genome_id in genome_ids:
+                genome_refs.append(genomeSet_obj['elements'][genome_id]['ref'])
+
+        elif input_obj_type in tree_types:
+
+            # get speciesTree
+            #
+            input_ref = params['input_genomeSet_ref']
+            speciesTree_name = None
+            try:
+                input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+                input_obj_name = input_obj_info[NAME_I]
+                input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+                speciesTree_name = input_obj_info[NAME_I]
+            except Exception as e:
+                raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+            accepted_input_types = ["KBaseTrees.Tree"]
+            if input_obj_type not in accepted_input_types:
+                raise ValueError("Input object of type '" + input_obj_type +
+                                 "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
+
+            # get set obj
+            try:
+                speciesTree_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
+            except:
+                raise ValueError("unable to fetch speciesTree: " + input_ref)
+
+            # get genome_refs from speciesTree and instantiate ETE3 tree and order
+            #
+            for genome_id in speciesTree_obj['default_node_labels'].keys():
+                genome_refs.append(speciesTree_obj['ws_refs'][genome_id]['g'][0])
+
+        else:
+            raise ValueError ("Bad type for input object")
+
+
+        # get additional info for genomes
         genome_obj_name_by_ref = dict()
         uniq_genome_ws_ids = dict()
         ws_name_by_genome_ref = dict()
+
+        genome_refs = []
+        genome_id_by_ref = dict()
+        genome_ref_by_id = dict()
 
         for genome_ref in genome_refs:
 
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
                 input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
                 input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
@@ -966,6 +1006,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                  "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[input_ref] = input_name
+
 
         ### STEP 3: Determine which genomes have already got domain annotations
         domain_annot_done = dict()
