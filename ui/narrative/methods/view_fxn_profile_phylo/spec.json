@@ -4627,3499 +4627,3499 @@
 	    	"options": [
 		{
 			"value": "SEED: Alanine_biosynthesis",
-			"display": "SEED: Alanine biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Alanine biosynthesis",
 			"id": "SEED: Alanine_biosynthesis",
 			"ui-name": "SEED: Alanine_biosynthesis"
 		},
 		{
 			"value": "SEED: Arginine_Biosynthesis_extended",
-			"display": "SEED: Arginine Biosynthesis extended",
+			"display": "SEED: Amino Acids and Derivatives: Arginine Biosynthesis extended",
 			"id": "SEED: Arginine_Biosynthesis_extended",
 			"ui-name": "SEED: Arginine_Biosynthesis_extended"
 		},
 		{
 			"value": "SEED: Arginine_Deiminase_Pathway",
-			"display": "SEED: Arginine Deiminase Pathway",
+			"display": "SEED: Amino Acids and Derivatives: Arginine Deiminase Pathway",
 			"id": "SEED: Arginine_Deiminase_Pathway",
 			"ui-name": "SEED: Arginine_Deiminase_Pathway"
 		},
 		{
 			"value": "SEED: Arginine_and_Ornithine_Degradation",
-			"display": "SEED: Arginine and Ornithine Degradation",
+			"display": "SEED: Amino Acids and Derivatives: Arginine and Ornithine Degradation",
 			"id": "SEED: Arginine_and_Ornithine_Degradation",
 			"ui-name": "SEED: Arginine_and_Ornithine_Degradation"
 		},
 		{
 			"value": "SEED: Aromatic_amino_acid_degradation",
-			"display": "SEED: Aromatic amino acid degradation",
+			"display": "SEED: Amino Acids and Derivatives: Aromatic amino acid degradation",
 			"id": "SEED: Aromatic_amino_acid_degradation",
 			"ui-name": "SEED: Aromatic_amino_acid_degradation"
 		},
 		{
 			"value": "SEED: Aromatic_amino_acid_interconversions_with_aryl_acids",
-			"display": "SEED: Aromatic amino acid interconversions with aryl acids",
+			"display": "SEED: Amino Acids and Derivatives: Aromatic amino acid interconversions with aryl acids",
 			"id": "SEED: Aromatic_amino_acid_interconversions_with_aryl_acids",
 			"ui-name": "SEED: Aromatic_amino_acid_interconversions_with_aryl_acids"
 		},
 		{
 			"value": "SEED: Bacilysin_biosynthesis",
-			"display": "SEED: Bacilysin biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Bacilysin biosynthesis",
 			"id": "SEED: Bacilysin_biosynthesis",
 			"ui-name": "SEED: Bacilysin_biosynthesis"
 		},
 		{
 			"value": "SEED: Branched-Chain_Amino_Acid_Biosynthesis",
-			"display": "SEED: Branched-Chain Amino Acid Biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Branched-Chain Amino Acid Biosynthesis",
 			"id": "SEED: Branched-Chain_Amino_Acid_Biosynthesis",
 			"ui-name": "SEED: Branched-Chain_Amino_Acid_Biosynthesis"
 		},
 		{
 			"value": "SEED: Chorismate:_Intermediate_for_synthesis_of_PAPA_antibiotics,_PABA,_anthranilate,_3-hydroxyanthranilate_and_more.",
-			"display": "SEED: Chorismate: Intermediate for synthesis of PAPA antibiotics, PABA, anthranilate, 3-hydroxyanthranilate and more.",
+			"display": "SEED: Amino Acids and Derivatives: Chorismate: Intermediate for synthesis of PAPA antibiotics, PABA, anthranilate, 3-hydroxyanthranilate and more.",
 			"id": "SEED: Chorismate:_Intermediate_for_synthesis_of_PAPA_antibiotics,_PABA,_anthranilate,_3-hydroxyanthranilate_and_more.",
 			"ui-name": "SEED: Chorismate:_Intermediate_for_synthesis_of_PAPA_antibiotics,_PABA,_anthranilate,_3-hydroxyanthranilate_and_more."
 		},
 		{
 			"value": "SEED: Chorismate_Synthesis",
-			"display": "SEED: Chorismate Synthesis",
+			"display": "SEED: Amino Acids and Derivatives: Chorismate Synthesis",
 			"id": "SEED: Chorismate_Synthesis",
 			"ui-name": "SEED: Chorismate_Synthesis"
 		},
 		{
 			"value": "SEED: Common_Pathway_For_Synthesis_of_Aromatic_Compounds_(DAHP_synthase_to_chorismate)",
-			"display": "SEED: Common Pathway For Synthesis of Aromatic Compounds (DAHP synthase to chorismate)",
+			"display": "SEED: Amino Acids and Derivatives: Common Pathway For Synthesis of Aromatic Compounds (DAHP synthase to chorismate)",
 			"id": "SEED: Common_Pathway_For_Synthesis_of_Aromatic_Compounds_(DAHP_synthase_to_chorismate)",
 			"ui-name": "SEED: Common_Pathway_For_Synthesis_of_Aromatic_Compounds_(DAHP_synthase_to_chorismate)"
 		},
 		{
 			"value": "SEED: Cyanophycin_Metabolism",
-			"display": "SEED: Cyanophycin Metabolism",
+			"display": "SEED: Amino Acids and Derivatives: Cyanophycin Metabolism",
 			"id": "SEED: Cyanophycin_Metabolism",
 			"ui-name": "SEED: Cyanophycin_Metabolism"
 		},
 		{
 			"value": "SEED: Cysteine_Biosynthesis",
-			"display": "SEED: Cysteine Biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Cysteine Biosynthesis",
 			"id": "SEED: Cysteine_Biosynthesis",
 			"ui-name": "SEED: Cysteine_Biosynthesis"
 		},
 		{
 			"value": "SEED: Glutamate_dehydrogenases",
-			"display": "SEED: Glutamate dehydrogenases",
+			"display": "SEED: Amino Acids and Derivatives: Glutamate dehydrogenases",
 			"id": "SEED: Glutamate_dehydrogenases",
 			"ui-name": "SEED: Glutamate_dehydrogenases"
 		},
 		{
 			"value": "SEED: Glutamine,_Glutamate,_Aspartate_and_Asparagine_Biosynthesis",
-			"display": "SEED: Glutamine, Glutamate, Aspartate and Asparagine Biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Glutamine, Glutamate, Aspartate and Asparagine Biosynthesis",
 			"id": "SEED: Glutamine,_Glutamate,_Aspartate_and_Asparagine_Biosynthesis",
 			"ui-name": "SEED: Glutamine,_Glutamate,_Aspartate_and_Asparagine_Biosynthesis"
 		},
 		{
 			"value": "SEED: Glutamine_synthetases",
-			"display": "SEED: Glutamine synthetases",
+			"display": "SEED: Amino Acids and Derivatives: Glutamine synthetases",
 			"id": "SEED: Glutamine_synthetases",
 			"ui-name": "SEED: Glutamine_synthetases"
 		},
 		{
 			"value": "SEED: Glycine_Biosynthesis",
-			"display": "SEED: Glycine Biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Glycine Biosynthesis",
 			"id": "SEED: Glycine_Biosynthesis",
 			"ui-name": "SEED: Glycine_Biosynthesis"
 		},
 		{
 			"value": "SEED: Glycine_and_Serine_Utilization",
-			"display": "SEED: Glycine and Serine Utilization",
+			"display": "SEED: Amino Acids and Derivatives: Glycine and Serine Utilization",
 			"id": "SEED: Glycine_and_Serine_Utilization",
 			"ui-name": "SEED: Glycine_and_Serine_Utilization"
 		},
 		{
 			"value": "SEED: Glycine_cleavage_system",
-			"display": "SEED: Glycine cleavage system",
+			"display": "SEED: Amino Acids and Derivatives: Glycine cleavage system",
 			"id": "SEED: Glycine_cleavage_system",
 			"ui-name": "SEED: Glycine_cleavage_system"
 		},
 		{
 			"value": "SEED: HMG_CoA_Synthesis",
-			"display": "SEED: HMG CoA Synthesis",
+			"display": "SEED: Amino Acids and Derivatives: HMG CoA Synthesis",
 			"id": "SEED: HMG_CoA_Synthesis",
 			"ui-name": "SEED: HMG_CoA_Synthesis"
 		},
 		{
 			"value": "SEED: Histidine_Biosynthesis",
-			"display": "SEED: Histidine Biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Histidine Biosynthesis",
 			"id": "SEED: Histidine_Biosynthesis",
 			"ui-name": "SEED: Histidine_Biosynthesis"
 		},
 		{
 			"value": "SEED: Histidine_Degradation",
-			"display": "SEED: Histidine Degradation",
+			"display": "SEED: Amino Acids and Derivatives: Histidine Degradation",
 			"id": "SEED: Histidine_Degradation",
 			"ui-name": "SEED: Histidine_Degradation"
 		},
 		{
 			"value": "SEED: Isoleucine_degradation",
-			"display": "SEED: Isoleucine degradation",
+			"display": "SEED: Amino Acids and Derivatives: Isoleucine degradation",
 			"id": "SEED: Isoleucine_degradation",
 			"ui-name": "SEED: Isoleucine_degradation"
 		},
 		{
 			"value": "SEED: Ketoisovalerate_oxidoreductase",
-			"display": "SEED: Ketoisovalerate oxidoreductase",
+			"display": "SEED: Amino Acids and Derivatives: Ketoisovalerate oxidoreductase",
 			"id": "SEED: Ketoisovalerate_oxidoreductase",
 			"ui-name": "SEED: Ketoisovalerate_oxidoreductase"
 		},
 		{
 			"value": "SEED: L-2-amino-thiazoline-4-carboxylic_acid-Lcysteine_conversion",
-			"display": "SEED: L-2-amino-thiazoline-4-carboxylic acid-Lcysteine conversion",
+			"display": "SEED: Amino Acids and Derivatives: L-2-amino-thiazoline-4-carboxylic acid-Lcysteine conversion",
 			"id": "SEED: L-2-amino-thiazoline-4-carboxylic_acid-Lcysteine_conversion",
 			"ui-name": "SEED: L-2-amino-thiazoline-4-carboxylic_acid-Lcysteine_conversion"
 		},
 		{
 			"value": "SEED: Leucine_Biosynthesis",
-			"display": "SEED: Leucine Biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Leucine Biosynthesis",
 			"id": "SEED: Leucine_Biosynthesis",
 			"ui-name": "SEED: Leucine_Biosynthesis"
 		},
 		{
 			"value": "SEED: Leucine_Degradation_and_HMG-CoA_Metabolism",
-			"display": "SEED: Leucine Degradation and HMG-CoA Metabolism",
+			"display": "SEED: Amino Acids and Derivatives: Leucine Degradation and HMG-CoA Metabolism",
 			"id": "SEED: Leucine_Degradation_and_HMG-CoA_Metabolism",
 			"ui-name": "SEED: Leucine_Degradation_and_HMG-CoA_Metabolism"
 		},
 		{
 			"value": "SEED: Lysine_Biosynthesis_DAP_Pathway",
-			"display": "SEED: Lysine Biosynthesis DAP Pathway",
+			"display": "SEED: Amino Acids and Derivatives: Lysine Biosynthesis DAP Pathway",
 			"id": "SEED: Lysine_Biosynthesis_DAP_Pathway",
 			"ui-name": "SEED: Lysine_Biosynthesis_DAP_Pathway"
 		},
 		{
 			"value": "SEED: Lysine_degradation",
-			"display": "SEED: Lysine degradation",
+			"display": "SEED: Amino Acids and Derivatives: Lysine degradation",
 			"id": "SEED: Lysine_degradation",
 			"ui-name": "SEED: Lysine_degradation"
 		},
 		{
 			"value": "SEED: Methionine_Biosynthesis",
-			"display": "SEED: Methionine Biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Methionine Biosynthesis",
 			"id": "SEED: Methionine_Biosynthesis",
 			"ui-name": "SEED: Methionine_Biosynthesis"
 		},
 		{
 			"value": "SEED: Methionine_Degradation",
-			"display": "SEED: Methionine Degradation",
+			"display": "SEED: Amino Acids and Derivatives: Methionine Degradation",
 			"id": "SEED: Methionine_Degradation",
 			"ui-name": "SEED: Methionine_Degradation"
 		},
 		{
 			"value": "SEED: Methionine_Salvage",
-			"display": "SEED: Methionine Salvage",
+			"display": "SEED: Amino Acids and Derivatives: Methionine Salvage",
 			"id": "SEED: Methionine_Salvage",
 			"ui-name": "SEED: Methionine_Salvage"
 		},
 		{
 			"value": "SEED: Phenylalanine_and_Tyrosine_Branches_from_Chorismate",
-			"display": "SEED: Phenylalanine and Tyrosine Branches from Chorismate",
+			"display": "SEED: Amino Acids and Derivatives: Phenylalanine and Tyrosine Branches from Chorismate",
 			"id": "SEED: Phenylalanine_and_Tyrosine_Branches_from_Chorismate",
 			"ui-name": "SEED: Phenylalanine_and_Tyrosine_Branches_from_Chorismate"
 		},
 		{
 			"value": "SEED: Polyamine_Metabolism",
-			"display": "SEED: Polyamine Metabolism",
+			"display": "SEED: Amino Acids and Derivatives: Polyamine Metabolism",
 			"id": "SEED: Polyamine_Metabolism",
 			"ui-name": "SEED: Polyamine_Metabolism"
 		},
 		{
 			"value": "SEED: Proline,_4-hydroxyproline_uptake_and_utilization",
-			"display": "SEED: Proline, 4-hydroxyproline uptake and utilization",
+			"display": "SEED: Amino Acids and Derivatives: Proline, 4-hydroxyproline uptake and utilization",
 			"id": "SEED: Proline,_4-hydroxyproline_uptake_and_utilization",
 			"ui-name": "SEED: Proline,_4-hydroxyproline_uptake_and_utilization"
 		},
 		{
 			"value": "SEED: Proline_Synthesis",
-			"display": "SEED: Proline Synthesis",
+			"display": "SEED: Amino Acids and Derivatives: Proline Synthesis",
 			"id": "SEED: Proline_Synthesis",
 			"ui-name": "SEED: Proline_Synthesis"
 		},
 		{
 			"value": "SEED: Serine_Biosynthesis",
-			"display": "SEED: Serine Biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Serine Biosynthesis",
 			"id": "SEED: Serine_Biosynthesis",
 			"ui-name": "SEED: Serine_Biosynthesis"
 		},
 		{
 			"value": "SEED: Threonine_anaerobic_catabolism_gene_cluster",
-			"display": "SEED: Threonine anaerobic catabolism gene cluster",
+			"display": "SEED: Amino Acids and Derivatives: Threonine anaerobic catabolism gene cluster",
 			"id": "SEED: Threonine_anaerobic_catabolism_gene_cluster",
 			"ui-name": "SEED: Threonine_anaerobic_catabolism_gene_cluster"
 		},
 		{
 			"value": "SEED: Threonine_and_Homoserine_Biosynthesis",
-			"display": "SEED: Threonine and Homoserine Biosynthesis",
+			"display": "SEED: Amino Acids and Derivatives: Threonine and Homoserine Biosynthesis",
 			"id": "SEED: Threonine_and_Homoserine_Biosynthesis",
 			"ui-name": "SEED: Threonine_and_Homoserine_Biosynthesis"
 		},
 		{
 			"value": "SEED: Threonine_degradation",
-			"display": "SEED: Threonine degradation",
+			"display": "SEED: Amino Acids and Derivatives: Threonine degradation",
 			"id": "SEED: Threonine_degradation",
 			"ui-name": "SEED: Threonine_degradation"
 		},
 		{
 			"value": "SEED: Tryptophan_synthesis",
-			"display": "SEED: Tryptophan synthesis",
+			"display": "SEED: Amino Acids and Derivatives: Tryptophan synthesis",
 			"id": "SEED: Tryptophan_synthesis",
 			"ui-name": "SEED: Tryptophan_synthesis"
 		},
 		{
 			"value": "SEED: Urea_decomposition",
-			"display": "SEED: Urea decomposition",
+			"display": "SEED: Amino Acids and Derivatives: Urea decomposition",
 			"id": "SEED: Urea_decomposition",
 			"ui-name": "SEED: Urea_decomposition"
 		},
 		{
 			"value": "SEED: Valine_degradation",
-			"display": "SEED: Valine degradation",
+			"display": "SEED: Amino Acids and Derivatives: Valine degradation",
 			"id": "SEED: Valine_degradation",
 			"ui-name": "SEED: Valine_degradation"
 		},
 		{
 			"value": "SEED: 2-Ketogluconate_Utilization",
-			"display": "SEED: 2-Ketogluconate Utilization",
+			"display": "SEED: Carbohydrates: 2-Ketogluconate Utilization",
 			"id": "SEED: 2-Ketogluconate_Utilization",
 			"ui-name": "SEED: 2-Ketogluconate_Utilization"
 		},
 		{
 			"value": "SEED: 2-methylcitrate_to_2-methylaconitate_metabolism_cluster",
-			"display": "SEED: 2-methylcitrate to 2-methylaconitate metabolism cluster",
+			"display": "SEED: Carbohydrates: 2-methylcitrate to 2-methylaconitate metabolism cluster",
 			"id": "SEED: 2-methylcitrate_to_2-methylaconitate_metabolism_cluster",
 			"ui-name": "SEED: 2-methylcitrate_to_2-methylaconitate_metabolism_cluster"
 		},
 		{
 			"value": "SEED: Acetoin,_butanediol_metabolism",
-			"display": "SEED: Acetoin, butanediol metabolism",
+			"display": "SEED: Carbohydrates: Acetoin, butanediol metabolism",
 			"id": "SEED: Acetoin,_butanediol_metabolism",
 			"ui-name": "SEED: Acetoin,_butanediol_metabolism"
 		},
 		{
 			"value": "SEED: Acetyl-CoA_fermentation_to_Butyrate",
-			"display": "SEED: Acetyl-CoA fermentation to Butyrate",
+			"display": "SEED: Carbohydrates: Acetyl-CoA fermentation to Butyrate",
 			"id": "SEED: Acetyl-CoA_fermentation_to_Butyrate",
 			"ui-name": "SEED: Acetyl-CoA_fermentation_to_Butyrate"
 		},
 		{
 			"value": "SEED: Alpha-acetolactate_operon",
-			"display": "SEED: Alpha-acetolactate operon",
+			"display": "SEED: Carbohydrates: Alpha-acetolactate operon",
 			"id": "SEED: Alpha-acetolactate_operon",
 			"ui-name": "SEED: Alpha-acetolactate_operon"
 		},
 		{
 			"value": "SEED: Beta-Glucoside_Metabolism",
-			"display": "SEED: Beta-Glucoside Metabolism",
+			"display": "SEED: Carbohydrates: Beta-Glucoside Metabolism",
 			"id": "SEED: Beta-Glucoside_Metabolism",
 			"ui-name": "SEED: Beta-Glucoside_Metabolism"
 		},
 		{
 			"value": "SEED: Butanol_Biosynthesis",
-			"display": "SEED: Butanol Biosynthesis",
+			"display": "SEED: Carbohydrates: Butanol Biosynthesis",
 			"id": "SEED: Butanol_Biosynthesis",
 			"ui-name": "SEED: Butanol_Biosynthesis"
 		},
 		{
 			"value": "SEED: CO2_uptake,_carboxysome",
-			"display": "SEED: CO2 uptake, carboxysome",
+			"display": "SEED: Carbohydrates: CO2 uptake, carboxysome",
 			"id": "SEED: CO2_uptake,_carboxysome",
 			"ui-name": "SEED: CO2_uptake,_carboxysome"
 		},
 		{
 			"value": "SEED: Calvin-Benson_cycle",
-			"display": "SEED: Calvin-Benson cycle",
+			"display": "SEED: Carbohydrates: Calvin-Benson cycle",
 			"id": "SEED: Calvin-Benson_cycle",
 			"ui-name": "SEED: Calvin-Benson_cycle"
 		},
 		{
 			"value": "SEED: Carboxysome",
-			"display": "SEED: Carboxysome",
+			"display": "SEED: Carbohydrates: Carboxysome",
 			"id": "SEED: Carboxysome",
 			"ui-name": "SEED: Carboxysome"
 		},
 		{
 			"value": "SEED: Chitin_and_N-acetylglucosamine_utilization",
-			"display": "SEED: Chitin and N-acetylglucosamine utilization",
+			"display": "SEED: Carbohydrates: Chitin and N-acetylglucosamine utilization",
 			"id": "SEED: Chitin_and_N-acetylglucosamine_utilization",
 			"ui-name": "SEED: Chitin_and_N-acetylglucosamine_utilization"
 		},
 		{
 			"value": "SEED: D-Galacturonate_and_D-Glucuronate_Utilization",
-			"display": "SEED: D-Galacturonate and D-Glucuronate Utilization",
+			"display": "SEED: Carbohydrates: D-Galacturonate and D-Glucuronate Utilization",
 			"id": "SEED: D-Galacturonate_and_D-Glucuronate_Utilization",
 			"ui-name": "SEED: D-Galacturonate_and_D-Glucuronate_Utilization"
 		},
 		{
 			"value": "SEED: D-Sorbitol(D-Glucitol)_and_L-Sorbose_Utilization",
-			"display": "SEED: D-Sorbitol(D-Glucitol) and L-Sorbose Utilization",
+			"display": "SEED: Carbohydrates: D-Sorbitol(D-Glucitol) and L-Sorbose Utilization",
 			"id": "SEED: D-Sorbitol(D-Glucitol)_and_L-Sorbose_Utilization",
 			"ui-name": "SEED: D-Sorbitol(D-Glucitol)_and_L-Sorbose_Utilization"
 		},
 		{
 			"value": "SEED: D-Tagatose_and_Galactitol_Utilization",
-			"display": "SEED: D-Tagatose and Galactitol Utilization",
+			"display": "SEED: Carbohydrates: D-Tagatose and Galactitol Utilization",
 			"id": "SEED: D-Tagatose_and_Galactitol_Utilization",
 			"ui-name": "SEED: D-Tagatose_and_Galactitol_Utilization"
 		},
 		{
 			"value": "SEED: D-allose_utilization",
-			"display": "SEED: D-allose utilization",
+			"display": "SEED: Carbohydrates: D-allose utilization",
 			"id": "SEED: D-allose_utilization",
 			"ui-name": "SEED: D-allose_utilization"
 		},
 		{
 			"value": "SEED: D-galactarate,_D-glucarate_and_D-glycerate_catabolism",
-			"display": "SEED: D-galactarate, D-glucarate and D-glycerate catabolism",
+			"display": "SEED: Carbohydrates: D-galactarate, D-glucarate and D-glycerate catabolism",
 			"id": "SEED: D-galactarate,_D-glucarate_and_D-glycerate_catabolism",
 			"ui-name": "SEED: D-galactarate,_D-glucarate_and_D-glycerate_catabolism"
 		},
 		{
 			"value": "SEED: D-galactonate_catabolism",
-			"display": "SEED: D-galactonate catabolism",
+			"display": "SEED: Carbohydrates: D-galactonate catabolism",
 			"id": "SEED: D-galactonate_catabolism",
 			"ui-name": "SEED: D-galactonate_catabolism"
 		},
 		{
 			"value": "SEED: D-gluconate_and_ketogluconates_metabolism",
-			"display": "SEED: D-gluconate and ketogluconates metabolism",
+			"display": "SEED: Carbohydrates: D-gluconate and ketogluconates metabolism",
 			"id": "SEED: D-gluconate_and_ketogluconates_metabolism",
 			"ui-name": "SEED: D-gluconate_and_ketogluconates_metabolism"
 		},
 		{
 			"value": "SEED: D-ribose_utilization",
-			"display": "SEED: D-ribose utilization",
+			"display": "SEED: Carbohydrates: D-ribose utilization",
 			"id": "SEED: D-ribose_utilization",
 			"ui-name": "SEED: D-ribose_utilization"
 		},
 		{
 			"value": "SEED: Deoxyribose_and_Deoxynucleoside_Catabolism",
-			"display": "SEED: Deoxyribose and Deoxynucleoside Catabolism",
+			"display": "SEED: Carbohydrates: Deoxyribose and Deoxynucleoside Catabolism",
 			"id": "SEED: Deoxyribose_and_Deoxynucleoside_Catabolism",
 			"ui-name": "SEED: Deoxyribose_and_Deoxynucleoside_Catabolism"
 		},
 		{
 			"value": "SEED: Di-Inositol-Phosphate_biosynthesis",
-			"display": "SEED: Di-Inositol-Phosphate biosynthesis",
+			"display": "SEED: Carbohydrates: Di-Inositol-Phosphate biosynthesis",
 			"id": "SEED: Di-Inositol-Phosphate_biosynthesis",
 			"ui-name": "SEED: Di-Inositol-Phosphate_biosynthesis"
 		},
 		{
 			"value": "SEED: Dihydroxyacetone_kinases",
-			"display": "SEED: Dihydroxyacetone kinases",
+			"display": "SEED: Carbohydrates: Dihydroxyacetone kinases",
 			"id": "SEED: Dihydroxyacetone_kinases",
 			"ui-name": "SEED: Dihydroxyacetone_kinases"
 		},
 		{
 			"value": "SEED: Entner-Doudoroff_Pathway",
-			"display": "SEED: Entner-Doudoroff Pathway",
+			"display": "SEED: Carbohydrates: Entner-Doudoroff Pathway",
 			"id": "SEED: Entner-Doudoroff_Pathway",
 			"ui-name": "SEED: Entner-Doudoroff_Pathway"
 		},
 		{
 			"value": "SEED: Erythritol_utilization",
-			"display": "SEED: Erythritol utilization",
+			"display": "SEED: Carbohydrates: Erythritol utilization",
 			"id": "SEED: Erythritol_utilization",
 			"ui-name": "SEED: Erythritol_utilization"
 		},
 		{
 			"value": "SEED: Ethanolamine_utilization",
-			"display": "SEED: Ethanolamine utilization",
+			"display": "SEED: Carbohydrates: Ethanolamine utilization",
 			"id": "SEED: Ethanolamine_utilization",
 			"ui-name": "SEED: Ethanolamine_utilization"
 		},
 		{
 			"value": "SEED: Fermentations:_Lactate",
-			"display": "SEED: Fermentations: Lactate",
+			"display": "SEED: Carbohydrates: Fermentations: Lactate",
 			"id": "SEED: Fermentations:_Lactate",
 			"ui-name": "SEED: Fermentations:_Lactate"
 		},
 		{
 			"value": "SEED: Fermentations:_Mixed_acid",
-			"display": "SEED: Fermentations: Mixed acid",
+			"display": "SEED: Carbohydrates: Fermentations: Mixed acid",
 			"id": "SEED: Fermentations:_Mixed_acid",
 			"ui-name": "SEED: Fermentations:_Mixed_acid"
 		},
 		{
 			"value": "SEED: Formaldehyde_assimilation:_Ribulose_monophosphate_pathway",
-			"display": "SEED: Formaldehyde assimilation: Ribulose monophosphate pathway",
+			"display": "SEED: Carbohydrates: Formaldehyde assimilation: Ribulose monophosphate pathway",
 			"id": "SEED: Formaldehyde_assimilation:_Ribulose_monophosphate_pathway",
 			"ui-name": "SEED: Formaldehyde_assimilation:_Ribulose_monophosphate_pathway"
 		},
 		{
 			"value": "SEED: Fructooligosaccharides(FOS)_and_Raffinose_Utilization",
-			"display": "SEED: Fructooligosaccharides(FOS) and Raffinose Utilization",
+			"display": "SEED: Carbohydrates: Fructooligosaccharides(FOS) and Raffinose Utilization",
 			"id": "SEED: Fructooligosaccharides(FOS)_and_Raffinose_Utilization",
 			"ui-name": "SEED: Fructooligosaccharides(FOS)_and_Raffinose_Utilization"
 		},
 		{
 			"value": "SEED: Fructose_utilization",
-			"display": "SEED: Fructose utilization",
+			"display": "SEED: Carbohydrates: Fructose utilization",
 			"id": "SEED: Fructose_utilization",
 			"ui-name": "SEED: Fructose_utilization"
 		},
 		{
 			"value": "SEED: Glycerol_and_Glycerol-3-phosphate_Uptake_and_Utilization",
-			"display": "SEED: Glycerol and Glycerol-3-phosphate Uptake and Utilization",
+			"display": "SEED: Carbohydrates: Glycerol and Glycerol-3-phosphate Uptake and Utilization",
 			"id": "SEED: Glycerol_and_Glycerol-3-phosphate_Uptake_and_Utilization",
 			"ui-name": "SEED: Glycerol_and_Glycerol-3-phosphate_Uptake_and_Utilization"
 		},
 		{
 			"value": "SEED: Glycerol_fermenation_to_1,3-propanediol",
-			"display": "SEED: Glycerol fermenation to 1,3-propanediol",
+			"display": "SEED: Carbohydrates: Glycerol fermenation to 1,3-propanediol",
 			"id": "SEED: Glycerol_fermenation_to_1,3-propanediol",
 			"ui-name": "SEED: Glycerol_fermenation_to_1,3-propanediol"
 		},
 		{
 			"value": "SEED: Glycogen_metabolism",
-			"display": "SEED: Glycogen metabolism",
+			"display": "SEED: Carbohydrates: Glycogen metabolism",
 			"id": "SEED: Glycogen_metabolism",
 			"ui-name": "SEED: Glycogen_metabolism"
 		},
 		{
 			"value": "SEED: Glycolate,_glyoxylate_interconversions",
-			"display": "SEED: Glycolate, glyoxylate interconversions",
+			"display": "SEED: Carbohydrates: Glycolate, glyoxylate interconversions",
 			"id": "SEED: Glycolate,_glyoxylate_interconversions",
 			"ui-name": "SEED: Glycolate,_glyoxylate_interconversions"
 		},
 		{
 			"value": "SEED: Glycolysis_and_Gluconeogenesis",
-			"display": "SEED: Glycolysis and Gluconeogenesis",
+			"display": "SEED: Carbohydrates: Glycolysis and Gluconeogenesis",
 			"id": "SEED: Glycolysis_and_Gluconeogenesis",
 			"ui-name": "SEED: Glycolysis_and_Gluconeogenesis"
 		},
 		{
 			"value": "SEED: Glycolysis_and_Gluconeogenesis,_including_Archaeal_enzymes",
-			"display": "SEED: Glycolysis and Gluconeogenesis, including Archaeal enzymes",
+			"display": "SEED: Carbohydrates: Glycolysis and Gluconeogenesis, including Archaeal enzymes",
 			"id": "SEED: Glycolysis_and_Gluconeogenesis,_including_Archaeal_enzymes",
 			"ui-name": "SEED: Glycolysis_and_Gluconeogenesis,_including_Archaeal_enzymes"
 		},
 		{
 			"value": "SEED: Hexose_Phosphate_Uptake_System",
-			"display": "SEED: Hexose Phosphate Uptake System",
+			"display": "SEED: Carbohydrates: Hexose Phosphate Uptake System",
 			"id": "SEED: Hexose_Phosphate_Uptake_System",
 			"ui-name": "SEED: Hexose_Phosphate_Uptake_System"
 		},
 		{
 			"value": "SEED: Inositol_catabolism",
-			"display": "SEED: Inositol catabolism",
+			"display": "SEED: Carbohydrates: Inositol catabolism",
 			"id": "SEED: Inositol_catabolism",
 			"ui-name": "SEED: Inositol_catabolism"
 		},
 		{
 			"value": "SEED: Isobutyryl-CoA_to_Propionyl-CoA_Module",
-			"display": "SEED: Isobutyryl-CoA to Propionyl-CoA Module",
+			"display": "SEED: Carbohydrates: Isobutyryl-CoA to Propionyl-CoA Module",
 			"id": "SEED: Isobutyryl-CoA_to_Propionyl-CoA_Module",
 			"ui-name": "SEED: Isobutyryl-CoA_to_Propionyl-CoA_Module"
 		},
 		{
 			"value": "SEED: L-Arabinose_utilization",
-			"display": "SEED: L-Arabinose utilization",
+			"display": "SEED: Carbohydrates: L-Arabinose utilization",
 			"id": "SEED: L-Arabinose_utilization",
 			"ui-name": "SEED: L-Arabinose_utilization"
 		},
 		{
 			"value": "SEED: L-ascorbate_utilization_(and_related_gene_clusters)",
-			"display": "SEED: L-ascorbate utilization (and related gene clusters)",
+			"display": "SEED: Carbohydrates: L-ascorbate utilization (and related gene clusters)",
 			"id": "SEED: L-ascorbate_utilization_(and_related_gene_clusters)",
 			"ui-name": "SEED: L-ascorbate_utilization_(and_related_gene_clusters)"
 		},
 		{
 			"value": "SEED: L-fucose_utilization",
-			"display": "SEED: L-fucose utilization",
+			"display": "SEED: Carbohydrates: L-fucose utilization",
 			"id": "SEED: L-fucose_utilization",
 			"ui-name": "SEED: L-fucose_utilization"
 		},
 		{
 			"value": "SEED: L-fucose_utilization_temp",
-			"display": "SEED: L-fucose utilization temp",
+			"display": "SEED: Carbohydrates: L-fucose utilization temp",
 			"id": "SEED: L-fucose_utilization_temp",
 			"ui-name": "SEED: L-fucose_utilization_temp"
 		},
 		{
 			"value": "SEED: L-rhamnose_utilization",
-			"display": "SEED: L-rhamnose utilization",
+			"display": "SEED: Carbohydrates: L-rhamnose utilization",
 			"id": "SEED: L-rhamnose_utilization",
 			"ui-name": "SEED: L-rhamnose_utilization"
 		},
 		{
 			"value": "SEED: Lactate_utilization",
-			"display": "SEED: Lactate utilization",
+			"display": "SEED: Carbohydrates: Lactate utilization",
 			"id": "SEED: Lactate_utilization",
 			"ui-name": "SEED: Lactate_utilization"
 		},
 		{
 			"value": "SEED: Lacto-N-Biose_I_and_Galacto-N-Biose_Metabolic_Pathway",
-			"display": "SEED: Lacto-N-Biose I and Galacto-N-Biose Metabolic Pathway",
+			"display": "SEED: Carbohydrates: Lacto-N-Biose I and Galacto-N-Biose Metabolic Pathway",
 			"id": "SEED: Lacto-N-Biose_I_and_Galacto-N-Biose_Metabolic_Pathway",
 			"ui-name": "SEED: Lacto-N-Biose_I_and_Galacto-N-Biose_Metabolic_Pathway"
 		},
 		{
 			"value": "SEED: Lactose_and_Galactose_Uptake_and_Utilization",
-			"display": "SEED: Lactose and Galactose Uptake and Utilization",
+			"display": "SEED: Carbohydrates: Lactose and Galactose Uptake and Utilization",
 			"id": "SEED: Lactose_and_Galactose_Uptake_and_Utilization",
 			"ui-name": "SEED: Lactose_and_Galactose_Uptake_and_Utilization"
 		},
 		{
 			"value": "SEED: Lactose_utilization",
-			"display": "SEED: Lactose utilization",
+			"display": "SEED: Carbohydrates: Lactose utilization",
 			"id": "SEED: Lactose_utilization",
 			"ui-name": "SEED: Lactose_utilization"
 		},
 		{
 			"value": "SEED: Malonate_decarboxylase",
-			"display": "SEED: Malonate decarboxylase",
+			"display": "SEED: Carbohydrates: Malonate decarboxylase",
 			"id": "SEED: Malonate_decarboxylase",
 			"ui-name": "SEED: Malonate_decarboxylase"
 		},
 		{
 			"value": "SEED: Maltose_and_Maltodextrin_Utilization",
-			"display": "SEED: Maltose and Maltodextrin Utilization",
+			"display": "SEED: Carbohydrates: Maltose and Maltodextrin Utilization",
 			"id": "SEED: Maltose_and_Maltodextrin_Utilization",
 			"ui-name": "SEED: Maltose_and_Maltodextrin_Utilization"
 		},
 		{
 			"value": "SEED: Mannitol_Utilization",
-			"display": "SEED: Mannitol Utilization",
+			"display": "SEED: Carbohydrates: Mannitol Utilization",
 			"id": "SEED: Mannitol_Utilization",
 			"ui-name": "SEED: Mannitol_Utilization"
 		},
 		{
 			"value": "SEED: Mannose_Metabolism",
-			"display": "SEED: Mannose Metabolism",
+			"display": "SEED: Carbohydrates: Mannose Metabolism",
 			"id": "SEED: Mannose_Metabolism",
 			"ui-name": "SEED: Mannose_Metabolism"
 		},
 		{
 			"value": "SEED: Melibiose_Utilization",
-			"display": "SEED: Melibiose Utilization",
+			"display": "SEED: Carbohydrates: Melibiose Utilization",
 			"id": "SEED: Melibiose_Utilization",
 			"ui-name": "SEED: Melibiose_Utilization"
 		},
 		{
 			"value": "SEED: Methanogenesis",
-			"display": "SEED: Methanogenesis",
+			"display": "SEED: Carbohydrates: Methanogenesis",
 			"id": "SEED: Methanogenesis",
 			"ui-name": "SEED: Methanogenesis"
 		},
 		{
 			"value": "SEED: Methanogenesis_from_methylated_compounds",
-			"display": "SEED: Methanogenesis from methylated compounds",
+			"display": "SEED: Carbohydrates: Methanogenesis from methylated compounds",
 			"id": "SEED: Methanogenesis_from_methylated_compounds",
 			"ui-name": "SEED: Methanogenesis_from_methylated_compounds"
 		},
 		{
 			"value": "SEED: Methylcitrate_cycle",
-			"display": "SEED: Methylcitrate cycle",
+			"display": "SEED: Carbohydrates: Methylcitrate cycle",
 			"id": "SEED: Methylcitrate_cycle",
 			"ui-name": "SEED: Methylcitrate_cycle"
 		},
 		{
 			"value": "SEED: Methylglyoxal_Metabolism",
-			"display": "SEED: Methylglyoxal Metabolism",
+			"display": "SEED: Carbohydrates: Methylglyoxal Metabolism",
 			"id": "SEED: Methylglyoxal_Metabolism",
 			"ui-name": "SEED: Methylglyoxal_Metabolism"
 		},
 		{
 			"value": "SEED: N-Acetyl-Galactosamine_and_Galactosamine_Utilization",
-			"display": "SEED: N-Acetyl-Galactosamine and Galactosamine Utilization",
+			"display": "SEED: Carbohydrates: N-Acetyl-Galactosamine and Galactosamine Utilization",
 			"id": "SEED: N-Acetyl-Galactosamine_and_Galactosamine_Utilization",
 			"ui-name": "SEED: N-Acetyl-Galactosamine_and_Galactosamine_Utilization"
 		},
 		{
 			"value": "SEED: Neotrehalosadiamine_(NTD)_Biosynthesis_Operon",
-			"display": "SEED: Neotrehalosadiamine (NTD) Biosynthesis Operon",
+			"display": "SEED: Carbohydrates: Neotrehalosadiamine (NTD) Biosynthesis Operon",
 			"id": "SEED: Neotrehalosadiamine_(NTD)_Biosynthesis_Operon",
 			"ui-name": "SEED: Neotrehalosadiamine_(NTD)_Biosynthesis_Operon"
 		},
 		{
 			"value": "SEED: One-carbon_metabolism_by_tetrahydropterines",
-			"display": "SEED: One-carbon metabolism by tetrahydropterines",
+			"display": "SEED: Carbohydrates: One-carbon metabolism by tetrahydropterines",
 			"id": "SEED: One-carbon_metabolism_by_tetrahydropterines",
 			"ui-name": "SEED: One-carbon_metabolism_by_tetrahydropterines"
 		},
 		{
 			"value": "SEED: Pentose_phosphate_pathway",
-			"display": "SEED: Pentose phosphate pathway",
+			"display": "SEED: Carbohydrates: Pentose phosphate pathway",
 			"id": "SEED: Pentose_phosphate_pathway",
 			"ui-name": "SEED: Pentose_phosphate_pathway"
 		},
 		{
 			"value": "SEED: Photorespiration_(oxidative_C2_cycle)",
-			"display": "SEED: Photorespiration (oxidative C2 cycle)",
+			"display": "SEED: Carbohydrates: Photorespiration (oxidative C2 cycle)",
 			"id": "SEED: Photorespiration_(oxidative_C2_cycle)",
 			"ui-name": "SEED: Photorespiration_(oxidative_C2_cycle)"
 		},
 		{
 			"value": "SEED: Predicted_carbohydrate_hydrolases",
-			"display": "SEED: Predicted carbohydrate hydrolases",
+			"display": "SEED: Carbohydrates: Predicted carbohydrate hydrolases",
 			"id": "SEED: Predicted_carbohydrate_hydrolases",
 			"ui-name": "SEED: Predicted_carbohydrate_hydrolases"
 		},
 		{
 			"value": "SEED: Propanediol_utilization",
-			"display": "SEED: Propanediol utilization",
+			"display": "SEED: Carbohydrates: Propanediol utilization",
 			"id": "SEED: Propanediol_utilization",
 			"ui-name": "SEED: Propanediol_utilization"
 		},
 		{
 			"value": "SEED: Propionate-CoA_to_Succinate_Module",
-			"display": "SEED: Propionate-CoA to Succinate Module",
+			"display": "SEED: Carbohydrates: Propionate-CoA to Succinate Module",
 			"id": "SEED: Propionate-CoA_to_Succinate_Module",
 			"ui-name": "SEED: Propionate-CoA_to_Succinate_Module"
 		},
 		{
 			"value": "SEED: Propionyl-CoA_to_Succinyl-CoA_Module",
-			"display": "SEED: Propionyl-CoA to Succinyl-CoA Module",
+			"display": "SEED: Carbohydrates: Propionyl-CoA to Succinyl-CoA Module",
 			"id": "SEED: Propionyl-CoA_to_Succinyl-CoA_Module",
 			"ui-name": "SEED: Propionyl-CoA_to_Succinyl-CoA_Module"
 		},
 		{
 			"value": "SEED: Pyruvate:ferredoxin_oxidoreductase",
-			"display": "SEED: Pyruvate:ferredoxin oxidoreductase",
+			"display": "SEED: Carbohydrates: Pyruvate:ferredoxin oxidoreductase",
 			"id": "SEED: Pyruvate:ferredoxin_oxidoreductase",
 			"ui-name": "SEED: Pyruvate:ferredoxin_oxidoreductase"
 		},
 		{
 			"value": "SEED: Pyruvate_Alanine_Serine_Interconversions",
-			"display": "SEED: Pyruvate Alanine Serine Interconversions",
+			"display": "SEED: Carbohydrates: Pyruvate Alanine Serine Interconversions",
 			"id": "SEED: Pyruvate_Alanine_Serine_Interconversions",
 			"ui-name": "SEED: Pyruvate_Alanine_Serine_Interconversions"
 		},
 		{
 			"value": "SEED: Pyruvate_metabolism_I:_anaplerotic_reactions,_PEP",
-			"display": "SEED: Pyruvate metabolism I: anaplerotic reactions, PEP",
+			"display": "SEED: Carbohydrates: Pyruvate metabolism I: anaplerotic reactions, PEP",
 			"id": "SEED: Pyruvate_metabolism_I:_anaplerotic_reactions,_PEP",
 			"ui-name": "SEED: Pyruvate_metabolism_I:_anaplerotic_reactions,_PEP"
 		},
 		{
 			"value": "SEED: Pyruvate_metabolism_II:_acetyl-CoA,_acetogenesis_from_pyruvate",
-			"display": "SEED: Pyruvate metabolism II: acetyl-CoA, acetogenesis from pyruvate",
+			"display": "SEED: Carbohydrates: Pyruvate metabolism II: acetyl-CoA, acetogenesis from pyruvate",
 			"id": "SEED: Pyruvate_metabolism_II:_acetyl-CoA,_acetogenesis_from_pyruvate",
 			"ui-name": "SEED: Pyruvate_metabolism_II:_acetyl-CoA,_acetogenesis_from_pyruvate"
 		},
 		{
 			"value": "SEED: Ribitol,_Xylitol,_Arabitol,_Mannitol_and_Sorbitol_utilization",
-			"display": "SEED: Ribitol, Xylitol, Arabitol, Mannitol and Sorbitol utilization",
+			"display": "SEED: Carbohydrates: Ribitol, Xylitol, Arabitol, Mannitol and Sorbitol utilization",
 			"id": "SEED: Ribitol,_Xylitol,_Arabitol,_Mannitol_and_Sorbitol_utilization",
 			"ui-name": "SEED: Ribitol,_Xylitol,_Arabitol,_Mannitol_and_Sorbitol_utilization"
 		},
 		{
 			"value": "SEED: Serine-glyoxylate_cycle",
-			"display": "SEED: Serine-glyoxylate cycle",
+			"display": "SEED: Carbohydrates: Serine-glyoxylate cycle",
 			"id": "SEED: Serine-glyoxylate_cycle",
 			"ui-name": "SEED: Serine-glyoxylate_cycle"
 		},
 		{
 			"value": "SEED: Sucrose_utilization",
-			"display": "SEED: Sucrose utilization",
+			"display": "SEED: Carbohydrates: Sucrose utilization",
 			"id": "SEED: Sucrose_utilization",
 			"ui-name": "SEED: Sucrose_utilization"
 		},
 		{
 			"value": "SEED: Sucrose_utilization_Shewanella",
-			"display": "SEED: Sucrose utilization Shewanella",
+			"display": "SEED: Carbohydrates: Sucrose utilization Shewanella",
 			"id": "SEED: Sucrose_utilization_Shewanella",
 			"ui-name": "SEED: Sucrose_utilization_Shewanella"
 		},
 		{
 			"value": "SEED: TCA_Cycle",
-			"display": "SEED: TCA Cycle",
+			"display": "SEED: Carbohydrates: TCA Cycle",
 			"id": "SEED: TCA_Cycle",
 			"ui-name": "SEED: TCA_Cycle"
 		},
 		{
 			"value": "SEED: Trehalose_Biosynthesis",
-			"display": "SEED: Trehalose Biosynthesis",
+			"display": "SEED: Carbohydrates: Trehalose Biosynthesis",
 			"id": "SEED: Trehalose_Biosynthesis",
 			"ui-name": "SEED: Trehalose_Biosynthesis"
 		},
 		{
 			"value": "SEED: Trehalose_Uptake_and_Utilization",
-			"display": "SEED: Trehalose Uptake and Utilization",
+			"display": "SEED: Carbohydrates: Trehalose Uptake and Utilization",
 			"id": "SEED: Trehalose_Uptake_and_Utilization",
 			"ui-name": "SEED: Trehalose_Uptake_and_Utilization"
 		},
 		{
 			"value": "SEED: Tricarballylate_Utilization",
-			"display": "SEED: Tricarballylate Utilization",
+			"display": "SEED: Carbohydrates: Tricarballylate Utilization",
 			"id": "SEED: Tricarballylate_Utilization",
 			"ui-name": "SEED: Tricarballylate_Utilization"
 		},
 		{
 			"value": "SEED: Unknown_sugar_utilization_(cluster_yphABCDEFG)",
-			"display": "SEED: Unknown sugar utilization (cluster yphABCDEFG)",
+			"display": "SEED: Carbohydrates: Unknown sugar utilization (cluster yphABCDEFG)",
 			"id": "SEED: Unknown_sugar_utilization_(cluster_yphABCDEFG)",
 			"ui-name": "SEED: Unknown_sugar_utilization_(cluster_yphABCDEFG)"
 		},
 		{
 			"value": "SEED: Xylose_utilization",
-			"display": "SEED: Xylose utilization",
+			"display": "SEED: Carbohydrates: Xylose utilization",
 			"id": "SEED: Xylose_utilization",
 			"ui-name": "SEED: Xylose_utilization"
 		},
 		{
 			"value": "SEED: Bacterial_Cytoskeleton",
-			"display": "SEED: Bacterial Cytoskeleton",
+			"display": "SEED: Cell Division and Cell Cycle: Bacterial Cytoskeleton",
 			"id": "SEED: Bacterial_Cytoskeleton",
 			"ui-name": "SEED: Bacterial_Cytoskeleton"
 		},
 		{
 			"value": "SEED: Control_of_cell_elongation_-_division_cycle_in_Bacilli",
-			"display": "SEED: Control of cell elongation - division cycle in Bacilli",
+			"display": "SEED: Cell Division and Cell Cycle: Control of cell elongation - division cycle in Bacilli",
 			"id": "SEED: Control_of_cell_elongation_-_division_cycle_in_Bacilli",
 			"ui-name": "SEED: Control_of_cell_elongation_-_division_cycle_in_Bacilli"
 		},
 		{
 			"value": "SEED: Cyanobacterial_Circadian_Clock",
-			"display": "SEED: Cyanobacterial Circadian Clock",
+			"display": "SEED: Cell Division and Cell Cycle: Cyanobacterial Circadian Clock",
 			"id": "SEED: Cyanobacterial_Circadian_Clock",
 			"ui-name": "SEED: Cyanobacterial_Circadian_Clock"
 		},
 		{
 			"value": "SEED: Heterocyst_formation_in_cyanobacteria",
-			"display": "SEED: Heterocyst formation in cyanobacteria",
+			"display": "SEED: Cell Division and Cell Cycle: Heterocyst formation in cyanobacteria",
 			"id": "SEED: Heterocyst_formation_in_cyanobacteria",
 			"ui-name": "SEED: Heterocyst_formation_in_cyanobacteria"
 		},
 		{
 			"value": "SEED: Macromolecular_synthesis_operon",
-			"display": "SEED: Macromolecular synthesis operon",
+			"display": "SEED: Cell Division and Cell Cycle: Macromolecular synthesis operon",
 			"id": "SEED: Macromolecular_synthesis_operon",
 			"ui-name": "SEED: Macromolecular_synthesis_operon"
 		},
 		{
 			"value": "SEED: MukBEF_Chromosome_Condensation",
-			"display": "SEED: MukBEF Chromosome Condensation",
+			"display": "SEED: Cell Division and Cell Cycle: MukBEF Chromosome Condensation",
 			"id": "SEED: MukBEF_Chromosome_Condensation",
 			"ui-name": "SEED: MukBEF_Chromosome_Condensation"
 		},
 		{
 			"value": "SEED: Two_cell_division_clusters_relating_to_chromosome_partitioning",
-			"display": "SEED: Two cell division clusters relating to chromosome partitioning",
+			"display": "SEED: Cell Division and Cell Cycle: Two cell division clusters relating to chromosome partitioning",
 			"id": "SEED: Two_cell_division_clusters_relating_to_chromosome_partitioning",
 			"ui-name": "SEED: Two_cell_division_clusters_relating_to_chromosome_partitioning"
 		},
 		{
 			"value": "SEED: YgjD_and_YeaZ",
-			"display": "SEED: YgjD and YeaZ",
+			"display": "SEED: Cell Division and Cell Cycle: YgjD and YeaZ",
 			"id": "SEED: YgjD_and_YeaZ",
 			"ui-name": "SEED: YgjD_and_YeaZ"
 		},
 		{
 			"value": "SEED: Alginate_metabolism",
-			"display": "SEED: Alginate metabolism",
+			"display": "SEED: Cell Wall and Capsule: Alginate metabolism",
 			"id": "SEED: Alginate_metabolism",
 			"ui-name": "SEED: Alginate_metabolism"
 		},
 		{
 			"value": "SEED: CMP-N-acetylneuraminate_Biosynthesis",
-			"display": "SEED: CMP-N-acetylneuraminate Biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: CMP-N-acetylneuraminate Biosynthesis",
 			"id": "SEED: CMP-N-acetylneuraminate_Biosynthesis",
 			"ui-name": "SEED: CMP-N-acetylneuraminate_Biosynthesis"
 		},
 		{
 			"value": "SEED: Capsular_Polysaccharide_(CPS)_of_Campylobacter",
-			"display": "SEED: Capsular Polysaccharide (CPS) of Campylobacter",
+			"display": "SEED: Cell Wall and Capsule: Capsular Polysaccharide (CPS) of Campylobacter",
 			"id": "SEED: Capsular_Polysaccharide_(CPS)_of_Campylobacter",
 			"ui-name": "SEED: Capsular_Polysaccharide_(CPS)_of_Campylobacter"
 		},
 		{
 			"value": "SEED: Capsular_heptose_biosynthesis",
-			"display": "SEED: Capsular heptose biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: Capsular heptose biosynthesis",
 			"id": "SEED: Capsular_heptose_biosynthesis",
 			"ui-name": "SEED: Capsular_heptose_biosynthesis"
 		},
 		{
 			"value": "SEED: Capsular_surface_virulence_antigen_loci",
-			"display": "SEED: Capsular surface virulence antigen loci",
+			"display": "SEED: Cell Wall and Capsule: Capsular surface virulence antigen loci",
 			"id": "SEED: Capsular_surface_virulence_antigen_loci",
 			"ui-name": "SEED: Capsular_surface_virulence_antigen_loci"
 		},
 		{
 			"value": "SEED: Colanic_acid_biosynthesis",
-			"display": "SEED: Colanic acid biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: Colanic acid biosynthesis",
 			"id": "SEED: Colanic_acid_biosynthesis",
 			"ui-name": "SEED: Colanic_acid_biosynthesis"
 		},
 		{
 			"value": "SEED: D-Alanyl_Lipoteichoic_Acid_Biosynthesis",
-			"display": "SEED: D-Alanyl Lipoteichoic Acid Biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: D-Alanyl Lipoteichoic Acid Biosynthesis",
 			"id": "SEED: D-Alanyl_Lipoteichoic_Acid_Biosynthesis",
 			"ui-name": "SEED: D-Alanyl_Lipoteichoic_Acid_Biosynthesis"
 		},
 		{
 			"value": "SEED: KDO2-Lipid_A_biosynthesis",
-			"display": "SEED: KDO2-Lipid A biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: KDO2-Lipid A biosynthesis",
 			"id": "SEED: KDO2-Lipid_A_biosynthesis",
 			"ui-name": "SEED: KDO2-Lipid_A_biosynthesis"
 		},
 		{
 			"value": "SEED: LOS_core_oligosaccharide_biosynthesis",
-			"display": "SEED: LOS core oligosaccharide biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: LOS core oligosaccharide biosynthesis",
 			"id": "SEED: LOS_core_oligosaccharide_biosynthesis",
 			"ui-name": "SEED: LOS_core_oligosaccharide_biosynthesis"
 		},
 		{
 			"value": "SEED: Lipid_A-Ara4N_pathway_(_Polymyxin_resistance_)",
-			"display": "SEED: Lipid A-Ara4N pathway ( Polymyxin resistance )",
+			"display": "SEED: Cell Wall and Capsule: Lipid A-Ara4N pathway ( Polymyxin resistance )",
 			"id": "SEED: Lipid_A-Ara4N_pathway_(_Polymyxin_resistance_)",
 			"ui-name": "SEED: Lipid_A-Ara4N_pathway_(_Polymyxin_resistance_)"
 		},
 		{
 			"value": "SEED: Lipid_A_modifications",
-			"display": "SEED: Lipid A modifications",
+			"display": "SEED: Cell Wall and Capsule: Lipid A modifications",
 			"id": "SEED: Lipid_A_modifications",
 			"ui-name": "SEED: Lipid_A_modifications"
 		},
 		{
 			"value": "SEED: Lipopolysaccharide-related_cluster_in_Alphaproteobacteria",
-			"display": "SEED: Lipopolysaccharide-related cluster in Alphaproteobacteria",
+			"display": "SEED: Cell Wall and Capsule: Lipopolysaccharide-related cluster in Alphaproteobacteria",
 			"id": "SEED: Lipopolysaccharide-related_cluster_in_Alphaproteobacteria",
 			"ui-name": "SEED: Lipopolysaccharide-related_cluster_in_Alphaproteobacteria"
 		},
 		{
 			"value": "SEED: O-Methyl_Phosphoramidate_Capsule_Modification_in_Campylobacter",
-			"display": "SEED: O-Methyl Phosphoramidate Capsule Modification in Campylobacter",
+			"display": "SEED: Cell Wall and Capsule: O-Methyl Phosphoramidate Capsule Modification in Campylobacter",
 			"id": "SEED: O-Methyl_Phosphoramidate_Capsule_Modification_in_Campylobacter",
 			"ui-name": "SEED: O-Methyl_Phosphoramidate_Capsule_Modification_in_Campylobacter"
 		},
 		{
 			"value": "SEED: Peptidoglycan_Biosynthesis",
-			"display": "SEED: Peptidoglycan Biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: Peptidoglycan Biosynthesis",
 			"id": "SEED: Peptidoglycan_Biosynthesis",
 			"ui-name": "SEED: Peptidoglycan_Biosynthesis"
 		},
 		{
 			"value": "SEED: Phosphorylcholine_incorporation_in_LPS",
-			"display": "SEED: Phosphorylcholine incorporation in LPS",
+			"display": "SEED: Cell Wall and Capsule: Phosphorylcholine incorporation in LPS",
 			"id": "SEED: Phosphorylcholine_incorporation_in_LPS",
 			"ui-name": "SEED: Phosphorylcholine_incorporation_in_LPS"
 		},
 		{
 			"value": "SEED: Polysaccharide_deacetylases",
-			"display": "SEED: Polysaccharide deacetylases",
+			"display": "SEED: Cell Wall and Capsule: Polysaccharide deacetylases",
 			"id": "SEED: Polysaccharide_deacetylases",
 			"ui-name": "SEED: Polysaccharide_deacetylases"
 		},
 		{
 			"value": "SEED: Pseudaminic_Acid_Biosynthesis",
-			"display": "SEED: Pseudaminic Acid Biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: Pseudaminic Acid Biosynthesis",
 			"id": "SEED: Pseudaminic_Acid_Biosynthesis",
 			"ui-name": "SEED: Pseudaminic_Acid_Biosynthesis"
 		},
 		{
 			"value": "SEED: Rhamnose_containing_glycans",
-			"display": "SEED: Rhamnose containing glycans",
+			"display": "SEED: Cell Wall and Capsule: Rhamnose containing glycans",
 			"id": "SEED: Rhamnose_containing_glycans",
 			"ui-name": "SEED: Rhamnose_containing_glycans"
 		},
 		{
 			"value": "SEED: Serotype_determining_Capsular_polysaccharide_biosynthesis_in_Staphylococcus",
-			"display": "SEED: Serotype determining Capsular polysaccharide biosynthesis in Staphylococcus",
+			"display": "SEED: Cell Wall and Capsule: Serotype determining Capsular polysaccharide biosynthesis in Staphylococcus",
 			"id": "SEED: Serotype_determining_Capsular_polysaccharide_biosynthesis_in_Staphylococcus",
 			"ui-name": "SEED: Serotype_determining_Capsular_polysaccharide_biosynthesis_in_Staphylococcus"
 		},
 		{
 			"value": "SEED: Sialic_Acid_Metabolism",
-			"display": "SEED: Sialic Acid Metabolism",
+			"display": "SEED: Cell Wall and Capsule: Sialic Acid Metabolism",
 			"id": "SEED: Sialic_Acid_Metabolism",
 			"ui-name": "SEED: Sialic_Acid_Metabolism"
 		},
 		{
 			"value": "SEED: Teichoic_and_lipoteichoic_acids_biosynthesis",
-			"display": "SEED: Teichoic and lipoteichoic acids biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: Teichoic and lipoteichoic acids biosynthesis",
 			"id": "SEED: Teichoic_and_lipoteichoic_acids_biosynthesis",
 			"ui-name": "SEED: Teichoic_and_lipoteichoic_acids_biosynthesis"
 		},
 		{
 			"value": "SEED: Teichuronic_acid_biosynthesis",
-			"display": "SEED: Teichuronic acid biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: Teichuronic acid biosynthesis",
 			"id": "SEED: Teichuronic_acid_biosynthesis",
 			"ui-name": "SEED: Teichuronic_acid_biosynthesis"
 		},
 		{
 			"value": "SEED: UDP-N-acetylmuramate_from_Fructose-6-phosphate_Biosynthesis",
-			"display": "SEED: UDP-N-acetylmuramate from Fructose-6-phosphate Biosynthesis",
+			"display": "SEED: Cell Wall and Capsule: UDP-N-acetylmuramate from Fructose-6-phosphate Biosynthesis",
 			"id": "SEED: UDP-N-acetylmuramate_from_Fructose-6-phosphate_Biosynthesis",
 			"ui-name": "SEED: UDP-N-acetylmuramate_from_Fructose-6-phosphate_Biosynthesis"
 		},
 		{
 			"value": "SEED: Xanthan_Exopolysaccharide_Biosynthesis_and_Export",
-			"display": "SEED: Xanthan Exopolysaccharide Biosynthesis and Export",
+			"display": "SEED: Cell Wall and Capsule: Xanthan Exopolysaccharide Biosynthesis and Export",
 			"id": "SEED: Xanthan_Exopolysaccharide_Biosynthesis_and_Export",
 			"ui-name": "SEED: Xanthan_Exopolysaccharide_Biosynthesis_and_Export"
 		},
 		{
 			"value": "SEED: YjeE",
-			"display": "SEED: YjeE",
+			"display": "SEED: Cell Wall and Capsule: YjeE",
 			"id": "SEED: YjeE",
 			"ui-name": "SEED: YjeE"
 		},
 		{
 			"value": "SEED: dTDP-rhamnose_synthesis",
-			"display": "SEED: dTDP-rhamnose synthesis",
+			"display": "SEED: Cell Wall and Capsule: dTDP-rhamnose synthesis",
 			"id": "SEED: dTDP-rhamnose_synthesis",
 			"ui-name": "SEED: dTDP-rhamnose_synthesis"
 		},
 		{
 			"value": "SEED: linker_unit-arabinogalactan_synthesis",
-			"display": "SEED: linker unit-arabinogalactan synthesis",
+			"display": "SEED: Cell Wall and Capsule: linker unit-arabinogalactan synthesis",
 			"id": "SEED: linker_unit-arabinogalactan_synthesis",
 			"ui-name": "SEED: linker_unit-arabinogalactan_synthesis"
 		},
 		{
 			"value": "SEED: mycolic_acid_synthesis",
-			"display": "SEED: mycolic acid synthesis",
+			"display": "SEED: Cell Wall and Capsule: mycolic acid synthesis",
 			"id": "SEED: mycolic_acid_synthesis",
 			"ui-name": "SEED: mycolic_acid_synthesis"
 		},
 		{
 			"value": "SEED: Bacterial_Cell_Division",
-			"display": "SEED: Bacterial Cell Division",
+			"display": "SEED: Clustering-based subsystems: Bacterial Cell Division",
 			"id": "SEED: Bacterial_Cell_Division",
 			"ui-name": "SEED: Bacterial_Cell_Division"
 		},
 		{
 			"value": "SEED: Bacterial_RNA-metabolizing_Zn-dependent_hydrolases",
-			"display": "SEED: Bacterial RNA-metabolizing Zn-dependent hydrolases",
+			"display": "SEED: Clustering-based subsystems: Bacterial RNA-metabolizing Zn-dependent hydrolases",
 			"id": "SEED: Bacterial_RNA-metabolizing_Zn-dependent_hydrolases",
 			"ui-name": "SEED: Bacterial_RNA-metabolizing_Zn-dependent_hydrolases"
 		},
 		{
 			"value": "SEED: CBSS-214092.1.peg.3450",
-			"display": "SEED: CBSS-214092.1.peg.3450",
+			"display": "SEED: Clustering-based subsystems: CBSS-214092.1.peg.3450",
 			"id": "SEED: CBSS-214092.1.peg.3450",
 			"ui-name": "SEED: CBSS-214092.1.peg.3450"
 		},
 		{
 			"value": "SEED: CBSS-261594.1.peg.2640",
-			"display": "SEED: CBSS-261594.1.peg.2640",
+			"display": "SEED: Clustering-based subsystems: CBSS-261594.1.peg.2640",
 			"id": "SEED: CBSS-261594.1.peg.2640",
 			"ui-name": "SEED: CBSS-261594.1.peg.2640"
 		},
 		{
 			"value": "SEED: CBSS-262316.1.peg.2929",
-			"display": "SEED: CBSS-262316.1.peg.2929",
+			"display": "SEED: Clustering-based subsystems: CBSS-262316.1.peg.2929",
 			"id": "SEED: CBSS-262316.1.peg.2929",
 			"ui-name": "SEED: CBSS-262316.1.peg.2929"
 		},
 		{
 			"value": "SEED: CBSS-262719.3.peg.410",
-			"display": "SEED: CBSS-262719.3.peg.410",
+			"display": "SEED: Clustering-based subsystems: CBSS-262719.3.peg.410",
 			"id": "SEED: CBSS-262719.3.peg.410",
 			"ui-name": "SEED: CBSS-262719.3.peg.410"
 		},
 		{
 			"value": "SEED: CBSS-343509.6.peg.2644",
-			"display": "SEED: CBSS-343509.6.peg.2644",
+			"display": "SEED: Clustering-based subsystems: CBSS-343509.6.peg.2644",
 			"id": "SEED: CBSS-343509.6.peg.2644",
 			"ui-name": "SEED: CBSS-343509.6.peg.2644"
 		},
 		{
 			"value": "SEED: CBSS-562.2.peg.5158_SK3_including",
-			"display": "SEED: CBSS-562.2.peg.5158 SK3 including",
+			"display": "SEED: Clustering-based subsystems: CBSS-562.2.peg.5158 SK3 including",
 			"id": "SEED: CBSS-562.2.peg.5158_SK3_including",
 			"ui-name": "SEED: CBSS-562.2.peg.5158_SK3_including"
 		},
 		{
 			"value": "SEED: Cluster-based_Subsystem_Grouping_Hypotheticals_-_perhaps_Proteosome_Related",
-			"display": "SEED: Cluster-based Subsystem Grouping Hypotheticals - perhaps Proteosome Related",
+			"display": "SEED: Clustering-based subsystems: Cluster-based Subsystem Grouping Hypotheticals - perhaps Proteosome Related",
 			"id": "SEED: Cluster-based_Subsystem_Grouping_Hypotheticals_-_perhaps_Proteosome_Related",
 			"ui-name": "SEED: Cluster-based_Subsystem_Grouping_Hypotheticals_-_perhaps_Proteosome_Related"
 		},
 		{
 			"value": "SEED: Conenzyme_B12_related_Hypothetical:_Clusters_with_cobST",
-			"display": "SEED: Conenzyme B12 related Hypothetical: Clusters with cobST",
+			"display": "SEED: Clustering-based subsystems: Conenzyme B12 related Hypothetical: Clusters with cobST",
 			"id": "SEED: Conenzyme_B12_related_Hypothetical:_Clusters_with_cobST",
 			"ui-name": "SEED: Conenzyme_B12_related_Hypothetical:_Clusters_with_cobST"
 		},
 		{
 			"value": "SEED: Conserved_gene_cluster_associated_with_Met-tRNA_formyltransferase",
-			"display": "SEED: Conserved gene cluster associated with Met-tRNA formyltransferase",
+			"display": "SEED: Clustering-based subsystems: Conserved gene cluster associated with Met-tRNA formyltransferase",
 			"id": "SEED: Conserved_gene_cluster_associated_with_Met-tRNA_formyltransferase",
 			"ui-name": "SEED: Conserved_gene_cluster_associated_with_Met-tRNA_formyltransferase"
 		},
 		{
 			"value": "SEED: LMPTP_YfkJ_cluster",
-			"display": "SEED: LMPTP YfkJ cluster",
+			"display": "SEED: Clustering-based subsystems: LMPTP YfkJ cluster",
 			"id": "SEED: LMPTP_YfkJ_cluster",
 			"ui-name": "SEED: LMPTP_YfkJ_cluster"
 		},
 		{
 			"value": "SEED: LMPTP_YwlE_cluster",
-			"display": "SEED: LMPTP YwlE cluster",
+			"display": "SEED: Clustering-based subsystems: LMPTP YwlE cluster",
 			"id": "SEED: LMPTP_YwlE_cluster",
 			"ui-name": "SEED: LMPTP_YwlE_cluster"
 		},
 		{
 			"value": "SEED: NusA-TFII_Cluster",
-			"display": "SEED: NusA-TFII Cluster",
+			"display": "SEED: Clustering-based subsystems: NusA-TFII Cluster",
 			"id": "SEED: NusA-TFII_Cluster",
 			"ui-name": "SEED: NusA-TFII_Cluster"
 		},
 		{
 			"value": "SEED: PA0057_cluster",
-			"display": "SEED: PA0057 cluster",
+			"display": "SEED: Clustering-based subsystems: PA0057 cluster",
 			"id": "SEED: PA0057_cluster",
 			"ui-name": "SEED: PA0057_cluster"
 		},
 		{
 			"value": "SEED: Putative_hemin_transporter",
-			"display": "SEED: Putative hemin transporter",
+			"display": "SEED: Clustering-based subsystems: Putative hemin transporter",
 			"id": "SEED: Putative_hemin_transporter",
 			"ui-name": "SEED: Putative_hemin_transporter"
 		},
 		{
 			"value": "SEED: Putative_sulfate_assimilation_cluster",
-			"display": "SEED: Putative sulfate assimilation cluster",
+			"display": "SEED: Clustering-based subsystems: Putative sulfate assimilation cluster",
 			"id": "SEED: Putative_sulfate_assimilation_cluster",
 			"ui-name": "SEED: Putative_sulfate_assimilation_cluster"
 		},
 		{
 			"value": "SEED: Spore_Coat",
-			"display": "SEED: Spore Coat",
+			"display": "SEED: Clustering-based subsystems: Spore Coat",
 			"id": "SEED: Spore_Coat",
 			"ui-name": "SEED: Spore_Coat"
 		},
 		{
 			"value": "SEED: Type_III_secretion_systems,_extended",
-			"display": "SEED: Type III secretion systems, extended",
+			"display": "SEED: Clustering-based subsystems: Type III secretion systems, extended",
 			"id": "SEED: Type_III_secretion_systems,_extended",
 			"ui-name": "SEED: Type_III_secretion_systems,_extended"
 		},
 		{
 			"value": "SEED: YeiH",
-			"display": "SEED: YeiH",
+			"display": "SEED: Clustering-based subsystems: YeiH",
 			"id": "SEED: YeiH",
 			"ui-name": "SEED: YeiH"
 		},
 		{
 			"value": "SEED: Bilin_Biosynthesis",
-			"display": "SEED: Bilin Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Bilin Biosynthesis",
 			"id": "SEED: Bilin_Biosynthesis",
 			"ui-name": "SEED: Bilin_Biosynthesis"
 		},
 		{
 			"value": "SEED: Biotin_biosynthesis",
-			"display": "SEED: Biotin biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Biotin biosynthesis",
 			"id": "SEED: Biotin_biosynthesis",
 			"ui-name": "SEED: Biotin_biosynthesis"
 		},
 		{
 			"value": "SEED: Chlorophyll_Biosynthesis",
-			"display": "SEED: Chlorophyll Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Chlorophyll Biosynthesis",
 			"id": "SEED: Chlorophyll_Biosynthesis",
 			"ui-name": "SEED: Chlorophyll_Biosynthesis"
 		},
 		{
 			"value": "SEED: Chlorophyll_Degradation",
-			"display": "SEED: Chlorophyll Degradation",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Chlorophyll Degradation",
 			"id": "SEED: Chlorophyll_Degradation",
 			"ui-name": "SEED: Chlorophyll_Degradation"
 		},
 		{
 			"value": "SEED: Cobalamin_synthesis",
-			"display": "SEED: Cobalamin synthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Cobalamin synthesis",
 			"id": "SEED: Cobalamin_synthesis",
 			"ui-name": "SEED: Cobalamin_synthesis"
 		},
 		{
 			"value": "SEED: Coenzyme_A_Biosynthesis",
-			"display": "SEED: Coenzyme A Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Coenzyme A Biosynthesis",
 			"id": "SEED: Coenzyme_A_Biosynthesis",
 			"ui-name": "SEED: Coenzyme_A_Biosynthesis"
 		},
 		{
 			"value": "SEED: Coenzyme_B12_biosynthesis",
-			"display": "SEED: Coenzyme B12 biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Coenzyme B12 biosynthesis",
 			"id": "SEED: Coenzyme_B12_biosynthesis",
 			"ui-name": "SEED: Coenzyme_B12_biosynthesis"
 		},
 		{
 			"value": "SEED: Coenzyme_B_synthesis",
-			"display": "SEED: Coenzyme B synthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Coenzyme B synthesis",
 			"id": "SEED: Coenzyme_B_synthesis",
 			"ui-name": "SEED: Coenzyme_B_synthesis"
 		},
 		{
 			"value": "SEED: Coenzyme_F420_synthesis",
-			"display": "SEED: Coenzyme F420 synthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Coenzyme F420 synthesis",
 			"id": "SEED: Coenzyme_F420_synthesis",
 			"ui-name": "SEED: Coenzyme_F420_synthesis"
 		},
 		{
 			"value": "SEED: Coenzyme_PQQ_synthesis",
-			"display": "SEED: Coenzyme PQQ synthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Coenzyme PQQ synthesis",
 			"id": "SEED: Coenzyme_PQQ_synthesis",
 			"ui-name": "SEED: Coenzyme_PQQ_synthesis"
 		},
 		{
 			"value": "SEED: Experimental_tye",
-			"display": "SEED: Experimental tye",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Experimental tye",
 			"id": "SEED: Experimental_tye",
 			"ui-name": "SEED: Experimental_tye"
 		},
 		{
 			"value": "SEED: Flavodoxin",
-			"display": "SEED: Flavodoxin",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Flavodoxin",
 			"id": "SEED: Flavodoxin",
 			"ui-name": "SEED: Flavodoxin"
 		},
 		{
 			"value": "SEED: Folate_Biosynthesis",
-			"display": "SEED: Folate Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Folate Biosynthesis",
 			"id": "SEED: Folate_Biosynthesis",
 			"ui-name": "SEED: Folate_Biosynthesis"
 		},
 		{
 			"value": "SEED: Heme_and_Siroheme_Biosynthesis",
-			"display": "SEED: Heme and Siroheme Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Heme and Siroheme Biosynthesis",
 			"id": "SEED: Heme_and_Siroheme_Biosynthesis",
 			"ui-name": "SEED: Heme_and_Siroheme_Biosynthesis"
 		},
 		{
 			"value": "SEED: Heme_biosynthesis_orphans",
-			"display": "SEED: Heme biosynthesis orphans",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Heme biosynthesis orphans",
 			"id": "SEED: Heme_biosynthesis_orphans",
 			"ui-name": "SEED: Heme_biosynthesis_orphans"
 		},
 		{
 			"value": "SEED: Lipoic_acid_metabolism",
-			"display": "SEED: Lipoic acid metabolism",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Lipoic acid metabolism",
 			"id": "SEED: Lipoic_acid_metabolism",
 			"ui-name": "SEED: Lipoic_acid_metabolism"
 		},
 		{
 			"value": "SEED: Menaquinone_Biosynthesis_via_Futalosine",
-			"display": "SEED: Menaquinone Biosynthesis via Futalosine",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Menaquinone Biosynthesis via Futalosine",
 			"id": "SEED: Menaquinone_Biosynthesis_via_Futalosine",
 			"ui-name": "SEED: Menaquinone_Biosynthesis_via_Futalosine"
 		},
 		{
 			"value": "SEED: Menaquinone_and_Phylloquinone_Biosynthesis",
-			"display": "SEED: Menaquinone and Phylloquinone Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Menaquinone and Phylloquinone Biosynthesis",
 			"id": "SEED: Menaquinone_and_Phylloquinone_Biosynthesis",
 			"ui-name": "SEED: Menaquinone_and_Phylloquinone_Biosynthesis"
 		},
 		{
 			"value": "SEED: Molybdenum_cofactor_biosynthesis",
-			"display": "SEED: Molybdenum cofactor biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Molybdenum cofactor biosynthesis",
 			"id": "SEED: Molybdenum_cofactor_biosynthesis",
 			"ui-name": "SEED: Molybdenum_cofactor_biosynthesis"
 		},
 		{
 			"value": "SEED: NAD_and_NADP_cofactor_biosynthesis_global",
-			"display": "SEED: NAD and NADP cofactor biosynthesis global",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: NAD and NADP cofactor biosynthesis global",
 			"id": "SEED: NAD_and_NADP_cofactor_biosynthesis_global",
 			"ui-name": "SEED: NAD_and_NADP_cofactor_biosynthesis_global"
 		},
 		{
 			"value": "SEED: NAD_regulation",
-			"display": "SEED: NAD regulation",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: NAD regulation",
 			"id": "SEED: NAD_regulation",
 			"ui-name": "SEED: NAD_regulation"
 		},
 		{
 			"value": "SEED: Plastoquinone_Biosynthesis",
-			"display": "SEED: Plastoquinone Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Plastoquinone Biosynthesis",
 			"id": "SEED: Plastoquinone_Biosynthesis",
 			"ui-name": "SEED: Plastoquinone_Biosynthesis"
 		},
 		{
 			"value": "SEED: PnuC-like_transporters",
-			"display": "SEED: PnuC-like transporters",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: PnuC-like transporters",
 			"id": "SEED: PnuC-like_transporters",
 			"ui-name": "SEED: PnuC-like_transporters"
 		},
 		{
 			"value": "SEED: Pterin_biosynthesis",
-			"display": "SEED: Pterin biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Pterin biosynthesis",
 			"id": "SEED: Pterin_biosynthesis",
 			"ui-name": "SEED: Pterin_biosynthesis"
 		},
 		{
 			"value": "SEED: Pyridoxin_(Vitamin_B6)_Biosynthesis",
-			"display": "SEED: Pyridoxin (Vitamin B6) Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Pyridoxin (Vitamin B6) Biosynthesis",
 			"id": "SEED: Pyridoxin_(Vitamin_B6)_Biosynthesis",
 			"ui-name": "SEED: Pyridoxin_(Vitamin_B6)_Biosynthesis"
 		},
 		{
 			"value": "SEED: Pyrroloquinoline_Quinone_biosynthesis",
-			"display": "SEED: Pyrroloquinoline Quinone biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Pyrroloquinoline Quinone biosynthesis",
 			"id": "SEED: Pyrroloquinoline_Quinone_biosynthesis",
 			"ui-name": "SEED: Pyrroloquinoline_Quinone_biosynthesis"
 		},
 		{
 			"value": "SEED: Riboflavin,_FMN_and_FAD_metabolism",
-			"display": "SEED: Riboflavin, FMN and FAD metabolism",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Riboflavin, FMN and FAD metabolism",
 			"id": "SEED: Riboflavin,_FMN_and_FAD_metabolism",
 			"ui-name": "SEED: Riboflavin,_FMN_and_FAD_metabolism"
 		},
 		{
 			"value": "SEED: Thiamin_biosynthesis",
-			"display": "SEED: Thiamin biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Thiamin biosynthesis",
 			"id": "SEED: Thiamin_biosynthesis",
 			"ui-name": "SEED: Thiamin_biosynthesis"
 		},
 		{
 			"value": "SEED: Tocopherol_Biosynthesis",
-			"display": "SEED: Tocopherol Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Tocopherol Biosynthesis",
 			"id": "SEED: Tocopherol_Biosynthesis",
 			"ui-name": "SEED: Tocopherol_Biosynthesis"
 		},
 		{
 			"value": "SEED: Ubiquinone_Biosynthesis",
-			"display": "SEED: Ubiquinone Biosynthesis",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: Ubiquinone Biosynthesis",
 			"id": "SEED: Ubiquinone_Biosynthesis",
 			"ui-name": "SEED: Ubiquinone_Biosynthesis"
 		},
 		{
 			"value": "SEED: p-Aminobenzoyl-Glutamate_Utilization",
-			"display": "SEED: p-Aminobenzoyl-Glutamate Utilization",
+			"display": "SEED: Cofactors, Vitamins, Prosthetic Groups, Pigments: p-Aminobenzoyl-Glutamate Utilization",
 			"id": "SEED: p-Aminobenzoyl-Glutamate_Utilization",
 			"ui-name": "SEED: p-Aminobenzoyl-Glutamate_Utilization"
 		},
 		{
 			"value": "SEED: 2-phosphoglycolate_salvage",
-			"display": "SEED: 2-phosphoglycolate salvage",
+			"display": "SEED: DNA Metabolism: 2-phosphoglycolate salvage",
 			"id": "SEED: 2-phosphoglycolate_salvage",
 			"ui-name": "SEED: 2-phosphoglycolate_salvage"
 		},
 		{
 			"value": "SEED: ATP-dependent_Nuclease",
-			"display": "SEED: ATP-dependent Nuclease",
+			"display": "SEED: DNA Metabolism: ATP-dependent Nuclease",
 			"id": "SEED: ATP-dependent_Nuclease",
 			"ui-name": "SEED: ATP-dependent_Nuclease"
 		},
 		{
 			"value": "SEED: CRISPRs",
-			"display": "SEED: CRISPRs",
+			"display": "SEED: DNA Metabolism: CRISPRs",
 			"id": "SEED: CRISPRs",
 			"ui-name": "SEED: CRISPRs"
 		},
 		{
 			"value": "SEED: DNA-replication",
-			"display": "SEED: DNA-replication",
+			"display": "SEED: DNA Metabolism: DNA-replication",
 			"id": "SEED: DNA-replication",
 			"ui-name": "SEED: DNA-replication"
 		},
 		{
 			"value": "SEED: DNA_Helicase_of_Unknown_Function",
-			"display": "SEED: DNA Helicase of Unknown Function",
+			"display": "SEED: DNA Metabolism: DNA Helicase of Unknown Function",
 			"id": "SEED: DNA_Helicase_of_Unknown_Function",
 			"ui-name": "SEED: DNA_Helicase_of_Unknown_Function"
 		},
 		{
 			"value": "SEED: DNA_Repair_Base_Excision",
-			"display": "SEED: DNA Repair Base Excision",
+			"display": "SEED: DNA Metabolism: DNA Repair Base Excision",
 			"id": "SEED: DNA_Repair_Base_Excision",
 			"ui-name": "SEED: DNA_Repair_Base_Excision"
 		},
 		{
 			"value": "SEED: DNA_repair,_UvrABC_system",
-			"display": "SEED: DNA repair, UvrABC system",
+			"display": "SEED: DNA Metabolism: DNA repair, UvrABC system",
 			"id": "SEED: DNA_repair,_UvrABC_system",
 			"ui-name": "SEED: DNA_repair,_UvrABC_system"
 		},
 		{
 			"value": "SEED: DNA_repair,_bacterial",
-			"display": "SEED: DNA repair, bacterial",
+			"display": "SEED: DNA Metabolism: DNA repair, bacterial",
 			"id": "SEED: DNA_repair,_bacterial",
 			"ui-name": "SEED: DNA_repair,_bacterial"
 		},
 		{
 			"value": "SEED: DNA_repair,_bacterial_DinG_and_relatives",
-			"display": "SEED: DNA repair, bacterial DinG and relatives",
+			"display": "SEED: DNA Metabolism: DNA repair, bacterial DinG and relatives",
 			"id": "SEED: DNA_repair,_bacterial_DinG_and_relatives",
 			"ui-name": "SEED: DNA_repair,_bacterial_DinG_and_relatives"
 		},
 		{
 			"value": "SEED: DNA_repair,_bacterial_MutL-MutS_system",
-			"display": "SEED: DNA repair, bacterial MutL-MutS system",
+			"display": "SEED: DNA Metabolism: DNA repair, bacterial MutL-MutS system",
 			"id": "SEED: DNA_repair,_bacterial_MutL-MutS_system",
 			"ui-name": "SEED: DNA_repair,_bacterial_MutL-MutS_system"
 		},
 		{
 			"value": "SEED: DNA_repair,_bacterial_RecFOR_pathway",
-			"display": "SEED: DNA repair, bacterial RecFOR pathway",
+			"display": "SEED: DNA Metabolism: DNA repair, bacterial RecFOR pathway",
 			"id": "SEED: DNA_repair,_bacterial_RecFOR_pathway",
 			"ui-name": "SEED: DNA_repair,_bacterial_RecFOR_pathway"
 		},
 		{
 			"value": "SEED: DNA_repair,_bacterial_UvrD_and_related_helicases",
-			"display": "SEED: DNA repair, bacterial UvrD and related helicases",
+			"display": "SEED: DNA Metabolism: DNA repair, bacterial UvrD and related helicases",
 			"id": "SEED: DNA_repair,_bacterial_UvrD_and_related_helicases",
 			"ui-name": "SEED: DNA_repair,_bacterial_UvrD_and_related_helicases"
 		},
 		{
 			"value": "SEED: DNA_repair_and_recombination_eukaryotic",
-			"display": "SEED: DNA repair and recombination eukaryotic",
+			"display": "SEED: DNA Metabolism: DNA repair and recombination eukaryotic",
 			"id": "SEED: DNA_repair_and_recombination_eukaryotic",
 			"ui-name": "SEED: DNA_repair_and_recombination_eukaryotic"
 		},
 		{
 			"value": "SEED: DNA_replication,_archaeal",
-			"display": "SEED: DNA replication, archaeal",
+			"display": "SEED: DNA Metabolism: DNA replication, archaeal",
 			"id": "SEED: DNA_replication,_archaeal",
 			"ui-name": "SEED: DNA_replication,_archaeal"
 		},
 		{
 			"value": "SEED: DNA_structural_proteins,_bacterial",
-			"display": "SEED: DNA structural proteins, bacterial",
+			"display": "SEED: DNA Metabolism: DNA structural proteins, bacterial",
 			"id": "SEED: DNA_structural_proteins,_bacterial",
 			"ui-name": "SEED: DNA_structural_proteins,_bacterial"
 		},
 		{
 			"value": "SEED: DNA_topoisomerases,_Type_I,_ATP-independent",
-			"display": "SEED: DNA topoisomerases, Type I, ATP-independent",
+			"display": "SEED: DNA Metabolism: DNA topoisomerases, Type I, ATP-independent",
 			"id": "SEED: DNA_topoisomerases,_Type_I,_ATP-independent",
 			"ui-name": "SEED: DNA_topoisomerases,_Type_I,_ATP-independent"
 		},
 		{
 			"value": "SEED: DNA_topoisomerases,_Type_II,_ATP-dependent",
-			"display": "SEED: DNA topoisomerases, Type II, ATP-dependent",
+			"display": "SEED: DNA Metabolism: DNA topoisomerases, Type II, ATP-dependent",
 			"id": "SEED: DNA_topoisomerases,_Type_II,_ATP-dependent",
 			"ui-name": "SEED: DNA_topoisomerases,_Type_II,_ATP-dependent"
 		},
 		{
 			"value": "SEED: Plasmid_replication",
-			"display": "SEED: Plasmid replication",
+			"display": "SEED: DNA Metabolism: Plasmid replication",
 			"id": "SEED: Plasmid_replication",
 			"ui-name": "SEED: Plasmid_replication"
 		},
 		{
 			"value": "SEED: Restriction-Modification_System",
-			"display": "SEED: Restriction-Modification System",
+			"display": "SEED: DNA Metabolism: Restriction-Modification System",
 			"id": "SEED: Restriction-Modification_System",
 			"ui-name": "SEED: Restriction-Modification_System"
 		},
 		{
 			"value": "SEED: RuvABC_plus_a_hypothetical",
-			"display": "SEED: RuvABC plus a hypothetical",
+			"display": "SEED: DNA Metabolism: RuvABC plus a hypothetical",
 			"id": "SEED: RuvABC_plus_a_hypothetical",
 			"ui-name": "SEED: RuvABC_plus_a_hypothetical"
 		},
 		{
 			"value": "SEED: YcfH",
-			"display": "SEED: YcfH",
+			"display": "SEED: DNA Metabolism: YcfH",
 			"id": "SEED: YcfH",
 			"ui-name": "SEED: YcfH"
 		},
 		{
 			"value": "SEED: Bacillus_biofilm_matrix_protein_component_TasA_and_homologs",
-			"display": "SEED: Bacillus biofilm matrix protein component TasA and homologs",
+			"display": "SEED: Dormancy and Sporulation: Bacillus biofilm matrix protein component TasA and homologs",
 			"id": "SEED: Bacillus_biofilm_matrix_protein_component_TasA_and_homologs",
 			"ui-name": "SEED: Bacillus_biofilm_matrix_protein_component_TasA_and_homologs"
 		},
 		{
 			"value": "SEED: Spore_germination",
-			"display": "SEED: Spore germination",
+			"display": "SEED: Dormancy and Sporulation: Spore germination",
 			"id": "SEED: Spore_germination",
 			"ui-name": "SEED: Spore_germination"
 		},
 		{
 			"value": "SEED: Sporulation_Cluster_III_A",
-			"display": "SEED: Sporulation Cluster III A",
+			"display": "SEED: Dormancy and Sporulation: Sporulation Cluster III A",
 			"id": "SEED: Sporulation_Cluster_III_A",
 			"ui-name": "SEED: Sporulation_Cluster_III_A"
 		},
 		{
 			"value": "SEED: Sporulation_gene_orphans",
-			"display": "SEED: Sporulation gene orphans",
+			"display": "SEED: Dormancy and Sporulation: Sporulation gene orphans",
 			"id": "SEED: Sporulation_gene_orphans",
 			"ui-name": "SEED: Sporulation_gene_orphans"
 		},
 		{
 			"value": "SEED: Archaeal_lipids",
-			"display": "SEED: Archaeal lipids",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: Archaeal lipids",
 			"id": "SEED: Archaeal_lipids",
 			"ui-name": "SEED: Archaeal_lipids"
 		},
 		{
 			"value": "SEED: Carotenoids",
-			"display": "SEED: Carotenoids",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: Carotenoids",
 			"id": "SEED: Carotenoids",
 			"ui-name": "SEED: Carotenoids"
 		},
 		{
 			"value": "SEED: Fatty_Acid_Biosynthesis_FASII",
-			"display": "SEED: Fatty Acid Biosynthesis FASII",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: Fatty Acid Biosynthesis FASII",
 			"id": "SEED: Fatty_Acid_Biosynthesis_FASII",
 			"ui-name": "SEED: Fatty_Acid_Biosynthesis_FASII"
 		},
 		{
 			"value": "SEED: Glycerolipid_and_Glycerophospholipid_Metabolism_in_Bacteria",
-			"display": "SEED: Glycerolipid and Glycerophospholipid Metabolism in Bacteria",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: Glycerolipid and Glycerophospholipid Metabolism in Bacteria",
 			"id": "SEED: Glycerolipid_and_Glycerophospholipid_Metabolism_in_Bacteria",
 			"ui-name": "SEED: Glycerolipid_and_Glycerophospholipid_Metabolism_in_Bacteria"
 		},
 		{
 			"value": "SEED: Isoprenoid_Biosynthesis",
-			"display": "SEED: Isoprenoid Biosynthesis",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: Isoprenoid Biosynthesis",
 			"id": "SEED: Isoprenoid_Biosynthesis",
 			"ui-name": "SEED: Isoprenoid_Biosynthesis"
 		},
 		{
 			"value": "SEED: Polyhydroxybutyrate_metabolism",
-			"display": "SEED: Polyhydroxybutyrate metabolism",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: Polyhydroxybutyrate metabolism",
 			"id": "SEED: Polyhydroxybutyrate_metabolism",
 			"ui-name": "SEED: Polyhydroxybutyrate_metabolism"
 		},
 		{
 			"value": "SEED: Polyprenyl_Diphosphate_Biosynthesis",
-			"display": "SEED: Polyprenyl Diphosphate Biosynthesis",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: Polyprenyl Diphosphate Biosynthesis",
 			"id": "SEED: Polyprenyl_Diphosphate_Biosynthesis",
 			"ui-name": "SEED: Polyprenyl_Diphosphate_Biosynthesis"
 		},
 		{
 			"value": "SEED: Terpen_biosynthesis",
-			"display": "SEED: Terpen biosynthesis",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: Terpen biosynthesis",
 			"id": "SEED: Terpen_biosynthesis",
 			"ui-name": "SEED: Terpen_biosynthesis"
 		},
 		{
 			"value": "SEED: Triacylglycerol_metabolism",
-			"display": "SEED: Triacylglycerol metabolism",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: Triacylglycerol metabolism",
 			"id": "SEED: Triacylglycerol_metabolism",
 			"ui-name": "SEED: Triacylglycerol_metabolism"
 		},
 		{
 			"value": "SEED: polyprenyl_synthesis",
-			"display": "SEED: polyprenyl synthesis",
+			"display": "SEED: Fatty Acids, Lipids, and Isoprenoids: polyprenyl synthesis",
 			"id": "SEED: polyprenyl_synthesis",
 			"ui-name": "SEED: polyprenyl_synthesis"
 		},
 		{
 			"value": "SEED: Campylobacter_Iron_Metabolism",
-			"display": "SEED: Campylobacter Iron Metabolism",
+			"display": "SEED: Iron acquisition and metabolism: Campylobacter Iron Metabolism",
 			"id": "SEED: Campylobacter_Iron_Metabolism",
 			"ui-name": "SEED: Campylobacter_Iron_Metabolism"
 		},
 		{
 			"value": "SEED: Heme,_hemin_uptake_and_utilization_systems_in_GramPositives",
-			"display": "SEED: Heme, hemin uptake and utilization systems in GramPositives",
+			"display": "SEED: Iron acquisition and metabolism: Heme, hemin uptake and utilization systems in GramPositives",
 			"id": "SEED: Heme,_hemin_uptake_and_utilization_systems_in_GramPositives",
 			"ui-name": "SEED: Heme,_hemin_uptake_and_utilization_systems_in_GramPositives"
 		},
 		{
 			"value": "SEED: Hemin_transport_system",
-			"display": "SEED: Hemin transport system",
+			"display": "SEED: Iron acquisition and metabolism: Hemin transport system",
 			"id": "SEED: Hemin_transport_system",
 			"ui-name": "SEED: Hemin_transport_system"
 		},
 		{
 			"value": "SEED: Iron_acquisition_in_Vibrio",
-			"display": "SEED: Iron acquisition in Vibrio",
+			"display": "SEED: Iron acquisition and metabolism: Iron acquisition in Vibrio",
 			"id": "SEED: Iron_acquisition_in_Vibrio",
 			"ui-name": "SEED: Iron_acquisition_in_Vibrio"
 		},
 		{
 			"value": "SEED: Siderophore_Aerobactin",
-			"display": "SEED: Siderophore Aerobactin",
+			"display": "SEED: Iron acquisition and metabolism: Siderophore Aerobactin",
 			"id": "SEED: Siderophore_Aerobactin",
 			"ui-name": "SEED: Siderophore_Aerobactin"
 		},
 		{
 			"value": "SEED: Siderophore_Enterobactin",
-			"display": "SEED: Siderophore Enterobactin",
+			"display": "SEED: Iron acquisition and metabolism: Siderophore Enterobactin",
 			"id": "SEED: Siderophore_Enterobactin",
 			"ui-name": "SEED: Siderophore_Enterobactin"
 		},
 		{
 			"value": "SEED: Siderophore_Pyoverdine",
-			"display": "SEED: Siderophore Pyoverdine",
+			"display": "SEED: Iron acquisition and metabolism: Siderophore Pyoverdine",
 			"id": "SEED: Siderophore_Pyoverdine",
 			"ui-name": "SEED: Siderophore_Pyoverdine"
 		},
 		{
 			"value": "SEED: Siderophore_Staphylobactin",
-			"display": "SEED: Siderophore Staphylobactin",
+			"display": "SEED: Iron acquisition and metabolism: Siderophore Staphylobactin",
 			"id": "SEED: Siderophore_Staphylobactin",
 			"ui-name": "SEED: Siderophore_Staphylobactin"
 		},
 		{
 			"value": "SEED: Siderophore_pyochelin",
-			"display": "SEED: Siderophore pyochelin",
+			"display": "SEED: Iron acquisition and metabolism: Siderophore pyochelin",
 			"id": "SEED: Siderophore_pyochelin",
 			"ui-name": "SEED: Siderophore_pyochelin"
 		},
 		{
 			"value": "SEED: Transport_of_Iron",
-			"display": "SEED: Transport of Iron",
+			"display": "SEED: Iron acquisition and metabolism: Transport of Iron",
 			"id": "SEED: Transport_of_Iron",
 			"ui-name": "SEED: Transport_of_Iron"
 		},
 		{
 			"value": "SEED: ABC_transporter_alkylphosphonate_(TC_3.A.1.9.1)",
-			"display": "SEED: ABC transporter alkylphosphonate (TC 3.A.1.9.1)",
+			"display": "SEED: Membrane Transport: ABC transporter alkylphosphonate (TC 3.A.1.9.1)",
 			"id": "SEED: ABC_transporter_alkylphosphonate_(TC_3.A.1.9.1)",
 			"ui-name": "SEED: ABC_transporter_alkylphosphonate_(TC_3.A.1.9.1)"
 		},
 		{
 			"value": "SEED: ABC_transporter_branched-chain_amino_acid_(TC_3.A.1.4.1)",
-			"display": "SEED: ABC transporter branched-chain amino acid (TC 3.A.1.4.1)",
+			"display": "SEED: Membrane Transport: ABC transporter branched-chain amino acid (TC 3.A.1.4.1)",
 			"id": "SEED: ABC_transporter_branched-chain_amino_acid_(TC_3.A.1.4.1)",
 			"ui-name": "SEED: ABC_transporter_branched-chain_amino_acid_(TC_3.A.1.4.1)"
 		},
 		{
 			"value": "SEED: ABC_transporter_dipeptide_(TC_3.A.1.5.2)",
-			"display": "SEED: ABC transporter dipeptide (TC 3.A.1.5.2)",
+			"display": "SEED: Membrane Transport: ABC transporter dipeptide (TC 3.A.1.5.2)",
 			"id": "SEED: ABC_transporter_dipeptide_(TC_3.A.1.5.2)",
 			"ui-name": "SEED: ABC_transporter_dipeptide_(TC_3.A.1.5.2)"
 		},
 		{
 			"value": "SEED: ABC_transporter_of_unknown_substrate_X",
-			"display": "SEED: ABC transporter of unknown substrate X",
+			"display": "SEED: Membrane Transport: ABC transporter of unknown substrate X",
 			"id": "SEED: ABC_transporter_of_unknown_substrate_X",
 			"ui-name": "SEED: ABC_transporter_of_unknown_substrate_X"
 		},
 		{
 			"value": "SEED: ABC_transporter_oligopeptide_(TC_3.A.1.5.1)",
-			"display": "SEED: ABC transporter oligopeptide (TC 3.A.1.5.1)",
+			"display": "SEED: Membrane Transport: ABC transporter oligopeptide (TC 3.A.1.5.1)",
 			"id": "SEED: ABC_transporter_oligopeptide_(TC_3.A.1.5.1)",
 			"ui-name": "SEED: ABC_transporter_oligopeptide_(TC_3.A.1.5.1)"
 		},
 		{
 			"value": "SEED: ABC_transporter_peptide_(TC_3.A.1.5.5)",
-			"display": "SEED: ABC transporter peptide (TC 3.A.1.5.5)",
+			"display": "SEED: Membrane Transport: ABC transporter peptide (TC 3.A.1.5.5)",
 			"id": "SEED: ABC_transporter_peptide_(TC_3.A.1.5.5)",
 			"ui-name": "SEED: ABC_transporter_peptide_(TC_3.A.1.5.5)"
 		},
 		{
 			"value": "SEED: ABC_transporter_tungstate_(TC_3.A.1.6.2)",
-			"display": "SEED: ABC transporter tungstate (TC 3.A.1.6.2)",
+			"display": "SEED: Membrane Transport: ABC transporter tungstate (TC 3.A.1.6.2)",
 			"id": "SEED: ABC_transporter_tungstate_(TC_3.A.1.6.2)",
 			"ui-name": "SEED: ABC_transporter_tungstate_(TC_3.A.1.6.2)"
 		},
 		{
 			"value": "SEED: Agrobacterium_opine_transport",
-			"display": "SEED: Agrobacterium opine transport",
+			"display": "SEED: Membrane Transport: Agrobacterium opine transport",
 			"id": "SEED: Agrobacterium_opine_transport",
 			"ui-name": "SEED: Agrobacterium_opine_transport"
 		},
 		{
 			"value": "SEED: Choline_Transport",
-			"display": "SEED: Choline Transport",
+			"display": "SEED: Membrane Transport: Choline Transport",
 			"id": "SEED: Choline_Transport",
 			"ui-name": "SEED: Choline_Transport"
 		},
 		{
 			"value": "SEED: Curli_production",
-			"display": "SEED: Curli production",
+			"display": "SEED: Membrane Transport: Curli production",
 			"id": "SEED: Curli_production",
 			"ui-name": "SEED: Curli_production"
 		},
 		{
 			"value": "SEED: ECF_class_transporters",
-			"display": "SEED: ECF class transporters",
+			"display": "SEED: Membrane Transport: ECF class transporters",
 			"id": "SEED: ECF_class_transporters",
 			"ui-name": "SEED: ECF_class_transporters"
 		},
 		{
 			"value": "SEED: ESAT-6_proteins_secretion_system_in_Actinobacteria",
-			"display": "SEED: ESAT-6 proteins secretion system in Actinobacteria",
+			"display": "SEED: Membrane Transport: ESAT-6 proteins secretion system in Actinobacteria",
 			"id": "SEED: ESAT-6_proteins_secretion_system_in_Actinobacteria",
 			"ui-name": "SEED: ESAT-6_proteins_secretion_system_in_Actinobacteria"
 		},
 		{
 			"value": "SEED: ESAT-6_proteins_secretion_system_in_Firmicutes",
-			"display": "SEED: ESAT-6 proteins secretion system in Firmicutes",
+			"display": "SEED: Membrane Transport: ESAT-6 proteins secretion system in Firmicutes",
 			"id": "SEED: ESAT-6_proteins_secretion_system_in_Firmicutes",
 			"ui-name": "SEED: ESAT-6_proteins_secretion_system_in_Firmicutes"
 		},
 		{
 			"value": "SEED: Fructose_and_Mannose_Inducible_PTS",
-			"display": "SEED: Fructose and Mannose Inducible PTS",
+			"display": "SEED: Membrane Transport: Fructose and Mannose Inducible PTS",
 			"id": "SEED: Fructose_and_Mannose_Inducible_PTS",
 			"ui-name": "SEED: Fructose_and_Mannose_Inducible_PTS"
 		},
 		{
 			"value": "SEED: Mannose-sensitive_hemagglutinin_type_4_pilus",
-			"display": "SEED: Mannose-sensitive hemagglutinin type 4 pilus",
+			"display": "SEED: Membrane Transport: Mannose-sensitive hemagglutinin type 4 pilus",
 			"id": "SEED: Mannose-sensitive_hemagglutinin_type_4_pilus",
 			"ui-name": "SEED: Mannose-sensitive_hemagglutinin_type_4_pilus"
 		},
 		{
 			"value": "SEED: Na(+)_H(+)_antiporter",
-			"display": "SEED: Na(+) H(+) antiporter",
+			"display": "SEED: Membrane Transport: Na(+) H(+) antiporter",
 			"id": "SEED: Na(+)_H(+)_antiporter",
 			"ui-name": "SEED: Na(+)_H(+)_antiporter"
 		},
 		{
 			"value": "SEED: Sodium_Hydrogen_Antiporter",
-			"display": "SEED: Sodium Hydrogen Antiporter",
+			"display": "SEED: Membrane Transport: Sodium Hydrogen Antiporter",
 			"id": "SEED: Sodium_Hydrogen_Antiporter",
 			"ui-name": "SEED: Sodium_Hydrogen_Antiporter"
 		},
 		{
 			"value": "SEED: Ton_and_Tol_transport_systems",
-			"display": "SEED: Ton and Tol transport systems",
+			"display": "SEED: Membrane Transport: Ton and Tol transport systems",
 			"id": "SEED: Ton_and_Tol_transport_systems",
 			"ui-name": "SEED: Ton_and_Tol_transport_systems"
 		},
 		{
 			"value": "SEED: Toxin_co-regulated_pilus",
-			"display": "SEED: Toxin co-regulated pilus",
+			"display": "SEED: Membrane Transport: Toxin co-regulated pilus",
 			"id": "SEED: Toxin_co-regulated_pilus",
 			"ui-name": "SEED: Toxin_co-regulated_pilus"
 		},
 		{
 			"value": "SEED: Transport_of_Manganese",
-			"display": "SEED: Transport of Manganese",
+			"display": "SEED: Membrane Transport: Transport of Manganese",
 			"id": "SEED: Transport_of_Manganese",
 			"ui-name": "SEED: Transport_of_Manganese"
 		},
 		{
 			"value": "SEED: Transport_of_Molybdenum",
-			"display": "SEED: Transport of Molybdenum",
+			"display": "SEED: Membrane Transport: Transport of Molybdenum",
 			"id": "SEED: Transport_of_Molybdenum",
 			"ui-name": "SEED: Transport_of_Molybdenum"
 		},
 		{
 			"value": "SEED: Transport_of_Nickel_and_Cobalt",
-			"display": "SEED: Transport of Nickel and Cobalt",
+			"display": "SEED: Membrane Transport: Transport of Nickel and Cobalt",
 			"id": "SEED: Transport_of_Nickel_and_Cobalt",
 			"ui-name": "SEED: Transport_of_Nickel_and_Cobalt"
 		},
 		{
 			"value": "SEED: Transport_of_Zinc",
-			"display": "SEED: Transport of Zinc",
+			"display": "SEED: Membrane Transport: Transport of Zinc",
 			"id": "SEED: Transport_of_Zinc",
 			"ui-name": "SEED: Transport_of_Zinc"
 		},
 		{
 			"value": "SEED: Twin-arginine_translocation_system",
-			"display": "SEED: Twin-arginine translocation system",
+			"display": "SEED: Membrane Transport: Twin-arginine translocation system",
 			"id": "SEED: Twin-arginine_translocation_system",
 			"ui-name": "SEED: Twin-arginine_translocation_system"
 		},
 		{
 			"value": "SEED: Type_4_conjugative_transfer_system,_IncI1_type",
-			"display": "SEED: Type 4 conjugative transfer system, IncI1 type",
+			"display": "SEED: Membrane Transport: Type 4 conjugative transfer system, IncI1 type",
 			"id": "SEED: Type_4_conjugative_transfer_system,_IncI1_type",
 			"ui-name": "SEED: Type_4_conjugative_transfer_system,_IncI1_type"
 		},
 		{
 			"value": "SEED: Type_III_secretion_system_orphans",
-			"display": "SEED: Type III secretion system orphans",
+			"display": "SEED: Membrane Transport: Type III secretion system orphans",
 			"id": "SEED: Type_III_secretion_system_orphans",
 			"ui-name": "SEED: Type_III_secretion_system_orphans"
 		},
 		{
 			"value": "SEED: Type_IV_pilus",
-			"display": "SEED: Type IV pilus",
+			"display": "SEED: Membrane Transport: Type IV pilus",
 			"id": "SEED: Type_IV_pilus",
 			"ui-name": "SEED: Type_IV_pilus"
 		},
 		{
 			"value": "SEED: Widespread_colonization_island",
-			"display": "SEED: Widespread colonization island",
+			"display": "SEED: Membrane Transport: Widespread colonization island",
 			"id": "SEED: Widespread_colonization_island",
 			"ui-name": "SEED: Widespread_colonization_island"
 		},
 		{
 			"value": "SEED: pVir_Plasmid_of_Campylobacter",
-			"display": "SEED: pVir Plasmid of Campylobacter",
+			"display": "SEED: Membrane Transport: pVir Plasmid of Campylobacter",
 			"id": "SEED: pVir_Plasmid_of_Campylobacter",
 			"ui-name": "SEED: pVir_Plasmid_of_Campylobacter"
 		},
 		{
 			"value": "SEED: 4-Hydroxyphenylacetic_acid_catabolic_pathway",
-			"display": "SEED: 4-Hydroxyphenylacetic acid catabolic pathway",
+			"display": "SEED: Metabolism of Aromatic Compounds: 4-Hydroxyphenylacetic acid catabolic pathway",
 			"id": "SEED: 4-Hydroxyphenylacetic_acid_catabolic_pathway",
 			"ui-name": "SEED: 4-Hydroxyphenylacetic_acid_catabolic_pathway"
 		},
 		{
 			"value": "SEED: Acetophenone_carboxylase_1",
-			"display": "SEED: Acetophenone carboxylase 1",
+			"display": "SEED: Metabolism of Aromatic Compounds: Acetophenone carboxylase 1",
 			"id": "SEED: Acetophenone_carboxylase_1",
 			"ui-name": "SEED: Acetophenone_carboxylase_1"
 		},
 		{
 			"value": "SEED: Anaerobic_toluene_and_ethylbenzene_degradation",
-			"display": "SEED: Anaerobic toluene and ethylbenzene degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Anaerobic toluene and ethylbenzene degradation",
 			"id": "SEED: Anaerobic_toluene_and_ethylbenzene_degradation",
 			"ui-name": "SEED: Anaerobic_toluene_and_ethylbenzene_degradation"
 		},
 		{
 			"value": "SEED: Aromatic_Amin_Catabolism",
-			"display": "SEED: Aromatic Amin Catabolism",
+			"display": "SEED: Metabolism of Aromatic Compounds: Aromatic Amin Catabolism",
 			"id": "SEED: Aromatic_Amin_Catabolism",
 			"ui-name": "SEED: Aromatic_Amin_Catabolism"
 		},
 		{
 			"value": "SEED: Benzoate_degradation",
-			"display": "SEED: Benzoate degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Benzoate degradation",
 			"id": "SEED: Benzoate_degradation",
 			"ui-name": "SEED: Benzoate_degradation"
 		},
 		{
 			"value": "SEED: Benzoate_transport_and_degradation_cluster",
-			"display": "SEED: Benzoate transport and degradation cluster",
+			"display": "SEED: Metabolism of Aromatic Compounds: Benzoate transport and degradation cluster",
 			"id": "SEED: Benzoate_transport_and_degradation_cluster",
 			"ui-name": "SEED: Benzoate_transport_and_degradation_cluster"
 		},
 		{
 			"value": "SEED: Biphenyl_Degradation",
-			"display": "SEED: Biphenyl Degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Biphenyl Degradation",
 			"id": "SEED: Biphenyl_Degradation",
 			"ui-name": "SEED: Biphenyl_Degradation"
 		},
 		{
 			"value": "SEED: Catechol_branch_of_beta-ketoadipate_pathway",
-			"display": "SEED: Catechol branch of beta-ketoadipate pathway",
+			"display": "SEED: Metabolism of Aromatic Compounds: Catechol branch of beta-ketoadipate pathway",
 			"id": "SEED: Catechol_branch_of_beta-ketoadipate_pathway",
 			"ui-name": "SEED: Catechol_branch_of_beta-ketoadipate_pathway"
 		},
 		{
 			"value": "SEED: Central_meta-cleavage_pathway_of_aromatic_compound_degradation",
-			"display": "SEED: Central meta-cleavage pathway of aromatic compound degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Central meta-cleavage pathway of aromatic compound degradation",
 			"id": "SEED: Central_meta-cleavage_pathway_of_aromatic_compound_degradation",
 			"ui-name": "SEED: Central_meta-cleavage_pathway_of_aromatic_compound_degradation"
 		},
 		{
 			"value": "SEED: Chloroaromatic_degradation_pathway",
-			"display": "SEED: Chloroaromatic degradation pathway",
+			"display": "SEED: Metabolism of Aromatic Compounds: Chloroaromatic degradation pathway",
 			"id": "SEED: Chloroaromatic_degradation_pathway",
 			"ui-name": "SEED: Chloroaromatic_degradation_pathway"
 		},
 		{
 			"value": "SEED: Cresol_degradation",
-			"display": "SEED: Cresol degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Cresol degradation",
 			"id": "SEED: Cresol_degradation",
 			"ui-name": "SEED: Cresol_degradation"
 		},
 		{
 			"value": "SEED: Gentisare_degradation",
-			"display": "SEED: Gentisare degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Gentisare degradation",
 			"id": "SEED: Gentisare_degradation",
 			"ui-name": "SEED: Gentisare_degradation"
 		},
 		{
 			"value": "SEED: Homogentisate_pathway_of_aromatic_compound_degradation",
-			"display": "SEED: Homogentisate pathway of aromatic compound degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Homogentisate pathway of aromatic compound degradation",
 			"id": "SEED: Homogentisate_pathway_of_aromatic_compound_degradation",
 			"ui-name": "SEED: Homogentisate_pathway_of_aromatic_compound_degradation"
 		},
 		{
 			"value": "SEED: N-heterocyclic_aromatic_compound_degradation",
-			"display": "SEED: N-heterocyclic aromatic compound degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: N-heterocyclic aromatic compound degradation",
 			"id": "SEED: N-heterocyclic_aromatic_compound_degradation",
 			"ui-name": "SEED: N-heterocyclic_aromatic_compound_degradation"
 		},
 		{
 			"value": "SEED: Naphtalene_and_antracene_degradation",
-			"display": "SEED: Naphtalene and antracene degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Naphtalene and antracene degradation",
 			"id": "SEED: Naphtalene_and_antracene_degradation",
 			"ui-name": "SEED: Naphtalene_and_antracene_degradation"
 		},
 		{
 			"value": "SEED: Phenylpropanoid_compound_degradation",
-			"display": "SEED: Phenylpropanoid compound degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Phenylpropanoid compound degradation",
 			"id": "SEED: Phenylpropanoid_compound_degradation",
 			"ui-name": "SEED: Phenylpropanoid_compound_degradation"
 		},
 		{
 			"value": "SEED: Protocatechuate_branch_of_beta-ketoadipate_pathway",
-			"display": "SEED: Protocatechuate branch of beta-ketoadipate pathway",
+			"display": "SEED: Metabolism of Aromatic Compounds: Protocatechuate branch of beta-ketoadipate pathway",
 			"id": "SEED: Protocatechuate_branch_of_beta-ketoadipate_pathway",
 			"ui-name": "SEED: Protocatechuate_branch_of_beta-ketoadipate_pathway"
 		},
 		{
 			"value": "SEED: Quinate_degradation",
-			"display": "SEED: Quinate degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Quinate degradation",
 			"id": "SEED: Quinate_degradation",
 			"ui-name": "SEED: Quinate_degradation"
 		},
 		{
 			"value": "SEED: Salicylate_and_gentisate_catabolism",
-			"display": "SEED: Salicylate and gentisate catabolism",
+			"display": "SEED: Metabolism of Aromatic Compounds: Salicylate and gentisate catabolism",
 			"id": "SEED: Salicylate_and_gentisate_catabolism",
 			"ui-name": "SEED: Salicylate_and_gentisate_catabolism"
 		},
 		{
 			"value": "SEED: Salicylate_ester_degradation",
-			"display": "SEED: Salicylate ester degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Salicylate ester degradation",
 			"id": "SEED: Salicylate_ester_degradation",
 			"ui-name": "SEED: Salicylate_ester_degradation"
 		},
 		{
 			"value": "SEED: Toluene_degradation",
-			"display": "SEED: Toluene degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: Toluene degradation",
 			"id": "SEED: Toluene_degradation",
 			"ui-name": "SEED: Toluene_degradation"
 		},
 		{
 			"value": "SEED: carbazol_degradation_cluster",
-			"display": "SEED: carbazol degradation cluster",
+			"display": "SEED: Metabolism of Aromatic Compounds: carbazol degradation cluster",
 			"id": "SEED: carbazol_degradation_cluster",
 			"ui-name": "SEED: carbazol_degradation_cluster"
 		},
 		{
 			"value": "SEED: n-Phenylalkanoic_acid_degradation",
-			"display": "SEED: n-Phenylalkanoic acid degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: n-Phenylalkanoic acid degradation",
 			"id": "SEED: n-Phenylalkanoic_acid_degradation",
 			"ui-name": "SEED: n-Phenylalkanoic_acid_degradation"
 		},
 		{
 			"value": "SEED: p-Hydroxybenzoate_degradation",
-			"display": "SEED: p-Hydroxybenzoate degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: p-Hydroxybenzoate degradation",
 			"id": "SEED: p-Hydroxybenzoate_degradation",
 			"ui-name": "SEED: p-Hydroxybenzoate_degradation"
 		},
 		{
 			"value": "SEED: p-cymene_degradation",
-			"display": "SEED: p-cymene degradation",
+			"display": "SEED: Metabolism of Aromatic Compounds: p-cymene degradation",
 			"id": "SEED: p-cymene_degradation",
 			"ui-name": "SEED: p-cymene_degradation"
 		},
 		{
 			"value": "SEED: Archease",
-			"display": "SEED: Archease",
+			"display": "SEED: Miscellaneous: Archease",
 			"id": "SEED: Archease",
 			"ui-name": "SEED: Archease"
 		},
 		{
 			"value": "SEED: Conserved_gene_cluster_possibly_involved_in_RNA_metabolism",
-			"display": "SEED: Conserved gene cluster possibly involved in RNA metabolism",
+			"display": "SEED: Miscellaneous: Conserved gene cluster possibly involved in RNA metabolism",
 			"id": "SEED: Conserved_gene_cluster_possibly_involved_in_RNA_metabolism",
 			"ui-name": "SEED: Conserved_gene_cluster_possibly_involved_in_RNA_metabolism"
 		},
 		{
 			"value": "SEED: Luciferases",
-			"display": "SEED: Luciferases",
+			"display": "SEED: Miscellaneous: Luciferases",
 			"id": "SEED: Luciferases",
 			"ui-name": "SEED: Luciferases"
 		},
 		{
 			"value": "SEED: Muconate_lactonizing_enzyme_family",
-			"display": "SEED: Muconate lactonizing enzyme family",
+			"display": "SEED: Miscellaneous: Muconate lactonizing enzyme family",
 			"id": "SEED: Muconate_lactonizing_enzyme_family",
 			"ui-name": "SEED: Muconate_lactonizing_enzyme_family"
 		},
 		{
 			"value": "SEED: Synechocystis_experimental",
-			"display": "SEED: Synechocystis experimental",
+			"display": "SEED: Miscellaneous: Synechocystis experimental",
 			"id": "SEED: Synechocystis_experimental",
 			"ui-name": "SEED: Synechocystis_experimental"
 		},
 		{
 			"value": "SEED: YaaA",
-			"display": "SEED: YaaA",
+			"display": "SEED: Miscellaneous: YaaA",
 			"id": "SEED: YaaA",
 			"ui-name": "SEED: YaaA"
 		},
 		{
 			"value": "SEED: YbbK",
-			"display": "SEED: YbbK",
+			"display": "SEED: Miscellaneous: YbbK",
 			"id": "SEED: YbbK",
 			"ui-name": "SEED: YbbK"
 		},
 		{
 			"value": "SEED: ZZ_gjo_need_homes",
-			"display": "SEED: ZZ gjo need homes",
+			"display": "SEED: Miscellaneous: ZZ gjo need homes",
 			"id": "SEED: ZZ_gjo_need_homes",
 			"ui-name": "SEED: ZZ_gjo_need_homes"
 		},
 		{
 			"value": "SEED: Archaeal_Flagellum",
-			"display": "SEED: Archaeal Flagellum",
+			"display": "SEED: Motility and Chemotaxis: Archaeal Flagellum",
 			"id": "SEED: Archaeal_Flagellum",
 			"ui-name": "SEED: Archaeal_Flagellum"
 		},
 		{
 			"value": "SEED: Bacterial_Chemotaxis",
-			"display": "SEED: Bacterial Chemotaxis",
+			"display": "SEED: Motility and Chemotaxis: Bacterial Chemotaxis",
 			"id": "SEED: Bacterial_Chemotaxis",
 			"ui-name": "SEED: Bacterial_Chemotaxis"
 		},
 		{
 			"value": "SEED: Flagellar_motility",
-			"display": "SEED: Flagellar motility",
+			"display": "SEED: Motility and Chemotaxis: Flagellar motility",
 			"id": "SEED: Flagellar_motility",
 			"ui-name": "SEED: Flagellar_motility"
 		},
 		{
 			"value": "SEED: Flagellum",
-			"display": "SEED: Flagellum",
+			"display": "SEED: Motility and Chemotaxis: Flagellum",
 			"id": "SEED: Flagellum",
 			"ui-name": "SEED: Flagellum"
 		},
 		{
 			"value": "SEED: Flagellum_in_Campylobacter",
-			"display": "SEED: Flagellum in Campylobacter",
+			"display": "SEED: Motility and Chemotaxis: Flagellum in Campylobacter",
 			"id": "SEED: Flagellum_in_Campylobacter",
 			"ui-name": "SEED: Flagellum_in_Campylobacter"
 		},
 		{
 			"value": "SEED: Rhamnolipids_in_Pseudomonas",
-			"display": "SEED: Rhamnolipids in Pseudomonas",
+			"display": "SEED: Motility and Chemotaxis: Rhamnolipids in Pseudomonas",
 			"id": "SEED: Rhamnolipids_in_Pseudomonas",
 			"ui-name": "SEED: Rhamnolipids_in_Pseudomonas"
 		},
 		{
 			"value": "SEED: Allantoin_Utilization",
-			"display": "SEED: Allantoin Utilization",
+			"display": "SEED: Nitrogen Metabolism: Allantoin Utilization",
 			"id": "SEED: Allantoin_Utilization",
 			"ui-name": "SEED: Allantoin_Utilization"
 		},
 		{
 			"value": "SEED: Amidase_clustered_with_urea_and_nitrile_hydratase_functions",
-			"display": "SEED: Amidase clustered with urea and nitrile hydratase functions",
+			"display": "SEED: Nitrogen Metabolism: Amidase clustered with urea and nitrile hydratase functions",
 			"id": "SEED: Amidase_clustered_with_urea_and_nitrile_hydratase_functions",
 			"ui-name": "SEED: Amidase_clustered_with_urea_and_nitrile_hydratase_functions"
 		},
 		{
 			"value": "SEED: Ammonia_assimilation",
-			"display": "SEED: Ammonia assimilation",
+			"display": "SEED: Nitrogen Metabolism: Ammonia assimilation",
 			"id": "SEED: Ammonia_assimilation",
 			"ui-name": "SEED: Ammonia_assimilation"
 		},
 		{
 			"value": "SEED: Cyanate_hydrolysis",
-			"display": "SEED: Cyanate hydrolysis",
+			"display": "SEED: Nitrogen Metabolism: Cyanate hydrolysis",
 			"id": "SEED: Cyanate_hydrolysis",
 			"ui-name": "SEED: Cyanate_hydrolysis"
 		},
 		{
 			"value": "SEED: Denitrification",
-			"display": "SEED: Denitrification",
+			"display": "SEED: Nitrogen Metabolism: Denitrification",
 			"id": "SEED: Denitrification",
 			"ui-name": "SEED: Denitrification"
 		},
 		{
 			"value": "SEED: Dissimilatory_nitrite_reductase",
-			"display": "SEED: Dissimilatory nitrite reductase",
+			"display": "SEED: Nitrogen Metabolism: Dissimilatory nitrite reductase",
 			"id": "SEED: Dissimilatory_nitrite_reductase",
 			"ui-name": "SEED: Dissimilatory_nitrite_reductase"
 		},
 		{
 			"value": "SEED: Nitrate_and_nitrite_ammonification",
-			"display": "SEED: Nitrate and nitrite ammonification",
+			"display": "SEED: Nitrogen Metabolism: Nitrate and nitrite ammonification",
 			"id": "SEED: Nitrate_and_nitrite_ammonification",
 			"ui-name": "SEED: Nitrate_and_nitrite_ammonification"
 		},
 		{
 			"value": "SEED: Nitric_oxide_synthase",
-			"display": "SEED: Nitric oxide synthase",
+			"display": "SEED: Nitrogen Metabolism: Nitric oxide synthase",
 			"id": "SEED: Nitric_oxide_synthase",
 			"ui-name": "SEED: Nitric_oxide_synthase"
 		},
 		{
 			"value": "SEED: Nitrogen_fixation",
-			"display": "SEED: Nitrogen fixation",
+			"display": "SEED: Nitrogen Metabolism: Nitrogen fixation",
 			"id": "SEED: Nitrogen_fixation",
 			"ui-name": "SEED: Nitrogen_fixation"
 		},
 		{
 			"value": "SEED: Nitrosative_stress",
-			"display": "SEED: Nitrosative stress",
+			"display": "SEED: Nitrogen Metabolism: Nitrosative stress",
 			"id": "SEED: Nitrosative_stress",
 			"ui-name": "SEED: Nitrosative_stress"
 		},
 		{
 			"value": "SEED: AMP_to_3-phosphoglycerate",
-			"display": "SEED: AMP to 3-phosphoglycerate",
+			"display": "SEED: Nucleosides and Nucleotides: AMP to 3-phosphoglycerate",
 			"id": "SEED: AMP_to_3-phosphoglycerate",
 			"ui-name": "SEED: AMP_to_3-phosphoglycerate"
 		},
 		{
 			"value": "SEED: Adenosyl_nucleosidases",
-			"display": "SEED: Adenosyl nucleosidases",
+			"display": "SEED: Nucleosides and Nucleotides: Adenosyl nucleosidases",
 			"id": "SEED: Adenosyl_nucleosidases",
 			"ui-name": "SEED: Adenosyl_nucleosidases"
 		},
 		{
 			"value": "SEED: De_Novo_Purine_Biosynthesis",
-			"display": "SEED: De Novo Purine Biosynthesis",
+			"display": "SEED: Nucleosides and Nucleotides: De Novo Purine Biosynthesis",
 			"id": "SEED: De_Novo_Purine_Biosynthesis",
 			"ui-name": "SEED: De_Novo_Purine_Biosynthesis"
 		},
 		{
 			"value": "SEED: De_Novo_Pyrimidine_Synthesis",
-			"display": "SEED: De Novo Pyrimidine Synthesis",
+			"display": "SEED: Nucleosides and Nucleotides: De Novo Pyrimidine Synthesis",
 			"id": "SEED: De_Novo_Pyrimidine_Synthesis",
 			"ui-name": "SEED: De_Novo_Pyrimidine_Synthesis"
 		},
 		{
 			"value": "SEED: Hydantoin_metabolism",
-			"display": "SEED: Hydantoin metabolism",
+			"display": "SEED: Nucleosides and Nucleotides: Hydantoin metabolism",
 			"id": "SEED: Hydantoin_metabolism",
 			"ui-name": "SEED: Hydantoin_metabolism"
 		},
 		{
 			"value": "SEED: Nucleoside_triphosphate_pyrophosphohydrolase_MazG",
-			"display": "SEED: Nucleoside triphosphate pyrophosphohydrolase MazG",
+			"display": "SEED: Nucleosides and Nucleotides: Nucleoside triphosphate pyrophosphohydrolase MazG",
 			"id": "SEED: Nucleoside_triphosphate_pyrophosphohydrolase_MazG",
 			"ui-name": "SEED: Nucleoside_triphosphate_pyrophosphohydrolase_MazG"
 		},
 		{
 			"value": "SEED: Nudix_proteins_(nucleoside_triphosphate_hydrolases)",
-			"display": "SEED: Nudix proteins (nucleoside triphosphate hydrolases)",
+			"display": "SEED: Nucleosides and Nucleotides: Nudix proteins (nucleoside triphosphate hydrolases)",
 			"id": "SEED: Nudix_proteins_(nucleoside_triphosphate_hydrolases)",
 			"ui-name": "SEED: Nudix_proteins_(nucleoside_triphosphate_hydrolases)"
 		},
 		{
 			"value": "SEED: Purine_Utilization",
-			"display": "SEED: Purine Utilization",
+			"display": "SEED: Nucleosides and Nucleotides: Purine Utilization",
 			"id": "SEED: Purine_Utilization",
 			"ui-name": "SEED: Purine_Utilization"
 		},
 		{
 			"value": "SEED: Purine_conversions",
-			"display": "SEED: Purine conversions",
+			"display": "SEED: Nucleosides and Nucleotides: Purine conversions",
 			"id": "SEED: Purine_conversions",
 			"ui-name": "SEED: Purine_conversions"
 		},
 		{
 			"value": "SEED: Purine_nucleotide_synthesis_regulator",
-			"display": "SEED: Purine nucleotide synthesis regulator",
+			"display": "SEED: Nucleosides and Nucleotides: Purine nucleotide synthesis regulator",
 			"id": "SEED: Purine_nucleotide_synthesis_regulator",
 			"ui-name": "SEED: Purine_nucleotide_synthesis_regulator"
 		},
 		{
 			"value": "SEED: Pyrimidine_utilization",
-			"display": "SEED: Pyrimidine utilization",
+			"display": "SEED: Nucleosides and Nucleotides: Pyrimidine utilization",
 			"id": "SEED: Pyrimidine_utilization",
 			"ui-name": "SEED: Pyrimidine_utilization"
 		},
 		{
 			"value": "SEED: Ribonucleotide_reduction",
-			"display": "SEED: Ribonucleotide reduction",
+			"display": "SEED: Nucleosides and Nucleotides: Ribonucleotide reduction",
 			"id": "SEED: Ribonucleotide_reduction",
 			"ui-name": "SEED: Ribonucleotide_reduction"
 		},
 		{
 			"value": "SEED: Xanthosine_utilization_(xap_region)",
-			"display": "SEED: Xanthosine utilization (xap region)",
+			"display": "SEED: Nucleosides and Nucleotides: Xanthosine utilization (xap region)",
 			"id": "SEED: Xanthosine_utilization_(xap_region)",
 			"ui-name": "SEED: Xanthosine_utilization_(xap_region)"
 		},
 		{
 			"value": "SEED: Phage_capsid_proteins",
-			"display": "SEED: Phage capsid proteins",
+			"display": "SEED: Phages, Prophages, Transposable elements: Phage capsid proteins",
 			"id": "SEED: Phage_capsid_proteins",
 			"ui-name": "SEED: Phage_capsid_proteins"
 		},
 		{
 			"value": "SEED: Conjugative_transposon,_Bacteroidales",
-			"display": "SEED: Conjugative transposon, Bacteroidales",
+			"display": "SEED: Phages, Prophages, Transposable elements, Plasmids: Conjugative transposon, Bacteroidales",
 			"id": "SEED: Conjugative_transposon,_Bacteroidales",
 			"ui-name": "SEED: Conjugative_transposon,_Bacteroidales"
 		},
 		{
 			"value": "SEED: IbrA_and_IbrB:_co-activators_of_prophage_gene_expression",
-			"display": "SEED: IbrA and IbrB: co-activators of prophage gene expression",
+			"display": "SEED: Phages, Prophages, Transposable elements, Plasmids: IbrA and IbrB: co-activators of prophage gene expression",
 			"id": "SEED: IbrA_and_IbrB:_co-activators_of_prophage_gene_expression",
 			"ui-name": "SEED: IbrA_and_IbrB:_co-activators_of_prophage_gene_expression"
 		},
 		{
 			"value": "SEED: Integrons",
-			"display": "SEED: Integrons",
+			"display": "SEED: Phages, Prophages, Transposable elements, Plasmids: Integrons",
 			"id": "SEED: Integrons",
 			"ui-name": "SEED: Integrons"
 		},
 		{
 			"value": "SEED: Listeria_Pathogenicity_Island_LIPI-1_extended",
-			"display": "SEED: Listeria Pathogenicity Island LIPI-1 extended",
+			"display": "SEED: Phages, Prophages, Transposable elements, Plasmids: Listeria Pathogenicity Island LIPI-1 extended",
 			"id": "SEED: Listeria_Pathogenicity_Island_LIPI-1_extended",
 			"ui-name": "SEED: Listeria_Pathogenicity_Island_LIPI-1_extended"
 		},
 		{
 			"value": "SEED: Listeria_phi-A118-like_prophages",
-			"display": "SEED: Listeria phi-A118-like prophages",
+			"display": "SEED: Phages, Prophages, Transposable elements, Plasmids: Listeria phi-A118-like prophages",
 			"id": "SEED: Listeria_phi-A118-like_prophages",
 			"ui-name": "SEED: Listeria_phi-A118-like_prophages"
 		},
 		{
 			"value": "SEED: Staphylococcal_pathogenicity_islands_SaPI",
-			"display": "SEED: Staphylococcal pathogenicity islands SaPI",
+			"display": "SEED: Phages, Prophages, Transposable elements, Plasmids: Staphylococcal pathogenicity islands SaPI",
 			"id": "SEED: Staphylococcal_pathogenicity_islands_SaPI",
 			"ui-name": "SEED: Staphylococcal_pathogenicity_islands_SaPI"
 		},
 		{
 			"value": "SEED: Staphylococcal_phi-Mu50B-like_prophages",
-			"display": "SEED: Staphylococcal phi-Mu50B-like prophages",
+			"display": "SEED: Phages, Prophages, Transposable elements, Plasmids: Staphylococcal phi-Mu50B-like prophages",
 			"id": "SEED: Staphylococcal_phi-Mu50B-like_prophages",
 			"ui-name": "SEED: Staphylococcal_phi-Mu50B-like_prophages"
 		},
 		{
 			"value": "SEED: Tn552",
-			"display": "SEED: Tn552",
+			"display": "SEED: Phages, Prophages, Transposable elements, Plasmids: Tn552",
 			"id": "SEED: Tn552",
 			"ui-name": "SEED: Tn552"
 		},
 		{
 			"value": "SEED: Vibrio_pathogenicity_island",
-			"display": "SEED: Vibrio pathogenicity island",
+			"display": "SEED: Phages, Prophages, Transposable elements, Plasmids: Vibrio pathogenicity island",
 			"id": "SEED: Vibrio_pathogenicity_island",
 			"ui-name": "SEED: Vibrio_pathogenicity_island"
 		},
 		{
 			"value": "SEED: Alkylphosphonate_utilization",
-			"display": "SEED: Alkylphosphonate utilization",
+			"display": "SEED: Phosphorus Metabolism: Alkylphosphonate utilization",
 			"id": "SEED: Alkylphosphonate_utilization",
 			"ui-name": "SEED: Alkylphosphonate_utilization"
 		},
 		{
 			"value": "SEED: High_affinity_phosphate_transporter_and_control_of_PHO_regulon",
-			"display": "SEED: High affinity phosphate transporter and control of PHO regulon",
+			"display": "SEED: Phosphorus Metabolism: High affinity phosphate transporter and control of PHO regulon",
 			"id": "SEED: High_affinity_phosphate_transporter_and_control_of_PHO_regulon",
 			"ui-name": "SEED: High_affinity_phosphate_transporter_and_control_of_PHO_regulon"
 		},
 		{
 			"value": "SEED: Phosphate_metabolism",
-			"display": "SEED: Phosphate metabolism",
+			"display": "SEED: Phosphorus Metabolism: Phosphate metabolism",
 			"id": "SEED: Phosphate_metabolism",
 			"ui-name": "SEED: Phosphate_metabolism"
 		},
 		{
 			"value": "SEED: Phosphonate_metabolism",
-			"display": "SEED: Phosphonate metabolism",
+			"display": "SEED: Phosphorus Metabolism: Phosphonate metabolism",
 			"id": "SEED: Phosphonate_metabolism",
 			"ui-name": "SEED: Phosphonate_metabolism"
 		},
 		{
 			"value": "SEED: Bacterial_light-harvesting_proteins",
-			"display": "SEED: Bacterial light-harvesting proteins",
+			"display": "SEED: Photosynthesis: Bacterial light-harvesting proteins",
 			"id": "SEED: Bacterial_light-harvesting_proteins",
 			"ui-name": "SEED: Bacterial_light-harvesting_proteins"
 		},
 		{
 			"value": "SEED: Chlorosome",
-			"display": "SEED: Chlorosome",
+			"display": "SEED: Photosynthesis: Chlorosome",
 			"id": "SEED: Chlorosome",
 			"ui-name": "SEED: Chlorosome"
 		},
 		{
 			"value": "SEED: Photosystem_I",
-			"display": "SEED: Photosystem I",
+			"display": "SEED: Photosynthesis: Photosystem I",
 			"id": "SEED: Photosystem_I",
 			"ui-name": "SEED: Photosystem_I"
 		},
 		{
 			"value": "SEED: Photosystem_I-type_photosynthetic_reaction_center",
-			"display": "SEED: Photosystem I-type photosynthetic reaction center",
+			"display": "SEED: Photosynthesis: Photosystem I-type photosynthetic reaction center",
 			"id": "SEED: Photosystem_I-type_photosynthetic_reaction_center",
 			"ui-name": "SEED: Photosystem_I-type_photosynthetic_reaction_center"
 		},
 		{
 			"value": "SEED: Photosystem_II",
-			"display": "SEED: Photosystem II",
+			"display": "SEED: Photosynthesis: Photosystem II",
 			"id": "SEED: Photosystem_II",
 			"ui-name": "SEED: Photosystem_II"
 		},
 		{
 			"value": "SEED: Photosystem_II-type_photosynthetic_reaction_center",
-			"display": "SEED: Photosystem II-type photosynthetic reaction center",
+			"display": "SEED: Photosynthesis: Photosystem II-type photosynthetic reaction center",
 			"id": "SEED: Photosystem_II-type_photosynthetic_reaction_center",
 			"ui-name": "SEED: Photosystem_II-type_photosynthetic_reaction_center"
 		},
 		{
 			"value": "SEED: Phycobilisome",
-			"display": "SEED: Phycobilisome",
+			"display": "SEED: Photosynthesis: Phycobilisome",
 			"id": "SEED: Phycobilisome",
 			"ui-name": "SEED: Phycobilisome"
 		},
 		{
 			"value": "SEED: Glutathione-regulated_potassium-efflux_system_and_associated_functions",
-			"display": "SEED: Glutathione-regulated potassium-efflux system and associated functions",
+			"display": "SEED: Potassium metabolism: Glutathione-regulated potassium-efflux system and associated functions",
 			"id": "SEED: Glutathione-regulated_potassium-efflux_system_and_associated_functions",
 			"ui-name": "SEED: Glutathione-regulated_potassium-efflux_system_and_associated_functions"
 		},
 		{
 			"value": "SEED: Potassium_homeostasis",
-			"display": "SEED: Potassium homeostasis",
+			"display": "SEED: Potassium metabolism: Potassium homeostasis",
 			"id": "SEED: Potassium_homeostasis",
 			"ui-name": "SEED: Potassium_homeostasis"
 		},
 		{
 			"value": "SEED: pH_adaptation_potassium_efflux_system",
-			"display": "SEED: pH adaptation potassium efflux system",
+			"display": "SEED: Potassium metabolism: pH adaptation potassium efflux system",
 			"id": "SEED: pH_adaptation_potassium_efflux_system",
 			"ui-name": "SEED: pH_adaptation_potassium_efflux_system"
 		},
 		{
 			"value": "SEED: Glycine_reductase,_sarcosine_reductase_and_betaine_reductase",
-			"display": "SEED: Glycine reductase, sarcosine reductase and betaine reductase",
+			"display": "SEED: Protein Metabolism: Glycine reductase, sarcosine reductase and betaine reductase",
 			"id": "SEED: Glycine_reductase,_sarcosine_reductase_and_betaine_reductase",
 			"ui-name": "SEED: Glycine_reductase,_sarcosine_reductase_and_betaine_reductase"
 		},
 		{
 			"value": "SEED: GroEL_GroES",
-			"display": "SEED: GroEL GroES",
+			"display": "SEED: Protein Metabolism: GroEL GroES",
 			"id": "SEED: GroEL_GroES",
 			"ui-name": "SEED: GroEL_GroES"
 		},
 		{
 			"value": "SEED: Inteins",
-			"display": "SEED: Inteins",
+			"display": "SEED: Protein Metabolism: Inteins",
 			"id": "SEED: Inteins",
 			"ui-name": "SEED: Inteins"
 		},
 		{
 			"value": "SEED: N-linked_Glycosylation_in_Bacteria",
-			"display": "SEED: N-linked Glycosylation in Bacteria",
+			"display": "SEED: Protein Metabolism: N-linked Glycosylation in Bacteria",
 			"id": "SEED: N-linked_Glycosylation_in_Bacteria",
 			"ui-name": "SEED: N-linked_Glycosylation_in_Bacteria"
 		},
 		{
 			"value": "SEED: Peptidyl-prolyl_cis-trans_isomerase",
-			"display": "SEED: Peptidyl-prolyl cis-trans isomerase",
+			"display": "SEED: Protein Metabolism: Peptidyl-prolyl cis-trans isomerase",
 			"id": "SEED: Peptidyl-prolyl_cis-trans_isomerase",
 			"ui-name": "SEED: Peptidyl-prolyl_cis-trans_isomerase"
 		},
 		{
 			"value": "SEED: Periplasmic_disulfide_interchange",
-			"display": "SEED: Periplasmic disulfide interchange",
+			"display": "SEED: Protein Metabolism: Periplasmic disulfide interchange",
 			"id": "SEED: Periplasmic_disulfide_interchange",
 			"ui-name": "SEED: Periplasmic_disulfide_interchange"
 		},
 		{
 			"value": "SEED: Programmed_frameshift",
-			"display": "SEED: Programmed frameshift",
+			"display": "SEED: Protein Metabolism: Programmed frameshift",
 			"id": "SEED: Programmed_frameshift",
 			"ui-name": "SEED: Programmed_frameshift"
 		},
 		{
 			"value": "SEED: Proteasome_archaeal",
-			"display": "SEED: Proteasome archaeal",
+			"display": "SEED: Protein Metabolism: Proteasome archaeal",
 			"id": "SEED: Proteasome_archaeal",
 			"ui-name": "SEED: Proteasome_archaeal"
 		},
 		{
 			"value": "SEED: Proteasome_bacterial",
-			"display": "SEED: Proteasome bacterial",
+			"display": "SEED: Protein Metabolism: Proteasome bacterial",
 			"id": "SEED: Proteasome_bacterial",
 			"ui-name": "SEED: Proteasome_bacterial"
 		},
 		{
 			"value": "SEED: Proteasome_eukaryotic",
-			"display": "SEED: Proteasome eukaryotic",
+			"display": "SEED: Protein Metabolism: Proteasome eukaryotic",
 			"id": "SEED: Proteasome_eukaryotic",
 			"ui-name": "SEED: Proteasome_eukaryotic"
 		},
 		{
 			"value": "SEED: Protein_chaperones",
-			"display": "SEED: Protein chaperones",
+			"display": "SEED: Protein Metabolism: Protein chaperones",
 			"id": "SEED: Protein_chaperones",
 			"ui-name": "SEED: Protein_chaperones"
 		},
 		{
 			"value": "SEED: Protein_degradation",
-			"display": "SEED: Protein degradation",
+			"display": "SEED: Protein Metabolism: Protein degradation",
 			"id": "SEED: Protein_degradation",
 			"ui-name": "SEED: Protein_degradation"
 		},
 		{
 			"value": "SEED: Protein_secretion_by_ABC-type_exporters",
-			"display": "SEED: Protein secretion by ABC-type exporters",
+			"display": "SEED: Protein Metabolism: Protein secretion by ABC-type exporters",
 			"id": "SEED: Protein_secretion_by_ABC-type_exporters",
 			"ui-name": "SEED: Protein_secretion_by_ABC-type_exporters"
 		},
 		{
 			"value": "SEED: Proteolysis_in_bacteria,_ATP-dependent",
-			"display": "SEED: Proteolysis in bacteria, ATP-dependent",
+			"display": "SEED: Protein Metabolism: Proteolysis in bacteria, ATP-dependent",
 			"id": "SEED: Proteolysis_in_bacteria,_ATP-dependent",
 			"ui-name": "SEED: Proteolysis_in_bacteria,_ATP-dependent"
 		},
 		{
 			"value": "SEED: Putative_TldE-TldD_proteolytic_complex",
-			"display": "SEED: Putative TldE-TldD proteolytic complex",
+			"display": "SEED: Protein Metabolism: Putative TldE-TldD proteolytic complex",
 			"id": "SEED: Putative_TldE-TldD_proteolytic_complex",
 			"ui-name": "SEED: Putative_TldE-TldD_proteolytic_complex"
 		},
 		{
 			"value": "SEED: Pyrrolysine",
-			"display": "SEED: Pyrrolysine",
+			"display": "SEED: Protein Metabolism: Pyrrolysine",
 			"id": "SEED: Pyrrolysine",
 			"ui-name": "SEED: Pyrrolysine"
 		},
 		{
 			"value": "SEED: Ribosomal_protein_S12p_Asp_methylthiotransferase",
-			"display": "SEED: Ribosomal protein S12p Asp methylthiotransferase",
+			"display": "SEED: Protein Metabolism: Ribosomal protein S12p Asp methylthiotransferase",
 			"id": "SEED: Ribosomal_protein_S12p_Asp_methylthiotransferase",
 			"ui-name": "SEED: Ribosomal_protein_S12p_Asp_methylthiotransferase"
 		},
 		{
 			"value": "SEED: Ribosomal_protein_S5p_acylation",
-			"display": "SEED: Ribosomal protein S5p acylation",
+			"display": "SEED: Protein Metabolism: Ribosomal protein S5p acylation",
 			"id": "SEED: Ribosomal_protein_S5p_acylation",
 			"ui-name": "SEED: Ribosomal_protein_S5p_acylation"
 		},
 		{
 			"value": "SEED: Ribosome_LSU_bacterial",
-			"display": "SEED: Ribosome LSU bacterial",
+			"display": "SEED: Protein Metabolism: Ribosome LSU bacterial",
 			"id": "SEED: Ribosome_LSU_bacterial",
 			"ui-name": "SEED: Ribosome_LSU_bacterial"
 		},
 		{
 			"value": "SEED: Ribosome_LSU_chloroplast",
-			"display": "SEED: Ribosome LSU chloroplast",
+			"display": "SEED: Protein Metabolism: Ribosome LSU chloroplast",
 			"id": "SEED: Ribosome_LSU_chloroplast",
 			"ui-name": "SEED: Ribosome_LSU_chloroplast"
 		},
 		{
 			"value": "SEED: Ribosome_LSU_eukaryotic_and_archaeal",
-			"display": "SEED: Ribosome LSU eukaryotic and archaeal",
+			"display": "SEED: Protein Metabolism: Ribosome LSU eukaryotic and archaeal",
 			"id": "SEED: Ribosome_LSU_eukaryotic_and_archaeal",
 			"ui-name": "SEED: Ribosome_LSU_eukaryotic_and_archaeal"
 		},
 		{
 			"value": "SEED: Ribosome_LSU_mitochondrial",
-			"display": "SEED: Ribosome LSU mitochondrial",
+			"display": "SEED: Protein Metabolism: Ribosome LSU mitochondrial",
 			"id": "SEED: Ribosome_LSU_mitochondrial",
 			"ui-name": "SEED: Ribosome_LSU_mitochondrial"
 		},
 		{
 			"value": "SEED: Ribosome_SSU_bacterial",
-			"display": "SEED: Ribosome SSU bacterial",
+			"display": "SEED: Protein Metabolism: Ribosome SSU bacterial",
 			"id": "SEED: Ribosome_SSU_bacterial",
 			"ui-name": "SEED: Ribosome_SSU_bacterial"
 		},
 		{
 			"value": "SEED: Ribosome_SSU_chloroplast",
-			"display": "SEED: Ribosome SSU chloroplast",
+			"display": "SEED: Protein Metabolism: Ribosome SSU chloroplast",
 			"id": "SEED: Ribosome_SSU_chloroplast",
 			"ui-name": "SEED: Ribosome_SSU_chloroplast"
 		},
 		{
 			"value": "SEED: Ribosome_SSU_eukaryotic_and_archaeal",
-			"display": "SEED: Ribosome SSU eukaryotic and archaeal",
+			"display": "SEED: Protein Metabolism: Ribosome SSU eukaryotic and archaeal",
 			"id": "SEED: Ribosome_SSU_eukaryotic_and_archaeal",
 			"ui-name": "SEED: Ribosome_SSU_eukaryotic_and_archaeal"
 		},
 		{
 			"value": "SEED: Ribosome_SSU_mitochondrial",
-			"display": "SEED: Ribosome SSU mitochondrial",
+			"display": "SEED: Protein Metabolism: Ribosome SSU mitochondrial",
 			"id": "SEED: Ribosome_SSU_mitochondrial",
 			"ui-name": "SEED: Ribosome_SSU_mitochondrial"
 		},
 		{
 			"value": "SEED: Ribosome_activity_modulation",
-			"display": "SEED: Ribosome activity modulation",
+			"display": "SEED: Protein Metabolism: Ribosome activity modulation",
 			"id": "SEED: Ribosome_activity_modulation",
 			"ui-name": "SEED: Ribosome_activity_modulation"
 		},
 		{
 			"value": "SEED: Ribosome_biogenesis_bacterial",
-			"display": "SEED: Ribosome biogenesis bacterial",
+			"display": "SEED: Protein Metabolism: Ribosome biogenesis bacterial",
 			"id": "SEED: Ribosome_biogenesis_bacterial",
 			"ui-name": "SEED: Ribosome_biogenesis_bacterial"
 		},
 		{
 			"value": "SEED: Selenocysteine_metabolism",
-			"display": "SEED: Selenocysteine metabolism",
+			"display": "SEED: Protein Metabolism: Selenocysteine metabolism",
 			"id": "SEED: Selenocysteine_metabolism",
 			"ui-name": "SEED: Selenocysteine_metabolism"
 		},
 		{
 			"value": "SEED: Signal_peptidase",
-			"display": "SEED: Signal peptidase",
+			"display": "SEED: Protein Metabolism: Signal peptidase",
 			"id": "SEED: Signal_peptidase",
 			"ui-name": "SEED: Signal_peptidase"
 		},
 		{
 			"value": "SEED: Thermosome,_archaeal",
-			"display": "SEED: Thermosome, archaeal",
+			"display": "SEED: Protein Metabolism: Thermosome, archaeal",
 			"id": "SEED: Thermosome,_archaeal",
 			"ui-name": "SEED: Thermosome,_archaeal"
 		},
 		{
 			"value": "SEED: Trans-translation_by_stalled_ribosomes",
-			"display": "SEED: Trans-translation by stalled ribosomes",
+			"display": "SEED: Protein Metabolism: Trans-translation by stalled ribosomes",
 			"id": "SEED: Trans-translation_by_stalled_ribosomes",
 			"ui-name": "SEED: Trans-translation_by_stalled_ribosomes"
 		},
 		{
 			"value": "SEED: Translation_elongation_factor_G_family",
-			"display": "SEED: Translation elongation factor G family",
+			"display": "SEED: Protein Metabolism: Translation elongation factor G family",
 			"id": "SEED: Translation_elongation_factor_G_family",
 			"ui-name": "SEED: Translation_elongation_factor_G_family"
 		},
 		{
 			"value": "SEED: Translation_elongation_factors_eukaryotic_and_archaeal",
-			"display": "SEED: Translation elongation factors eukaryotic and archaeal",
+			"display": "SEED: Protein Metabolism: Translation elongation factors eukaryotic and archaeal",
 			"id": "SEED: Translation_elongation_factors_eukaryotic_and_archaeal",
 			"ui-name": "SEED: Translation_elongation_factors_eukaryotic_and_archaeal"
 		},
 		{
 			"value": "SEED: Translation_initiation_factors_eukaryotic_and_archaeal",
-			"display": "SEED: Translation initiation factors eukaryotic and archaeal",
+			"display": "SEED: Protein Metabolism: Translation initiation factors eukaryotic and archaeal",
 			"id": "SEED: Translation_initiation_factors_eukaryotic_and_archaeal",
 			"ui-name": "SEED: Translation_initiation_factors_eukaryotic_and_archaeal"
 		},
 		{
 			"value": "SEED: Universal_GTPases",
-			"display": "SEED: Universal GTPases",
+			"display": "SEED: Protein Metabolism: Universal GTPases",
 			"id": "SEED: Universal_GTPases",
 			"ui-name": "SEED: Universal_GTPases"
 		},
 		{
 			"value": "SEED: rRNAs",
-			"display": "SEED: rRNAs",
+			"display": "SEED: Protein Metabolism: rRNAs",
 			"id": "SEED: rRNAs",
 			"ui-name": "SEED: rRNAs"
 		},
 		{
 			"value": "SEED: tRNA_aminoacylation,_Asp_and_Asn",
-			"display": "SEED: tRNA aminoacylation, Asp and Asn",
+			"display": "SEED: Protein Metabolism: tRNA aminoacylation, Asp and Asn",
 			"id": "SEED: tRNA_aminoacylation,_Asp_and_Asn",
 			"ui-name": "SEED: tRNA_aminoacylation,_Asp_and_Asn"
 		},
 		{
 			"value": "SEED: tRNA_aminoacylation,_Glu_and_Gln",
-			"display": "SEED: tRNA aminoacylation, Glu and Gln",
+			"display": "SEED: Protein Metabolism: tRNA aminoacylation, Glu and Gln",
 			"id": "SEED: tRNA_aminoacylation,_Glu_and_Gln",
 			"ui-name": "SEED: tRNA_aminoacylation,_Glu_and_Gln"
 		},
 		{
 			"value": "SEED: tRNAs",
-			"display": "SEED: tRNAs",
+			"display": "SEED: Protein Metabolism: tRNAs",
 			"id": "SEED: tRNAs",
 			"ui-name": "SEED: tRNAs"
 		},
 		{
 			"value": "SEED: ATP-dependent_RNA_helicases,_bacterial",
-			"display": "SEED: ATP-dependent RNA helicases, bacterial",
+			"display": "SEED: RNA Metabolism: ATP-dependent RNA helicases, bacterial",
 			"id": "SEED: ATP-dependent_RNA_helicases,_bacterial",
 			"ui-name": "SEED: ATP-dependent_RNA_helicases,_bacterial"
 		},
 		{
 			"value": "SEED: Exosome",
-			"display": "SEED: Exosome",
+			"display": "SEED: RNA Metabolism: Exosome",
 			"id": "SEED: Exosome",
 			"ui-name": "SEED: Exosome"
 		},
 		{
 			"value": "SEED: Group_II_intron-associated_genes",
-			"display": "SEED: Group II intron-associated genes",
+			"display": "SEED: RNA Metabolism: Group II intron-associated genes",
 			"id": "SEED: Group_II_intron-associated_genes",
 			"ui-name": "SEED: Group_II_intron-associated_genes"
 		},
 		{
 			"value": "SEED: Polyadenylation_bacterial",
-			"display": "SEED: Polyadenylation bacterial",
+			"display": "SEED: RNA Metabolism: Polyadenylation bacterial",
 			"id": "SEED: Polyadenylation_bacterial",
 			"ui-name": "SEED: Polyadenylation_bacterial"
 		},
 		{
 			"value": "SEED: Queuosine-Archaeosine_Biosynthesis",
-			"display": "SEED: Queuosine-Archaeosine Biosynthesis",
+			"display": "SEED: RNA Metabolism: Queuosine-Archaeosine Biosynthesis",
 			"id": "SEED: Queuosine-Archaeosine_Biosynthesis",
 			"ui-name": "SEED: Queuosine-Archaeosine_Biosynthesis"
 		},
 		{
 			"value": "SEED: RNA_3'-terminal_phosphate_cyclase",
-			"display": "SEED: RNA 3'-terminal phosphate cyclase",
+			"display": "SEED: RNA Metabolism: RNA 3'-terminal phosphate cyclase",
 			"id": "SEED: RNA_3'-terminal_phosphate_cyclase",
 			"ui-name": "SEED: RNA_3'-terminal_phosphate_cyclase"
 		},
 		{
 			"value": "SEED: RNA_polymerase_I",
-			"display": "SEED: RNA polymerase I",
+			"display": "SEED: RNA Metabolism: RNA polymerase I",
 			"id": "SEED: RNA_polymerase_I",
 			"ui-name": "SEED: RNA_polymerase_I"
 		},
 		{
 			"value": "SEED: RNA_polymerase_II",
-			"display": "SEED: RNA polymerase II",
+			"display": "SEED: RNA Metabolism: RNA polymerase II",
 			"id": "SEED: RNA_polymerase_II",
 			"ui-name": "SEED: RNA_polymerase_II"
 		},
 		{
 			"value": "SEED: RNA_polymerase_III",
-			"display": "SEED: RNA polymerase III",
+			"display": "SEED: RNA Metabolism: RNA polymerase III",
 			"id": "SEED: RNA_polymerase_III",
 			"ui-name": "SEED: RNA_polymerase_III"
 		},
 		{
 			"value": "SEED: RNA_polymerase_III_initiation_factors",
-			"display": "SEED: RNA polymerase III initiation factors",
+			"display": "SEED: RNA Metabolism: RNA polymerase III initiation factors",
 			"id": "SEED: RNA_polymerase_III_initiation_factors",
 			"ui-name": "SEED: RNA_polymerase_III_initiation_factors"
 		},
 		{
 			"value": "SEED: RNA_polymerase_II_initiation_factors",
-			"display": "SEED: RNA polymerase II initiation factors",
+			"display": "SEED: RNA Metabolism: RNA polymerase II initiation factors",
 			"id": "SEED: RNA_polymerase_II_initiation_factors",
 			"ui-name": "SEED: RNA_polymerase_II_initiation_factors"
 		},
 		{
 			"value": "SEED: RNA_polymerase_archaeal",
-			"display": "SEED: RNA polymerase archaeal",
+			"display": "SEED: RNA Metabolism: RNA polymerase archaeal",
 			"id": "SEED: RNA_polymerase_archaeal",
 			"ui-name": "SEED: RNA_polymerase_archaeal"
 		},
 		{
 			"value": "SEED: RNA_polymerase_archaeal_initiation_factors",
-			"display": "SEED: RNA polymerase archaeal initiation factors",
+			"display": "SEED: RNA Metabolism: RNA polymerase archaeal initiation factors",
 			"id": "SEED: RNA_polymerase_archaeal_initiation_factors",
 			"ui-name": "SEED: RNA_polymerase_archaeal_initiation_factors"
 		},
 		{
 			"value": "SEED: RNA_polymerase_bacterial",
-			"display": "SEED: RNA polymerase bacterial",
+			"display": "SEED: RNA Metabolism: RNA polymerase bacterial",
 			"id": "SEED: RNA_polymerase_bacterial",
 			"ui-name": "SEED: RNA_polymerase_bacterial"
 		},
 		{
 			"value": "SEED: RNA_polymerase_chloroplast",
-			"display": "SEED: RNA polymerase chloroplast",
+			"display": "SEED: RNA Metabolism: RNA polymerase chloroplast",
 			"id": "SEED: RNA_polymerase_chloroplast",
 			"ui-name": "SEED: RNA_polymerase_chloroplast"
 		},
 		{
 			"value": "SEED: RNA_processing_and_degradation,_bacterial",
-			"display": "SEED: RNA processing and degradation, bacterial",
+			"display": "SEED: RNA Metabolism: RNA processing and degradation, bacterial",
 			"id": "SEED: RNA_processing_and_degradation,_bacterial",
 			"ui-name": "SEED: RNA_processing_and_degradation,_bacterial"
 		},
 		{
 			"value": "SEED: Ribonuclease_H",
-			"display": "SEED: Ribonuclease H",
+			"display": "SEED: RNA Metabolism: Ribonuclease H",
 			"id": "SEED: Ribonuclease_H",
 			"ui-name": "SEED: Ribonuclease_H"
 		},
 		{
 			"value": "SEED: Ribonuclease_P_archaeal_and_eukaryal",
-			"display": "SEED: Ribonuclease P archaeal and eukaryal",
+			"display": "SEED: RNA Metabolism: Ribonuclease P archaeal and eukaryal",
 			"id": "SEED: Ribonuclease_P_archaeal_and_eukaryal",
 			"ui-name": "SEED: Ribonuclease_P_archaeal_and_eukaryal"
 		},
 		{
 			"value": "SEED: Ribosome_biogenesis_archaeal",
-			"display": "SEED: Ribosome biogenesis archaeal",
+			"display": "SEED: RNA Metabolism: Ribosome biogenesis archaeal",
 			"id": "SEED: Ribosome_biogenesis_archaeal",
 			"ui-name": "SEED: Ribosome_biogenesis_archaeal"
 		},
 		{
 			"value": "SEED: Rrf2_family_transcriptional_regulators",
-			"display": "SEED: Rrf2 family transcriptional regulators",
+			"display": "SEED: RNA Metabolism: Rrf2 family transcriptional regulators",
 			"id": "SEED: Rrf2_family_transcriptional_regulators",
 			"ui-name": "SEED: Rrf2_family_transcriptional_regulators"
 		},
 		{
 			"value": "SEED: Spliceosome",
-			"display": "SEED: Spliceosome",
+			"display": "SEED: RNA Metabolism: Spliceosome",
 			"id": "SEED: Spliceosome",
 			"ui-name": "SEED: Spliceosome"
 		},
 		{
 			"value": "SEED: Transcription_factors_bacterial",
-			"display": "SEED: Transcription factors bacterial",
+			"display": "SEED: RNA Metabolism: Transcription factors bacterial",
 			"id": "SEED: Transcription_factors_bacterial",
 			"ui-name": "SEED: Transcription_factors_bacterial"
 		},
 		{
 			"value": "SEED: Transcription_factors_cyanobacterial_RpoD-like_sigma_factors",
-			"display": "SEED: Transcription factors cyanobacterial RpoD-like sigma factors",
+			"display": "SEED: RNA Metabolism: Transcription factors cyanobacterial RpoD-like sigma factors",
 			"id": "SEED: Transcription_factors_cyanobacterial_RpoD-like_sigma_factors",
 			"ui-name": "SEED: Transcription_factors_cyanobacterial_RpoD-like_sigma_factors"
 		},
 		{
 			"value": "SEED: Transcription_initiation,_bacterial_sigma_factors",
-			"display": "SEED: Transcription initiation, bacterial sigma factors",
+			"display": "SEED: RNA Metabolism: Transcription initiation, bacterial sigma factors",
 			"id": "SEED: Transcription_initiation,_bacterial_sigma_factors",
 			"ui-name": "SEED: Transcription_initiation,_bacterial_sigma_factors"
 		},
 		{
 			"value": "SEED: Wyeosine-MimG_Biosynthesis",
-			"display": "SEED: Wyeosine-MimG Biosynthesis",
+			"display": "SEED: RNA Metabolism: Wyeosine-MimG Biosynthesis",
 			"id": "SEED: Wyeosine-MimG_Biosynthesis",
 			"ui-name": "SEED: Wyeosine-MimG_Biosynthesis"
 		},
 		{
 			"value": "SEED: tRNA_nucleotidyltransferase",
-			"display": "SEED: tRNA nucleotidyltransferase",
+			"display": "SEED: RNA Metabolism: tRNA nucleotidyltransferase",
 			"id": "SEED: tRNA_nucleotidyltransferase",
 			"ui-name": "SEED: tRNA_nucleotidyltransferase"
 		},
 		{
 			"value": "SEED: tRNA_processing",
-			"display": "SEED: tRNA processing",
+			"display": "SEED: RNA Metabolism: tRNA processing",
 			"id": "SEED: tRNA_processing",
 			"ui-name": "SEED: tRNA_processing"
 		},
 		{
 			"value": "SEED: tRNA_splicing",
-			"display": "SEED: tRNA splicing",
+			"display": "SEED: RNA Metabolism: tRNA splicing",
 			"id": "SEED: tRNA_splicing",
 			"ui-name": "SEED: tRNA_splicing"
 		},
 		{
 			"value": "SEED: Autoinducer_2_(AI-2)_transport_and_processing_(lsrACDBFGE_operon)",
-			"display": "SEED: Autoinducer 2 (AI-2) transport and processing (lsrACDBFGE operon)",
+			"display": "SEED: Regulation and Cell signaling: Autoinducer 2 (AI-2) transport and processing (lsrACDBFGE operon)",
 			"id": "SEED: Autoinducer_2_(AI-2)_transport_and_processing_(lsrACDBFGE_operon)",
 			"ui-name": "SEED: Autoinducer_2_(AI-2)_transport_and_processing_(lsrACDBFGE_operon)"
 		},
 		{
 			"value": "SEED: Biofilm_formation_in_Staphylococcus",
-			"display": "SEED: Biofilm formation in Staphylococcus",
+			"display": "SEED: Regulation and Cell signaling: Biofilm formation in Staphylococcus",
 			"id": "SEED: Biofilm_formation_in_Staphylococcus",
 			"ui-name": "SEED: Biofilm_formation_in_Staphylococcus"
 		},
 		{
 			"value": "SEED: Coagulation_cascade",
-			"display": "SEED: Coagulation cascade",
+			"display": "SEED: Regulation and Cell signaling: Coagulation cascade",
 			"id": "SEED: Coagulation_cascade",
 			"ui-name": "SEED: Coagulation_cascade"
 		},
 		{
 			"value": "SEED: CytR_regulation",
-			"display": "SEED: CytR regulation",
+			"display": "SEED: Regulation and Cell signaling: CytR regulation",
 			"id": "SEED: CytR_regulation",
 			"ui-name": "SEED: CytR_regulation"
 		},
 		{
 			"value": "SEED: DNA-binding_regulatory_proteins,_strays",
-			"display": "SEED: DNA-binding regulatory proteins, strays",
+			"display": "SEED: Regulation and Cell signaling: DNA-binding regulatory proteins, strays",
 			"id": "SEED: DNA-binding_regulatory_proteins,_strays",
 			"ui-name": "SEED: DNA-binding_regulatory_proteins,_strays"
 		},
 		{
 			"value": "SEED: MazEF_toxin-antitoxing_(programmed_cell_death)_system",
-			"display": "SEED: MazEF toxin-antitoxing (programmed cell death) system",
+			"display": "SEED: Regulation and Cell signaling: MazEF toxin-antitoxing (programmed cell death) system",
 			"id": "SEED: MazEF_toxin-antitoxing_(programmed_cell_death)_system",
 			"ui-name": "SEED: MazEF_toxin-antitoxing_(programmed_cell_death)_system"
 		},
 		{
 			"value": "SEED: Murein_hydrolase_regulation_and_cell_death",
-			"display": "SEED: Murein hydrolase regulation and cell death",
+			"display": "SEED: Regulation and Cell signaling: Murein hydrolase regulation and cell death",
 			"id": "SEED: Murein_hydrolase_regulation_and_cell_death",
 			"ui-name": "SEED: Murein_hydrolase_regulation_and_cell_death"
 		},
 		{
 			"value": "SEED: Orphan_regulatory_proteins",
-			"display": "SEED: Orphan regulatory proteins",
+			"display": "SEED: Regulation and Cell signaling: Orphan regulatory proteins",
 			"id": "SEED: Orphan_regulatory_proteins",
 			"ui-name": "SEED: Orphan_regulatory_proteins"
 		},
 		{
 			"value": "SEED: Oxygen_and_light_sensor_PpaA-PpsR",
-			"display": "SEED: Oxygen and light sensor PpaA-PpsR",
+			"display": "SEED: Regulation and Cell signaling: Oxygen and light sensor PpaA-PpsR",
 			"id": "SEED: Oxygen_and_light_sensor_PpaA-PpsR",
 			"ui-name": "SEED: Oxygen_and_light_sensor_PpaA-PpsR"
 		},
 		{
 			"value": "SEED: Pseudomonas_quinolone_signal_PQS",
-			"display": "SEED: Pseudomonas quinolone signal PQS",
+			"display": "SEED: Regulation and Cell signaling: Pseudomonas quinolone signal PQS",
 			"id": "SEED: Pseudomonas_quinolone_signal_PQS",
 			"ui-name": "SEED: Pseudomonas_quinolone_signal_PQS"
 		},
 		{
 			"value": "SEED: Quorum_Sensing:_Autoinducer-2_Synthesis",
-			"display": "SEED: Quorum Sensing: Autoinducer-2 Synthesis",
+			"display": "SEED: Regulation and Cell signaling: Quorum Sensing: Autoinducer-2 Synthesis",
 			"id": "SEED: Quorum_Sensing:_Autoinducer-2_Synthesis",
 			"ui-name": "SEED: Quorum_Sensing:_Autoinducer-2_Synthesis"
 		},
 		{
 			"value": "SEED: Quorum_sensing_regulation_in_Pseudomonas",
-			"display": "SEED: Quorum sensing regulation in Pseudomonas",
+			"display": "SEED: Regulation and Cell signaling: Quorum sensing regulation in Pseudomonas",
 			"id": "SEED: Quorum_sensing_regulation_in_Pseudomonas",
 			"ui-name": "SEED: Quorum_sensing_regulation_in_Pseudomonas"
 		},
 		{
 			"value": "SEED: Regulatory_Intramembrane_Proteolysis_Pathways",
-			"display": "SEED: Regulatory Intramembrane Proteolysis Pathways",
+			"display": "SEED: Regulation and Cell signaling: Regulatory Intramembrane Proteolysis Pathways",
 			"id": "SEED: Regulatory_Intramembrane_Proteolysis_Pathways",
 			"ui-name": "SEED: Regulatory_Intramembrane_Proteolysis_Pathways"
 		},
 		{
 			"value": "SEED: Sex_pheromones_in_Enterococcus_faecalis_and_other_Firmicutes",
-			"display": "SEED: Sex pheromones in Enterococcus faecalis and other Firmicutes",
+			"display": "SEED: Regulation and Cell signaling: Sex pheromones in Enterococcus faecalis and other Firmicutes",
 			"id": "SEED: Sex_pheromones_in_Enterococcus_faecalis_and_other_Firmicutes",
 			"ui-name": "SEED: Sex_pheromones_in_Enterococcus_faecalis_and_other_Firmicutes"
 		},
 		{
 			"value": "SEED: SpeB-SpeF_extended_regulon",
-			"display": "SEED: SpeB-SpeF extended regulon",
+			"display": "SEED: Regulation and Cell signaling: SpeB-SpeF extended regulon",
 			"id": "SEED: SpeB-SpeF_extended_regulon",
 			"ui-name": "SEED: SpeB-SpeF_extended_regulon"
 		},
 		{
 			"value": "SEED: Streptococcal_Mga_Regulon",
-			"display": "SEED: Streptococcal Mga Regulon",
+			"display": "SEED: Regulation and Cell signaling: Streptococcal Mga Regulon",
 			"id": "SEED: Streptococcal_Mga_Regulon",
 			"ui-name": "SEED: Streptococcal_Mga_Regulon"
 		},
 		{
 			"value": "SEED: Stringent_Response,_(p)ppGpp_metabolism",
-			"display": "SEED: Stringent Response, (p)ppGpp metabolism",
+			"display": "SEED: Regulation and Cell signaling: Stringent Response, (p)ppGpp metabolism",
 			"id": "SEED: Stringent_Response,_(p)ppGpp_metabolism",
 			"ui-name": "SEED: Stringent_Response,_(p)ppGpp_metabolism"
 		},
 		{
 			"value": "SEED: Toxin-antitoxin_replicon_stabilization_systems",
-			"display": "SEED: Toxin-antitoxin replicon stabilization systems",
+			"display": "SEED: Regulation and Cell signaling: Toxin-antitoxin replicon stabilization systems",
 			"id": "SEED: Toxin-antitoxin_replicon_stabilization_systems",
 			"ui-name": "SEED: Toxin-antitoxin_replicon_stabilization_systems"
 		},
 		{
 			"value": "SEED: Two-component_regulatory_systems_in_Campylobacter",
-			"display": "SEED: Two-component regulatory systems in Campylobacter",
+			"display": "SEED: Regulation and Cell signaling: Two-component regulatory systems in Campylobacter",
 			"id": "SEED: Two-component_regulatory_systems_in_Campylobacter",
 			"ui-name": "SEED: Two-component_regulatory_systems_in_Campylobacter"
 		},
 		{
 			"value": "SEED: cAMP_signaling_in_bacteria",
-			"display": "SEED: cAMP signaling in bacteria",
+			"display": "SEED: Regulation and Cell signaling: cAMP signaling in bacteria",
 			"id": "SEED: cAMP_signaling_in_bacteria",
 			"ui-name": "SEED: cAMP_signaling_in_bacteria"
 		},
 		{
 			"value": "SEED: Anaerobic_respiratory_reductases",
-			"display": "SEED: Anaerobic respiratory reductases",
+			"display": "SEED: Respiration: Anaerobic respiratory reductases",
 			"id": "SEED: Anaerobic_respiratory_reductases",
 			"ui-name": "SEED: Anaerobic_respiratory_reductases"
 		},
 		{
 			"value": "SEED: Biogenesis_of_c-type_cytochromes",
-			"display": "SEED: Biogenesis of c-type cytochromes",
+			"display": "SEED: Respiration: Biogenesis of c-type cytochromes",
 			"id": "SEED: Biogenesis_of_c-type_cytochromes",
 			"ui-name": "SEED: Biogenesis_of_c-type_cytochromes"
 		},
 		{
 			"value": "SEED: Biogenesis_of_cbb3-type_cytochrome_c_oxidases",
-			"display": "SEED: Biogenesis of cbb3-type cytochrome c oxidases",
+			"display": "SEED: Respiration: Biogenesis of cbb3-type cytochrome c oxidases",
 			"id": "SEED: Biogenesis_of_cbb3-type_cytochrome_c_oxidases",
 			"ui-name": "SEED: Biogenesis_of_cbb3-type_cytochrome_c_oxidases"
 		},
 		{
 			"value": "SEED: Biogenesis_of_cytochrome_c_oxidases",
-			"display": "SEED: Biogenesis of cytochrome c oxidases",
+			"display": "SEED: Respiration: Biogenesis of cytochrome c oxidases",
 			"id": "SEED: Biogenesis_of_cytochrome_c_oxidases",
 			"ui-name": "SEED: Biogenesis_of_cytochrome_c_oxidases"
 		},
 		{
 			"value": "SEED: CO_Dehydrogenase",
-			"display": "SEED: CO Dehydrogenase",
+			"display": "SEED: Respiration: CO Dehydrogenase",
 			"id": "SEED: CO_Dehydrogenase",
 			"ui-name": "SEED: CO_Dehydrogenase"
 		},
 		{
 			"value": "SEED: Carbon_monoxide_dehydrogenase_maturation_factors",
-			"display": "SEED: Carbon monoxide dehydrogenase maturation factors",
+			"display": "SEED: Respiration: Carbon monoxide dehydrogenase maturation factors",
 			"id": "SEED: Carbon_monoxide_dehydrogenase_maturation_factors",
 			"ui-name": "SEED: Carbon_monoxide_dehydrogenase_maturation_factors"
 		},
 		{
 			"value": "SEED: Carbon_monoxide_induced_hydrogenase",
-			"display": "SEED: Carbon monoxide induced hydrogenase",
+			"display": "SEED: Respiration: Carbon monoxide induced hydrogenase",
 			"id": "SEED: Carbon_monoxide_induced_hydrogenase",
 			"ui-name": "SEED: Carbon_monoxide_induced_hydrogenase"
 		},
 		{
 			"value": "SEED: Coenzyme_F420-H2_dehydrogenase_(methanophenazine)",
-			"display": "SEED: Coenzyme F420-H2 dehydrogenase (methanophenazine)",
+			"display": "SEED: Respiration: Coenzyme F420-H2 dehydrogenase (methanophenazine)",
 			"id": "SEED: Coenzyme_F420-H2_dehydrogenase_(methanophenazine)",
 			"ui-name": "SEED: Coenzyme_F420-H2_dehydrogenase_(methanophenazine)"
 		},
 		{
 			"value": "SEED: Coenzyme_F420_hydrogenase",
-			"display": "SEED: Coenzyme F420 hydrogenase",
+			"display": "SEED: Respiration: Coenzyme F420 hydrogenase",
 			"id": "SEED: Coenzyme_F420_hydrogenase",
 			"ui-name": "SEED: Coenzyme_F420_hydrogenase"
 		},
 		{
 			"value": "SEED: Cytochrome_B6-F_complex",
-			"display": "SEED: Cytochrome B6-F complex",
+			"display": "SEED: Respiration: Cytochrome B6-F complex",
 			"id": "SEED: Cytochrome_B6-F_complex",
 			"ui-name": "SEED: Cytochrome_B6-F_complex"
 		},
 		{
 			"value": "SEED: Energy-conserving_hydrogenase_(ferredoxin)",
-			"display": "SEED: Energy-conserving hydrogenase (ferredoxin)",
+			"display": "SEED: Respiration: Energy-conserving hydrogenase (ferredoxin)",
 			"id": "SEED: Energy-conserving_hydrogenase_(ferredoxin)",
 			"ui-name": "SEED: Energy-conserving_hydrogenase_(ferredoxin)"
 		},
 		{
 			"value": "SEED: F0F1-type_ATP_synthase",
-			"display": "SEED: F0F1-type ATP synthase",
+			"display": "SEED: Respiration: F0F1-type ATP synthase",
 			"id": "SEED: F0F1-type_ATP_synthase",
 			"ui-name": "SEED: F0F1-type_ATP_synthase"
 		},
 		{
 			"value": "SEED: Flavocytochrome_C",
-			"display": "SEED: Flavocytochrome C",
+			"display": "SEED: Respiration: Flavocytochrome C",
 			"id": "SEED: Flavocytochrome_C",
 			"ui-name": "SEED: Flavocytochrome_C"
 		},
 		{
 			"value": "SEED: Formate_dehydrogenase",
-			"display": "SEED: Formate dehydrogenase",
+			"display": "SEED: Respiration: Formate dehydrogenase",
 			"id": "SEED: Formate_dehydrogenase",
 			"ui-name": "SEED: Formate_dehydrogenase"
 		},
 		{
 			"value": "SEED: Formate_hydrogenase",
-			"display": "SEED: Formate hydrogenase",
+			"display": "SEED: Respiration: Formate hydrogenase",
 			"id": "SEED: Formate_hydrogenase",
 			"ui-name": "SEED: Formate_hydrogenase"
 		},
 		{
 			"value": "SEED: H2:CoM-S-S-HTP_oxidoreductase",
-			"display": "SEED: H2:CoM-S-S-HTP oxidoreductase",
+			"display": "SEED: Respiration: H2:CoM-S-S-HTP oxidoreductase",
 			"id": "SEED: H2:CoM-S-S-HTP_oxidoreductase",
 			"ui-name": "SEED: H2:CoM-S-S-HTP_oxidoreductase"
 		},
 		{
 			"value": "SEED: Hydrogenases",
-			"display": "SEED: Hydrogenases",
+			"display": "SEED: Respiration: Hydrogenases",
 			"id": "SEED: Hydrogenases",
 			"ui-name": "SEED: Hydrogenases"
 		},
 		{
 			"value": "SEED: Membrane-bound_Ni,_Fe-hydrogenase",
-			"display": "SEED: Membrane-bound Ni, Fe-hydrogenase",
+			"display": "SEED: Respiration: Membrane-bound Ni, Fe-hydrogenase",
 			"id": "SEED: Membrane-bound_Ni,_Fe-hydrogenase",
 			"ui-name": "SEED: Membrane-bound_Ni,_Fe-hydrogenase"
 		},
 		{
 			"value": "SEED: Methanophenazine_hydrogenase",
-			"display": "SEED: Methanophenazine hydrogenase",
+			"display": "SEED: Respiration: Methanophenazine hydrogenase",
 			"id": "SEED: Methanophenazine_hydrogenase",
 			"ui-name": "SEED: Methanophenazine_hydrogenase"
 		},
 		{
 			"value": "SEED: Na(+)-translocating_NADH-quinone_oxidoreductase_and_rnf-like_group_of_electron_transport_complexes",
-			"display": "SEED: Na(+)-translocating NADH-quinone oxidoreductase and rnf-like group of electron transport complexes",
+			"display": "SEED: Respiration: Na(+)-translocating NADH-quinone oxidoreductase and rnf-like group of electron transport complexes",
 			"id": "SEED: Na(+)-translocating_NADH-quinone_oxidoreductase_and_rnf-like_group_of_electron_transport_complexes",
 			"ui-name": "SEED: Na(+)-translocating_NADH-quinone_oxidoreductase_and_rnf-like_group_of_electron_transport_complexes"
 		},
 		{
 			"value": "SEED: Na+_translocating_decarboxylases_and_related_biotin-dependent_enzymes",
-			"display": "SEED: Na+ translocating decarboxylases and related biotin-dependent enzymes",
+			"display": "SEED: Respiration: Na+ translocating decarboxylases and related biotin-dependent enzymes",
 			"id": "SEED: Na+_translocating_decarboxylases_and_related_biotin-dependent_enzymes",
 			"ui-name": "SEED: Na+_translocating_decarboxylases_and_related_biotin-dependent_enzymes"
 		},
 		{
 			"value": "SEED: NiFe_hydrogenase_maturation",
-			"display": "SEED: NiFe hydrogenase maturation",
+			"display": "SEED: Respiration: NiFe hydrogenase maturation",
 			"id": "SEED: NiFe_hydrogenase_maturation",
 			"ui-name": "SEED: NiFe_hydrogenase_maturation"
 		},
 		{
 			"value": "SEED: Reductive_Dechlorination",
-			"display": "SEED: Reductive Dechlorination",
+			"display": "SEED: Respiration: Reductive Dechlorination",
 			"id": "SEED: Reductive_Dechlorination",
 			"ui-name": "SEED: Reductive_Dechlorination"
 		},
 		{
 			"value": "SEED: Respiratory_Complex_I",
-			"display": "SEED: Respiratory Complex I",
+			"display": "SEED: Respiration: Respiratory Complex I",
 			"id": "SEED: Respiratory_Complex_I",
 			"ui-name": "SEED: Respiratory_Complex_I"
 		},
 		{
 			"value": "SEED: Respiratory_dehydrogenases_1",
-			"display": "SEED: Respiratory dehydrogenases 1",
+			"display": "SEED: Respiration: Respiratory dehydrogenases 1",
 			"id": "SEED: Respiratory_dehydrogenases_1",
 			"ui-name": "SEED: Respiratory_dehydrogenases_1"
 		},
 		{
 			"value": "SEED: Soluble_cytochromes_and_functionally_related_electron_carriers",
-			"display": "SEED: Soluble cytochromes and functionally related electron carriers",
+			"display": "SEED: Respiration: Soluble cytochromes and functionally related electron carriers",
 			"id": "SEED: Soluble_cytochromes_and_functionally_related_electron_carriers",
 			"ui-name": "SEED: Soluble_cytochromes_and_functionally_related_electron_carriers"
 		},
 		{
 			"value": "SEED: Succinate_dehydrogenase",
-			"display": "SEED: Succinate dehydrogenase",
+			"display": "SEED: Respiration: Succinate dehydrogenase",
 			"id": "SEED: Succinate_dehydrogenase",
 			"ui-name": "SEED: Succinate_dehydrogenase"
 		},
 		{
 			"value": "SEED: Terminal_AA3-600_quinol_oxidase",
-			"display": "SEED: Terminal AA3-600 quinol oxidase",
+			"display": "SEED: Respiration: Terminal AA3-600 quinol oxidase",
 			"id": "SEED: Terminal_AA3-600_quinol_oxidase",
 			"ui-name": "SEED: Terminal_AA3-600_quinol_oxidase"
 		},
 		{
 			"value": "SEED: Terminal_cytochrome_C_oxidases",
-			"display": "SEED: Terminal cytochrome C oxidases",
+			"display": "SEED: Respiration: Terminal cytochrome C oxidases",
 			"id": "SEED: Terminal_cytochrome_C_oxidases",
 			"ui-name": "SEED: Terminal_cytochrome_C_oxidases"
 		},
 		{
 			"value": "SEED: Terminal_cytochrome_O_ubiquinol_oxidase",
-			"display": "SEED: Terminal cytochrome O ubiquinol oxidase",
+			"display": "SEED: Respiration: Terminal cytochrome O ubiquinol oxidase",
 			"id": "SEED: Terminal_cytochrome_O_ubiquinol_oxidase",
 			"ui-name": "SEED: Terminal_cytochrome_O_ubiquinol_oxidase"
 		},
 		{
 			"value": "SEED: Terminal_cytochrome_d_ubiquinol_oxidases",
-			"display": "SEED: Terminal cytochrome d ubiquinol oxidases",
+			"display": "SEED: Respiration: Terminal cytochrome d ubiquinol oxidases",
 			"id": "SEED: Terminal_cytochrome_d_ubiquinol_oxidases",
 			"ui-name": "SEED: Terminal_cytochrome_d_ubiquinol_oxidases"
 		},
 		{
 			"value": "SEED: Terminal_cytochrome_oxidases",
-			"display": "SEED: Terminal cytochrome oxidases",
+			"display": "SEED: Respiration: Terminal cytochrome oxidases",
 			"id": "SEED: Terminal_cytochrome_oxidases",
 			"ui-name": "SEED: Terminal_cytochrome_oxidases"
 		},
 		{
 			"value": "SEED: Tetrathionate_respiration",
-			"display": "SEED: Tetrathionate respiration",
+			"display": "SEED: Respiration: Tetrathionate respiration",
 			"id": "SEED: Tetrathionate_respiration",
 			"ui-name": "SEED: Tetrathionate_respiration"
 		},
 		{
 			"value": "SEED: Ubiquinone_Menaquinone-cytochrome_c_reductase_complexes",
-			"display": "SEED: Ubiquinone Menaquinone-cytochrome c reductase complexes",
+			"display": "SEED: Respiration: Ubiquinone Menaquinone-cytochrome c reductase complexes",
 			"id": "SEED: Ubiquinone_Menaquinone-cytochrome_c_reductase_complexes",
 			"ui-name": "SEED: Ubiquinone_Menaquinone-cytochrome_c_reductase_complexes"
 		},
 		{
 			"value": "SEED: V-Type_ATP_synthase",
-			"display": "SEED: V-Type ATP synthase",
+			"display": "SEED: Respiration: V-Type ATP synthase",
 			"id": "SEED: V-Type_ATP_synthase",
 			"ui-name": "SEED: V-Type_ATP_synthase"
 		},
 		{
 			"value": "SEED: trimethylamine_N-oxide_(TMAO)_reductase",
-			"display": "SEED: trimethylamine N-oxide (TMAO) reductase",
+			"display": "SEED: Respiration: trimethylamine N-oxide (TMAO) reductase",
 			"id": "SEED: trimethylamine_N-oxide_(TMAO)_reductase",
 			"ui-name": "SEED: trimethylamine_N-oxide_(TMAO)_reductase"
 		},
 		{
 			"value": "SEED: 2-isocapryloyl-3R-hydroxymethyl-gamma-butyrolactone_and_other_bacterial_morphogens",
-			"display": "SEED: 2-isocapryloyl-3R-hydroxymethyl-gamma-butyrolactone and other bacterial morphogens",
+			"display": "SEED: Secondary Metabolism: 2-isocapryloyl-3R-hydroxymethyl-gamma-butyrolactone and other bacterial morphogens",
 			"id": "SEED: 2-isocapryloyl-3R-hydroxymethyl-gamma-butyrolactone_and_other_bacterial_morphogens",
 			"ui-name": "SEED: 2-isocapryloyl-3R-hydroxymethyl-gamma-butyrolactone_and_other_bacterial_morphogens"
 		},
 		{
 			"value": "SEED: Alkaloid_biosynthesis_from_L-lysine",
-			"display": "SEED: Alkaloid biosynthesis from L-lysine",
+			"display": "SEED: Secondary Metabolism: Alkaloid biosynthesis from L-lysine",
 			"id": "SEED: Alkaloid_biosynthesis_from_L-lysine",
 			"ui-name": "SEED: Alkaloid_biosynthesis_from_L-lysine"
 		},
 		{
 			"value": "SEED: Apigenin_derivatives",
-			"display": "SEED: Apigenin derivatives",
+			"display": "SEED: Secondary Metabolism: Apigenin derivatives",
 			"id": "SEED: Apigenin_derivatives",
 			"ui-name": "SEED: Apigenin_derivatives"
 		},
 		{
 			"value": "SEED: Auxin_biosynthesis",
-			"display": "SEED: Auxin biosynthesis",
+			"display": "SEED: Secondary Metabolism: Auxin biosynthesis",
 			"id": "SEED: Auxin_biosynthesis",
 			"ui-name": "SEED: Auxin_biosynthesis"
 		},
 		{
 			"value": "SEED: Auxin_degradation",
-			"display": "SEED: Auxin degradation",
+			"display": "SEED: Secondary Metabolism: Auxin degradation",
 			"id": "SEED: Auxin_degradation",
 			"ui-name": "SEED: Auxin_degradation"
 		},
 		{
 			"value": "SEED: Biflavanoid_biosynthesis",
-			"display": "SEED: Biflavanoid biosynthesis",
+			"display": "SEED: Secondary Metabolism: Biflavanoid biosynthesis",
 			"id": "SEED: Biflavanoid_biosynthesis",
 			"ui-name": "SEED: Biflavanoid_biosynthesis"
 		},
 		{
 			"value": "SEED: Caffeic_acid_derivatives",
-			"display": "SEED: Caffeic acid derivatives",
+			"display": "SEED: Secondary Metabolism: Caffeic acid derivatives",
 			"id": "SEED: Caffeic_acid_derivatives",
 			"ui-name": "SEED: Caffeic_acid_derivatives"
 		},
 		{
 			"value": "SEED: Cannabinoid_biosynthesis",
-			"display": "SEED: Cannabinoid biosynthesis",
+			"display": "SEED: Secondary Metabolism: Cannabinoid biosynthesis",
 			"id": "SEED: Cannabinoid_biosynthesis",
 			"ui-name": "SEED: Cannabinoid_biosynthesis"
 		},
 		{
 			"value": "SEED: Cinnamic_Acid_Degradation",
-			"display": "SEED: Cinnamic Acid Degradation",
+			"display": "SEED: Secondary Metabolism: Cinnamic Acid Degradation",
 			"id": "SEED: Cinnamic_Acid_Degradation",
 			"ui-name": "SEED: Cinnamic_Acid_Degradation"
 		},
 		{
 			"value": "SEED: Clavulanic_acid_biosynthesis",
-			"display": "SEED: Clavulanic acid biosynthesis",
+			"display": "SEED: Secondary Metabolism: Clavulanic acid biosynthesis",
 			"id": "SEED: Clavulanic_acid_biosynthesis",
 			"ui-name": "SEED: Clavulanic_acid_biosynthesis"
 		},
 		{
 			"value": "SEED: Flavanone_biosynthesis",
-			"display": "SEED: Flavanone biosynthesis",
+			"display": "SEED: Secondary Metabolism: Flavanone biosynthesis",
 			"id": "SEED: Flavanone_biosynthesis",
 			"ui-name": "SEED: Flavanone_biosynthesis"
 		},
 		{
 			"value": "SEED: Lignine_biosynthesis",
-			"display": "SEED: Lignine biosynthesis",
+			"display": "SEED: Secondary Metabolism: Lignine biosynthesis",
 			"id": "SEED: Lignine_biosynthesis",
 			"ui-name": "SEED: Lignine_biosynthesis"
 		},
 		{
 			"value": "SEED: Octadecanoids",
-			"display": "SEED: Octadecanoids",
+			"display": "SEED: Secondary Metabolism: Octadecanoids",
 			"id": "SEED: Octadecanoids",
 			"ui-name": "SEED: Octadecanoids"
 		},
 		{
 			"value": "SEED: Phenazine_biosynthesis",
-			"display": "SEED: Phenazine biosynthesis",
+			"display": "SEED: Secondary Metabolism: Phenazine biosynthesis",
 			"id": "SEED: Phenazine_biosynthesis",
 			"ui-name": "SEED: Phenazine_biosynthesis"
 		},
 		{
 			"value": "SEED: Phenylpropanoids_general_biosynthesis",
-			"display": "SEED: Phenylpropanoids general biosynthesis",
+			"display": "SEED: Secondary Metabolism: Phenylpropanoids general biosynthesis",
 			"id": "SEED: Phenylpropanoids_general_biosynthesis",
 			"ui-name": "SEED: Phenylpropanoids_general_biosynthesis"
 		},
 		{
 			"value": "SEED: Phenylpropionate_Degradation",
-			"display": "SEED: Phenylpropionate Degradation",
+			"display": "SEED: Secondary Metabolism: Phenylpropionate Degradation",
 			"id": "SEED: Phenylpropionate_Degradation",
 			"ui-name": "SEED: Phenylpropionate_Degradation"
 		},
 		{
 			"value": "SEED: Phytoalexin_biosynthesis",
-			"display": "SEED: Phytoalexin biosynthesis",
+			"display": "SEED: Secondary Metabolism: Phytoalexin biosynthesis",
 			"id": "SEED: Phytoalexin_biosynthesis",
 			"ui-name": "SEED: Phytoalexin_biosynthesis"
 		},
 		{
 			"value": "SEED: Phytosterol_biosynthesis",
-			"display": "SEED: Phytosterol biosynthesis",
+			"display": "SEED: Secondary Metabolism: Phytosterol biosynthesis",
 			"id": "SEED: Phytosterol_biosynthesis",
 			"ui-name": "SEED: Phytosterol_biosynthesis"
 		},
 		{
 			"value": "SEED: Quinolinic_acid_and_its_derivatives",
-			"display": "SEED: Quinolinic acid and its derivatives",
+			"display": "SEED: Secondary Metabolism: Quinolinic acid and its derivatives",
 			"id": "SEED: Quinolinic_acid_and_its_derivatives",
 			"ui-name": "SEED: Quinolinic_acid_and_its_derivatives"
 		},
 		{
 			"value": "SEED: Salicylic_acid_biosynthesis1",
-			"display": "SEED: Salicylic acid biosynthesis1",
+			"display": "SEED: Secondary Metabolism: Salicylic acid biosynthesis1",
 			"id": "SEED: Salicylic_acid_biosynthesis1",
 			"ui-name": "SEED: Salicylic_acid_biosynthesis1"
 		},
 		{
 			"value": "SEED: Steroid_sulfates",
-			"display": "SEED: Steroid sulfates",
+			"display": "SEED: Secondary Metabolism: Steroid sulfates",
 			"id": "SEED: Steroid_sulfates",
 			"ui-name": "SEED: Steroid_sulfates"
 		},
 		{
 			"value": "SEED: Suberine_biosynthesis",
-			"display": "SEED: Suberine biosynthesis",
+			"display": "SEED: Secondary Metabolism: Suberine biosynthesis",
 			"id": "SEED: Suberine_biosynthesis",
 			"ui-name": "SEED: Suberine_biosynthesis"
 		},
 		{
 			"value": "SEED: Tannin_biosynthesis",
-			"display": "SEED: Tannin biosynthesis",
+			"display": "SEED: Secondary Metabolism: Tannin biosynthesis",
 			"id": "SEED: Tannin_biosynthesis",
 			"ui-name": "SEED: Tannin_biosynthesis"
 		},
 		{
 			"value": "SEED: Acid_resistance_mechanisms",
-			"display": "SEED: Acid resistance mechanisms",
+			"display": "SEED: Stress Response: Acid resistance mechanisms",
 			"id": "SEED: Acid_resistance_mechanisms",
 			"ui-name": "SEED: Acid_resistance_mechanisms"
 		},
 		{
 			"value": "SEED: Bacterial_hemoglobins",
-			"display": "SEED: Bacterial hemoglobins",
+			"display": "SEED: Stress Response: Bacterial hemoglobins",
 			"id": "SEED: Bacterial_hemoglobins",
 			"ui-name": "SEED: Bacterial_hemoglobins"
 		},
 		{
 			"value": "SEED: Betaine_biosynthesis_from_glycine",
-			"display": "SEED: Betaine biosynthesis from glycine",
+			"display": "SEED: Stress Response: Betaine biosynthesis from glycine",
 			"id": "SEED: Betaine_biosynthesis_from_glycine",
 			"ui-name": "SEED: Betaine_biosynthesis_from_glycine"
 		},
 		{
 			"value": "SEED: Choline_and_Betaine_Uptake_and_Betaine_Biosynthesis",
-			"display": "SEED: Choline and Betaine Uptake and Betaine Biosynthesis",
+			"display": "SEED: Stress Response: Choline and Betaine Uptake and Betaine Biosynthesis",
 			"id": "SEED: Choline_and_Betaine_Uptake_and_Betaine_Biosynthesis",
 			"ui-name": "SEED: Choline_and_Betaine_Uptake_and_Betaine_Biosynthesis"
 		},
 		{
 			"value": "SEED: D-tyrosyl-tRNA(Tyr)_deacylase",
-			"display": "SEED: D-tyrosyl-tRNA(Tyr) deacylase",
+			"display": "SEED: Stress Response: D-tyrosyl-tRNA(Tyr) deacylase",
 			"id": "SEED: D-tyrosyl-tRNA(Tyr)_deacylase",
 			"ui-name": "SEED: D-tyrosyl-tRNA(Tyr)_deacylase"
 		},
 		{
 			"value": "SEED: Dimethylarginine_metabolism",
-			"display": "SEED: Dimethylarginine metabolism",
+			"display": "SEED: Stress Response: Dimethylarginine metabolism",
 			"id": "SEED: Dimethylarginine_metabolism",
 			"ui-name": "SEED: Dimethylarginine_metabolism"
 		},
 		{
 			"value": "SEED: Ectoine_biosynthesis_and_regulation",
-			"display": "SEED: Ectoine biosynthesis and regulation",
+			"display": "SEED: Stress Response: Ectoine biosynthesis and regulation",
 			"id": "SEED: Ectoine_biosynthesis_and_regulation",
 			"ui-name": "SEED: Ectoine_biosynthesis_and_regulation"
 		},
 		{
 			"value": "SEED: Flavohaemoglobin",
-			"display": "SEED: Flavohaemoglobin",
+			"display": "SEED: Stress Response: Flavohaemoglobin",
 			"id": "SEED: Flavohaemoglobin",
 			"ui-name": "SEED: Flavohaemoglobin"
 		},
 		{
 			"value": "SEED: Glutaredoxins",
-			"display": "SEED: Glutaredoxins",
+			"display": "SEED: Stress Response: Glutaredoxins",
 			"id": "SEED: Glutaredoxins",
 			"ui-name": "SEED: Glutaredoxins"
 		},
 		{
 			"value": "SEED: Glutathione-dependent_pathway_of_formaldehyde_detoxification",
-			"display": "SEED: Glutathione-dependent pathway of formaldehyde detoxification",
+			"display": "SEED: Stress Response: Glutathione-dependent pathway of formaldehyde detoxification",
 			"id": "SEED: Glutathione-dependent_pathway_of_formaldehyde_detoxification",
 			"ui-name": "SEED: Glutathione-dependent_pathway_of_formaldehyde_detoxification"
 		},
 		{
 			"value": "SEED: Glutathione:_Biosynthesis_and_gamma-glutamyl_cycle",
-			"display": "SEED: Glutathione: Biosynthesis and gamma-glutamyl cycle",
+			"display": "SEED: Stress Response: Glutathione: Biosynthesis and gamma-glutamyl cycle",
 			"id": "SEED: Glutathione:_Biosynthesis_and_gamma-glutamyl_cycle",
 			"ui-name": "SEED: Glutathione:_Biosynthesis_and_gamma-glutamyl_cycle"
 		},
 		{
 			"value": "SEED: Glutathione:_Non-redox_reactions",
-			"display": "SEED: Glutathione: Non-redox reactions",
+			"display": "SEED: Stress Response: Glutathione: Non-redox reactions",
 			"id": "SEED: Glutathione:_Non-redox_reactions",
 			"ui-name": "SEED: Glutathione:_Non-redox_reactions"
 		},
 		{
 			"value": "SEED: Glutathione:_Redox_cycle",
-			"display": "SEED: Glutathione: Redox cycle",
+			"display": "SEED: Stress Response: Glutathione: Redox cycle",
 			"id": "SEED: Glutathione:_Redox_cycle",
 			"ui-name": "SEED: Glutathione:_Redox_cycle"
 		},
 		{
 			"value": "SEED: Glutathione_analogs:_mycothiol",
-			"display": "SEED: Glutathione analogs: mycothiol",
+			"display": "SEED: Stress Response: Glutathione analogs: mycothiol",
 			"id": "SEED: Glutathione_analogs:_mycothiol",
 			"ui-name": "SEED: Glutathione_analogs:_mycothiol"
 		},
 		{
 			"value": "SEED: Glutathionylspermidine_and_Trypanothione",
-			"display": "SEED: Glutathionylspermidine and Trypanothione",
+			"display": "SEED: Stress Response: Glutathionylspermidine and Trypanothione",
 			"id": "SEED: Glutathionylspermidine_and_Trypanothione",
 			"ui-name": "SEED: Glutathionylspermidine_and_Trypanothione"
 		},
 		{
 			"value": "SEED: Heat_shock_dnaK_gene_cluster_extended",
-			"display": "SEED: Heat shock dnaK gene cluster extended",
+			"display": "SEED: Stress Response: Heat shock dnaK gene cluster extended",
 			"id": "SEED: Heat_shock_dnaK_gene_cluster_extended",
 			"ui-name": "SEED: Heat_shock_dnaK_gene_cluster_extended"
 		},
 		{
 			"value": "SEED: Hfl_operon",
-			"display": "SEED: Hfl operon",
+			"display": "SEED: Stress Response: Hfl operon",
 			"id": "SEED: Hfl_operon",
 			"ui-name": "SEED: Hfl_operon"
 		},
 		{
 			"value": "SEED: Oxidative_stress",
-			"display": "SEED: Oxidative stress",
+			"display": "SEED: Stress Response: Oxidative stress",
 			"id": "SEED: Oxidative_stress",
 			"ui-name": "SEED: Oxidative_stress"
 		},
 		{
 			"value": "SEED: Redox-dependent_regulation_of_nucleus_processes",
-			"display": "SEED: Redox-dependent regulation of nucleus processes",
+			"display": "SEED: Stress Response: Redox-dependent regulation of nucleus processes",
 			"id": "SEED: Redox-dependent_regulation_of_nucleus_processes",
 			"ui-name": "SEED: Redox-dependent_regulation_of_nucleus_processes"
 		},
 		{
 			"value": "SEED: Rubrerythrin",
-			"display": "SEED: Rubrerythrin",
+			"display": "SEED: Stress Response: Rubrerythrin",
 			"id": "SEED: Rubrerythrin",
 			"ui-name": "SEED: Rubrerythrin"
 		},
 		{
 			"value": "SEED: SigmaB_stress_responce_regulation",
-			"display": "SEED: SigmaB stress responce regulation",
+			"display": "SEED: Stress Response: SigmaB stress responce regulation",
 			"id": "SEED: SigmaB_stress_responce_regulation",
 			"ui-name": "SEED: SigmaB_stress_responce_regulation"
 		},
 		{
 			"value": "SEED: Sugar-phosphate_stress_regulation",
-			"display": "SEED: Sugar-phosphate stress regulation",
+			"display": "SEED: Stress Response: Sugar-phosphate stress regulation",
 			"id": "SEED: Sugar-phosphate_stress_regulation",
 			"ui-name": "SEED: Sugar-phosphate_stress_regulation"
 		},
 		{
 			"value": "SEED: Universal_stress_protein_family",
-			"display": "SEED: Universal stress protein family",
+			"display": "SEED: Stress Response: Universal stress protein family",
 			"id": "SEED: Universal_stress_protein_family",
 			"ui-name": "SEED: Universal_stress_protein_family"
 		},
 		{
 			"value": "SEED: Alkanesulfonate_assimilation",
-			"display": "SEED: Alkanesulfonate assimilation",
+			"display": "SEED: Sulfur Metabolism: Alkanesulfonate assimilation",
 			"id": "SEED: Alkanesulfonate_assimilation",
 			"ui-name": "SEED: Alkanesulfonate_assimilation"
 		},
 		{
 			"value": "SEED: Alkanesulfonates_Utilization",
-			"display": "SEED: Alkanesulfonates Utilization",
+			"display": "SEED: Sulfur Metabolism: Alkanesulfonates Utilization",
 			"id": "SEED: Alkanesulfonates_Utilization",
 			"ui-name": "SEED: Alkanesulfonates_Utilization"
 		},
 		{
 			"value": "SEED: DMSP_breakdown",
-			"display": "SEED: DMSP breakdown",
+			"display": "SEED: Sulfur Metabolism: DMSP breakdown",
 			"id": "SEED: DMSP_breakdown",
 			"ui-name": "SEED: DMSP_breakdown"
 		},
 		{
 			"value": "SEED: Galactosylceramide_and_Sulfatide_metabolism",
-			"display": "SEED: Galactosylceramide and Sulfatide metabolism",
+			"display": "SEED: Sulfur Metabolism: Galactosylceramide and Sulfatide metabolism",
 			"id": "SEED: Galactosylceramide_and_Sulfatide_metabolism",
 			"ui-name": "SEED: Galactosylceramide_and_Sulfatide_metabolism"
 		},
 		{
 			"value": "SEED: Sulfate_reduction-associated_complexes",
-			"display": "SEED: Sulfate reduction-associated complexes",
+			"display": "SEED: Sulfur Metabolism: Sulfate reduction-associated complexes",
 			"id": "SEED: Sulfate_reduction-associated_complexes",
 			"ui-name": "SEED: Sulfate_reduction-associated_complexes"
 		},
 		{
 			"value": "SEED: Sulfur_oxidation",
-			"display": "SEED: Sulfur oxidation",
+			"display": "SEED: Sulfur Metabolism: Sulfur oxidation",
 			"id": "SEED: Sulfur_oxidation",
 			"ui-name": "SEED: Sulfur_oxidation"
 		},
 		{
 			"value": "SEED: Taurine_Utilization",
-			"display": "SEED: Taurine Utilization",
+			"display": "SEED: Sulfur Metabolism: Taurine Utilization",
 			"id": "SEED: Taurine_Utilization",
 			"ui-name": "SEED: Taurine_Utilization"
 		},
 		{
 			"value": "SEED: Thioredoxin-disulfide_reductase",
-			"display": "SEED: Thioredoxin-disulfide reductase",
+			"display": "SEED: Sulfur Metabolism: Thioredoxin-disulfide reductase",
 			"id": "SEED: Thioredoxin-disulfide_reductase",
 			"ui-name": "SEED: Thioredoxin-disulfide_reductase"
 		},
 		{
 			"value": "SEED: Utilization_of_glutathione_as_a_sulphur_source",
-			"display": "SEED: Utilization of glutathione as a sulphur source",
+			"display": "SEED: Sulfur Metabolism: Utilization of glutathione as a sulphur source",
 			"id": "SEED: Utilization_of_glutathione_as_a_sulphur_source",
 			"ui-name": "SEED: Utilization_of_glutathione_as_a_sulphur_source"
 		},
 		{
 			"value": "SEED: Type_4_secretion_and_conjugative_transfer",
-			"display": "SEED: Type 4 secretion and conjugative transfer",
+			"display": "SEED: Virulence: Type 4 secretion and conjugative transfer",
 			"id": "SEED: Type_4_secretion_and_conjugative_transfer",
 			"ui-name": "SEED: Type_4_secretion_and_conjugative_transfer"
 		},
 		{
 			"value": "SEED: Adhesins_in_Staphylococcus",
-			"display": "SEED: Adhesins in Staphylococcus",
+			"display": "SEED: Virulence, Disease and Defense: Adhesins in Staphylococcus",
 			"id": "SEED: Adhesins_in_Staphylococcus",
 			"ui-name": "SEED: Adhesins_in_Staphylococcus"
 		},
 		{
 			"value": "SEED: Adhesion_of_Campylobacter",
-			"display": "SEED: Adhesion of Campylobacter",
+			"display": "SEED: Virulence, Disease and Defense: Adhesion of Campylobacter",
 			"id": "SEED: Adhesion_of_Campylobacter",
 			"ui-name": "SEED: Adhesion_of_Campylobacter"
 		},
 		{
 			"value": "SEED: Aminoglycoside_adenylyltransferases",
-			"display": "SEED: Aminoglycoside adenylyltransferases",
+			"display": "SEED: Virulence, Disease and Defense: Aminoglycoside adenylyltransferases",
 			"id": "SEED: Aminoglycoside_adenylyltransferases",
 			"ui-name": "SEED: Aminoglycoside_adenylyltransferases"
 		},
 		{
 			"value": "SEED: Arsenic_resistance",
-			"display": "SEED: Arsenic resistance",
+			"display": "SEED: Virulence, Disease and Defense: Arsenic resistance",
 			"id": "SEED: Arsenic_resistance",
 			"ui-name": "SEED: Arsenic_resistance"
 		},
 		{
 			"value": "SEED: Bacteriocin-like_peptides_Blp",
-			"display": "SEED: Bacteriocin-like peptides Blp",
+			"display": "SEED: Virulence, Disease and Defense: Bacteriocin-like peptides Blp",
 			"id": "SEED: Bacteriocin-like_peptides_Blp",
 			"ui-name": "SEED: Bacteriocin-like_peptides_Blp"
 		},
 		{
 			"value": "SEED: Beta-lactamase",
-			"display": "SEED: Beta-lactamase",
+			"display": "SEED: Virulence, Disease and Defense: Beta-lactamase",
 			"id": "SEED: Beta-lactamase",
 			"ui-name": "SEED: Beta-lactamase"
 		},
 		{
 			"value": "SEED: Cholera_toxin",
-			"display": "SEED: Cholera toxin",
+			"display": "SEED: Virulence, Disease and Defense: Cholera toxin",
 			"id": "SEED: Cholera_toxin",
 			"ui-name": "SEED: Cholera_toxin"
 		},
 		{
 			"value": "SEED: Cobalt-zinc-cadmium_resistance",
-			"display": "SEED: Cobalt-zinc-cadmium resistance",
+			"display": "SEED: Virulence, Disease and Defense: Cobalt-zinc-cadmium resistance",
 			"id": "SEED: Cobalt-zinc-cadmium_resistance",
 			"ui-name": "SEED: Cobalt-zinc-cadmium_resistance"
 		},
 		{
 			"value": "SEED: Copper_homeostasis",
-			"display": "SEED: Copper homeostasis",
+			"display": "SEED: Virulence, Disease and Defense: Copper homeostasis",
 			"id": "SEED: Copper_homeostasis",
 			"ui-name": "SEED: Copper_homeostasis"
 		},
 		{
 			"value": "SEED: Copper_homeostasis:_copper_tolerance",
-			"display": "SEED: Copper homeostasis: copper tolerance",
+			"display": "SEED: Virulence, Disease and Defense: Copper homeostasis: copper tolerance",
 			"id": "SEED: Copper_homeostasis:_copper_tolerance",
 			"ui-name": "SEED: Copper_homeostasis:_copper_tolerance"
 		},
 		{
 			"value": "SEED: Cytolethal_distending_toxin_of_Campylobacter_jejuni",
-			"display": "SEED: Cytolethal distending toxin of Campylobacter jejuni",
+			"display": "SEED: Virulence, Disease and Defense: Cytolethal distending toxin of Campylobacter jejuni",
 			"id": "SEED: Cytolethal_distending_toxin_of_Campylobacter_jejuni",
 			"ui-name": "SEED: Cytolethal_distending_toxin_of_Campylobacter_jejuni"
 		},
 		{
 			"value": "SEED: Cytolysin_and_Lipase_operon_in_Vibrio",
-			"display": "SEED: Cytolysin and Lipase operon in Vibrio",
+			"display": "SEED: Virulence, Disease and Defense: Cytolysin and Lipase operon in Vibrio",
 			"id": "SEED: Cytolysin_and_Lipase_operon_in_Vibrio",
 			"ui-name": "SEED: Cytolysin_and_Lipase_operon_in_Vibrio"
 		},
 		{
 			"value": "SEED: Fosfomycin_resistance",
-			"display": "SEED: Fosfomycin resistance",
+			"display": "SEED: Virulence, Disease and Defense: Fosfomycin resistance",
 			"id": "SEED: Fosfomycin_resistance",
 			"ui-name": "SEED: Fosfomycin_resistance"
 		},
 		{
 			"value": "SEED: Listeria_surface_proteins:_Internalin-like_proteins",
-			"display": "SEED: Listeria surface proteins: Internalin-like proteins",
+			"display": "SEED: Virulence, Disease and Defense: Listeria surface proteins: Internalin-like proteins",
 			"id": "SEED: Listeria_surface_proteins:_Internalin-like_proteins",
 			"ui-name": "SEED: Listeria_surface_proteins:_Internalin-like_proteins"
 		},
 		{
 			"value": "SEED: Listeria_surface_proteins:_LPXTG_motif",
-			"display": "SEED: Listeria surface proteins: LPXTG motif",
+			"display": "SEED: Virulence, Disease and Defense: Listeria surface proteins: LPXTG motif",
 			"id": "SEED: Listeria_surface_proteins:_LPXTG_motif",
 			"ui-name": "SEED: Listeria_surface_proteins:_LPXTG_motif"
 		},
 		{
 			"value": "SEED: MLST",
-			"display": "SEED: MLST",
+			"display": "SEED: Virulence, Disease and Defense: MLST",
 			"id": "SEED: MLST",
 			"ui-name": "SEED: MLST"
 		},
 		{
 			"value": "SEED: Mercuric_reductase",
-			"display": "SEED: Mercuric reductase",
+			"display": "SEED: Virulence, Disease and Defense: Mercuric reductase",
 			"id": "SEED: Mercuric_reductase",
 			"ui-name": "SEED: Mercuric_reductase"
 		},
 		{
 			"value": "SEED: Mercury_resistance_operon",
-			"display": "SEED: Mercury resistance operon",
+			"display": "SEED: Virulence, Disease and Defense: Mercury resistance operon",
 			"id": "SEED: Mercury_resistance_operon",
 			"ui-name": "SEED: Mercury_resistance_operon"
 		},
 		{
 			"value": "SEED: Methicillin_resistance_in_Staphylococci",
-			"display": "SEED: Methicillin resistance in Staphylococci",
+			"display": "SEED: Virulence, Disease and Defense: Methicillin resistance in Staphylococci",
 			"id": "SEED: Methicillin_resistance_in_Staphylococci",
 			"ui-name": "SEED: Methicillin_resistance_in_Staphylococci"
 		},
 		{
 			"value": "SEED: Multidrug_Resistance,_2-protein_version_Found_in_Gram-positive_bacteria",
-			"display": "SEED: Multidrug Resistance, 2-protein version Found in Gram-positive bacteria",
+			"display": "SEED: Virulence, Disease and Defense: Multidrug Resistance, 2-protein version Found in Gram-positive bacteria",
 			"id": "SEED: Multidrug_Resistance,_2-protein_version_Found_in_Gram-positive_bacteria",
 			"ui-name": "SEED: Multidrug_Resistance,_2-protein_version_Found_in_Gram-positive_bacteria"
 		},
 		{
 			"value": "SEED: Multidrug_Resistance,_Tripartite_Systems_Found_in_Gram_Negative_Bacteria",
-			"display": "SEED: Multidrug Resistance, Tripartite Systems Found in Gram Negative Bacteria",
+			"display": "SEED: Virulence, Disease and Defense: Multidrug Resistance, Tripartite Systems Found in Gram Negative Bacteria",
 			"id": "SEED: Multidrug_Resistance,_Tripartite_Systems_Found_in_Gram_Negative_Bacteria",
 			"ui-name": "SEED: Multidrug_Resistance,_Tripartite_Systems_Found_in_Gram_Negative_Bacteria"
 		},
 		{
 			"value": "SEED: Multidrug_Resistance_Efflux_Pumps",
-			"display": "SEED: Multidrug Resistance Efflux Pumps",
+			"display": "SEED: Virulence, Disease and Defense: Multidrug Resistance Efflux Pumps",
 			"id": "SEED: Multidrug_Resistance_Efflux_Pumps",
 			"ui-name": "SEED: Multidrug_Resistance_Efflux_Pumps"
 		},
 		{
 			"value": "SEED: Multidrug_efflux_pump_in_Campylobacter_jejuni_(CmeABC_operon)",
-			"display": "SEED: Multidrug efflux pump in Campylobacter jejuni (CmeABC operon)",
+			"display": "SEED: Virulence, Disease and Defense: Multidrug efflux pump in Campylobacter jejuni (CmeABC operon)",
 			"id": "SEED: Multidrug_efflux_pump_in_Campylobacter_jejuni_(CmeABC_operon)",
 			"ui-name": "SEED: Multidrug_efflux_pump_in_Campylobacter_jejuni_(CmeABC_operon)"
 		},
 		{
 			"value": "SEED: Prophage-encoded_Exotoxins",
-			"display": "SEED: Prophage-encoded Exotoxins",
+			"display": "SEED: Virulence, Disease and Defense: Prophage-encoded Exotoxins",
 			"id": "SEED: Prophage-encoded_Exotoxins",
 			"ui-name": "SEED: Prophage-encoded_Exotoxins"
 		},
 		{
 			"value": "SEED: Resistance_to_Vancomycin",
-			"display": "SEED: Resistance to Vancomycin",
+			"display": "SEED: Virulence, Disease and Defense: Resistance to Vancomycin",
 			"id": "SEED: Resistance_to_Vancomycin",
 			"ui-name": "SEED: Resistance_to_Vancomycin"
 		},
 		{
 			"value": "SEED: Resistance_to_fluoroquinolones",
-			"display": "SEED: Resistance to fluoroquinolones",
+			"display": "SEED: Virulence, Disease and Defense: Resistance to fluoroquinolones",
 			"id": "SEED: Resistance_to_fluoroquinolones",
 			"ui-name": "SEED: Resistance_to_fluoroquinolones"
 		},
 		{
 			"value": "SEED: Salmonella_invasion_locus",
-			"display": "SEED: Salmonella invasion locus",
+			"display": "SEED: Virulence, Disease and Defense: Salmonella invasion locus",
 			"id": "SEED: Salmonella_invasion_locus",
 			"ui-name": "SEED: Salmonella_invasion_locus"
 		},
 		{
 			"value": "SEED: Streptococcus_pneumoniae_Vancomycin_Tolerance_Locus",
-			"display": "SEED: Streptococcus pneumoniae Vancomycin Tolerance Locus",
+			"display": "SEED: Virulence, Disease and Defense: Streptococcus pneumoniae Vancomycin Tolerance Locus",
 			"id": "SEED: Streptococcus_pneumoniae_Vancomycin_Tolerance_Locus",
 			"ui-name": "SEED: Streptococcus_pneumoniae_Vancomycin_Tolerance_Locus"
 		},
 		{
 			"value": "SEED: Streptococcus_pyogenes_Virulome",
-			"display": "SEED: Streptococcus pyogenes Virulome",
+			"display": "SEED: Virulence, Disease and Defense: Streptococcus pyogenes Virulome",
 			"id": "SEED: Streptococcus_pyogenes_Virulome",
 			"ui-name": "SEED: Streptococcus_pyogenes_Virulome"
 		},
 		{
 			"value": "SEED: Streptococcus_pyogenes_recombinatorial_zone",
-			"display": "SEED: Streptococcus pyogenes recombinatorial zone",
+			"display": "SEED: Virulence, Disease and Defense: Streptococcus pyogenes recombinatorial zone",
 			"id": "SEED: Streptococcus_pyogenes_recombinatorial_zone",
 			"ui-name": "SEED: Streptococcus_pyogenes_recombinatorial_zone"
 		},
 		{
 			"value": "SEED: Streptolysin_S_Biosynthesis_and_Transport",
-			"display": "SEED: Streptolysin S Biosynthesis and Transport",
+			"display": "SEED: Virulence, Disease and Defense: Streptolysin S Biosynthesis and Transport",
 			"id": "SEED: Streptolysin_S_Biosynthesis_and_Transport",
 			"ui-name": "SEED: Streptolysin_S_Biosynthesis_and_Transport"
 		},
 		{
 			"value": "SEED: Streptothricin_resistance",
-			"display": "SEED: Streptothricin resistance",
+			"display": "SEED: Virulence, Disease and Defense: Streptothricin resistance",
 			"id": "SEED: Streptothricin_resistance",
 			"ui-name": "SEED: Streptothricin_resistance"
 		},
 		{
 			"value": "SEED: Zinc_resistance",
-			"display": "SEED: Zinc resistance",
+			"display": "SEED: Virulence, Disease and Defense: Zinc resistance",
 			"id": "SEED: Zinc_resistance",
 			"ui-name": "SEED: Zinc_resistance"
 		}
