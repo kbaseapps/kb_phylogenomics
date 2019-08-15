@@ -2,14 +2,16 @@ Doman Categories and Descriptive names downloaded from the below sources
 
 
 * SEED
-  ftp://ftp.theseed.org/
+  ftp://ftp.theseed.org/ (FTP server is no longer supported)
 
-  server is not responding.
+  need to use API to obtain updated configuration files
+  
 
 
 * COG
   v2003-2014 (from CDD v3.16)
   ftp://ftp.ncbi.nih.gov/pub/COG/COG2014/data
+  (NOTE: Not expected to be updated)
 
   - ftp://ftp.ncbi.nih.gov/pub/COG/COG2014/data/cognames2003-2014.tab
   - ftp://ftp.ncbi.nih.gov/pub/COG/COG2014/data/fun2003-2014.tab
@@ -39,6 +41,7 @@ Doman Categories and Descriptive names downloaded from the below sources
 * TIGRFAMs
   v15.0
   ftp://ftp.jcvi.org/pub/data/TIGRFAMs/
+  (NOTE: Not expected to be updated)
 
   - ftp://ftp.jcvi.org/pub/data/TIGRFAMs/TIGRFAMs_15.0_INFO.tar.gz
   - ftp://ftp.jcvi.org/pub/data/TIGRFAMs/TIGRFAMS_ROLE_LINK
