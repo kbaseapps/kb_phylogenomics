@@ -33,7 +33,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "top_hit",
     "e_value",
     "log_base",
-    "show_blanks"
+    "show_blanks",
+    "display_genome_object_name",
+    "skip_missing_genomes",
+    "enforce_genome_version_match"
 })
 public class ViewFxnProfilePhyloInput {
 
@@ -66,6 +69,12 @@ public class ViewFxnProfilePhyloInput {
     private Double logBase;
     @JsonProperty("show_blanks")
     private Long showBlanks;
+    @JsonProperty("display_genome_object_name")
+    private Long displayGenomeObjectName;
+    @JsonProperty("skip_missing_genomes")
+    private Long skipMissingGenomes;
+    @JsonProperty("enforce_genome_version_match")
+    private Long enforceGenomeVersionMatch;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -247,6 +256,51 @@ public class ViewFxnProfilePhyloInput {
         return this;
     }
 
+    @JsonProperty("display_genome_object_name")
+    public Long getDisplayGenomeObjectName() {
+        return displayGenomeObjectName;
+    }
+
+    @JsonProperty("display_genome_object_name")
+    public void setDisplayGenomeObjectName(Long displayGenomeObjectName) {
+        this.displayGenomeObjectName = displayGenomeObjectName;
+    }
+
+    public ViewFxnProfilePhyloInput withDisplayGenomeObjectName(Long displayGenomeObjectName) {
+        this.displayGenomeObjectName = displayGenomeObjectName;
+        return this;
+    }
+
+    @JsonProperty("skip_missing_genomes")
+    public Long getSkipMissingGenomes() {
+        return skipMissingGenomes;
+    }
+
+    @JsonProperty("skip_missing_genomes")
+    public void setSkipMissingGenomes(Long skipMissingGenomes) {
+        this.skipMissingGenomes = skipMissingGenomes;
+    }
+
+    public ViewFxnProfilePhyloInput withSkipMissingGenomes(Long skipMissingGenomes) {
+        this.skipMissingGenomes = skipMissingGenomes;
+        return this;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public Long getEnforceGenomeVersionMatch() {
+        return enforceGenomeVersionMatch;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public void setEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
+    }
+
+    public ViewFxnProfilePhyloInput withEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -259,7 +313,7 @@ public class ViewFxnProfilePhyloInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", showBlanks=")+ showBlanks)+", displayGenomeObjectName=")+ displayGenomeObjectName)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

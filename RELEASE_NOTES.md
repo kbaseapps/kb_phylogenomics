@@ -7,6 +7,7 @@ __Changes__
 - VFP Apps: check for reasonable fraction of annotated genes with validated SEED vocabulary if query includes SEED subsystems
 - VFP Apps: removed duplicate TIGR roles from input options
 - VFP Apps: added SEED functional categories to displayed SEED role input options
+- VFP Apps: option to include Genome object name in profile table
 - Domain Annotation for Genomes App: allow Species Tree as input
 
 ### Version 1.3.2

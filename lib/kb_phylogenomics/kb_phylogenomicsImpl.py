@@ -44,8 +44,8 @@ This module contains methods for running and visualizing results of phylogenomic
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.4.0"
-    GIT_URL = "https://github.com/kbaseaps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "3004111292f95480b92a138df6b6778642287318"
+    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
+    GIT_COMMIT_HASH = "5c6b914a2a4a853f7af04af628204228ff9208f4"
 
     #BEGIN_CLASS_HEADER
 
@@ -983,10 +983,6 @@ This module contains methods for running and visualizing results of phylogenomic
         uniq_genome_ws_ids = dict()
         ws_name_by_genome_ref = dict()
 
-        genome_refs = []
-        genome_id_by_ref = dict()
-        genome_ref_by_id = dict()
-
         for genome_ref in genome_refs:
 
             # get genome object name
@@ -1119,7 +1115,10 @@ This module contains methods for running and visualizing results of phylogenomic
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool"
+           Double, parameter "show_blanks" of type "bool", parameter
+           "display_genome_object_name" of type "bool", parameter
+           "skip_missing_genomes" of type "bool", parameter
+           "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -1970,10 +1969,15 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # rest of rows
             for genome_ref in genome_refs:
+                genome_obj_name = genome_obj_name_by_ref[genome_ref]
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
+                if int(params.get('display_genome_object_name')) == 1:
+                    genome_disp_name = genome_obj_name + ': ' + genome_sci_name
+                else:
+                    genome_disp_name = genome_sci_name
                 html_report_lines += ['<tr>']
                 html_report_lines += ['<td align=right><font color="' + text_color + '" size=' +
-                                      graph_gen_fontsize + '><b><nobr>' + genome_sci_name + '</nobr></b></font></td>']
+                                      graph_gen_fontsize + '><b><nobr>' + genome_disp_name + '</nobr></b></font></td>']
                 for cat in cats:
                     if not cat_seen[cat] and not show_blanks:
                         continue
@@ -2198,7 +2202,10 @@ This module contains methods for running and visualizing results of phylogenomic
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool"
+           Double, parameter "show_blanks" of type "bool", parameter
+           "display_genome_object_name" of type "bool", parameter
+           "skip_missing_genomes" of type "bool", parameter
+           "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_featureSet_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -3080,10 +3087,15 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # rest of rows
             for genome_ref in genome_refs:
+                genome_obj_name = genome_obj_name_by_ref[genome_ref]
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
+                if int(params.get('display_genome_object_name')) == 1:
+                    genome_disp_name = genome_obj_name + ': ' + genome_sci_name
+                else:
+                    genome_disp_name = genome_sci_name
                 html_report_lines += ['<tr>']
                 html_report_lines += ['<td align=right><font color="' + text_color + '" size=' +
-                                      graph_gen_fontsize + '><b><nobr>' + genome_sci_name + '</nobr></b></font></td>']
+                                      graph_gen_fontsize + '><b><nobr>' + genome_disp_name + '</nobr></b></font></td>']
                 for cat in cats:
                     if not cat_seen[cat] and not show_blanks:
                         continue
@@ -3309,7 +3321,10 @@ This module contains methods for running and visualizing results of phylogenomic
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool"
+           Double, parameter "show_blanks" of type "bool", parameter
+           "display_genome_object_name" of type "bool", parameter
+           "skip_missing_genomes" of type "bool", parameter
+           "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -3442,6 +3457,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_obj_name_by_ref = dict()
+        genome_obj_name_by_id = dict()
         genome_sci_name_by_ref = dict()
         genome_sci_name_by_id = dict()
         genome_CDS_count_by_ref = dict()
@@ -3475,6 +3491,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                  "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
+            genome_obj_name_by_id[genome_id_by_ref[genome_ref]] = input_name
 
             try:
                 genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
@@ -4120,7 +4137,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_id = n.name
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
-                leaf_name_disp = genome_sci_name_by_id[genome_id]
+                if int(params.get('display_genome_object_name')) == 1:
+                    leaf_name_disp = genome_obj_name_by_id[genome_id] +': '+genome_sci_name_by_id[genome_id]
+                else:
+                    leaf_name_disp = genome_sci_name_by_id[genome_id]
                 n.add_face(ete3.TextFace(leaf_name_disp, fsize=10), column=0, position="branch-right")
             else:
                 style = ete3.NodeStyle()
@@ -4317,10 +4337,15 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # rest of rows
             for row_i, genome_ref in enumerate(genome_refs):
+                genome_obj_name = genome_obj_name_by_ref[genome_ref]
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
+                if int(params.get('display_genome_object_name')) == 1:
+                    genome_disp_name = genome_obj_name + ': ' + genome_sci_name
+                else:
+                    genome_disp_name = genome_sci_name
                 if row_i > 0:
                     html_report_lines += ['<tr>']
-                #html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_sci_name+'</nobr></b></font></td>']
+                #html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_disp_name+'</nobr></b></font></td>']
                 for cat in cats:
                     if not cat_seen[cat] and not show_blanks:
                         continue
@@ -5604,7 +5629,9 @@ This module contains methods for running and visualizing results of phylogenomic
            "workspace_name" (** Common types), parameter
            "input_pangenome_ref" of type "data_obj_ref", parameter
            "input_speciesTree_ref" of type "data_obj_ref", parameter
-           "save_featuresets" of type "bool"
+           "save_featuresets" of type "bool", parameter
+           "skip_missing_genomes" of type "bool", parameter
+           "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_pan_phylo_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -7353,7 +7380,10 @@ This module contains methods for running and visualizing results of phylogenomic
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool"
+           Double, parameter "show_blanks" of type "bool", parameter
+           "display_genome_object_name" of type "bool", parameter
+           "skip_missing_genomes" of type "bool", parameter
+           "enforce_genome_version_match" of type "bool"
         :returns: instance of type "get_configure_categories_Output" ->
            structure: parameter "cats" of list of String, parameter
            "cat2name" of type "Cat2Name" (category to name) -> structure:
@@ -7398,7 +7428,6 @@ This module contains methods for running and visualizing results of phylogenomic
                              'output is not type dict as required.')
         # return the results
         return [output]
-            
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

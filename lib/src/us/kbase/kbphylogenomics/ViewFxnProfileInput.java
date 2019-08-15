@@ -33,7 +33,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "top_hit",
     "e_value",
     "log_base",
-    "show_blanks"
+    "show_blanks",
+    "display_genome_object_name",
+    "skip_missing_genomes",
+    "enforce_genome_version_match"
 })
 public class ViewFxnProfileInput {
 
@@ -66,6 +69,12 @@ public class ViewFxnProfileInput {
     private Double logBase;
     @JsonProperty("show_blanks")
     private Long showBlanks;
+    @JsonProperty("display_genome_object_name")
+    private Long displayGenomeObjectName;
+    @JsonProperty("skip_missing_genomes")
+    private Long skipMissingGenomes;
+    @JsonProperty("enforce_genome_version_match")
+    private Long enforceGenomeVersionMatch;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -247,6 +256,51 @@ public class ViewFxnProfileInput {
         return this;
     }
 
+    @JsonProperty("display_genome_object_name")
+    public Long getDisplayGenomeObjectName() {
+        return displayGenomeObjectName;
+    }
+
+    @JsonProperty("display_genome_object_name")
+    public void setDisplayGenomeObjectName(Long displayGenomeObjectName) {
+        this.displayGenomeObjectName = displayGenomeObjectName;
+    }
+
+    public ViewFxnProfileInput withDisplayGenomeObjectName(Long displayGenomeObjectName) {
+        this.displayGenomeObjectName = displayGenomeObjectName;
+        return this;
+    }
+
+    @JsonProperty("skip_missing_genomes")
+    public Long getSkipMissingGenomes() {
+        return skipMissingGenomes;
+    }
+
+    @JsonProperty("skip_missing_genomes")
+    public void setSkipMissingGenomes(Long skipMissingGenomes) {
+        this.skipMissingGenomes = skipMissingGenomes;
+    }
+
+    public ViewFxnProfileInput withSkipMissingGenomes(Long skipMissingGenomes) {
+        this.skipMissingGenomes = skipMissingGenomes;
+        return this;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public Long getEnforceGenomeVersionMatch() {
+        return enforceGenomeVersionMatch;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public void setEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
+    }
+
+    public ViewFxnProfileInput withEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -259,7 +313,7 @@ public class ViewFxnProfileInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", showBlanks=")+ showBlanks)+", displayGenomeObjectName=")+ displayGenomeObjectName)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
