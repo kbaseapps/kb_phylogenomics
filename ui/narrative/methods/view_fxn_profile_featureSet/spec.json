@@ -3576,12 +3576,6 @@
 			"ui-name": "TIGR: role:12050: Salvage of nucleosides and nucleotides "
 		},
 		{
-			"value": "TIGR: role:12050: Salvage of nucleosides and nucleotides ",
-			"display": "TIGR: role:12050: Salvage of nucleosides and nucleotides ",
-			"id": "TIGR: role:12050: Salvage of nucleosides and nucleotides ",
-			"ui-name": "TIGR: role:12050: Salvage of nucleosides and nucleotides "
-		},
-		{
 			"value": "TIGR: role:12060: Sugar-nucleotide biosynthesis and conversions ",
 			"display": "TIGR: role:12060: Sugar-nucleotide biosynthesis and conversions ",
 			"id": "TIGR: role:12060: Sugar-nucleotide biosynthesis and conversions ",
@@ -3600,28 +3594,10 @@
 			"ui-name": "TIGR: role:13010: Biosynthesis "
 		},
 		{
-			"value": "TIGR: role:13010: Biosynthesis ",
-			"display": "TIGR: role:13010: Biosynthesis ",
-			"id": "TIGR: role:13010: Biosynthesis ",
-			"ui-name": "TIGR: role:13010: Biosynthesis "
-		},
-		{
 			"value": "TIGR: role:13020: Degradation ",
 			"display": "TIGR: role:13020: Degradation ",
 			"id": "TIGR: role:13020: Degradation ",
 			"ui-name": "TIGR: role:13020: Degradation "
-		},
-		{
-			"value": "TIGR: role:13020: Degradation ",
-			"display": "TIGR: role:13020: Degradation ",
-			"id": "TIGR: role:13020: Degradation ",
-			"ui-name": "TIGR: role:13020: Degradation "
-		},
-		{
-			"value": "TIGR: role:13030: Other ",
-			"display": "TIGR: role:13030: Other ",
-			"id": "TIGR: role:13030: Other ",
-			"ui-name": "TIGR: role:13030: Other "
 		},
 		{
 			"value": "TIGR: role:13030: Other ",
@@ -3648,28 +3624,10 @@
 			"ui-name": "TIGR: role:14020: Heme, porphyrin, and cobalamin "
 		},
 		{
-			"value": "TIGR: role:14020: Heme, porphyrin, and cobalamin ",
-			"display": "TIGR: role:14020: Heme, porphyrin, and cobalamin ",
-			"id": "TIGR: role:14020: Heme, porphyrin, and cobalamin ",
-			"ui-name": "TIGR: role:14020: Heme, porphyrin, and cobalamin "
-		},
-		{
-			"value": "TIGR: role:14020: Heme, porphyrin, and cobalamin ",
-			"display": "TIGR: role:14020: Heme, porphyrin, and cobalamin ",
-			"id": "TIGR: role:14020: Heme, porphyrin, and cobalamin ",
-			"ui-name": "TIGR: role:14020: Heme, porphyrin, and cobalamin "
-		},
-		{
 			"value": "TIGR: role:14025: Lipoate ",
 			"display": "TIGR: role:14025: Lipoate ",
 			"id": "TIGR: role:14025: Lipoate ",
 			"ui-name": "TIGR: role:14025: Lipoate "
-		},
-		{
-			"value": "TIGR: role:14030: Menaquinone and ubiquinone ",
-			"display": "TIGR: role:14030: Menaquinone and ubiquinone ",
-			"id": "TIGR: role:14030: Menaquinone and ubiquinone ",
-			"ui-name": "TIGR: role:14030: Menaquinone and ubiquinone "
 		},
 		{
 			"value": "TIGR: role:14030: Menaquinone and ubiquinone ",
@@ -3690,28 +3648,10 @@
 			"ui-name": "TIGR: role:14040: Pantothenate and coenzyme A "
 		},
 		{
-			"value": "TIGR: role:14040: Pantothenate and coenzyme A ",
-			"display": "TIGR: role:14040: Pantothenate and coenzyme A ",
-			"id": "TIGR: role:14040: Pantothenate and coenzyme A ",
-			"ui-name": "TIGR: role:14040: Pantothenate and coenzyme A "
-		},
-		{
 			"value": "TIGR: role:14045: Pyridoxin ",
 			"display": "TIGR: role:14045: Pyridoxin ",
 			"id": "TIGR: role:14045: Pyridoxin ",
 			"ui-name": "TIGR: role:14045: Pyridoxin "
-		},
-		{
-			"value": "TIGR: role:14050: Riboflavin, FMN, and FAD ",
-			"display": "TIGR: role:14050: Riboflavin, FMN, and FAD ",
-			"id": "TIGR: role:14050: Riboflavin, FMN, and FAD ",
-			"ui-name": "TIGR: role:14050: Riboflavin, FMN, and FAD "
-		},
-		{
-			"value": "TIGR: role:14050: Riboflavin, FMN, and FAD ",
-			"display": "TIGR: role:14050: Riboflavin, FMN, and FAD ",
-			"id": "TIGR: role:14050: Riboflavin, FMN, and FAD ",
-			"ui-name": "TIGR: role:14050: Riboflavin, FMN, and FAD "
 		},
 		{
 			"value": "TIGR: role:14050: Riboflavin, FMN, and FAD ",
@@ -3730,12 +3670,6 @@
 			"display": "TIGR: role:14060: Thiamine ",
 			"id": "TIGR: role:14060: Thiamine ",
 			"ui-name": "TIGR: role:14060: Thiamine "
-		},
-		{
-			"value": "TIGR: role:14065: Pyridine nucleotides ",
-			"display": "TIGR: role:14065: Pyridine nucleotides ",
-			"id": "TIGR: role:14065: Pyridine nucleotides ",
-			"ui-name": "TIGR: role:14065: Pyridine nucleotides "
 		},
 		{
 			"value": "TIGR: role:14065: Pyridine nucleotides ",
@@ -3816,12 +3750,6 @@
 			"ui-name": "TIGR: role:17015: Amino acids and amines "
 		},
 		{
-			"value": "TIGR: role:17015: Amino acids and amines ",
-			"display": "TIGR: role:17015: Amino acids and amines ",
-			"id": "TIGR: role:17015: Amino acids and amines ",
-			"ui-name": "TIGR: role:17015: Amino acids and amines "
-		},
-		{
 			"value": "TIGR: role:17020: Anaerobic ",
 			"display": "TIGR: role:17020: Anaerobic ",
 			"id": "TIGR: role:17020: Anaerobic ",
@@ -3844,12 +3772,6 @@
 			"display": "TIGR: role:17040: Fermentation ",
 			"id": "TIGR: role:17040: Fermentation ",
 			"ui-name": "TIGR: role:17040: Fermentation "
-		},
-		{
-			"value": "TIGR: role:17049: Glycolysis/gluconeogenesis ",
-			"display": "TIGR: role:17049: Glycolysis/gluconeogenesis ",
-			"id": "TIGR: role:17049: Glycolysis/gluconeogenesis ",
-			"ui-name": "TIGR: role:17049: Glycolysis/gluconeogenesis "
 		},
 		{
 			"value": "TIGR: role:17049: Glycolysis/gluconeogenesis ",
@@ -3886,12 +3808,6 @@
 			"display": "TIGR: role:17070: Methanogenesis ",
 			"id": "TIGR: role:17070: Methanogenesis ",
 			"ui-name": "TIGR: role:17070: Methanogenesis "
-		},
-		{
-			"value": "TIGR: role:17075: Biosynthesis and degradation of polysaccharides ",
-			"display": "TIGR: role:17075: Biosynthesis and degradation of polysaccharides ",
-			"id": "TIGR: role:17075: Biosynthesis and degradation of polysaccharides ",
-			"ui-name": "TIGR: role:17075: Biosynthesis and degradation of polysaccharides "
 		},
 		{
 			"value": "TIGR: role:17075: Biosynthesis and degradation of polysaccharides ",
@@ -3966,18 +3882,6 @@
 			"ui-name": "TIGR: role:18010: Amino acids, peptides and amines "
 		},
 		{
-			"value": "TIGR: role:18010: Amino acids, peptides and amines ",
-			"display": "TIGR: role:18010: Amino acids, peptides and amines ",
-			"id": "TIGR: role:18010: Amino acids, peptides and amines ",
-			"ui-name": "TIGR: role:18010: Amino acids, peptides and amines "
-		},
-		{
-			"value": "TIGR: role:18010: Amino acids, peptides and amines ",
-			"display": "TIGR: role:18010: Amino acids, peptides and amines ",
-			"id": "TIGR: role:18010: Amino acids, peptides and amines ",
-			"ui-name": "TIGR: role:18010: Amino acids, peptides and amines "
-		},
-		{
 			"value": "TIGR: role:18020: Anions ",
 			"display": "TIGR: role:18020: Anions ",
 			"id": "TIGR: role:18020: Anions ",
@@ -3990,46 +3894,10 @@
 			"ui-name": "TIGR: role:18030: Carbohydrates, organic alcohols, and acids "
 		},
 		{
-			"value": "TIGR: role:18030: Carbohydrates, organic alcohols, and acids ",
-			"display": "TIGR: role:18030: Carbohydrates, organic alcohols, and acids ",
-			"id": "TIGR: role:18030: Carbohydrates, organic alcohols, and acids ",
-			"ui-name": "TIGR: role:18030: Carbohydrates, organic alcohols, and acids "
-		},
-		{
-			"value": "TIGR: role:18030: Carbohydrates, organic alcohols, and acids ",
-			"display": "TIGR: role:18030: Carbohydrates, organic alcohols, and acids ",
-			"id": "TIGR: role:18030: Carbohydrates, organic alcohols, and acids ",
-			"ui-name": "TIGR: role:18030: Carbohydrates, organic alcohols, and acids "
-		},
-		{
 			"value": "TIGR: role:18040: Cations and iron carrying compounds ",
 			"display": "TIGR: role:18040: Cations and iron carrying compounds ",
 			"id": "TIGR: role:18040: Cations and iron carrying compounds ",
 			"ui-name": "TIGR: role:18040: Cations and iron carrying compounds "
-		},
-		{
-			"value": "TIGR: role:18040: Cations and iron carrying compounds ",
-			"display": "TIGR: role:18040: Cations and iron carrying compounds ",
-			"id": "TIGR: role:18040: Cations and iron carrying compounds ",
-			"ui-name": "TIGR: role:18040: Cations and iron carrying compounds "
-		},
-		{
-			"value": "TIGR: role:18040: Cations and iron carrying compounds ",
-			"display": "TIGR: role:18040: Cations and iron carrying compounds ",
-			"id": "TIGR: role:18040: Cations and iron carrying compounds ",
-			"ui-name": "TIGR: role:18040: Cations and iron carrying compounds "
-		},
-		{
-			"value": "TIGR: role:18050: Nucleosides, purines and pyrimidines ",
-			"display": "TIGR: role:18050: Nucleosides, purines and pyrimidines ",
-			"id": "TIGR: role:18050: Nucleosides, purines and pyrimidines ",
-			"ui-name": "TIGR: role:18050: Nucleosides, purines and pyrimidines "
-		},
-		{
-			"value": "TIGR: role:18050: Nucleosides, purines and pyrimidines ",
-			"display": "TIGR: role:18050: Nucleosides, purines and pyrimidines ",
-			"id": "TIGR: role:18050: Nucleosides, purines and pyrimidines ",
-			"ui-name": "TIGR: role:18050: Nucleosides, purines and pyrimidines "
 		},
 		{
 			"value": "TIGR: role:18050: Nucleosides, purines and pyrimidines ",
@@ -4050,18 +3918,6 @@
 			"ui-name": "TIGR: role:18070: Other "
 		},
 		{
-			"value": "TIGR: role:18070: Other ",
-			"display": "TIGR: role:18070: Other ",
-			"id": "TIGR: role:18070: Other ",
-			"ui-name": "TIGR: role:18070: Other "
-		},
-		{
-			"value": "TIGR: role:18080: Unknown substrate ",
-			"display": "TIGR: role:18080: Unknown substrate ",
-			"id": "TIGR: role:18080: Unknown substrate ",
-			"ui-name": "TIGR: role:18080: Unknown substrate "
-		},
-		{
 			"value": "TIGR: role:18080: Unknown substrate ",
 			"display": "TIGR: role:18080: Unknown substrate ",
 			"id": "TIGR: role:18080: Unknown substrate ",
@@ -4072,24 +3928,6 @@
 			"display": "TIGR: role:19010: DNA replication, recombination, and repair ",
 			"id": "TIGR: role:19010: DNA replication, recombination, and repair ",
 			"ui-name": "TIGR: role:19010: DNA replication, recombination, and repair "
-		},
-		{
-			"value": "TIGR: role:19010: DNA replication, recombination, and repair ",
-			"display": "TIGR: role:19010: DNA replication, recombination, and repair ",
-			"id": "TIGR: role:19010: DNA replication, recombination, and repair ",
-			"ui-name": "TIGR: role:19010: DNA replication, recombination, and repair "
-		},
-		{
-			"value": "TIGR: role:19010: DNA replication, recombination, and repair ",
-			"display": "TIGR: role:19010: DNA replication, recombination, and repair ",
-			"id": "TIGR: role:19010: DNA replication, recombination, and repair ",
-			"ui-name": "TIGR: role:19010: DNA replication, recombination, and repair "
-		},
-		{
-			"value": "TIGR: role:19020: Restriction/modification ",
-			"display": "TIGR: role:19020: Restriction/modification ",
-			"id": "TIGR: role:19020: Restriction/modification ",
-			"ui-name": "TIGR: role:19020: Restriction/modification "
 		},
 		{
 			"value": "TIGR: role:19020: Restriction/modification ",
@@ -4102,12 +3940,6 @@
 			"display": "TIGR: role:19030: Degradation of DNA ",
 			"id": "TIGR: role:19030: Degradation of DNA ",
 			"ui-name": "TIGR: role:19030: Degradation of DNA "
-		},
-		{
-			"value": "TIGR: role:19040: Chromosome-associated proteins ",
-			"display": "TIGR: role:19040: Chromosome-associated proteins ",
-			"id": "TIGR: role:19040: Chromosome-associated proteins ",
-			"ui-name": "TIGR: role:19040: Chromosome-associated proteins "
 		},
 		{
 			"value": "TIGR: role:19040: Chromosome-associated proteins ",
@@ -4176,12 +4008,6 @@
 			"ui-name": "TIGR: role:21040: tRNA and rRNA base modification "
 		},
 		{
-			"value": "TIGR: role:21040: tRNA and rRNA base modification ",
-			"display": "TIGR: role:21040: tRNA and rRNA base modification ",
-			"id": "TIGR: role:21040: tRNA and rRNA base modification ",
-			"ui-name": "TIGR: role:21040: tRNA and rRNA base modification "
-		},
-		{
 			"value": "TIGR: role:21050: Translation factors ",
 			"display": "TIGR: role:21050: Translation factors ",
 			"id": "TIGR: role:21050: Translation factors ",
@@ -4200,12 +4026,6 @@
 			"ui-name": "TIGR: role:21510: Protein and peptide secretion and trafficking "
 		},
 		{
-			"value": "TIGR: role:21510: Protein and peptide secretion and trafficking ",
-			"display": "TIGR: role:21510: Protein and peptide secretion and trafficking ",
-			"id": "TIGR: role:21510: Protein and peptide secretion and trafficking ",
-			"ui-name": "TIGR: role:21510: Protein and peptide secretion and trafficking "
-		},
-		{
 			"value": "TIGR: role:21520: Protein modification and repair ",
 			"display": "TIGR: role:21520: Protein modification and repair ",
 			"id": "TIGR: role:21520: Protein modification and repair ",
@@ -4216,12 +4036,6 @@
 			"display": "TIGR: role:21530: Protein folding and stabilization ",
 			"id": "TIGR: role:21530: Protein folding and stabilization ",
 			"ui-name": "TIGR: role:21530: Protein folding and stabilization "
-		},
-		{
-			"value": "TIGR: role:21540: Degradation of proteins, peptides, and glycopeptides ",
-			"display": "TIGR: role:21540: Degradation of proteins, peptides, and glycopeptides ",
-			"id": "TIGR: role:21540: Degradation of proteins, peptides, and glycopeptides ",
-			"ui-name": "TIGR: role:21540: Degradation of proteins, peptides, and glycopeptides "
 		},
 		{
 			"value": "TIGR: role:21540: Degradation of proteins, peptides, and glycopeptides ",
@@ -4278,18 +4092,6 @@
 			"ui-name": "TIGR: role:22510: Kinases "
 		},
 		{
-			"value": "TIGR: role:22510: Kinases ",
-			"display": "TIGR: role:22510: Kinases ",
-			"id": "TIGR: role:22510: Kinases ",
-			"ui-name": "TIGR: role:22510: Kinases "
-		},
-		{
-			"value": "TIGR: role:22520: Phosphatases ",
-			"display": "TIGR: role:22520: Phosphatases ",
-			"id": "TIGR: role:22520: Phosphatases ",
-			"ui-name": "TIGR: role:22520: Phosphatases "
-		},
-		{
 			"value": "TIGR: role:22520: Phosphatases ",
 			"display": "TIGR: role:22520: Phosphatases ",
 			"id": "TIGR: role:22520: Phosphatases ",
@@ -4300,12 +4102,6 @@
 			"display": "TIGR: role:22530: G-proteins ",
 			"id": "TIGR: role:22530: G-proteins ",
 			"ui-name": "TIGR: role:22530: G-proteins "
-		},
-		{
-			"value": "TIGR: role:22540: Hormones, cytokines ",
-			"display": "TIGR: role:22540: Hormones, cytokines ",
-			"id": "TIGR: role:22540: Hormones, cytokines ",
-			"ui-name": "TIGR: role:22540: Hormones, cytokines "
 		},
 		{
 			"value": "TIGR: role:22540: Hormones, cytokines ",
@@ -4362,24 +4158,6 @@
 			"ui-name": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides "
 		},
 		{
-			"value": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides ",
-			"display": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides ",
-			"id": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides ",
-			"ui-name": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides "
-		},
-		{
-			"value": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides ",
-			"display": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides ",
-			"id": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides ",
-			"ui-name": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides "
-		},
-		{
-			"value": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides ",
-			"display": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides ",
-			"id": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides ",
-			"ui-name": "TIGR: role:23040: Biosynthesis and degradation of surface polysaccharides and lipopolysaccharides "
-		},
-		{
 			"value": "TIGR: role:23060: Other ",
 			"display": "TIGR: role:23060: Other ",
 			"id": "TIGR: role:23060: Other ",
@@ -4392,28 +4170,10 @@
 			"ui-name": "TIGR: role:23505: Cell wall "
 		},
 		{
-			"value": "TIGR: role:23505: Cell wall ",
-			"display": "TIGR: role:23505: Cell wall ",
-			"id": "TIGR: role:23505: Cell wall ",
-			"ui-name": "TIGR: role:23505: Cell wall "
-		},
-		{
 			"value": "TIGR: role:23510: Plasma membrane ",
 			"display": "TIGR: role:23510: Plasma membrane ",
 			"id": "TIGR: role:23510: Plasma membrane ",
 			"ui-name": "TIGR: role:23510: Plasma membrane "
-		},
-		{
-			"value": "TIGR: role:23510: Plasma membrane ",
-			"display": "TIGR: role:23510: Plasma membrane ",
-			"id": "TIGR: role:23510: Plasma membrane ",
-			"ui-name": "TIGR: role:23510: Plasma membrane "
-		},
-		{
-			"value": "TIGR: role:23515: Cytoplasm ",
-			"display": "TIGR: role:23515: Cytoplasm ",
-			"id": "TIGR: role:23515: Cytoplasm ",
-			"ui-name": "TIGR: role:23515: Cytoplasm "
 		},
 		{
 			"value": "TIGR: role:23515: Cytoplasm ",
@@ -4428,18 +4188,6 @@
 			"ui-name": "TIGR: role:23520: Cytoskeleton "
 		},
 		{
-			"value": "TIGR: role:23520: Cytoskeleton ",
-			"display": "TIGR: role:23520: Cytoskeleton ",
-			"id": "TIGR: role:23520: Cytoskeleton ",
-			"ui-name": "TIGR: role:23520: Cytoskeleton "
-		},
-		{
-			"value": "TIGR: role:23525: Centrosome ",
-			"display": "TIGR: role:23525: Centrosome ",
-			"id": "TIGR: role:23525: Centrosome ",
-			"ui-name": "TIGR: role:23525: Centrosome "
-		},
-		{
 			"value": "TIGR: role:23525: Centrosome ",
 			"display": "TIGR: role:23525: Centrosome ",
 			"id": "TIGR: role:23525: Centrosome ",
@@ -4452,28 +4200,10 @@
 			"ui-name": "TIGR: role:23530: Endoplasmic reticulum "
 		},
 		{
-			"value": "TIGR: role:23530: Endoplasmic reticulum ",
-			"display": "TIGR: role:23530: Endoplasmic reticulum ",
-			"id": "TIGR: role:23530: Endoplasmic reticulum ",
-			"ui-name": "TIGR: role:23530: Endoplasmic reticulum "
-		},
-		{
 			"value": "TIGR: role:23535: Golgi ",
 			"display": "TIGR: role:23535: Golgi ",
 			"id": "TIGR: role:23535: Golgi ",
 			"ui-name": "TIGR: role:23535: Golgi "
-		},
-		{
-			"value": "TIGR: role:23535: Golgi ",
-			"display": "TIGR: role:23535: Golgi ",
-			"id": "TIGR: role:23535: Golgi ",
-			"ui-name": "TIGR: role:23535: Golgi "
-		},
-		{
-			"value": "TIGR: role:23545: Nucleus ",
-			"display": "TIGR: role:23545: Nucleus ",
-			"id": "TIGR: role:23545: Nucleus ",
-			"ui-name": "TIGR: role:23545: Nucleus "
 		},
 		{
 			"value": "TIGR: role:23545: Nucleus ",
@@ -4494,18 +4224,6 @@
 			"ui-name": "TIGR: role:23555: Mitochondria "
 		},
 		{
-			"value": "TIGR: role:23555: Mitochondria ",
-			"display": "TIGR: role:23555: Mitochondria ",
-			"id": "TIGR: role:23555: Mitochondria ",
-			"ui-name": "TIGR: role:23555: Mitochondria "
-		},
-		{
-			"value": "TIGR: role:23560: Peroxisome ",
-			"display": "TIGR: role:23560: Peroxisome ",
-			"id": "TIGR: role:23560: Peroxisome ",
-			"ui-name": "TIGR: role:23560: Peroxisome "
-		},
-		{
 			"value": "TIGR: role:23560: Peroxisome ",
 			"display": "TIGR: role:23560: Peroxisome ",
 			"id": "TIGR: role:23560: Peroxisome ",
@@ -4516,24 +4234,6 @@
 			"display": "TIGR: role:23565: Endosome ",
 			"id": "TIGR: role:23565: Endosome ",
 			"ui-name": "TIGR: role:23565: Endosome "
-		},
-		{
-			"value": "TIGR: role:23565: Endosome ",
-			"display": "TIGR: role:23565: Endosome ",
-			"id": "TIGR: role:23565: Endosome ",
-			"ui-name": "TIGR: role:23565: Endosome "
-		},
-		{
-			"value": "TIGR: role:23570: Vacuole and lysosome ",
-			"display": "TIGR: role:23570: Vacuole and lysosome ",
-			"id": "TIGR: role:23570: Vacuole and lysosome ",
-			"ui-name": "TIGR: role:23570: Vacuole and lysosome "
-		},
-		{
-			"value": "TIGR: role:23570: Vacuole and lysosome ",
-			"display": "TIGR: role:23570: Vacuole and lysosome ",
-			"id": "TIGR: role:23570: Vacuole and lysosome ",
-			"ui-name": "TIGR: role:23570: Vacuole and lysosome "
 		},
 		{
 			"value": "TIGR: role:23570: Vacuole and lysosome ",
@@ -4596,18 +4296,6 @@
 			"ui-name": "TIGR: role:24015: Chemotaxis and motility "
 		},
 		{
-			"value": "TIGR: role:24015: Chemotaxis and motility ",
-			"display": "TIGR: role:24015: Chemotaxis and motility ",
-			"id": "TIGR: role:24015: Chemotaxis and motility ",
-			"ui-name": "TIGR: role:24015: Chemotaxis and motility "
-		},
-		{
-			"value": "TIGR: role:24015: Chemotaxis and motility ",
-			"display": "TIGR: role:24015: Chemotaxis and motility ",
-			"id": "TIGR: role:24015: Chemotaxis and motility ",
-			"ui-name": "TIGR: role:24015: Chemotaxis and motility "
-		},
-		{
 			"value": "TIGR: role:24020: Cell adhesion ",
 			"display": "TIGR: role:24020: Cell adhesion ",
 			"id": "TIGR: role:24020: Cell adhesion ",
@@ -4626,22 +4314,10 @@
 			"ui-name": "TIGR: role:24030: Detoxification "
 		},
 		{
-			"value": "TIGR: role:24030: Detoxification ",
-			"display": "TIGR: role:24030: Detoxification ",
-			"id": "TIGR: role:24030: Detoxification ",
-			"ui-name": "TIGR: role:24030: Detoxification "
-		},
-		{
 			"value": "TIGR: role:24050: DNA transformation ",
 			"display": "TIGR: role:24050: DNA transformation ",
 			"id": "TIGR: role:24050: DNA transformation ",
 			"ui-name": "TIGR: role:24050: DNA transformation "
-		},
-		{
-			"value": "TIGR: role:24060: Toxin production and resistance ",
-			"display": "TIGR: role:24060: Toxin production and resistance ",
-			"id": "TIGR: role:24060: Toxin production and resistance ",
-			"ui-name": "TIGR: role:24060: Toxin production and resistance "
 		},
 		{
 			"value": "TIGR: role:24060: Toxin production and resistance ",
@@ -4906,18 +4582,6 @@
 			"display": "TIGR: role:25500: Enzymes of unknown specificity ",
 			"id": "TIGR: role:25500: Enzymes of unknown specificity ",
 			"ui-name": "TIGR: role:25500: Enzymes of unknown specificity "
-		},
-		{
-			"value": "TIGR: role:25510: General ",
-			"display": "TIGR: role:25510: General ",
-			"id": "TIGR: role:25510: General ",
-			"ui-name": "TIGR: role:25510: General "
-		},
-		{
-			"value": "TIGR: role:25510: General ",
-			"display": "TIGR: role:25510: General ",
-			"id": "TIGR: role:25510: General ",
-			"ui-name": "TIGR: role:25510: General "
 		},
 		{
 			"value": "TIGR: role:25510: General ",
