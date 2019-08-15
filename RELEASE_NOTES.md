@@ -5,6 +5,8 @@ __Changes__
 - VFP Apps: fixed bug with Custom Domains that are all SEED not to fail if missing DomainAnnotation object
 - VFP Apps: generate FeatureSets if explicit custom domains are members of query
 - VFP Apps: check for reasonable fraction of annotated genes with validated SEED vocabulary if query includes SEED subsystems
+- VFP Apps: removed duplicate TIGR roles from input options
+- VFP Apps: added SEED functional categories to displayed SEED role input options
 - Domain Annotation for Genomes App: allow Species Tree as input
 
 ### Version 1.3.2
