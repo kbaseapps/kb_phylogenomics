@@ -8272,6 +8272,30 @@
             }
         },
         {
+            "id": "display_genome_object_name",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "0",
+					"display": "DON'T include genome object name in report",
+					"id": "hide",
+					"ui-name": "hide"
+				},
+				{
+					"value": "1",
+					"display": "DO include genome object name in report",
+					"id": "show",
+					"ui-name": "show"
+				}
+		]
+            }
+        },
+        {
             "id": "skip_missing_genomes",
             "optional": false,
             "advanced": true,
@@ -8381,6 +8405,10 @@
                 {
                     "input_parameter": "show_blanks",
 		    "target_property": "show_blanks"
+                },
+                {
+                    "input_parameter": "display_genome_object_name",
+		    "target_property": "display_genome_object_name"
                 },
                 {
                     "input_parameter": "skip_missing_genomes",

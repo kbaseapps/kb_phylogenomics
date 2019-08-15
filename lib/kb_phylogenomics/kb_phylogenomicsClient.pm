@@ -337,6 +337,9 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	e_value has a value which is a float
 	log_base has a value which is a float
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 CustomTargetFams is a reference to a hash where the following keys are defined:
@@ -370,6 +373,9 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	e_value has a value which is a float
 	log_base has a value which is a float
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 CustomTargetFams is a reference to a hash where the following keys are defined:
@@ -467,6 +473,9 @@ view_fxn_profile_featureSet_Input is a reference to a hash where the following k
 	e_value has a value which is a float
 	log_base has a value which is a float
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 CustomTargetFams is a reference to a hash where the following keys are defined:
@@ -500,6 +509,9 @@ view_fxn_profile_featureSet_Input is a reference to a hash where the following k
 	e_value has a value which is a float
 	log_base has a value which is a float
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 CustomTargetFams is a reference to a hash where the following keys are defined:
@@ -597,6 +609,9 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	e_value has a value which is a float
 	log_base has a value which is a float
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 CustomTargetFams is a reference to a hash where the following keys are defined:
@@ -630,6 +645,9 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	e_value has a value which is a float
 	log_base has a value which is a float
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 CustomTargetFams is a reference to a hash where the following keys are defined:
@@ -1226,6 +1244,8 @@ view_pan_phylo_Input is a reference to a hash where the following keys are defin
 	input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	save_featuresets has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1246,6 +1266,8 @@ view_pan_phylo_Input is a reference to a hash where the following keys are defin
 	input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	save_featuresets has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1455,6 +1477,9 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	e_value has a value which is a float
 	log_base has a value which is a float
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 CustomTargetFams is a reference to a hash where the following keys are defined:
@@ -1508,6 +1533,9 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	e_value has a value which is a float
 	log_base has a value which is a float
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	skip_missing_genomes has a value which is a kb_phylogenomics.bool
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
 data_obj_ref is a string
 CustomTargetFams is a reference to a hash where the following keys are defined:
@@ -2013,6 +2041,9 @@ top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
 log_base has a value which is a float
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_object_name has a value which is a kb_phylogenomics.bool
+skip_missing_genomes has a value which is a kb_phylogenomics.bool
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
 </pre>
 
@@ -2032,6 +2063,9 @@ top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
 log_base has a value which is a float
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_object_name has a value which is a kb_phylogenomics.bool
+skip_missing_genomes has a value which is a kb_phylogenomics.bool
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
 
 =end text
@@ -2102,6 +2136,9 @@ top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
 log_base has a value which is a float
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_object_name has a value which is a kb_phylogenomics.bool
+skip_missing_genomes has a value which is a kb_phylogenomics.bool
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
 </pre>
 
@@ -2121,6 +2158,9 @@ top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
 log_base has a value which is a float
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_object_name has a value which is a kb_phylogenomics.bool
+skip_missing_genomes has a value which is a kb_phylogenomics.bool
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
 
 =end text
@@ -2191,6 +2231,9 @@ top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
 log_base has a value which is a float
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_object_name has a value which is a kb_phylogenomics.bool
+skip_missing_genomes has a value which is a kb_phylogenomics.bool
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
 </pre>
 
@@ -2210,6 +2253,9 @@ top_hit has a value which is a kb_phylogenomics.bool
 e_value has a value which is a float
 log_base has a value which is a float
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_object_name has a value which is a kb_phylogenomics.bool
+skip_missing_genomes has a value which is a kb_phylogenomics.bool
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
 
 =end text
@@ -2642,6 +2688,8 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
+skip_missing_genomes has a value which is a kb_phylogenomics.bool
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
 </pre>
 
@@ -2654,6 +2702,8 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
+skip_missing_genomes has a value which is a kb_phylogenomics.bool
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
 
 =end text

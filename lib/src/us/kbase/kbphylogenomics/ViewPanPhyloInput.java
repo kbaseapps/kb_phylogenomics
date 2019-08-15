@@ -26,7 +26,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "input_pangenome_ref",
     "input_speciesTree_ref",
-    "save_featuresets"
+    "save_featuresets",
+    "skip_missing_genomes",
+    "enforce_genome_version_match"
 })
 public class ViewPanPhyloInput {
 
@@ -38,6 +40,10 @@ public class ViewPanPhyloInput {
     private String inputSpeciesTreeRef;
     @JsonProperty("save_featuresets")
     private Long saveFeaturesets;
+    @JsonProperty("skip_missing_genomes")
+    private Long skipMissingGenomes;
+    @JsonProperty("enforce_genome_version_match")
+    private Long enforceGenomeVersionMatch;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -100,6 +106,36 @@ public class ViewPanPhyloInput {
         return this;
     }
 
+    @JsonProperty("skip_missing_genomes")
+    public Long getSkipMissingGenomes() {
+        return skipMissingGenomes;
+    }
+
+    @JsonProperty("skip_missing_genomes")
+    public void setSkipMissingGenomes(Long skipMissingGenomes) {
+        this.skipMissingGenomes = skipMissingGenomes;
+    }
+
+    public ViewPanPhyloInput withSkipMissingGenomes(Long skipMissingGenomes) {
+        this.skipMissingGenomes = skipMissingGenomes;
+        return this;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public Long getEnforceGenomeVersionMatch() {
+        return enforceGenomeVersionMatch;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public void setEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
+    }
+
+    public ViewPanPhyloInput withEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -112,7 +148,7 @@ public class ViewPanPhyloInput {
 
     @Override
     public String toString() {
-        return ((((((((((("ViewPanPhyloInput"+" [workspaceName=")+ workspaceName)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", saveFeaturesets=")+ saveFeaturesets)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((("ViewPanPhyloInput"+" [workspaceName=")+ workspaceName)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", saveFeaturesets=")+ saveFeaturesets)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
