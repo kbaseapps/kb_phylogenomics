@@ -331,10 +331,10 @@ class kb_phylogenomicsTest(unittest.TestCase):
     #### Annotate domains in a GenomeSet
     ##
     # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
-    def test_run_DomainAnnotation_Sets_01(self):
+    def test_run_DomainAnnotation_Sets_01_GenomeSet(self):
         method = 'run_DomainAnnotation_Sets'
 
-        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("\n\nRUNNING: test_"+method+"_01_GenomeSet()")
         print ("==================================================\n\n")
 
         # input_data
@@ -399,6 +399,78 @@ class kb_phylogenomicsTest(unittest.TestCase):
         params = {
             'workspace_name': self.getWsName(),
             'input_genomeSet_ref': str(obj_info[6])+'/'+str(obj_info[0]),
+            'override_annot': 0
+        }
+
+        result = self.getImpl().run_DomainAnnotation_Sets(self.getContext(),params)
+        print('RESULT:')
+        pprint(result)
+
+        # check the output DomainAnnotation objects to make sure all domain annotations are done
+        domain_annot_done = dict()
+        for ws_id in [self.getWsName()]:
+            try:
+                dom_annot_obj_info_list = self.getWsClient().list_objects({'ids':[ws_id],'type':"KBaseGeneFamilies.DomainAnnotation"})
+            except Exception as e:
+                raise ValueError ("Unable to list DomainAnnotation objects from workspace: "+str(ws_id)+" "+str(e))
+
+            for info in dom_annot_obj_info_list:
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                
+                dom_annot_ref = str(info[WSID_I])+'/'+str(info[OBJID_I])+'/'+str(info[VERSION_I])
+                try:
+                    domain_data = self.getWsClient().get_objects2({'objects':[{'ref':dom_annot_ref}]})['data'][0]['data']
+                except:
+                    raise ValueError ("unable to fetch domain annotation: "+dom_annot_ref)
+
+                # read domain data object
+                this_genome_ref = domain_data['genome_ref']
+                if this_genome_ref not in genome_ref_list:
+                    continue
+                domain_annot_done[this_genome_ref] = True
+
+        self.assertEqual(len(domain_annot_done.keys()), genome_ref_list)
+
+
+    #### Annotate domains in a GenomeSet
+    ##
+    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
+    def test_run_DomainAnnotation_Sets_02_SpeciesTree(self):
+        method = 'run_DomainAnnotation_Sets'
+
+        print ("\n\nRUNNING: test_"+method+"_02_SpeciesTree()")
+        print ("==================================================\n\n")
+
+        # input_data
+        genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+
+        genome_ref_0 = self.getWsName() + '/' + str(genomeInfo_0[0]) + '/' + str(genomeInfo_0[4])
+        genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
+        genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
+        genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
+
+        # upload Tree
+        genome_refs_map = { '23880/3/1': genome_ref_0,
+                            '23880/4/1': genome_ref_1,
+                            '23880/5/1': genome_ref_2,
+                            '23880/6/1': genome_ref_3
+                        }
+        obj_info = self.getTreeInfo('Tiny_things.SpeciesTree', 0, genome_refs_map)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        tree_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        #feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
+        #feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
+        #feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
+        #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
+
+        # run annotateDomains
+        params = {
+            'workspace_name': self.getWsName(),
+            'input_genomeSet_ref': tree_ref,
             'override_annot': 0
         }
 
@@ -699,7 +771,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
                                            'extra_target_fam_groups_COG':  ["COG: N: Cell motility"],
                                            'extra_target_fam_groups_PFAM': ["PF: Clan CL0003: SAM"],
                                            'extra_target_fam_groups_TIGR': ["TIGR: role:11010: Aromatic amino acid family "],
-                                           'extra_target_fam_groups_SEED': ["SEED: Alanine_biosynthesis"]
+                                           #'extra_target_fam_groups_SEED': ["SEED: Alanine_biosynthesis"]
+                                           'extra_target_fam_groups_SEED': []
                                        },
                    'input_speciesTree_ref': tree_ref,
                    'namespace': 'custom',
