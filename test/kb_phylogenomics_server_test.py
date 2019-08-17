@@ -586,7 +586,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
                                            'extra_target_fam_groups_COG':  ["COG: N: Cell motility"],
                                            'extra_target_fam_groups_PFAM': ["PF: Clan CL0003: SAM"],
                                            'extra_target_fam_groups_TIGR': ["TIGR: role:11010: Aromatic amino acid family "],
-                                           'extra_target_fam_groups_SEED': ["SEED: Alanine_biosynthesis"]
+                                           #'extra_target_fam_groups_SEED': ["SEED: Alanine_biosynthesis"]
+                                           'extra_target_fam_groups_SEED': []
                                        },
                    'input_genomeSet_ref': genomeSet_ref,
                    'namespace': 'custom',

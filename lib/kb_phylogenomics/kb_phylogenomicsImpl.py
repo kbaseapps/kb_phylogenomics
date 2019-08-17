@@ -1241,11 +1241,13 @@ This module contains methods for running and visualizing results of phylogenomic
 
         dom_hits = dict()  # initialize dom_hits here because reading SEED within genome
         genes_with_hits_cnt = dict()
+        genes_with_validated_vocab_hits_cnt = dict()  # only used for SEED at this time
 
         for genome_ref in genome_refs:
 
             dom_hits[genome_ref] = dict()
             genes_with_hits_cnt[genome_ref] = dict()
+            genes_with_validated_vocab_hits_cnt[genome_ref] = dict()
 
             # get genome object name
             input_ref = genome_ref
@@ -1281,6 +1283,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     cds_cnt += 1
             genome_CDS_count_by_ref[genome_ref] = cds_cnt
 
+
             # SEED annotations
             #
             #f_cnt = 0  # DEBUG
@@ -1303,19 +1306,33 @@ This module contains methods for running and visualizing results of phylogenomic
                             for namespace in ['SEED']:
                                 if namespace not in genes_with_hits_cnt[genome_ref]:
                                     genes_with_hits_cnt[genome_ref][namespace] = 0
-                                genes_with_hits_cnt[genome_ref][namespace] += 1
+                                if namespace not in genes_with_validated_vocab_hits_cnt[genome_ref]:
+                                    genes_with_validated_vocab_hits_cnt[genome_ref][namespace] = 0
 
                                 if gene_name not in dom_hits[genome_ref]:
                                     dom_hits[genome_ref][gene_name] = dict()
                                     dom_hits[genome_ref][gene_name][namespace] = dict()
 
+                                non_hypothetical_hit = False
+                                validated_vocab = False
                                 domfam_list = []
                                 for annot in self._get_SEED_annotations(feature):
                                     for annot2 in annot.strip().split('@'):
                                         domfam = self._standardize_SEED_subsys_ID(annot2)
                                         domfam_list.append(domfam)
+                                        if not 'hypothetical' in domfam:
+                                            non_hypothetical_hit = True
+                                        else:
+                                            continue
+                                        if domfam in domfam2cat[namespace]:
+                                            validated_vocab = True
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
+
+                                if non_hypothetical_hit:
+                                    genes_with_hits_cnt[genome_ref][namespace] += 1
+                                if validated_vocab:
+                                    genes_with_validated_vocab_hits_cnt[genome_ref][namespace] += 1
 
                                 if top_hit_flag:  # does SEED give more than one function?
                                     domfam_list = [domfam_list[0]]
@@ -1388,14 +1405,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # determine if custom domains are not just SEED
         #
-        search_domains_not_just_SEED = False
+        search_domains_just_SEED = True
         for namespace in namespaces_reading.keys():
             if namespace != 'SEED':
-                search_domains_not_just_SEED = False
+                search_domains_just_SEED = False
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
-        if not search_domains_not_just_SEED:
+        if search_domains_just_SEED:
             self.log(console, "Search Domains just SEED.  Not looking for Domain Annotations")
         else:
             self.log(console, "Search Domains other than SEED.  Looking for Domain Annotations")
@@ -1464,6 +1481,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                     if genome_ref not in genes_with_hits_cnt:
                         genes_with_hits_cnt[genome_ref] = dict()
+                        #self.log (console, "ADDING "+genome_ref+" to genes_with_hits_cnt")  # DEBUG
 
                     for scaffold_id_iter in domain_data['data'].keys():
                         for CDS_domain_list in domain_data['data'][scaffold_id_iter]:
@@ -1516,6 +1534,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                             top_hit_evalue_by_namespace[namespace] = e_value
 
                                     dom_hits_by_namespace[namespace][domfam_clean] = True
+                                    #if namespace == 'COG':
+                                     #   self.log(console,"STORING "+genome_ref+" "+namespace+" "+domfam_clean)  # DEBUG
 
                             # store assignments for gene
                             for namespace in namespace_classes:
@@ -1523,8 +1543,12 @@ This module contains methods for running and visualizing results of phylogenomic
                                     continue
                                 if namespace not in genes_with_hits_cnt[genome_ref]:
                                     genes_with_hits_cnt[genome_ref][namespace] = 0
+
+                                    #self.log(console,"GENOME "+genome_ref+" HIT NAMESPACE "+namespace)  # DEBUG
+
                                 if dom_hits_by_namespace[namespace]:
                                     genes_with_hits_cnt[genome_ref][namespace] += 1
+                                    #self.log(console,"GENOME "+genome_ref+" HIT NAMESPACE "+namespace+ " count "+str(genes_with_hits_cnt[genome_ref][namespace])) # DEBUG
 
                                     if gene_name not in dom_hits[genome_ref]:
                                         dom_hits[genome_ref][gene_name] = dict()
@@ -1586,7 +1610,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = 0.25
+        fraction_requiring_annotation = 0.10
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
@@ -1971,7 +1995,8 @@ This module contains methods for running and visualizing results of phylogenomic
             for genome_ref in genome_refs:
                 genome_obj_name = genome_obj_name_by_ref[genome_ref]
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
-                if int(params.get('display_genome_object_name')) == 1:
+                if params.get('display_genome_object_name') \
+                   and int(params.get('display_genome_object_name')) == 1:
                     genome_disp_name = genome_obj_name + ': ' + genome_sci_name
                 else:
                     genome_disp_name = genome_sci_name
@@ -2335,11 +2360,13 @@ This module contains methods for running and visualizing results of phylogenomic
 
         dom_hits = dict()  # initialize dom_hits here because reading SEED within genome
         genes_with_hits_cnt = dict()
+        genes_with_validated_vocab_hits_cnt = dict()
 
         for genome_ref in genome_refs:
 
             dom_hits[genome_ref] = dict()
             genes_with_hits_cnt[genome_ref] = dict()
+            genes_with_validated_vocab_hits_cnt[genome_ref] = dict()
 
             # get genome object name
             input_ref = genome_ref
@@ -2492,14 +2519,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # determine if custom domains are not just SEED
         #
-        search_domains_not_just_SEED = False
+        search_domains_just_SEED = True
         for namespace in namespaces_reading.keys():
             if namespace != 'SEED':
-                search_domains_not_just_SEED = False
+                search_domains_just_SEED = False
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
-        if not search_domains_not_just_SEED:
+        if search_domains_just_SEED:
             self.log(console, "Search Domains just SEED.  Not looking for Domain Annotations")
         else:
             self.log(console, "Search Domains other than SEED.  Looking for Domain Annotations")
@@ -2704,7 +2731,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = 0.25
+        fraction_requiring_annotation = 0.10
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
@@ -3089,7 +3116,8 @@ This module contains methods for running and visualizing results of phylogenomic
             for genome_ref in genome_refs:
                 genome_obj_name = genome_obj_name_by_ref[genome_ref]
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
-                if int(params.get('display_genome_object_name')) == 1:
+                if params.get('display_genome_object_name') \
+                   and int(params.get('display_genome_object_name')) == 1:
                     genome_disp_name = genome_obj_name + ': ' + genome_sci_name
                 else:
                     genome_disp_name = genome_sci_name
@@ -3563,7 +3591,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                     genes_with_validated_vocab_hits_cnt[genome_ref][namespace] += 1
 
                                 if top_hit_flag:  # does SEED give more than one function?
-                                    domfam_list = domfam_list[0]
+                                    domfam_list = [domfam_list[0]]
                                 for domfam in domfam_list:
                                     dom_hits[genome_ref][gene_name][namespace][domfam] = True
                                     if domfam in target_fams:
@@ -3633,14 +3661,14 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # determine if custom domains are not just SEED
         #
-        search_domains_not_just_SEED = False
+        search_domains_just_SEED = True
         for namespace in namespaces_reading.keys():
             if namespace != 'SEED':
-                search_domains_not_just_SEED = False
+                search_domains_just_SEED = False
 
         # read DomainAnnotation object to capture domain hits to genes within each namespace
         #
-        if not search_domains_not_just_SEED:
+        if search_domains_just_SEED:
             self.log(console, "Search Domains just SEED.  Not looking for Domain Annotations")
         else:
             self.log(console, "Search Domains other than SEED.  Looking for Domain Annotations")
@@ -3831,7 +3859,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = 0.25
+        fraction_requiring_annotation = 0.10
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
@@ -4072,7 +4100,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # STEP 4 - Prune tree if any leaf genomes missing domain annotation
         #
-        if search_domains_not_just_SEED:
+        if not search_domains_just_SEED:
             prune_retain_list = []  # prune() method takes list of leaves to keep
             prune_remove_list = []
             for n in species_tree.traverse():
@@ -4137,7 +4165,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_id = n.name
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
-                if int(params.get('display_genome_object_name')) == 1:
+                if params.get('display_genome_object_name') \
+                   and int(params.get('display_genome_object_name')) == 1:
                     leaf_name_disp = genome_obj_name_by_id[genome_id] +': '+genome_sci_name_by_id[genome_id]
                 else:
                     leaf_name_disp = genome_sci_name_by_id[genome_id]
@@ -4339,7 +4368,8 @@ This module contains methods for running and visualizing results of phylogenomic
             for row_i, genome_ref in enumerate(genome_refs):
                 genome_obj_name = genome_obj_name_by_ref[genome_ref]
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
-                if int(params.get('display_genome_object_name')) == 1:
+                if params.get('display_genome_object_name') \
+                   and int(params.get('display_genome_object_name')) == 1:
                     genome_disp_name = genome_obj_name + ': ' + genome_sci_name
                 else:
                     genome_disp_name = genome_sci_name
