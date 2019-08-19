@@ -33,6 +33,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "top_hit",
     "e_value",
     "log_base",
+    "required_COG_annot_perc",
+    "required_PFAM_annot_perc",
+    "required_TIGR_annot_perc",
+    "required_SEED_annot_perc",
+    "count_hypothetical",
     "show_blanks",
     "display_genome_object_name",
     "skip_missing_genomes",
@@ -67,6 +72,16 @@ public class ViewFxnProfilePhyloInput {
     private Double eValue;
     @JsonProperty("log_base")
     private Double logBase;
+    @JsonProperty("required_COG_annot_perc")
+    private Double requiredCOGAnnotPerc;
+    @JsonProperty("required_PFAM_annot_perc")
+    private Double requiredPFAMAnnotPerc;
+    @JsonProperty("required_TIGR_annot_perc")
+    private Double requiredTIGRAnnotPerc;
+    @JsonProperty("required_SEED_annot_perc")
+    private Double requiredSEEDAnnotPerc;
+    @JsonProperty("count_hypothetical")
+    private Long countHypothetical;
     @JsonProperty("show_blanks")
     private Long showBlanks;
     @JsonProperty("display_genome_object_name")
@@ -241,6 +256,81 @@ public class ViewFxnProfilePhyloInput {
         return this;
     }
 
+    @JsonProperty("required_COG_annot_perc")
+    public Double getRequiredCOGAnnotPerc() {
+        return requiredCOGAnnotPerc;
+    }
+
+    @JsonProperty("required_COG_annot_perc")
+    public void setRequiredCOGAnnotPerc(Double requiredCOGAnnotPerc) {
+        this.requiredCOGAnnotPerc = requiredCOGAnnotPerc;
+    }
+
+    public ViewFxnProfilePhyloInput withRequiredCOGAnnotPerc(Double requiredCOGAnnotPerc) {
+        this.requiredCOGAnnotPerc = requiredCOGAnnotPerc;
+        return this;
+    }
+
+    @JsonProperty("required_PFAM_annot_perc")
+    public Double getRequiredPFAMAnnotPerc() {
+        return requiredPFAMAnnotPerc;
+    }
+
+    @JsonProperty("required_PFAM_annot_perc")
+    public void setRequiredPFAMAnnotPerc(Double requiredPFAMAnnotPerc) {
+        this.requiredPFAMAnnotPerc = requiredPFAMAnnotPerc;
+    }
+
+    public ViewFxnProfilePhyloInput withRequiredPFAMAnnotPerc(Double requiredPFAMAnnotPerc) {
+        this.requiredPFAMAnnotPerc = requiredPFAMAnnotPerc;
+        return this;
+    }
+
+    @JsonProperty("required_TIGR_annot_perc")
+    public Double getRequiredTIGRAnnotPerc() {
+        return requiredTIGRAnnotPerc;
+    }
+
+    @JsonProperty("required_TIGR_annot_perc")
+    public void setRequiredTIGRAnnotPerc(Double requiredTIGRAnnotPerc) {
+        this.requiredTIGRAnnotPerc = requiredTIGRAnnotPerc;
+    }
+
+    public ViewFxnProfilePhyloInput withRequiredTIGRAnnotPerc(Double requiredTIGRAnnotPerc) {
+        this.requiredTIGRAnnotPerc = requiredTIGRAnnotPerc;
+        return this;
+    }
+
+    @JsonProperty("required_SEED_annot_perc")
+    public Double getRequiredSEEDAnnotPerc() {
+        return requiredSEEDAnnotPerc;
+    }
+
+    @JsonProperty("required_SEED_annot_perc")
+    public void setRequiredSEEDAnnotPerc(Double requiredSEEDAnnotPerc) {
+        this.requiredSEEDAnnotPerc = requiredSEEDAnnotPerc;
+    }
+
+    public ViewFxnProfilePhyloInput withRequiredSEEDAnnotPerc(Double requiredSEEDAnnotPerc) {
+        this.requiredSEEDAnnotPerc = requiredSEEDAnnotPerc;
+        return this;
+    }
+
+    @JsonProperty("count_hypothetical")
+    public Long getCountHypothetical() {
+        return countHypothetical;
+    }
+
+    @JsonProperty("count_hypothetical")
+    public void setCountHypothetical(Long countHypothetical) {
+        this.countHypothetical = countHypothetical;
+    }
+
+    public ViewFxnProfilePhyloInput withCountHypothetical(Long countHypothetical) {
+        this.countHypothetical = countHypothetical;
+        return this;
+    }
+
     @JsonProperty("show_blanks")
     public Long getShowBlanks() {
         return showBlanks;
@@ -313,7 +403,7 @@ public class ViewFxnProfilePhyloInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", showBlanks=")+ showBlanks)+", displayGenomeObjectName=")+ displayGenomeObjectName)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((((((((((((("ViewFxnProfilePhyloInput"+" [workspaceName=")+ workspaceName)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", requiredCOGAnnotPerc=")+ requiredCOGAnnotPerc)+", requiredPFAMAnnotPerc=")+ requiredPFAMAnnotPerc)+", requiredTIGRAnnotPerc=")+ requiredTIGRAnnotPerc)+", requiredSEEDAnnotPerc=")+ requiredSEEDAnnotPerc)+", countHypothetical=")+ countHypothetical)+", showBlanks=")+ showBlanks)+", displayGenomeObjectName=")+ displayGenomeObjectName)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

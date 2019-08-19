@@ -1,3 +1,4 @@
+
 /*
 A KBase module: kb_phylogenomics
 
@@ -86,6 +87,13 @@ module kb_phylogenomics {
 	bool             top_hit;
 	float            e_value;
 	float            log_base;
+
+	float            required_COG_annot_perc;
+	float            required_PFAM_annot_perc;
+	float            required_TIGR_annot_perc;
+	float            required_SEED_annot_perc;
+	bool             count_hypothetical;
+
 	bool             show_blanks;
 	bool             display_genome_object_name;
 	bool             skip_missing_genomes;
@@ -119,6 +127,13 @@ module kb_phylogenomics {
 	bool             top_hit;
 	float            e_value;
 	float            log_base;
+
+	float            required_COG_annot_perc;
+	float            required_PFAM_annot_perc;
+	float            required_TIGR_annot_perc;
+	float            required_SEED_annot_perc;
+	bool             count_hypothetical;
+
 	bool             show_blanks;
 	bool             display_genome_object_name;
 	bool             skip_missing_genomes;
@@ -153,6 +168,13 @@ module kb_phylogenomics {
 	bool             top_hit;
 	float            e_value;
 	float            log_base;
+
+	float            required_COG_annot_perc;
+	float            required_PFAM_annot_perc;
+	float            required_TIGR_annot_perc;
+	float            required_SEED_annot_perc;
+	bool             count_hypothetical;
+
 	bool             show_blanks;
 	bool             display_genome_object_name;
 	bool             skip_missing_genomes;

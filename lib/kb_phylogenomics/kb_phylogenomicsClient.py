@@ -78,9 +78,13 @@ class kb_phylogenomics(object):
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool", parameter
-           "display_genome_object_name" of type "bool", parameter
-           "skip_missing_genomes" of type "bool", parameter
+           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "required_PFAM_annot_perc" of Double, parameter
+           "required_TIGR_annot_perc" of Double, parameter
+           "required_SEED_annot_perc" of Double, parameter
+           "count_hypothetical" of type "bool", parameter "show_blanks" of
+           type "bool", parameter "display_genome_object_name" of type
+           "bool", parameter "skip_missing_genomes" of type "bool", parameter
            "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
@@ -105,9 +109,13 @@ class kb_phylogenomics(object):
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool", parameter
-           "display_genome_object_name" of type "bool", parameter
-           "skip_missing_genomes" of type "bool", parameter
+           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "required_PFAM_annot_perc" of Double, parameter
+           "required_TIGR_annot_perc" of Double, parameter
+           "required_SEED_annot_perc" of Double, parameter
+           "count_hypothetical" of type "bool", parameter "show_blanks" of
+           type "bool", parameter "display_genome_object_name" of type
+           "bool", parameter "skip_missing_genomes" of type "bool", parameter
            "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_featureSet_Output" ->
            structure: parameter "report_name" of String, parameter
@@ -134,9 +142,13 @@ class kb_phylogenomics(object):
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool", parameter
-           "display_genome_object_name" of type "bool", parameter
-           "skip_missing_genomes" of type "bool", parameter
+           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "required_PFAM_annot_perc" of Double, parameter
+           "required_TIGR_annot_perc" of Double, parameter
+           "required_SEED_annot_perc" of Double, parameter
+           "count_hypothetical" of type "bool", parameter "show_blanks" of
+           type "bool", parameter "display_genome_object_name" of type
+           "bool", parameter "skip_missing_genomes" of type "bool", parameter
            "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
@@ -281,9 +293,13 @@ class kb_phylogenomics(object):
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool", parameter
-           "display_genome_object_name" of type "bool", parameter
-           "skip_missing_genomes" of type "bool", parameter
+           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "required_PFAM_annot_perc" of Double, parameter
+           "required_TIGR_annot_perc" of Double, parameter
+           "required_SEED_annot_perc" of Double, parameter
+           "count_hypothetical" of type "bool", parameter "show_blanks" of
+           type "bool", parameter "display_genome_object_name" of type
+           "bool", parameter "skip_missing_genomes" of type "bool", parameter
            "enforce_genome_version_match" of type "bool"
         :returns: instance of type "get_configure_categories_Output" ->
            structure: parameter "cats" of list of String, parameter

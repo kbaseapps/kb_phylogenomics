@@ -4,7 +4,8 @@ __Changes__
 - VFP Apps: add option to not require perfect agreement of version of Genome and DomainAnnotation object
 - VFP Apps: fixed bug with Custom Domains that are all SEED not to fail if missing DomainAnnotation object
 - VFP Apps: generate FeatureSets if explicit custom domains are members of query
-- VFP Apps: check for reasonable fraction of annotated genes with validated SEED vocabulary if query includes SEED subsystems
+- VFP Apps: added option to check for reasonable fraction of annotated genes with validated SEED vocabulary if query includes SEED subsystems
+- VFP Apps: added options to check for reasonable fraction of ALL genes receiving annotations within each Domain Namespace
 - VFP Apps: removed duplicate TIGR roles from input options
 - VFP Apps: added SEED functional categories to displayed SEED role input options
 - VFP Apps: option to include Genome object name in profile table
