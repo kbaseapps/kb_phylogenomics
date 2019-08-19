@@ -1180,18 +1180,12 @@ This module contains methods for running and visualizing results of phylogenomic
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        # set percentage for annotated genes
+        # set percentage required for annotated genes by each namespace
         required_annot_perc = dict()
         for namespace in namespace_classes:
             required_annot_perc[namespace] = 0.0
-        if params.get('required_COG_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_COG_annot_perc'))
-        if params.get('required_PFAM_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
-        if params.get('required_TIGR_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
-        if params.get('required_SEED_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_SEED_annot_perc'))
+            if params.get('required_'+namespace+'_annot_perc'):
+                required_annot_perc[namespace] = float(params.get('required_'+namespace+'_annot_perc'))
 
 
         # load provenance
@@ -2312,18 +2306,12 @@ This module contains methods for running and visualizing results of phylogenomic
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        # set percentage for valid genes
+        # set percentage required for annotated genes by each namespace
         required_annot_perc = dict()
         for namespace in namespace_classes:
             required_annot_perc[namespace] = 0.0
-        if params.get('required_COG_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_COG_annot_perc'))
-        if params.get('required_PFAM_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
-        if params.get('required_TIGR_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
-        if params.get('required_SEED_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_SEED_annot_perc'))
+            if params.get('required_'+namespace+'_annot_perc'):
+                required_annot_perc[namespace] = float(params.get('required_'+namespace+'_annot_perc'))
 
 
         # load provenance
@@ -3484,18 +3472,12 @@ This module contains methods for running and visualizing results of phylogenomic
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        # set percentage for valid genes
+        # set percentage required for annotated genes by each namespace
         required_annot_perc = dict()
         for namespace in namespace_classes:
             required_annot_perc[namespace] = 0.0
-        if params.get('required_COG_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_COG_annot_perc'))
-        if params.get('required_PFAM_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
-        if params.get('required_TIGR_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
-        if params.get('required_SEED_annot_perc'):
-            required_annot_perc[namespace] = float(params.get('required_SEED_annot_perc'))
+            if params.get('required_'+namespace+'_annot_perc'):
+                required_annot_perc[namespace] = float(params.get('required_'+namespace+'_annot_perc'))
 
 
         # load provenance
