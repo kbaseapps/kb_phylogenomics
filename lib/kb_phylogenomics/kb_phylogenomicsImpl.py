@@ -1180,18 +1180,18 @@ This module contains methods for running and visualizing results of phylogenomic
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
 
-        # set percentage for valid genes
-        required_valid_perc = dict()
+        # set percentage for annotated genes
+        required_annot_perc = dict()
         for namespace in namespace_classes:
-            required_valid_perc[namespace] = 0.0
+            required_annot_perc[namespace] = 0.0
         if params.get('required_COG_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_COG_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_COG_annot_perc'))
         if params.get('required_PFAM_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
         if params.get('required_TIGR_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
         if params.get('required_SEED_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_SEED_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_SEED_annot_perc'))
 
 
         # load provenance
@@ -1384,17 +1384,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # check for validated vocab if reading SEED
         #
-        threshold_fraction_with_validated_annotation = dict()
-        threshold_fraction_with_validated_annotation['SEED'] = 0.33
         missing_SEED_annot_by_genome_ref = dict()
         missing_SEED_annot = []
         if 'SEED' in namespaces_reading:
             namespace = 'SEED'
+            fraction_required_valid = required_annot_perc[namespace] / 100.0
             for genome_ref in genome_refs:
                 self.log(console, "genome:"+genome_ref+" gene cnt with validated annot:"+str(genes_with_validated_vocab_hits_cnt[genome_ref][namespace])+" gene cnt with annot:"+str(genes_with_hits_cnt[genome_ref][namespace]))  # DEBUG
 
                 valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
-                if valid_fraction < threshold_fraction_with_validated_annotation[namespace]:
+                if valid_fraction < fraction_required_valid:
                     missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
                     missing_SEED_annot_by_genome_ref[genome_ref] = True
 
@@ -1630,7 +1629,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = required_valid_perc[namespace] / 100.0
+        fraction_requiring_annotation = required_annot_perc[namespace] / 100.0
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
@@ -2314,17 +2313,17 @@ This module contains methods for running and visualizing results of phylogenomic
             top_hit_flag = True
 
         # set percentage for valid genes
-        required_valid_perc = dict()
+        required_annot_perc = dict()
         for namespace in namespace_classes:
-            required_valid_perc[namespace] = 0.0
+            required_annot_perc[namespace] = 0.0
         if params.get('required_COG_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_COG_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_COG_annot_perc'))
         if params.get('required_PFAM_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
         if params.get('required_TIGR_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
         if params.get('required_SEED_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_SEED_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_SEED_annot_perc'))
 
 
         # load provenance
@@ -2549,17 +2548,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # check for validated vocab if reading SEED
         #
-        threshold_fraction_with_validated_annotation = dict()
-        threshold_fraction_with_validated_annotation['SEED'] = 0.33
         missing_SEED_annot_by_genome_ref = dict()
         missing_SEED_annot = []
         if 'SEED' in namespaces_reading:
             namespace = 'SEED'
+            fraction_required_valid = required_annot_perc[namespace] / 100.0
             for genome_ref in genome_refs:
                 self.log(console, "genome:"+genome_ref+" gene cnt with validated annot:"+str(genes_with_validated_vocab_hits_cnt[genome_ref][namespace])+" gene cnt with annot:"+str(genes_with_hits_cnt[genome_ref][namespace]))  # DEBUG
 
                 valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
-                if valid_fraction < threshold_fraction_with_validated_annotation[namespace]:
+                if valid_fraction < fraction_required_valid:
                     missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
                     missing_SEED_annot_by_genome_ref[genome_ref] = True
 
@@ -2802,7 +2800,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = required_valid_perc[namespace] / 100.0
+        fraction_requiring_annotation = required_annot_perc[namespace] / 100.0
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
@@ -3487,17 +3485,17 @@ This module contains methods for running and visualizing results of phylogenomic
             top_hit_flag = True
 
         # set percentage for valid genes
-        required_valid_perc = dict()
+        required_annot_perc = dict()
         for namespace in namespace_classes:
-            required_valid_perc[namespace] = 0.0
+            required_annot_perc[namespace] = 0.0
         if params.get('required_COG_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_COG_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_COG_annot_perc'))
         if params.get('required_PFAM_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
         if params.get('required_TIGR_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
         if params.get('required_SEED_annot_perc'):
-            required_valid_perc[namespace] = float(params.get('required_SEED_annot_perc'))
+            required_annot_perc[namespace] = float(params.get('required_SEED_annot_perc'))
 
 
         # load provenance
@@ -3711,17 +3709,16 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # check for validated vocab if reading SEED
         #
-        threshold_fraction_with_validated_annotation = dict()
-        threshold_fraction_with_validated_annotation['SEED'] = 0.33
         missing_SEED_annot_by_genome_ref = dict()
         missing_SEED_annot = []
         if 'SEED' in namespaces_reading:
             namespace = 'SEED'
+            fraction_required_valid = required_annot_perc[namespace] / 100.0
             for genome_ref in genome_refs:
                 self.log(console, "genome:"+genome_ref+" gene cnt with validated annot:"+str(genes_with_validated_vocab_hits_cnt[genome_ref][namespace])+" gene cnt with annot:"+str(genes_with_hits_cnt[genome_ref][namespace]))  # DEBUG
 
                 valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
-                if valid_fraction < threshold_fraction_with_validated_annotation[namespace]:
+                if valid_fraction < fraction_required_valid:
                     missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
                     missing_SEED_annot_by_genome_ref[genome_ref] = True
 
@@ -3950,7 +3947,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = required_valid_perc[namespace] / 100.0
+        fraction_requiring_annotation = required_annot_perc[namespace] / 100.0
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
