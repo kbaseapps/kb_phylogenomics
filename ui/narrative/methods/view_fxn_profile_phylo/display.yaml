@@ -84,16 +84,36 @@ parameters :
             E-value Upper Limit
         short-hint : |
             Hit count calculation ignores domain hits above the specified e-value threshold.
-    vertical :
-        ui-name : |
-            View genomes as
-        short-hint : |
-            Show table with genomes as rows.
     top_hit :
         ui-name : |
             Count annotated genes using
         short-hint : |
             Count only the top hit per gene within a namespace (e.g. Pfam).
+    required_COG_annot_perc :
+        ui-name : |
+            Genes requiring COG annot
+        short-hint : |
+            Percentage of ALL genes that need to have a COG annotation to consider Domain Annotation valid
+    required_PFAM_annot_perc :
+        ui-name : |
+            Genes requiring PFAM annot
+        short-hint : |
+            Percentage of ALL genes that need to have a PFAM annotation to consider Domain Annotation of the Genome valid
+    required_TIGR_annot_perc :
+        ui-name : |
+            Genes requiring TIGR annot
+        short-hint : |
+            Percentage of ALL genes that need to have a TIGR annotation to consider Domain Annotation of the Genome valid
+    required_SEED_annot_perc :
+        ui-name : |
+            Genes with validated SEED annot
+        short-hint : |
+            Percentage of genes with annotations required to match to the SEED namespace to consider the SEED annotation of the Genome valid
+    count_hypothetical :
+        ui-name : |
+            Count SEED hypothetical
+        short-hint : |
+            Should genes with SEED 'hypothetical' annotation be considered in count of annotated genes
     show_blanks :
         ui-name : |
             Empty categories

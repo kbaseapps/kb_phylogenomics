@@ -45,7 +45,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.4.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "5c6b914a2a4a853f7af04af628204228ff9208f4"
+    GIT_COMMIT_HASH = "a718cc323e2e85ba409a5d8543d1dcb5ef68a62f"
 
     #BEGIN_CLASS_HEADER
 
@@ -1115,9 +1115,13 @@ This module contains methods for running and visualizing results of phylogenomic
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool", parameter
-           "display_genome_object_name" of type "bool", parameter
-           "skip_missing_genomes" of type "bool", parameter
+           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "required_PFAM_annot_perc" of Double, parameter
+           "required_TIGR_annot_perc" of Double, parameter
+           "required_SEED_annot_perc" of Double, parameter
+           "count_hypothetical" of type "bool", parameter "show_blanks" of
+           type "bool", parameter "display_genome_object_name" of type
+           "bool", parameter "skip_missing_genomes" of type "bool", parameter
            "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
@@ -1175,6 +1179,20 @@ This module contains methods for running and visualizing results of phylogenomic
         top_hit_flag = False
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
+
+        # set percentage for valid genes
+        required_valid_perc = dict()
+        for namespace in namespace_classes:
+            required_valid_perc[namespace] = 0.0
+        if params.get('required_COG_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_COG_annot_perc'))
+        if params.get('required_PFAM_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
+        if params.get('required_TIGR_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
+        if params.get('required_SEED_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_SEED_annot_perc'))
+
 
         # load provenance
         provenance = [{}]
@@ -1329,7 +1347,9 @@ This module contains methods for running and visualizing results of phylogenomic
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
 
-                                if non_hypothetical_hit:
+                                if params.get('count_hypothetical') and int(params.get('count_hypothetical')) == 1:
+                                    genes_with_hits_cnt[genome_ref][namespace] += 1
+                                elif non_hypothetical_hit:
                                     genes_with_hits_cnt[genome_ref][namespace] += 1
                                 if validated_vocab:
                                     genes_with_validated_vocab_hits_cnt[genome_ref][namespace] += 1
@@ -1610,7 +1630,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = 0.10
+        fraction_requiring_annotation = required_valid_perc[namespace] / 100.0
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
@@ -2227,9 +2247,13 @@ This module contains methods for running and visualizing results of phylogenomic
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool", parameter
-           "display_genome_object_name" of type "bool", parameter
-           "skip_missing_genomes" of type "bool", parameter
+           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "required_PFAM_annot_perc" of Double, parameter
+           "required_TIGR_annot_perc" of Double, parameter
+           "required_SEED_annot_perc" of Double, parameter
+           "count_hypothetical" of type "bool", parameter "show_blanks" of
+           type "bool", parameter "display_genome_object_name" of type
+           "bool", parameter "skip_missing_genomes" of type "bool", parameter
            "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_featureSet_Output" ->
            structure: parameter "report_name" of String, parameter
@@ -2288,6 +2312,20 @@ This module contains methods for running and visualizing results of phylogenomic
         top_hit_flag = False
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
+
+        # set percentage for valid genes
+        required_valid_perc = dict()
+        for namespace in namespace_classes:
+            required_valid_perc[namespace] = 0.0
+        if params.get('required_COG_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_COG_annot_perc'))
+        if params.get('required_PFAM_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
+        if params.get('required_TIGR_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
+        if params.get('required_SEED_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_SEED_annot_perc'))
+
 
         # load provenance
         provenance = [{}]
@@ -2431,8 +2469,40 @@ This module contains methods for running and visualizing results of phylogenomic
                             for namespace in ['SEED']:
                                 if namespace not in genes_with_hits_cnt[genome_ref]:
                                     genes_with_hits_cnt[genome_ref][namespace] = 0
+                                if namespace not in genes_with_validated_vocab_hits_cnt[genome_ref]:
+                                    genes_with_validated_vocab_hits_cnt[genome_ref][namespace] = 0
+
+                                if gene_name not in dom_hits[genome_ref]:
+                                    dom_hits[genome_ref][gene_name] = dict()
+                                    dom_hits[genome_ref][gene_name][namespace] = dict()
+
+                                non_hypothetical_hit = False
+                                validated_vocab = False
+                                domfam_list = []
+                                for annot in self._get_SEED_annotations(feature):
+                                    for annot2 in annot.strip().split('@'):
+                                        domfam = self._standardize_SEED_subsys_ID(annot2)
+                                        domfam_list.append(domfam)
+                                        if not 'hypothetical' in domfam:
+                                            non_hypothetical_hit = True
+                                        else:
+                                            continue
+                                        if domfam in domfam2cat[namespace]:
+                                            validated_vocab = True
+                                        #if f_cnt % 100 == 0:
+                                        #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
+
+                                if params.get('count_hypothetical') and int(params.get('count_hypothetical')) == 1:
+                                    genes_with_hits_cnt[genome_ref][namespace] += 1
+                                elif non_hypothetical_hit:
+                                    genes_with_hits_cnt[genome_ref][namespace] += 1
+                                if validated_vocab:
+                                    genes_with_validated_vocab_hits_cnt[genome_ref][namespace] += 1
+
+                                """ OLD CODE
                                 genes_with_hits_cnt[genome_ref][namespace] += 1
 
+                                # THIS IS DIFFERENT
                                 if not target_feature:
                                     continue
 
@@ -2448,6 +2518,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
 
+                                """
                                 if top_hit_flag:  # does SEED give more than one function?
                                     domfam_list = [domfam_list[0]]
                                 for domfam in domfam_list:
@@ -2731,7 +2802,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = 0.10
+        fraction_requiring_annotation = required_valid_perc[namespace] / 100.0
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
@@ -3349,9 +3420,13 @@ This module contains methods for running and visualizing results of phylogenomic
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool", parameter
-           "display_genome_object_name" of type "bool", parameter
-           "skip_missing_genomes" of type "bool", parameter
+           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "required_PFAM_annot_perc" of Double, parameter
+           "required_TIGR_annot_perc" of Double, parameter
+           "required_SEED_annot_perc" of Double, parameter
+           "count_hypothetical" of type "bool", parameter "show_blanks" of
+           type "bool", parameter "display_genome_object_name" of type
+           "bool", parameter "skip_missing_genomes" of type "bool", parameter
            "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
@@ -3410,6 +3485,20 @@ This module contains methods for running and visualizing results of phylogenomic
         top_hit_flag = False
         if 'top_hit' in params and params['top_hit'] != None and params['top_hit'] != '' and params['top_hit'] != 0:
             top_hit_flag = True
+
+        # set percentage for valid genes
+        required_valid_perc = dict()
+        for namespace in namespace_classes:
+            required_valid_perc[namespace] = 0.0
+        if params.get('required_COG_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_COG_annot_perc'))
+        if params.get('required_PFAM_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_PFAM_annot_perc'))
+        if params.get('required_TIGR_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_TIGR_annot_perc'))
+        if params.get('required_SEED_annot_perc'):
+            required_valid_perc[namespace] = float(params.get('required_SEED_annot_perc'))
+
 
         # load provenance
         provenance = [{}]
@@ -3585,7 +3674,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
                                         #if f_cnt % 100 == 0:
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
-                                if non_hypothetical_hit:
+                                if params.get('count_hypothetical') and int(params.get('count_hypothetical')) == 1:
+                                    genes_with_hits_cnt[genome_ref][namespace] += 1
+                                elif non_hypothetical_hit:
                                     genes_with_hits_cnt[genome_ref][namespace] += 1
                                 if validated_vocab:
                                     genes_with_validated_vocab_hits_cnt[genome_ref][namespace] += 1
@@ -3859,7 +3950,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = 0.10
+        fraction_requiring_annotation = required_valid_perc[namespace] / 100.0
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
@@ -7410,9 +7501,13 @@ This module contains methods for running and visualizing results of phylogenomic
            "count_category" of String, parameter "heatmap" of type "bool",
            parameter "vertical" of type "bool", parameter "top_hit" of type
            "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "show_blanks" of type "bool", parameter
-           "display_genome_object_name" of type "bool", parameter
-           "skip_missing_genomes" of type "bool", parameter
+           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "required_PFAM_annot_perc" of Double, parameter
+           "required_TIGR_annot_perc" of Double, parameter
+           "required_SEED_annot_perc" of Double, parameter
+           "count_hypothetical" of type "bool", parameter "show_blanks" of
+           type "bool", parameter "display_genome_object_name" of type
+           "bool", parameter "skip_missing_genomes" of type "bool", parameter
            "enforce_genome_version_match" of type "bool"
         :returns: instance of type "get_configure_categories_Output" ->
            structure: parameter "cats" of list of String, parameter

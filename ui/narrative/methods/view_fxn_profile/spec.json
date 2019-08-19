@@ -8206,24 +8206,6 @@
             }
         },
         {
-            "id": "vertical",
-            "optional": false,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "1" ],
-            "field_type": "dropdown",
-            "dropdown_options": {
-	    	"options": [
-				{
-					"value": "1",
-					"display": "rows",
-					"id": "rows",
-					"ui-name": "rows"
-				}
-		]
-            }
-        },
-        {
             "id": "top_hit",
             "optional": false,
             "advanced": true,
@@ -8243,6 +8225,82 @@
 					"display": "all domain hits to gene",
 					"id": "all",
 					"ui-name": "all"
+				}
+		]
+            }
+        },
+        {
+            "id": "required_COG_annot_perc",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "10" ],
+            "field_type": "text",
+            "text_options": {
+	    	"validate_as": "float",
+	    	"min_float": "1",
+	    	"max_float": "100"
+            }
+        },
+        {
+            "id": "required_PFAM_annot_perc",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "10" ],
+            "field_type": "text",
+            "text_options": {
+	    	"validate_as": "float",
+	    	"min_float": "1",
+	    	"max_float": "100"
+            }
+        },
+        {
+            "id": "required_TIGR_annot_perc",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "10" ],
+            "field_type": "text",
+            "text_options": {
+	    	"validate_as": "float",
+	    	"min_float": "1",
+	    	"max_float": "100"
+            }
+        },
+        {
+            "id": "required_SEED_annot_perc",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "50" ],
+            "field_type": "text",
+            "text_options": {
+	    	"validate_as": "float",
+	    	"min_float": "1",
+	    	"max_float": "100"
+            }
+        },
+        {
+            "id": "count_hypothetical",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "0",
+					"display": "DON'T count 'hypothetical' as annotation",
+					"id": "hypo-no",
+					"ui-name": "hypo-no"
+				},
+				{
+					"value": "1",
+					"display": "DO count 'hypothetical' as annotation",
+					"id": "hide",
+					"ui-name": "hide"
 				}
 		]
             }
@@ -8387,7 +8445,7 @@
 		    "target_property": "heatmap"
                 },
                 {
-                    "input_parameter": "vertical",
+                    "constant_value": "1",
 		    "target_property": "vertical"
                 },
                 {
@@ -8401,6 +8459,26 @@
                 {
                     "input_parameter": "log_base",
 		    "target_property": "log_base"
+                },
+                {
+                    "input_parameter": "required_COG_annot_perc",
+		    "target_property": "required_COG_annot_perc"
+                },
+                {
+                    "input_parameter": "required_PFAM_annot_perc",
+		    "target_property": "required_PFAM_annot_perc"
+                },
+                {
+                    "input_parameter": "required_TIGR_annot_perc",
+		    "target_property": "required_TIGR_annot_perc"
+                },
+                {
+                    "input_parameter": "required_SEED_annot_perc",
+		    "target_property": "required_SEED_annot_perc"
+                },
+                {
+                    "input_parameter": "count_hypothetical",
+		    "target_property": "count_hypothetical"
                 },
                 {
                     "input_parameter": "show_blanks",
