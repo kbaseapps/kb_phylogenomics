@@ -1623,19 +1623,19 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = required_annot_perc[namespace] / 100.0
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
             total_genes = genome_CDS_count_by_ref[genome_ref]
 
             for namespace in sorted(namespaces_reading.keys()):
+                fraction_requiring_annotation = required_annot_perc[namespace] / 100.0
                 if namespace == 'SEED':
                     annotation_tool = 'RAST Genome Annotation App'
                 else:
                     annotation_tool = 'Domain Annotation App'
                 if genes_with_hits_cnt[genome_ref][namespace] < fraction_requiring_annotation * total_genes:
-                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
+                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  "+str(required_annot_perc[namespace])+"% were configured in advanced parameter input required to be annotated by "+namespace+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
                     inadequate_annot_by_genome_ref[genome_ref] = True
 
             if inadequate_annot:
@@ -2788,19 +2788,19 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = required_annot_perc[namespace] / 100.0
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
             total_genes = genome_CDS_count_by_ref[genome_ref]
 
             for namespace in sorted(namespaces_reading.keys()):
+                fraction_requiring_annotation = required_annot_perc[namespace] / 100.0
                 if namespace == 'SEED':
                     annotation_tool = 'RAST Genome Annotation App'
                 else:
                     annotation_tool = 'Domain Annotation App'
                 if genes_with_hits_cnt[genome_ref][namespace] < fraction_requiring_annotation * total_genes:
-                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
+                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  "+str(required_annot_perc[namespace])+"% were configured in advanced parameter input required to be annotated by "+namespace+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
                     inadequate_annot_by_genome_ref[genome_ref] = True
 
             if inadequate_annot:
@@ -3929,19 +3929,19 @@ This module contains methods for running and visualizing results of phylogenomic
         # Alert user for any genomes that are missing annotations in a requested namespace
         #   this can happen even with a DomainAnnotation object if the namespace was skipped
         #
-        fraction_requiring_annotation = required_annot_perc[namespace] / 100.0
         inadequate_annot = []
         inadequate_annot_by_genome_ref = dict()
         for genome_ref in genome_refs:
             total_genes = genome_CDS_count_by_ref[genome_ref]
 
             for namespace in sorted(namespaces_reading.keys()):
+                fraction_requiring_annotation = required_annot_perc[namespace] / 100.0
                 if namespace == 'SEED':
                     annotation_tool = 'RAST Genome Annotation App'
                 else:
                     annotation_tool = 'Domain Annotation App'
                 if genes_with_hits_cnt[genome_ref][namespace] < fraction_requiring_annotation * total_genes:
-                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
+                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  "+str(required_annot_perc[namespace])+"% were configured in advanced parameter input required to be annotated by "+namespace+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
                     inadequate_annot_by_genome_ref[genome_ref] = True
 
             if inadequate_annot:
