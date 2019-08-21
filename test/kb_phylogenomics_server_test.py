@@ -330,7 +330,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
-    @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_01_GenomeSet(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -506,7 +506,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for GenomeSet
     ##
-    @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
     def test_view_fxn_profile_01(self):
         method = 'view_fxn_profile'
 
@@ -621,7 +621,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for FeatureSet
     ##
-    @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
     def test_view_fxn_profile_featureSet_01(self):
         method = 'view_fxn_profile_featureSet'
 
@@ -736,7 +736,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for Tree
     ##
-    @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
     def test_view_fxn_profile_phylo_01(self):
         method = 'view_fxn_profile_phylo'
 
@@ -817,7 +817,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome Circle Plot
     ##
-    @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
     def test_view_pan_circle_plot_01(self):
         method = 'view_pan_circle_plot'
 
@@ -878,7 +878,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome on Tree
     ##
-    @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
     def test_view_pan_phylo_01(self):
         method = 'view_pan_phylo'
 
@@ -940,7 +940,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Tree
     ##
-    @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
     def test_view_tree_01(self):
         method = 'view_tree'
 
@@ -993,7 +993,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Find Homologs with Genome Context
     ##
-    @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
     def test_find_homologs_with_genome_context_01(self):
         method = 'find_homologs_with_genome_context'
 
@@ -1097,7 +1097,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Get Categories auto-configure method
     ##
-    @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
     def test_get_categories(self):
         method = 'get_configure_categories'
 
