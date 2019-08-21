@@ -39,7 +39,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "required_SEED_annot_perc",
     "count_hypothetical",
     "show_blanks",
+    "display_genome_scientific_name",
     "display_genome_object_name",
+    "display_genome_object_version",
     "skip_missing_genomes",
     "enforce_genome_version_match"
 })
@@ -84,8 +86,12 @@ public class ViewFxnProfileInput {
     private Long countHypothetical;
     @JsonProperty("show_blanks")
     private Long showBlanks;
+    @JsonProperty("display_genome_scientific_name")
+    private Long displayGenomeScientificName;
     @JsonProperty("display_genome_object_name")
     private Long displayGenomeObjectName;
+    @JsonProperty("display_genome_object_version")
+    private Long displayGenomeObjectVersion;
     @JsonProperty("skip_missing_genomes")
     private Long skipMissingGenomes;
     @JsonProperty("enforce_genome_version_match")
@@ -346,6 +352,21 @@ public class ViewFxnProfileInput {
         return this;
     }
 
+    @JsonProperty("display_genome_scientific_name")
+    public Long getDisplayGenomeScientificName() {
+        return displayGenomeScientificName;
+    }
+
+    @JsonProperty("display_genome_scientific_name")
+    public void setDisplayGenomeScientificName(Long displayGenomeScientificName) {
+        this.displayGenomeScientificName = displayGenomeScientificName;
+    }
+
+    public ViewFxnProfileInput withDisplayGenomeScientificName(Long displayGenomeScientificName) {
+        this.displayGenomeScientificName = displayGenomeScientificName;
+        return this;
+    }
+
     @JsonProperty("display_genome_object_name")
     public Long getDisplayGenomeObjectName() {
         return displayGenomeObjectName;
@@ -358,6 +379,21 @@ public class ViewFxnProfileInput {
 
     public ViewFxnProfileInput withDisplayGenomeObjectName(Long displayGenomeObjectName) {
         this.displayGenomeObjectName = displayGenomeObjectName;
+        return this;
+    }
+
+    @JsonProperty("display_genome_object_version")
+    public Long getDisplayGenomeObjectVersion() {
+        return displayGenomeObjectVersion;
+    }
+
+    @JsonProperty("display_genome_object_version")
+    public void setDisplayGenomeObjectVersion(Long displayGenomeObjectVersion) {
+        this.displayGenomeObjectVersion = displayGenomeObjectVersion;
+    }
+
+    public ViewFxnProfileInput withDisplayGenomeObjectVersion(Long displayGenomeObjectVersion) {
+        this.displayGenomeObjectVersion = displayGenomeObjectVersion;
         return this;
     }
 
@@ -403,7 +439,7 @@ public class ViewFxnProfileInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", requiredCOGAnnotPerc=")+ requiredCOGAnnotPerc)+", requiredPFAMAnnotPerc=")+ requiredPFAMAnnotPerc)+", requiredTIGRAnnotPerc=")+ requiredTIGRAnnotPerc)+", requiredSEEDAnnotPerc=")+ requiredSEEDAnnotPerc)+", countHypothetical=")+ countHypothetical)+", showBlanks=")+ showBlanks)+", displayGenomeObjectName=")+ displayGenomeObjectName)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((((((((((((((((("ViewFxnProfileInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", requiredCOGAnnotPerc=")+ requiredCOGAnnotPerc)+", requiredPFAMAnnotPerc=")+ requiredPFAMAnnotPerc)+", requiredTIGRAnnotPerc=")+ requiredTIGRAnnotPerc)+", requiredSEEDAnnotPerc=")+ requiredSEEDAnnotPerc)+", countHypothetical=")+ countHypothetical)+", showBlanks=")+ showBlanks)+", displayGenomeScientificName=")+ displayGenomeScientificName)+", displayGenomeObjectName=")+ displayGenomeObjectName)+", displayGenomeObjectVersion=")+ displayGenomeObjectVersion)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

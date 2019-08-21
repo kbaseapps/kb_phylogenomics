@@ -342,7 +342,9 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -383,7 +385,9 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -488,7 +492,9 @@ view_fxn_profile_featureSet_Input is a reference to a hash where the following k
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -529,7 +535,9 @@ view_fxn_profile_featureSet_Input is a reference to a hash where the following k
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -634,7 +642,9 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -675,7 +685,9 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -1512,7 +1524,9 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -1573,7 +1587,9 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
+	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 	display_genome_object_name has a value which is a kb_phylogenomics.bool
+	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -2086,7 +2102,9 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 display_genome_object_name has a value which is a kb_phylogenomics.bool
+display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2113,7 +2131,9 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 display_genome_object_name has a value which is a kb_phylogenomics.bool
+display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2191,7 +2211,9 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 display_genome_object_name has a value which is a kb_phylogenomics.bool
+display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2218,7 +2240,9 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 display_genome_object_name has a value which is a kb_phylogenomics.bool
+display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2296,7 +2320,9 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 display_genome_object_name has a value which is a kb_phylogenomics.bool
+display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2323,7 +2349,9 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
+display_genome_scientific_name has a value which is a kb_phylogenomics.bool
 display_genome_object_name has a value which is a kb_phylogenomics.bool
+display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 

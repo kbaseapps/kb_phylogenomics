@@ -95,7 +95,9 @@ module kb_phylogenomics {
 	bool             count_hypothetical;
 
 	bool             show_blanks;
+	bool             display_genome_scientific_name;
 	bool             display_genome_object_name;
+	bool             display_genome_object_version;
 	bool             skip_missing_genomes;
 	bool             enforce_genome_version_match;
     } view_fxn_profile_Input;
@@ -135,7 +137,9 @@ module kb_phylogenomics {
 	bool             count_hypothetical;
 
 	bool             show_blanks;
+	bool             display_genome_scientific_name;
 	bool             display_genome_object_name;
+	bool             display_genome_object_version;
 	bool             skip_missing_genomes;
 	bool             enforce_genome_version_match;
     } view_fxn_profile_featureSet_Input;
@@ -176,7 +180,9 @@ module kb_phylogenomics {
 	bool             count_hypothetical;
 
 	bool             show_blanks;
+	bool             display_genome_scientific_name;
 	bool             display_genome_object_name;
+	bool             display_genome_object_version;
 	bool             skip_missing_genomes;
 	bool             enforce_genome_version_match;
     } view_fxn_profile_phylo_Input;
