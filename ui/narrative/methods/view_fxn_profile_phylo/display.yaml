@@ -119,11 +119,21 @@ parameters :
             Empty categories
         short-hint : |
             Show categories or families that have no counts.
+    display_genome_scientific_name :
+        ui-name : |
+            Display genome scientific name
+        short-hint : |
+            Use the scientific name of the Genome in the function profile report
     display_genome_object_name :
         ui-name : |
             Display genome object name
         short-hint : |
-            In addition to the Scientific Name, include the name of the Genome Object in the function profile report
+            Use the name of the Genome Object in the function profile report
+    display_genome_object_version :
+        ui-name : |
+            Display genome object version
+        short-hint : |
+            Append the version of the Genome object to its name in the function profile report
     skip_missing_genomes :
         ui-name : |
             Skip missing genomes
