@@ -603,6 +603,9 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'required_SEED_annot_perc': "33",
                    'count_hypothetical': "0",
                    'show_blanks': "0",
+                   'display_genome_scientific_name': "1",
+                   'display_genome_object_name': "1",
+                   'display_genome_object_version': "1",
                    'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
                }
@@ -718,6 +721,9 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'required_SEED_annot_perc': "33",
                    'count_hypothetical': "0",
                    'show_blanks': "0",
+                   'display_genome_scientific_name': "1",
+                   'display_genome_object_name': "1",
+                   'display_genome_object_version': "1",
                    'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
                }
@@ -799,6 +805,9 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'required_SEED_annot_perc': "33",
                    'count_hypothetical': "0",
                    'show_blanks': "0",
+                   'display_genome_scientific_name': "1",
+                   'display_genome_object_name': "1",
+                   'display_genome_object_version': "1",
                    'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
                }
