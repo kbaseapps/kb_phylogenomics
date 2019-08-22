@@ -12,6 +12,7 @@ __Changes__
 - VFP Apps: option to include Genome object version in profile table
 - VFP Apps: option to hide Genome Scientific Name in profile table
 - VFP Apps: check for Domain Annotation in current workspace first
+- VFP GenomeSet and FeatureSet: sort by genome disp name and require unique
 - Domain Annotation for Genomes App: allow Species Tree as input
 
 ### Version 1.3.2

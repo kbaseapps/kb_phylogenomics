@@ -1932,6 +1932,34 @@ This module contains methods for running and visualizing results of phylogenomic
         if len(group_order) > 0:
             show_groups = True
 
+        # sort genomes by display name
+        genome_ref_by_disp_name = dict()
+        for genome_ref in genome_refs:
+            genome_obj_name = genome_obj_name_by_ref[genome_ref]
+            genome_sci_name = genome_sci_name_by_ref[genome_ref]
+            [ws_id, obj_id, genome_obj_version] = genome_ref.split('/')
+            genome_disp_name = ''
+            if params.get('display_genome_object_name') \
+               and int(params.get('display_genome_object_name')) == 1:
+                genome_disp_name += genome_obj_name
+                if params.get('display_genome_object_version') \
+                   and int(params.get('display_genome_object_version')) == 1:
+                    genome_disp_name += '.v'+str(genome_obj_version)
+
+                if params.get('display_genome_scientific_name') \
+                   and int(params.get('display_genome_scientific_name')) == 1:
+                    genome_disp_name += ': '+genome_sci_name
+            else:
+                genome_disp_name = genome_sci_name
+
+            if genome_disp_name in genome_ref_by_disp_name:
+                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report under advanced parameters"
+                self.log (console, "ABORT: "+error_msg)
+                raise ValueError ("ABORT: "+error_msg)
+
+            genome_ref_by_disp_name[genome_disp_name] = genome_ref
+
+        # html report buffer
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
@@ -2039,23 +2067,8 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['</tr>']
 
             # rest of rows
-            for genome_ref in genome_refs:
-                genome_obj_name = genome_obj_name_by_ref[genome_ref]
-                genome_sci_name = genome_sci_name_by_ref[genome_ref]
-                [ws_id, obj_id, genome_obj_version] = genome_ref.split('/')
-                genome_disp_name = ''
-                if params.get('display_genome_object_name') \
-                   and int(params.get('display_genome_object_name')) == 1:
-                    genome_disp_name += genome_obj_name
-                    if params.get('display_genome_object_version') \
-                       and int(params.get('display_genome_object_version')) == 1:
-                        genome_disp_name += '.v'+str(genome_obj_version)
-
-                    if params.get('display_genome_scientific_name') \
-                       and int(params.get('display_genome_scientific_name')) == 1:
-                        genome_disp_name += ': '+genome_sci_name
-                else:
-                    genome_disp_name = genome_sci_name
+            for genome_disp_name in sorted(genome_ref_by_disp_name.keys()):
+                genome_ref = genome_ref_by_disp_name[genome_disp_name]
 
                 html_report_lines += ['<tr>']
                 html_report_lines += ['<td align=right><font color="' + text_color + '" size=' +
@@ -2438,6 +2451,7 @@ This module contains methods for running and visualizing results of phylogenomic
         genome_sci_name_by_ref = dict()
         genome_CDS_count_by_ref = dict()
         uniq_genome_ws_ids = dict()
+        domain_annot_obj_by_genome_ref = dict()
 
         dom_hits = dict()  # initialize dom_hits here because reading SEED within genome
         genes_with_hits_cnt = dict()
@@ -3130,6 +3144,34 @@ This module contains methods for running and visualizing results of phylogenomic
         if len(group_order) > 0:
             show_groups = True
 
+        # sort genomes by display name
+        genome_ref_by_disp_name = dict()
+        for genome_ref in genome_refs:
+            genome_obj_name = genome_obj_name_by_ref[genome_ref]
+            genome_sci_name = genome_sci_name_by_ref[genome_ref]
+            [ws_id, obj_id, genome_obj_version] = genome_ref.split('/')
+            genome_disp_name = ''
+            if params.get('display_genome_object_name') \
+               and int(params.get('display_genome_object_name')) == 1:
+                genome_disp_name += genome_obj_name
+                if params.get('display_genome_object_version') \
+                   and int(params.get('display_genome_object_version')) == 1:
+                    genome_disp_name += '.v'+str(genome_obj_version)
+
+                if params.get('display_genome_scientific_name') \
+                   and int(params.get('display_genome_scientific_name')) == 1:
+                    genome_disp_name += ': '+genome_sci_name
+            else:
+                genome_disp_name = genome_sci_name
+
+            if genome_disp_name in genome_ref_by_disp_name:
+                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report under advanced parameters"
+                self.log (console, "ABORT: "+error_msg)
+                raise ValueError ("ABORT: "+error_msg)
+
+            genome_ref_by_disp_name[genome_disp_name] = genome_ref
+
+        # html report buffer
         html_report_lines = []
         html_report_lines += ['<html>']
         html_report_lines += ['<head>']
@@ -3237,23 +3279,8 @@ This module contains methods for running and visualizing results of phylogenomic
             html_report_lines += ['</tr>']
 
             # rest of rows
-            for genome_ref in genome_refs:
-                genome_obj_name = genome_obj_name_by_ref[genome_ref]
-                genome_sci_name = genome_sci_name_by_ref[genome_ref]
-                [ws_id, obj_id, genome_obj_version] = genome_ref.split('/')
-                genome_disp_name = ''
-                if params.get('display_genome_object_name') \
-                   and int(params.get('display_genome_object_name')) == 1:
-                    genome_disp_name += genome_obj_name
-                    if params.get('display_genome_object_version') \
-                       and int(params.get('display_genome_object_version')) == 1:
-                        genome_disp_name += '.v'+str(genome_obj_version)
-
-                    if params.get('display_genome_scientific_name') \
-                       and int(params.get('display_genome_scientific_name')) == 1:
-                        genome_disp_name += ': '+genome_sci_name
-                else:
-                    genome_disp_name = genome_sci_name
+            for genome_disp_name in sorted(genome_ref_by_disp_name.keys()):
+                genome_ref = genome_ref_by_disp_name[genome_disp_name]
 
                 html_report_lines += ['<tr>']
                 html_report_lines += ['<td align=right><font color="' + text_color + '" size=' +
@@ -3648,6 +3675,7 @@ This module contains methods for running and visualizing results of phylogenomic
         genome_sci_name_by_id = dict()
         genome_CDS_count_by_ref = dict()
         uniq_genome_ws_ids = dict()
+        domain_annot_obj_by_genome_ref = dict()
 
         dom_hits = dict()  # initialize dom_hits here because reading SEED within genome
         genes_with_hits_cnt = dict()
