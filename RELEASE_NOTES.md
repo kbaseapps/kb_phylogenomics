@@ -8,9 +8,7 @@ __Changes__
 - VFP Apps: added options to check for reasonable fraction of ALL genes receiving annotations within each Domain Namespace
 - VFP Apps: removed duplicate TIGR roles from input options
 - VFP Apps: added SEED functional categories to displayed SEED role input options
-- VFP Apps: option to include Genome object name in profile table
-- VFP Apps: option to include Genome object version in profile table
-- VFP Apps: option to hide Genome Scientific Name in profile table
+- VFP Apps: added option to specify Genome Obj Name, Obj Ver, and/or Sci name in report
 - VFP Apps: check for Domain Annotation in current workspace first
 - VFP GenomeSet and FeatureSet: sort by genome disp name and require unique
 - Domain Annotation for Genomes App: allow Species Tree as input

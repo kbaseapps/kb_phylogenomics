@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "input_featureSet_ref",
     "namespace",
     "custom_target_fams",
+    "genome_disp_name_config",
     "count_category",
     "heatmap",
     "vertical",
@@ -39,9 +40,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "required_SEED_annot_perc",
     "count_hypothetical",
     "show_blanks",
-    "display_genome_scientific_name",
-    "display_genome_object_name",
-    "display_genome_object_version",
     "skip_missing_genomes",
     "enforce_genome_version_match"
 })
@@ -62,6 +60,8 @@ public class ViewFxnProfileFeatureSetInput {
      */
     @JsonProperty("custom_target_fams")
     private CustomTargetFams customTargetFams;
+    @JsonProperty("genome_disp_name_config")
+    private String genomeDispNameConfig;
     @JsonProperty("count_category")
     private String countCategory;
     @JsonProperty("heatmap")
@@ -86,12 +86,6 @@ public class ViewFxnProfileFeatureSetInput {
     private Long countHypothetical;
     @JsonProperty("show_blanks")
     private Long showBlanks;
-    @JsonProperty("display_genome_scientific_name")
-    private Long displayGenomeScientificName;
-    @JsonProperty("display_genome_object_name")
-    private Long displayGenomeObjectName;
-    @JsonProperty("display_genome_object_version")
-    private Long displayGenomeObjectVersion;
     @JsonProperty("skip_missing_genomes")
     private Long skipMissingGenomes;
     @JsonProperty("enforce_genome_version_match")
@@ -169,6 +163,21 @@ public class ViewFxnProfileFeatureSetInput {
 
     public ViewFxnProfileFeatureSetInput withCustomTargetFams(CustomTargetFams customTargetFams) {
         this.customTargetFams = customTargetFams;
+        return this;
+    }
+
+    @JsonProperty("genome_disp_name_config")
+    public String getGenomeDispNameConfig() {
+        return genomeDispNameConfig;
+    }
+
+    @JsonProperty("genome_disp_name_config")
+    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+    }
+
+    public ViewFxnProfileFeatureSetInput withGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
         return this;
     }
 
@@ -352,51 +361,6 @@ public class ViewFxnProfileFeatureSetInput {
         return this;
     }
 
-    @JsonProperty("display_genome_scientific_name")
-    public Long getDisplayGenomeScientificName() {
-        return displayGenomeScientificName;
-    }
-
-    @JsonProperty("display_genome_scientific_name")
-    public void setDisplayGenomeScientificName(Long displayGenomeScientificName) {
-        this.displayGenomeScientificName = displayGenomeScientificName;
-    }
-
-    public ViewFxnProfileFeatureSetInput withDisplayGenomeScientificName(Long displayGenomeScientificName) {
-        this.displayGenomeScientificName = displayGenomeScientificName;
-        return this;
-    }
-
-    @JsonProperty("display_genome_object_name")
-    public Long getDisplayGenomeObjectName() {
-        return displayGenomeObjectName;
-    }
-
-    @JsonProperty("display_genome_object_name")
-    public void setDisplayGenomeObjectName(Long displayGenomeObjectName) {
-        this.displayGenomeObjectName = displayGenomeObjectName;
-    }
-
-    public ViewFxnProfileFeatureSetInput withDisplayGenomeObjectName(Long displayGenomeObjectName) {
-        this.displayGenomeObjectName = displayGenomeObjectName;
-        return this;
-    }
-
-    @JsonProperty("display_genome_object_version")
-    public Long getDisplayGenomeObjectVersion() {
-        return displayGenomeObjectVersion;
-    }
-
-    @JsonProperty("display_genome_object_version")
-    public void setDisplayGenomeObjectVersion(Long displayGenomeObjectVersion) {
-        this.displayGenomeObjectVersion = displayGenomeObjectVersion;
-    }
-
-    public ViewFxnProfileFeatureSetInput withDisplayGenomeObjectVersion(Long displayGenomeObjectVersion) {
-        this.displayGenomeObjectVersion = displayGenomeObjectVersion;
-        return this;
-    }
-
     @JsonProperty("skip_missing_genomes")
     public Long getSkipMissingGenomes() {
         return skipMissingGenomes;
@@ -439,7 +403,7 @@ public class ViewFxnProfileFeatureSetInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((((((((((((((((((((((("ViewFxnProfileFeatureSetInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", requiredCOGAnnotPerc=")+ requiredCOGAnnotPerc)+", requiredPFAMAnnotPerc=")+ requiredPFAMAnnotPerc)+", requiredTIGRAnnotPerc=")+ requiredTIGRAnnotPerc)+", requiredSEEDAnnotPerc=")+ requiredSEEDAnnotPerc)+", countHypothetical=")+ countHypothetical)+", showBlanks=")+ showBlanks)+", displayGenomeScientificName=")+ displayGenomeScientificName)+", displayGenomeObjectName=")+ displayGenomeObjectName)+", displayGenomeObjectVersion=")+ displayGenomeObjectVersion)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((((((((((((("ViewFxnProfileFeatureSetInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", requiredCOGAnnotPerc=")+ requiredCOGAnnotPerc)+", requiredPFAMAnnotPerc=")+ requiredPFAMAnnotPerc)+", requiredTIGRAnnotPerc=")+ requiredTIGRAnnotPerc)+", requiredSEEDAnnotPerc=")+ requiredSEEDAnnotPerc)+", countHypothetical=")+ countHypothetical)+", showBlanks=")+ showBlanks)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

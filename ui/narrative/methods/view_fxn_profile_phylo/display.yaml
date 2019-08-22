@@ -64,6 +64,11 @@ parameters :
             SEED Functional Group
         short-hint : |
             Select SEED-defined Functional Category from the dropdown list, e.g., Alanine Biosynthesis, for displaying hits in the viewer. Requires RAST annotated genomes.
+    genome_disp_name_config :
+        ui-name : |
+            Display genome as
+        short-hint : |
+            Use the object name, object version, and/or scientific name of the Genome in the function profile report
     count_category :
         ui-name : |
             View values as
@@ -119,21 +124,6 @@ parameters :
             Empty categories
         short-hint : |
             Show categories or families that have no counts.
-    display_genome_scientific_name :
-        ui-name : |
-            Display genome scientific name
-        short-hint : |
-            Use the scientific name of the Genome in the function profile report
-    display_genome_object_name :
-        ui-name : |
-            Display genome object name
-        short-hint : |
-            Use the name of the Genome Object in the function profile report
-    display_genome_object_version :
-        ui-name : |
-            Display genome object version
-        short-hint : |
-            Append the version of the Genome object to its name in the function profile report
     skip_missing_genomes :
         ui-name : |
             Skip missing genomes
