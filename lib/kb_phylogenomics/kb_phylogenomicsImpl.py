@@ -892,6 +892,8 @@ This module contains methods for running and visualizing results of phylogenomic
         console = []
         self.log(console, 'Running run_DomainAnnotation_Sets() with params=')
         self.log(console, "\n" + pformat(params))
+
+        # ws obj info indices
         [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
          WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
 
@@ -1010,22 +1012,19 @@ This module contains methods for running and visualizing results of phylogenomic
         dom_annot_obj_info_list = []
         # read local workspace first
         try:
-            dom_annot_obj_info_list.append(wsClient.list_objects(
+            dom_annot_obj_info_list.extend(wsClient.list_objects(
                 {'workspaces': [params['workspace_name']], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
         except Exception as e:
             raise ValueError("Unable to list DomainAnnotation objects from workspace: " + str(workspace_name) + " " + str(e))
         # read any remote workspaces
         for ws_id in uniq_genome_ws_ids.keys():
             try:
-                dom_annot_obj_info_list.append(wsClient.list_objects(
+                dom_annot_obj_info_list.extend(wsClient.list_objects(
                     {'ids': [ws_id], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
             except Exception as e:
                 raise ValueError("Unable to list DomainAnnotation objects from workspace: " + str(ws_id) + " " + str(e))
                 
         for info in dom_annot_obj_info_list:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-             WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-
             dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
             try:
                 domain_data = wsClient.get_objects([{'ref': dom_annot_ref}])[0]['data']
@@ -1147,6 +1146,10 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_fxn_profile(): ')
         self.log(console, "\n" + pformat(params))
 
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
         token = ctx['token']
@@ -1236,8 +1239,6 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         input_ref = params['input_genomeSet_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_name = input_obj_info[NAME_I]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
@@ -1285,8 +1286,6 @@ This module contains methods for running and visualizing results of phylogenomic
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
                 input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
                 input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
@@ -1471,7 +1470,7 @@ This module contains methods for running and visualizing results of phylogenomic
             dom_annot_obj_info_list = []
             # read local workspace first
             try:
-                dom_annot_obj_info_list.append(wsClient.list_objects(
+                dom_annot_obj_info_list.extend(wsClient.list_objects(
                     {'workspaces': [params['workspace_name']], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
             except Exception as e:
                 raise ValueError("Unable to list DomainAnnotation objects from workspace: " +
@@ -1479,16 +1478,13 @@ This module contains methods for running and visualizing results of phylogenomic
             # read any remaining remote workspaces
             for ws_id in uniq_genome_ws_ids.keys():
                 try:
-                    dom_annot_obj_info_list.append(wsClient.list_objects(
+                    dom_annot_obj_info_list.extend(wsClient.list_objects(
                         {'ids': [ws_id], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
                 except Exception as e:
                     raise ValueError("Unable to list DomainAnnotation objects from workspace: " +
                                      str(ws_id) + " " + str(e))
 
             for info in dom_annot_obj_info_list:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                 WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-
                 dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
                 try:
                     domain_data = wsClient.get_objects([{'ref': dom_annot_ref}])[0]['data']
@@ -2046,14 +2042,14 @@ This module contains methods for running and visualizing results of phylogenomic
             for genome_ref in genome_refs:
                 genome_obj_name = genome_obj_name_by_ref[genome_ref]
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
-                [ws_id, obj_id, version] = genome_ref.split('/')
+                [ws_id, obj_id, genome_obj_version] = genome_ref.split('/')
                 genome_disp_name = ''
                 if params.get('display_genome_object_name') \
                    and int(params.get('display_genome_object_name')) == 1:
                     genome_disp_name += genome_obj_name
                     if params.get('display_genome_object_version') \
                        and int(params.get('display_genome_object_version')) == 1:
-                        genome_disp_name += '.v'+genome_obj_version
+                        genome_disp_name += '.v'+str(genome_obj_version)
 
                     if params.get('display_genome_scientific_name') \
                        and int(params.get('display_genome_scientific_name')) == 1:
@@ -2311,6 +2307,10 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_fxn_profile_featureSet(): ')
         self.log(console, "\n" + pformat(params))
 
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
         token = ctx['token']
@@ -2400,8 +2400,6 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         input_ref = params['input_featureSet_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_name = input_obj_info[NAME_I]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
@@ -2454,8 +2452,6 @@ This module contains methods for running and visualizing results of phylogenomic
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
                 input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
                 input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
@@ -2666,7 +2662,7 @@ This module contains methods for running and visualizing results of phylogenomic
             dom_annot_obj_info_list = []
             # read local workspace first
             try:
-                dom_annot_obj_info_list.append(wsClient.list_objects(
+                dom_annot_obj_info_list.extend(wsClient.list_objects(
                     {'workspaces': [params['workspace_name']], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
             except Exception as e:
                 raise ValueError("Unable to list DomainAnnotation objects from workspace: " +
@@ -2674,16 +2670,13 @@ This module contains methods for running and visualizing results of phylogenomic
             # read any remaining remote workspaces
             for ws_id in uniq_genome_ws_ids.keys():
                 try:
-                    dom_annot_obj_info_list.append(wsClient.list_objects(
+                    dom_annot_obj_info_list.extend(wsClient.list_objects(
                         {'ids': [ws_id], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
                 except Exception as e:
                     raise ValueError("Unable to list DomainAnnotation objects from workspace: " +
                                      str(ws_id) + " " + str(e))
 
             for info in dom_annot_obj_info_list:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                 WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-
                 dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
                 try:
                     domain_data = wsClient.get_objects([{'ref': dom_annot_ref}])[0]['data']
@@ -3247,14 +3240,14 @@ This module contains methods for running and visualizing results of phylogenomic
             for genome_ref in genome_refs:
                 genome_obj_name = genome_obj_name_by_ref[genome_ref]
                 genome_sci_name = genome_sci_name_by_ref[genome_ref]
-                [ws_id, obj_id, version] = genome_ref.split('/')
+                [ws_id, obj_id, genome_obj_version] = genome_ref.split('/')
                 genome_disp_name = ''
                 if params.get('display_genome_object_name') \
                    and int(params.get('display_genome_object_name')) == 1:
                     genome_disp_name += genome_obj_name
                     if params.get('display_genome_object_version') \
                        and int(params.get('display_genome_object_version')) == 1:
-                        genome_disp_name += '.v'+genome_obj_version
+                        genome_disp_name += '.v'+str(genome_obj_version)
 
                     if params.get('display_genome_scientific_name') \
                        and int(params.get('display_genome_scientific_name')) == 1:
@@ -3513,6 +3506,10 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_fxn_profile_phylo(): ')
         self.log(console, "\n" + pformat(params))
 
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
         token = ctx['token']
@@ -3606,8 +3603,6 @@ This module contains methods for running and visualizing results of phylogenomic
         input_ref = params['input_speciesTree_ref']
         speciesTree_name = None
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_name = input_obj_info[NAME_I]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
@@ -3667,8 +3662,6 @@ This module contains methods for running and visualizing results of phylogenomic
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
                 input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
                 input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
@@ -3857,7 +3850,7 @@ This module contains methods for running and visualizing results of phylogenomic
             dom_annot_obj_info_list = []
             # read local workspace first
             try:
-                dom_annot_obj_info_list.append(wsClient.list_objects(
+                dom_annot_obj_info_list.extend(wsClient.list_objects(
                     {'workspaces': [params['workspace_name']], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
             except Exception as e:
                 raise ValueError("Unable to list DomainAnnotation objects from workspace: " +
@@ -3865,16 +3858,13 @@ This module contains methods for running and visualizing results of phylogenomic
             # read any remaining remote workspaces
             for ws_id in uniq_genome_ws_ids.keys():
                 try:
-                    dom_annot_obj_info_list.append(wsClient.list_objects(
+                    dom_annot_obj_info_list.extend(wsClient.list_objects(
                         {'ids': [ws_id], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
                 except Exception as e:
                     raise ValueError("Unable to list DomainAnnotation objects from workspace: " +
                                      str(ws_id) + " " + str(e))
 
             for info in dom_annot_obj_info_list:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                 WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
-
                 dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
                 try:
                     domain_data = wsClient.get_objects([{'ref': dom_annot_ref}])[0]['data']
@@ -4348,14 +4338,14 @@ This module contains methods for running and visualizing results of phylogenomic
                 n.name = None
                 genome_obj_name = genome_obj_name_by_id[genome_id]
                 genome_sci_name = genome_sci_name_by_id[genome_id]
-                [ws_id, obj_id, version] = genome_ref_by_id[genome_id].split('/')
+                [ws_id, obj_id, genome_obj_version] = genome_ref_by_id[genome_id].split('/')
                 genome_disp_name = ''
                 if params.get('display_genome_object_name') \
                    and int(params.get('display_genome_object_name')) == 1:
                     genome_disp_name += genome_obj_name
                     if params.get('display_genome_object_version') \
                        and int(params.get('display_genome_object_version')) == 1:
-                        genome_disp_name += '.v'+genome_obj_version
+                        genome_disp_name += '.v'+str(genome_obj_version)
 
                     if params.get('display_genome_scientific_name') \
                        and int(params.get('display_genome_scientific_name')) == 1:
@@ -4836,6 +4826,10 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_pan_circle_plot(): ')
         self.log(console, "\n" + pformat(params))
 
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
         token = ctx['token']
@@ -4879,8 +4873,6 @@ This module contains methods for running and visualizing results of phylogenomic
         base_genome_ref = input_ref = params['input_genome_ref']
         base_genome_obj_name = None
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             base_genome_obj_name = input_obj_info[NAME_I]
@@ -4903,8 +4895,6 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "GETTING PANGENOME OBJECT")
         input_ref = params['input_pangenome_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             pg_obj_name = input_obj_info[NAME_I]
@@ -5274,8 +5264,6 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # get assembly obj and read contig ids and lengths (both contigset obj and assembly obj have list of contigs that
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
                 #objects_list = wsClient.get_objects2({'objects':[{'ref':input_ref}]})['data']
                 ass_obj = wsClient.get_objects([{'ref': base_genome_assembly_ref}])[0]['data']
             except:
@@ -5868,6 +5856,10 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, 'Running view_pan_phylo(): ')
         self.log(console, "\n" + pformat(params))
 
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'release'
         token = ctx['token']
@@ -5909,8 +5901,6 @@ This module contains methods for running and visualizing results of phylogenomic
         input_ref = params['input_speciesTree_ref']
         speciesTree_name = None
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             speciesTree_name = input_obj_info[NAME_I]
@@ -5963,8 +5953,6 @@ This module contains methods for running and visualizing results of phylogenomic
             # get genome object name
             input_ref = genome_ref
             try:
-                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                    WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
                 input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
                 input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
@@ -5994,8 +5982,6 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "GETTING PANGENOME OBJECT")
         input_ref = params['input_pangenome_ref']
         try:
-            [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-                WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             pg_obj_name = input_obj_info[NAME_I]
@@ -6617,19 +6603,24 @@ This module contains methods for running and visualizing results of phylogenomic
         console = []
         invalid_msgs = []
         created_objects = []
+        report = ''
         self.log(console, 'Running find_homologs_with_genome_context() with params=')
         self.log(console, "\n" + pformat(params))
-        report = ''
+
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
+        # paths
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
         output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-
+            
+        # clients
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'beta'
         #SERVICE_VER = 'release'
-        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
-         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
         token = ctx['token']
         try:
             wsClient = workspaceService(self.workspaceURL, token=token)
