@@ -591,6 +591,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                                        },
                    'input_genomeSet_ref': genomeSet_ref,
                    'namespace': 'custom',
+                   'genome_disp_name_config': "obj_name_ver_sci_name",
                    'count_category': "perc_annot",
                    'heatmap': "1",
                    'vertical': "1",
@@ -603,9 +604,6 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'required_SEED_annot_perc': "33",
                    'count_hypothetical': "0",
                    'show_blanks': "0",
-                   'display_genome_scientific_name': "1",
-                   'display_genome_object_name': "1",
-                   'display_genome_object_version': "1",
                    'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
                }
@@ -708,6 +706,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                                        },
                    'input_featureSet_ref': featureSet_ref,
                    'namespace': 'COG',
+                   'genome_disp_name_config': "obj_name",
                    #'count_category': "perc_annot",
                    'count_category': "raw_count",
                    'heatmap': "1",
@@ -721,9 +720,6 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'required_SEED_annot_perc': "33",
                    'count_hypothetical': "0",
                    'show_blanks': "0",
-                   'display_genome_scientific_name': "1",
-                   'display_genome_object_name': "1",
-                   'display_genome_object_version': "1",
                    'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
                }
@@ -793,6 +789,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                                        },
                    'input_speciesTree_ref': tree_ref,
                    'namespace': 'custom',
+                   'genome_disp_name_config': "sci_name",
                    'count_category': "perc_annot",
                    'heatmap': "1",
                    'vertical': "1",
@@ -805,9 +802,6 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'required_SEED_annot_perc': "33",
                    'count_hypothetical': "0",
                    'show_blanks': "0",
-                   'display_genome_scientific_name': "1",
-                   'display_genome_object_name': "1",
-                   'display_genome_object_version': "1",
                    'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
                }

@@ -81,23 +81,20 @@ module kb_phylogenomics {
 
 	string           namespace;
 	CustomTargetFams custom_target_fams;
+        string           genome_disp_name_config;
 	string           count_category;
 	bool             heatmap;
+
 	bool             vertical;
 	bool             top_hit;
 	float            e_value;
 	float            log_base;
-
 	float            required_COG_annot_perc;
 	float            required_PFAM_annot_perc;
 	float            required_TIGR_annot_perc;
 	float            required_SEED_annot_perc;
 	bool             count_hypothetical;
-
 	bool             show_blanks;
-	bool             display_genome_scientific_name;
-	bool             display_genome_object_name;
-	bool             display_genome_object_version;
 	bool             skip_missing_genomes;
 	bool             enforce_genome_version_match;
     } view_fxn_profile_Input;
@@ -123,23 +120,20 @@ module kb_phylogenomics {
 
 	string           namespace;
 	CustomTargetFams custom_target_fams;
+        string           genome_disp_name_config;
 	string           count_category;
 	bool             heatmap;
+
 	bool             vertical;
 	bool             top_hit;
 	float            e_value;
 	float            log_base;
-
 	float            required_COG_annot_perc;
 	float            required_PFAM_annot_perc;
 	float            required_TIGR_annot_perc;
 	float            required_SEED_annot_perc;
 	bool             count_hypothetical;
-
 	bool             show_blanks;
-	bool             display_genome_scientific_name;
-	bool             display_genome_object_name;
-	bool             display_genome_object_version;
 	bool             skip_missing_genomes;
 	bool             enforce_genome_version_match;
     } view_fxn_profile_featureSet_Input;
@@ -166,23 +160,20 @@ module kb_phylogenomics {
 
 	string           namespace;
 	CustomTargetFams custom_target_fams;
+        string           genome_disp_name_config;
 	string           count_category;
 	bool             heatmap;
+
 	bool             vertical;
 	bool             top_hit;
 	float            e_value;
 	float            log_base;
-
 	float            required_COG_annot_perc;
 	float            required_PFAM_annot_perc;
 	float            required_TIGR_annot_perc;
 	float            required_SEED_annot_perc;
 	bool             count_hypothetical;
-
 	bool             show_blanks;
-	bool             display_genome_scientific_name;
-	bool             display_genome_object_name;
-	bool             display_genome_object_version;
 	bool             skip_missing_genomes;
 	bool             enforce_genome_version_match;
     } view_fxn_profile_phylo_Input;

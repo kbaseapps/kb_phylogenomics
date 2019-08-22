@@ -330,6 +330,7 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	genome_disp_name_config has a value which is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -342,9 +343,6 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
-	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -373,6 +371,7 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	genome_disp_name_config has a value which is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -385,9 +384,6 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
-	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -480,6 +476,7 @@ view_fxn_profile_featureSet_Input is a reference to a hash where the following k
 	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	genome_disp_name_config has a value which is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -492,9 +489,6 @@ view_fxn_profile_featureSet_Input is a reference to a hash where the following k
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
-	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -523,6 +517,7 @@ view_fxn_profile_featureSet_Input is a reference to a hash where the following k
 	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	genome_disp_name_config has a value which is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -535,9 +530,6 @@ view_fxn_profile_featureSet_Input is a reference to a hash where the following k
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
-	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -630,6 +622,7 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	genome_disp_name_config has a value which is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -642,9 +635,6 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
-	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -673,6 +663,7 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	genome_disp_name_config has a value which is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -685,9 +676,6 @@ view_fxn_profile_phylo_Input is a reference to a hash where the following keys a
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
-	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -1512,6 +1500,7 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	genome_disp_name_config has a value which is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -1524,9 +1513,6 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
-	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -1575,6 +1561,7 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	namespace has a value which is a string
 	custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+	genome_disp_name_config has a value which is a string
 	count_category has a value which is a string
 	heatmap has a value which is a kb_phylogenomics.bool
 	vertical has a value which is a kb_phylogenomics.bool
@@ -1587,9 +1574,6 @@ view_fxn_profile_Input is a reference to a hash where the following keys are def
 	required_SEED_annot_perc has a value which is a float
 	count_hypothetical has a value which is a kb_phylogenomics.bool
 	show_blanks has a value which is a kb_phylogenomics.bool
-	display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_name has a value which is a kb_phylogenomics.bool
-	display_genome_object_version has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 workspace_name is a string
@@ -2090,6 +2074,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+genome_disp_name_config has a value which is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -2102,9 +2087,6 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
-display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-display_genome_object_name has a value which is a kb_phylogenomics.bool
-display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2119,6 +2101,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+genome_disp_name_config has a value which is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -2131,9 +2114,6 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
-display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-display_genome_object_name has a value which is a kb_phylogenomics.bool
-display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2199,6 +2179,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+genome_disp_name_config has a value which is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -2211,9 +2192,6 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
-display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-display_genome_object_name has a value which is a kb_phylogenomics.bool
-display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2228,6 +2206,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+genome_disp_name_config has a value which is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -2240,9 +2219,6 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
-display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-display_genome_object_name has a value which is a kb_phylogenomics.bool
-display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2308,6 +2284,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+genome_disp_name_config has a value which is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -2320,9 +2297,6 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
-display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-display_genome_object_name has a value which is a kb_phylogenomics.bool
-display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 
@@ -2337,6 +2311,7 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 namespace has a value which is a string
 custom_target_fams has a value which is a kb_phylogenomics.CustomTargetFams
+genome_disp_name_config has a value which is a string
 count_category has a value which is a string
 heatmap has a value which is a kb_phylogenomics.bool
 vertical has a value which is a kb_phylogenomics.bool
@@ -2349,9 +2324,6 @@ required_TIGR_annot_perc has a value which is a float
 required_SEED_annot_perc has a value which is a float
 count_hypothetical has a value which is a kb_phylogenomics.bool
 show_blanks has a value which is a kb_phylogenomics.bool
-display_genome_scientific_name has a value which is a kb_phylogenomics.bool
-display_genome_object_name has a value which is a kb_phylogenomics.bool
-display_genome_object_version has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 

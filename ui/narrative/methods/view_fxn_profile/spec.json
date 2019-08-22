@@ -8127,6 +8127,48 @@
             }
         },
         {
+            "id": "genome_disp_name_config",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "obj_name" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "obj_name",
+					"display": "Object_Name",
+					"id": "genome_disp_name_config-obj_name",
+					"ui-name": "genome_disp_name_config-obj_name"
+				},
+				{
+					"value": "obj_name_ver",
+					"display": "Object_Name.version",
+					"id": "genome_disp_name_config-obj_name_ver",
+					"ui-name": "genome_disp_name_config-obj_name_ver"
+				},
+				{
+					"value": "sci_name",
+					"display": "Scientific Name",
+					"id": "genome_disp_name_config-sci_name",
+					"ui-name": "genome_disp_name_config-sci_name"
+				},
+				{
+					"value": "obj_name_sci_name",
+					"display": "Object_Name: Scientific Name",
+					"id": "genome_disp_name_config-obj_name_sci_name",
+					"ui-name": "genome_disp_name_config-obj_name_sci_name"
+				},
+				{
+					"value": "obj_name_ver_sci_name",
+					"display": "Object_Name.version: Scientific Name",
+					"id": "genome_disp_name_config-obj_name_ver_sci_name",
+					"ui-name": "genome_disp_name_config-obj_name_ver_sci_name"
+				}
+		]
+            }
+        },
+        {
             "id": "count_category",
             "optional": false,
             "advanced": false,
@@ -8330,78 +8372,6 @@
             }
         },
         {
-            "id": "display_genome_scientific_name",
-            "optional": true,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values": [ "1" ],
-            "field_type": "dropdown",
-            "dropdown_options": {
-	    	"options": [
-				{
-					"value": "0",
-					"display": "DON'T include genome scientific name in report",
-					"id": "hide",
-					"ui-name": "hide"
-				},
-				{
-					"value": "1",
-					"display": "DO include genome scientific name in report",
-					"id": "show",
-					"ui-name": "show"
-				}
-		]
-            }
-        },
-        {
-            "id": "display_genome_object_name",
-            "optional": true,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values": [ "0" ],
-            "field_type": "dropdown",
-            "dropdown_options": {
-	    	"options": [
-				{
-					"value": "0",
-					"display": "DON'T include genome object name in report",
-					"id": "hide",
-					"ui-name": "hide"
-				},
-				{
-					"value": "1",
-					"display": "DO include genome object name in report",
-					"id": "show",
-					"ui-name": "show"
-				}
-		]
-            }
-        },
-        {
-            "id": "display_genome_object_version",
-            "optional": true,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values": [ "0" ],
-            "field_type": "dropdown",
-            "dropdown_options": {
-	    	"options": [
-				{
-					"value": "0",
-					"display": "DON'T include genome object version in report",
-					"id": "hide",
-					"ui-name": "hide"
-				},
-				{
-					"value": "1",
-					"display": "DO include genome object version in report",
-					"id": "show",
-					"ui-name": "show"
-				}
-		]
-            }
-        },
-        {
             "id": "skip_missing_genomes",
             "optional": false,
             "advanced": true,
@@ -8485,6 +8455,10 @@
 		    "target_property": "custom_target_fams"
                 },
                 {
+                    "input_parameter": "genome_disp_name_config",
+		    "target_property": "genome_disp_name_config"
+                },
+                {
                     "input_parameter": "count_category",
 		    "target_property": "count_category"
                 },
@@ -8531,18 +8505,6 @@
                 {
                     "input_parameter": "show_blanks",
 		    "target_property": "show_blanks"
-                },
-                {
-                    "input_parameter": "display_genome_scientific_name",
-		    "target_property": "display_genome_scientific_name"
-                },
-                {
-                    "input_parameter": "display_genome_object_name",
-		    "target_property": "display_genome_object_name"
-                },
-                {
-                    "input_parameter": "display_genome_object_version",
-		    "target_property": "display_genome_object_version"
                 },
                 {
                     "input_parameter": "skip_missing_genomes",

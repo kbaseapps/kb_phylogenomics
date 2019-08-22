@@ -45,7 +45,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.4.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "c209bdfa0f2273f5c634e2390ec16a33984dd16d"
+    GIT_COMMIT_HASH = "4301ee9e50299b7691698ac8236ef8b80a5ebd28"
 
     #BEGIN_CLASS_HEADER
 
@@ -1121,19 +1121,17 @@ This module contains methods for running and visualizing results of phylogenomic
            "extra_target_fam_groups_PFAM" of list of String, parameter
            "extra_target_fam_groups_TIGR" of list of String, parameter
            "extra_target_fam_groups_SEED" of list of String, parameter
-           "count_category" of String, parameter "heatmap" of type "bool",
-           parameter "vertical" of type "bool", parameter "top_hit" of type
-           "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "genome_disp_name_config" of String, parameter "count_category" of
+           String, parameter "heatmap" of type "bool", parameter "vertical"
+           of type "bool", parameter "top_hit" of type "bool", parameter
+           "e_value" of Double, parameter "log_base" of Double, parameter
+           "required_COG_annot_perc" of Double, parameter
            "required_PFAM_annot_perc" of Double, parameter
            "required_TIGR_annot_perc" of Double, parameter
            "required_SEED_annot_perc" of Double, parameter
            "count_hypothetical" of type "bool", parameter "show_blanks" of
-           type "bool", parameter "display_genome_scientific_name" of type
-           "bool", parameter "display_genome_object_name" of type "bool",
-           parameter "display_genome_object_version" of type "bool",
-           parameter "skip_missing_genomes" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool"
+           type "bool", parameter "skip_missing_genomes" of type "bool",
+           parameter "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -1164,6 +1162,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['workspace_name',
                            'input_genomeSet_ref',
+                           'genome_disp_name_config',
                            'namespace'
                            ]
         for arg in required_params:
@@ -1184,12 +1183,6 @@ This module contains methods for running and visualizing results of phylogenomic
                 self.log (console, "ABORT: "+error_msg)
                 raise ValueError("ABORT: "+error_msg)
                     
-        if (not params.get('display_genome_scientific_name') or int(params.get('display_genome_scientific_name')) == 0) \
-           and (not params.get('display_genome_object_name') or int(params.get('display_genome_object_name')) == 0):
-            error_msg = "You must have Genome Scientfic Name and/or Genome Object Name in report"
-            self.log (console, "ABORT: "+error_msg)
-            raise ValueError("ABORT: "+error_msg)
-
  
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
@@ -1939,21 +1932,18 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_sci_name = genome_sci_name_by_ref[genome_ref]
             [ws_id, obj_id, genome_obj_version] = genome_ref.split('/')
             genome_disp_name = ''
-            if params.get('display_genome_object_name') \
-               and int(params.get('display_genome_object_name')) == 1:
+            if 'obj_name' in params.get('genome_disp_name_config'):
                 genome_disp_name += genome_obj_name
-                if params.get('display_genome_object_version') \
-                   and int(params.get('display_genome_object_version')) == 1:
+                if 'ver' in params.get('genome_disp_name_config'):
                     genome_disp_name += '.v'+str(genome_obj_version)
 
-                if params.get('display_genome_scientific_name') \
-                   and int(params.get('display_genome_scientific_name')) == 1:
+                if 'sci_name' in params.get('genome_disp_name_config'):
                     genome_disp_name += ': '+genome_sci_name
             else:
                 genome_disp_name = genome_sci_name
 
             if genome_disp_name in genome_ref_by_disp_name:
-                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report under advanced parameters"
+                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report"
                 self.log (console, "ABORT: "+error_msg)
                 raise ValueError ("ABORT: "+error_msg)
 
@@ -2294,19 +2284,17 @@ This module contains methods for running and visualizing results of phylogenomic
            "extra_target_fam_groups_PFAM" of list of String, parameter
            "extra_target_fam_groups_TIGR" of list of String, parameter
            "extra_target_fam_groups_SEED" of list of String, parameter
-           "count_category" of String, parameter "heatmap" of type "bool",
-           parameter "vertical" of type "bool", parameter "top_hit" of type
-           "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "genome_disp_name_config" of String, parameter "count_category" of
+           String, parameter "heatmap" of type "bool", parameter "vertical"
+           of type "bool", parameter "top_hit" of type "bool", parameter
+           "e_value" of Double, parameter "log_base" of Double, parameter
+           "required_COG_annot_perc" of Double, parameter
            "required_PFAM_annot_perc" of Double, parameter
            "required_TIGR_annot_perc" of Double, parameter
            "required_SEED_annot_perc" of Double, parameter
            "count_hypothetical" of type "bool", parameter "show_blanks" of
-           type "bool", parameter "display_genome_scientific_name" of type
-           "bool", parameter "display_genome_object_name" of type "bool",
-           parameter "display_genome_object_version" of type "bool",
-           parameter "skip_missing_genomes" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool"
+           type "bool", parameter "skip_missing_genomes" of type "bool",
+           parameter "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_featureSet_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -2338,6 +2326,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['workspace_name',
                            'input_featureSet_ref',
+                           'genome_disp_name_config',
                            'namespace'
                            ]
         for arg in required_params:
@@ -2357,12 +2346,6 @@ This module contains methods for running and visualizing results of phylogenomic
                 error_msg = "If you select 'Custom' Domain Namespace, you must also Enable some Custom Domains or Custom Domain Groups"
                 self.log (console, "ABORT: "+error_msg)
                 raise ValueError("ABORT: "+error_msg)                    
-
-        if (not params.get('display_genome_scientific_name') or int(params.get('display_genome_scientific_name')) == 0) \
-           and (not params.get('display_genome_object_name') or int(params.get('display_genome_object_name')) == 0):
-            error_msg = "You must have Genome Scientfic Name and/or Genome Object Name in report"
-            self.log (console, "ABORT: "+error_msg)
-            raise ValueError("ABORT: "+error_msg)
 
 
         # base config
@@ -3151,21 +3134,18 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_sci_name = genome_sci_name_by_ref[genome_ref]
             [ws_id, obj_id, genome_obj_version] = genome_ref.split('/')
             genome_disp_name = ''
-            if params.get('display_genome_object_name') \
-               and int(params.get('display_genome_object_name')) == 1:
+            if 'obj_name' in params.get('genome_disp_name_config'):
                 genome_disp_name += genome_obj_name
-                if params.get('display_genome_object_version') \
-                   and int(params.get('display_genome_object_version')) == 1:
+                if 'ver' in params.get('genome_disp_name_config'):
                     genome_disp_name += '.v'+str(genome_obj_version)
 
-                if params.get('display_genome_scientific_name') \
-                   and int(params.get('display_genome_scientific_name')) == 1:
+                if 'sci_name' in params.get('genome_disp_name_config'):
                     genome_disp_name += ': '+genome_sci_name
             else:
                 genome_disp_name = genome_sci_name
 
             if genome_disp_name in genome_ref_by_disp_name:
-                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report under advanced parameters"
+                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report"
                 self.log (console, "ABORT: "+error_msg)
                 raise ValueError ("ABORT: "+error_msg)
 
@@ -3507,19 +3487,17 @@ This module contains methods for running and visualizing results of phylogenomic
            "extra_target_fam_groups_PFAM" of list of String, parameter
            "extra_target_fam_groups_TIGR" of list of String, parameter
            "extra_target_fam_groups_SEED" of list of String, parameter
-           "count_category" of String, parameter "heatmap" of type "bool",
-           parameter "vertical" of type "bool", parameter "top_hit" of type
-           "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "genome_disp_name_config" of String, parameter "count_category" of
+           String, parameter "heatmap" of type "bool", parameter "vertical"
+           of type "bool", parameter "top_hit" of type "bool", parameter
+           "e_value" of Double, parameter "log_base" of Double, parameter
+           "required_COG_annot_perc" of Double, parameter
            "required_PFAM_annot_perc" of Double, parameter
            "required_TIGR_annot_perc" of Double, parameter
            "required_SEED_annot_perc" of Double, parameter
            "count_hypothetical" of type "bool", parameter "show_blanks" of
-           type "bool", parameter "display_genome_scientific_name" of type
-           "bool", parameter "display_genome_object_name" of type "bool",
-           parameter "display_genome_object_version" of type "bool",
-           parameter "skip_missing_genomes" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool"
+           type "bool", parameter "skip_missing_genomes" of type "bool",
+           parameter "enforce_genome_version_match" of type "bool"
         :returns: instance of type "view_fxn_profile_phylo_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -3551,6 +3529,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['workspace_name',
                            'input_speciesTree_ref',
+                           'genome_disp_name_config',
                            'namespace'
                            ]
         for arg in required_params:
@@ -3571,12 +3550,6 @@ This module contains methods for running and visualizing results of phylogenomic
                 self.log (console, "ABORT: "+error_msg)
                 raise ValueError("ABORT: "+error_msg)
                     
-        if (not params.get('display_genome_scientific_name') or int(params.get('display_genome_scientific_name')) == 0) \
-           and (not params.get('display_genome_object_name') or int(params.get('display_genome_object_name')) == 0):
-            error_msg = "You must have Genome Scientfic Name and/or Genome Object Name in report"
-            self.log (console, "ABORT: "+error_msg)
-            raise ValueError("ABORT: "+error_msg)
-
 
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
@@ -4368,15 +4341,12 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_sci_name = genome_sci_name_by_id[genome_id]
                 [ws_id, obj_id, genome_obj_version] = genome_ref_by_id[genome_id].split('/')
                 genome_disp_name = ''
-                if params.get('display_genome_object_name') \
-                   and int(params.get('display_genome_object_name')) == 1:
+                if 'obj_name' in params.get('genome_disp_name_config'):
                     genome_disp_name += genome_obj_name
-                    if params.get('display_genome_object_version') \
-                       and int(params.get('display_genome_object_version')) == 1:
+                    if 'ver' in params.get('genome_disp_name_config'):
                         genome_disp_name += '.v'+str(genome_obj_version)
 
-                    if params.get('display_genome_scientific_name') \
-                       and int(params.get('display_genome_scientific_name')) == 1:
+                    if 'sci_name' in params.get('genome_disp_name_config'):
                         genome_disp_name += ': '+genome_sci_name
                 else:
                     genome_disp_name = genome_sci_name
@@ -4578,13 +4548,13 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # rest of rows
             for row_i, genome_ref in enumerate(genome_refs):
-                genome_obj_name = genome_obj_name_by_ref[genome_ref]
-                genome_sci_name = genome_sci_name_by_ref[genome_ref]
-                if params.get('display_genome_object_name') \
-                   and int(params.get('display_genome_object_name')) == 1:
-                    genome_disp_name = genome_obj_name + ': ' + genome_sci_name
-                else:
-                    genome_disp_name = genome_sci_name
+                #genome_obj_name = genome_obj_name_by_ref[genome_ref]
+                #genome_sci_name = genome_sci_name_by_ref[genome_ref]
+                #if params.get('display_genome_object_name') \
+                #   and int(params.get('display_genome_object_name')) == 1:
+                #    genome_disp_name = genome_obj_name + ': ' + genome_sci_name
+                #else:
+                #    genome_disp_name = genome_sci_name
                 if row_i > 0:
                     html_report_lines += ['<tr>']
                 #html_report_lines += ['<td align=right><font color="'+text_color+'" size='+graph_gen_fontsize+'><b><nobr>'+genome_disp_name+'</nobr></b></font></td>']
@@ -7620,19 +7590,17 @@ This module contains methods for running and visualizing results of phylogenomic
            "extra_target_fam_groups_PFAM" of list of String, parameter
            "extra_target_fam_groups_TIGR" of list of String, parameter
            "extra_target_fam_groups_SEED" of list of String, parameter
-           "count_category" of String, parameter "heatmap" of type "bool",
-           parameter "vertical" of type "bool", parameter "top_hit" of type
-           "bool", parameter "e_value" of Double, parameter "log_base" of
-           Double, parameter "required_COG_annot_perc" of Double, parameter
+           "genome_disp_name_config" of String, parameter "count_category" of
+           String, parameter "heatmap" of type "bool", parameter "vertical"
+           of type "bool", parameter "top_hit" of type "bool", parameter
+           "e_value" of Double, parameter "log_base" of Double, parameter
+           "required_COG_annot_perc" of Double, parameter
            "required_PFAM_annot_perc" of Double, parameter
            "required_TIGR_annot_perc" of Double, parameter
            "required_SEED_annot_perc" of Double, parameter
            "count_hypothetical" of type "bool", parameter "show_blanks" of
-           type "bool", parameter "display_genome_scientific_name" of type
-           "bool", parameter "display_genome_object_name" of type "bool",
-           parameter "display_genome_object_version" of type "bool",
-           parameter "skip_missing_genomes" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool"
+           type "bool", parameter "skip_missing_genomes" of type "bool",
+           parameter "enforce_genome_version_match" of type "bool"
         :returns: instance of type "get_configure_categories_Output" ->
            structure: parameter "cats" of list of String, parameter
            "cat2name" of type "Cat2Name" (category to name) -> structure:
