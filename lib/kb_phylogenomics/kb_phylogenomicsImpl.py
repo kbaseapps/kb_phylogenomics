@@ -1764,7 +1764,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
                 if valid_fraction < fraction_required_valid:
-                    missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                    missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  You can drop the threshold required in advanced parameters.")
                     missing_SEED_annot_by_genome_ref[genome_ref] = True
 
             if missing_SEED_annot:
@@ -2024,7 +2024,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     annotation_tool = 'Domain Annotation App'
                 if genes_with_hits_cnt[genome_ref][namespace] < fraction_requiring_annotation * total_genes:
-                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  "+str(required_annot_perc[namespace])+"% were configured in advanced parameter input required to be annotated by "+namespace+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
+                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  "+str(required_annot_perc[namespace])+"% were configured in advanced parameter input required to be annotated by "+namespace+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning or dropping the threshold required in advanced parameters.")
                     inadequate_annot_by_genome_ref[genome_ref] = True
 
             if inadequate_annot:
@@ -2960,7 +2960,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
                 if valid_fraction < fraction_required_valid:
-                    missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                    missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  You can drop the threshold required in advanced parameters.")
                     missing_SEED_annot_by_genome_ref[genome_ref] = True
 
             if missing_SEED_annot:
@@ -3226,7 +3226,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     annotation_tool = 'Domain Annotation App'
                 if genes_with_hits_cnt[genome_ref][namespace] < fraction_requiring_annotation * total_genes:
-                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  "+str(required_annot_perc[namespace])+"% were configured in advanced parameter input required to be annotated by "+namespace+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
+                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  "+str(required_annot_perc[namespace])+"% were configured in advanced parameter input required to be annotated by "+namespace+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning or dropping the threshold required in advanced parameters.")
                     inadequate_annot_by_genome_ref[genome_ref] = True
 
             if inadequate_annot:
@@ -4152,7 +4152,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 valid_fraction = genes_with_validated_vocab_hits_cnt[genome_ref][namespace] / float(genes_with_hits_cnt[genome_ref][namespace])
                 if valid_fraction < fraction_required_valid:
-                    missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
+                    missing_SEED_annot.append("\t" + 'MISSING RAST SEED ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  You can drop the threshold required in advanced parameters.")
                     missing_SEED_annot_by_genome_ref[genome_ref] = True
 
             if missing_SEED_annot:
@@ -4405,7 +4405,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 else:
                     annotation_tool = 'Domain Annotation App'
                 if genes_with_hits_cnt[genome_ref][namespace] < fraction_requiring_annotation * total_genes:
-                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  "+str(required_annot_perc[namespace])+"% were configured in advanced parameter input required to be annotated by "+namespace+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning")
+                    inadequate_annot.append("\t" + 'INADEQUATE DOMAIN ANNOTATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref]+".  Namespace: "+namespace+" found in "+str(genes_with_hits_cnt[genome_ref][namespace])+" of a total of "+str(total_genes)+".  "+str(required_annot_perc[namespace])+"% were configured in advanced parameter input required to be annotated by "+namespace+".  Something may have gone wrong with "+annotation_tool+".  Try rerunning or dropping the threshold required in advanced parameters.")
                     inadequate_annot_by_genome_ref[genome_ref] = True
 
             if inadequate_annot:
