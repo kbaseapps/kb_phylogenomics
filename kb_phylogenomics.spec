@@ -1,4 +1,3 @@
-
 /*
 A KBase module: kb_phylogenomics
 
@@ -36,6 +35,28 @@ module kb_phylogenomics {
         returns (view_tree_Output output) 
         authentication required;
 
+
+    /* trim_speciestree_to_genomeset()
+    **
+    ** reduce tree to match genomes found in genomeset
+    */
+    typedef structure {
+        workspace_name workspace_name;
+        data_obj_ref   input_genomeSet_ref;
+	data_obj_ref   input_tree_ref;
+	data_obj_name  output_tree_name;
+	string         desc;
+	bool           enforce_genome_version_match;
+    } trim_speciestree_to_genomeset_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } trim_speciestree_to_genomeset_Output;
+
+    funcdef trim_speciestree_to_genomeset(trim_speciestree_to_genomeset_Input params) 
+        returns (trim_speciestree_to_genomeset_Output output) 
+        authentication required;
 
 
     /* run_DomainAnnotation_Sets()

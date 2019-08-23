@@ -181,6 +181,23 @@ public class KbPhylogenomicsClient {
     }
 
     /**
+     * <p>Original spec-file function name: trim_speciestree_to_genomeset</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.TrimSpeciestreeToGenomesetInput TrimSpeciestreeToGenomesetInput} (original type "trim_speciestree_to_genomeset_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.TrimSpeciestreeToGenomesetOutput TrimSpeciestreeToGenomesetOutput} (original type "trim_speciestree_to_genomeset_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public TrimSpeciestreeToGenomesetOutput trimSpeciestreeToGenomeset(TrimSpeciestreeToGenomesetInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<TrimSpeciestreeToGenomesetOutput>> retType = new TypeReference<List<TrimSpeciestreeToGenomesetOutput>>() {};
+        List<TrimSpeciestreeToGenomesetOutput> res = caller.jsonrpcCall("kb_phylogenomics.trim_speciestree_to_genomeset", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
      * <p>Original spec-file function name: run_DomainAnnotation_Sets</p>
      * <pre>
      * </pre>

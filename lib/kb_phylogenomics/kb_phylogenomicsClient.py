@@ -46,6 +46,23 @@ class kb_phylogenomics(object):
         return self._client.call_method('kb_phylogenomics.view_tree',
                                         [params], self._service_ver, context)
 
+    def trim_speciestree_to_genomeset(self, params, context=None):
+        """
+        :param params: instance of type "trim_speciestree_to_genomeset_Input"
+           (trim_speciestree_to_genomeset() ** ** reduce tree to match
+           genomes found in genomeset) -> structure: parameter
+           "workspace_name" of type "workspace_name" (** Common types),
+           parameter "input_genomeSet_ref" of type "data_obj_ref", parameter
+           "input_tree_ref" of type "data_obj_ref", parameter
+           "output_tree_name" of type "data_obj_name", parameter "desc" of
+           String, parameter "enforce_genome_version_match" of type "bool"
+        :returns: instance of type "trim_speciestree_to_genomeset_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        return self._client.call_method('kb_phylogenomics.trim_speciestree_to_genomeset',
+                                        [params], self._service_ver, context)
+
     def run_DomainAnnotation_Sets(self, params, context=None):
         """
         :param params: instance of type "run_DomainAnnotation_Sets_Input"

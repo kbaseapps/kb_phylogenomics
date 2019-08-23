@@ -994,6 +994,111 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
 
 
+    #### Trim SpeciesTree to GenomeSet
+    ##
+    # HIDE @unittest.skip("skipped test_trim_speciestree_to_genomeset_01()")  # uncomment to skip
+    def test_trim_speciestree_to_genomeset_01(self):
+        method = 'trim_speciestree_to_genomeset'
+
+        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("=============================\n\n")
+
+        # input_data
+        genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+
+        genome_ref_0 = self.getWsName() + '/' + str(genomeInfo_0[0]) + '/' + str(genomeInfo_0[4])
+        genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
+        genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
+        genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
+
+        #feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
+        #feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
+        #feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
+        #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
+
+        # upload Tree
+        genome_refs_map = { '23880/3/1': genome_ref_0,
+                            '23880/4/1': genome_ref_1,
+                            '23880/5/1': genome_ref_2,
+                            '23880/6/1': genome_ref_3
+                        }
+        obj_info = self.getTreeInfo('Tiny_things.SpeciesTree', 0, genome_refs_map)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        tree_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+
+        # upload genomeSet
+        genome_ref_list = [genome_ref_0, genome_ref_1, genome_ref_3]
+        genome_scinames = dict()
+        genome_objnames = dict()
+        genome_refs_by_objname = dict()
+        genome_scinames[genome_ref_0] = 'Candidatus Carsonella ruddii HT isolate Thao2000'
+        genome_scinames[genome_ref_1] = 'Wolbachia endosymbiont of Onchocerca ochengi'
+        genome_scinames[genome_ref_3] = 'Wolbachia sp. wRi'
+        for genome_ref in genome_ref_list: 
+            try:
+                [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+                obj_info = self.getWsClient().get_object_info_new ({'objects':[{'ref':genome_ref}]})[0]
+                obj_name = obj_info[NAME_I]
+                genome_objnames[genome_ref] = obj_name
+                genome_refs_by_objname[obj_name] = genome_ref
+            except Exception as e:
+                raise ValueError('Unable to get object from workspace: (' + genome_ref +')' + str(e))
+
+        # build GenomeSet obj
+        testGS = {
+            'description': 'three genomes',
+            'elements': dict()
+        }
+        for genome_ref in genome_ref_list: 
+            testGS['elements'][genome_scinames[genome_ref]] = { 'ref': genome_ref }
+
+        obj_info = self.getWsClient().save_objects({'workspace': self.getWsName(),       
+                                                    'objects': [
+                                                        {
+                                                            'type':'KBaseSearch.GenomeSet',
+                                                            'data':testGS,
+                                                            'name':method+'.test_genomeset',
+                                                            'meta':{},
+                                                            'provenance':[
+                                                                {
+                                                                    'service':'kb_phylogenomics',
+                                                                    'method':'test_view_fxn_profile'
+                                                                }
+                                                            ]
+                                                        }]
+                                                })[0]
+        pprint(obj_info)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        genomeSet_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+
+        # run that sucker
+        obj_out_name = 'Trimmed.SpeciesTree'
+        obj_out_type = 'KBaseTrees.Tree'
+        params = { 'workspace_name':               self.getWsName(),
+                   'input_tree_ref':               tree_ref,
+                   'input_genomeSet_ref':          genomeSet_ref,
+                   'output_tree_name':             obj_out_name,
+                   'enforce_genome_version_match': "1",
+                   'desc':                         'test tree'
+               }
+        ret = self.getImpl().trim_speciestree_to_genomeset(self.getContext(),params)[0]
+        self.assertIsNotNone(ret['report_ref'])
+
+        # check created obj
+        #report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
+        report_obj = self.getWsClient().get_objects2({'objects':[{'ref':ret['report_ref']}]})['data'][0]['data']
+        self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
+
+        created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
+        self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
     #### Find Homologs with Genome Context
     ##
     # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
