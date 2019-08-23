@@ -27,7 +27,7 @@
             "optional": false,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "custom" ],
+            "default_values": [ "COG" ],
             "field_type": "dropdown",
             "dropdown_options": {
 	    	"options": [
@@ -39,25 +39,25 @@
 				},
 				{
 					"value": "COG",
-					"display": "COG Functional Categories",
+					"display": "COG Functional Categories (requires Domain Annotation)",
 					"id": "COG",
 					"ui-name": "COG"
 				},
 				{
 					"value": "PF",
-					"display": "Pfam A Clans",
+					"display": "Pfam A Clans (requires Domain Annotation)",
 					"id": "PF",
 					"ui-name": "PF"
 				},
 				{
 					"value": "TIGR",
-					"display": "TIGRFAM Roles",
+					"display": "TIGRFAM Roles (requires Domain Annotation)",
 					"id": "TIGR",
 					"ui-name": "TIGR"
 				},
 				{
 					"value": "SEED",
-					"display": "SEED Roles",
+					"display": "SEED Roles (requires RAST annotation)",
 					"id": "SEED",
 					"ui-name": "SEED"
 				}
