@@ -12,6 +12,8 @@ __Changes__
 - VFP Apps: check for Domain Annotation in current workspace first
 - VFP GenomeSet and FeatureSet: sort by genome disp name and require unique
 - Domain Annotation for Genomes App: allow Species Tree as input
+- View Tree App: color user genome or reference genome, whichever there are fewer of
+- Trim SpeciesTree to GenomeSet App: added
 
 ### Version 1.3.2
 __Changes__

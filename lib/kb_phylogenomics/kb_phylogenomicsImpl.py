@@ -45,7 +45,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.4.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "4301ee9e50299b7691698ac8236ef8b80a5ebd28"
+    GIT_COMMIT_HASH = "ce203136a65723c7cc32346196c4dc7042596ec9"
 
     #BEGIN_CLASS_HEADER
 
@@ -606,12 +606,12 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 1: do some basic checks
         ##
-        if 'workspace_name' not in params:
-            raise ValueError('workspace_name parameter is required')
-        if 'input_tree_ref' not in params:
-            raise ValueError('input_tree_ref parameter is required')
-        #if 'output_name' not in params:
-        #    raise ValueError('output_name parameter is required')
+        required_params = ['workspace_name',
+                           'input_tree_ref'
+                           ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
 
         #### STEP 2: load the method provenance from the context object
         ##
@@ -725,6 +725,25 @@ This module contains methods for running and visualizing results of phylogenomic
         t = ete3.Tree(newick_buf)
         ts = ete3.TreeStyle()
 
+        # determine if there are more user or non-user genomes in tree to color fewer
+        #user_genome_color      = "#fafcc2"
+        user_genome_color      = "#fee787"  # light mustard
+        reference_genome_color = "#dfcffc"  # light violet
+
+        color_by_user_genome = False
+        color_by_reference_genome = False
+        genome_total = 0
+        user_genome_cnt = 0
+        for n in t.traverse():
+            if n.is_leaf():
+                genome_total += 1
+                if "User Genome" in n.name:
+                    user_genome_cnt += 1
+        if float(user_genome_cnt) / float(genome_total) < 0.5:
+            color_by_user_genome = True
+        else:
+            color_by_reference_genome = True
+
         # customize
         ts.show_leaf_name = True
         ts.show_branch_length = False
@@ -759,8 +778,10 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in t.traverse():
             if n.is_leaf():
                 style = copy.copy(leaf_style)
-                if "User Genome" in n.name:
-                    style["bgcolor"] = "#fafcc2"
+                if color_by_user_genome and "User Genome" in n.name:
+                    style["bgcolor"] = user_genome_color
+                elif color_by_reference_genome and "User Genome" not in n.name:
+                    style["bgcolor"] = reference_genome_color
             else:
                 style = copy.copy(node_style)
 
@@ -817,9 +838,10 @@ This module contains methods for running and visualizing results of phylogenomic
         except:
             raise ValueError('error uploading png file to shock')
 
+
         # Create report obj
         #
-        reportName = 'blast_report_' + str(uuid.uuid4())
+        reportName = 'view_tree_report_' + str(uuid.uuid4())
         #report += output_newick_buf+"\n"
         reportObj = {'objects_created': [],
                      'direct_html_link_index': 0,
@@ -870,6 +892,349 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method view_tree return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def trim_speciestree_to_genomeset(self, ctx, params):
+        """
+        :param params: instance of type "trim_speciestree_to_genomeset_Input"
+           (trim_speciestree_to_genomeset() ** ** reduce tree to match
+           genomes found in genomeset) -> structure: parameter
+           "workspace_name" of type "workspace_name" (** Common types),
+           parameter "input_genomeSet_ref" of type "data_obj_ref", parameter
+           "input_tree_ref" of type "data_obj_ref", parameter
+           "output_tree_name" of type "data_obj_name", parameter "desc" of
+           String, parameter "enforce_genome_version_match" of type "bool"
+        :returns: instance of type "trim_speciestree_to_genomeset_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN trim_speciestree_to_genomeset
+
+        #### STEP 0: init
+        ##
+        dfu = DFUClient(self.callbackURL)
+        console = []
+        invalid_msgs = []
+        self.log(console, 'Running trim_speciestree_to_genomeset() with params=')
+        self.log(console, "\n" + pformat(params))
+        report = ''
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
+
+
+        #### STEP 1: do some basic checks
+        ##
+        required_params = ['workspace_name',
+                           'input_tree_ref',
+                           'input_genomeSet_ref',
+                           'output_tree_name'
+                           ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
+
+
+        #### STEP 2: load the method provenance from the context object
+        ##
+        self.log(console, "SETTING PROVENANCE")  # DEBUG
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects'] = []
+        provenance[0]['input_ws_objects'].append(params['input_tree_ref'])
+        provenance[0]['input_ws_objects'].append(params['input_genomeSet_ref'])
+        provenance[0]['service'] = 'kb_phylogenomics'
+        provenance[0]['method'] = 'trim_tree_to_genomeset'
+
+
+        #### STEP 3: Get tree object and store genome id and ref relationship
+        ##
+        try:
+            objects = wsClient.get_objects([{'ref': params['input_tree_ref']}])
+            data = objects[0]['data']
+            info = objects[0]['info']
+            intree_name = info[1]
+            intree_type_name = info[2].split('.')[1].split('-')[0]
+
+        except Exception as e:
+            raise ValueError('Unable to fetch input_tree_ref object from workspace: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+
+        if intree_type_name == 'Tree':
+            tree_in = data
+        else:
+            raise ValueError('Cannot yet handle input_tree type of: ' + intree_type_name)
+
+        genome_id_by_ref = dict()
+        genome_ref_by_id = dict()
+        for genome_id in tree_in['default_node_labels'].keys():
+            genome_ref = tree_in['ws_refs'][genome_id]['g'][0]
+            genome_id_by_ref[genome_ref] = genome_id
+            genome_ref_by_id[genome_id] = genome_ref        
+
+
+        #### STEP 4: Get GenomeSet object
+        #
+        input_ref = params['input_genomeSet_ref']
+        try:
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_name = input_obj_info[NAME_I]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseSearch.GenomeSet"]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
+        input_genomeSet_name = input_obj_name
+
+
+        # get set obj
+        try:
+            genomeSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
+        except:
+            raise ValueError("unable to fetch genomeSet: " + input_ref)
+
+        # get genome refs from GenomeSet and determine whether to wobble version
+        #
+        wobble_version = True
+        retained_genome_refs = dict()
+        retained_genome_refs_versionless = dict()
+        for genome_id in genomeSet_obj['elements'].keys():
+            genome_ref = genomeSet_obj['elements'][genome_id]['ref']
+            (ws_id, obj_id, version) = genome_ref.split('/')
+            genome_ref_versionless = str(ws_id)+'/'+str(obj_id)
+            retained_genome_refs[genome_ref] = True
+            retained_genome_refs_versionless[genome_ref_versionless] = True
+        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+            wobble_version = False
+
+
+        # STEP 5 - Prune tree if any leaf genomes not found in GenomeSet
+        #
+        newick_buf = tree_in['tree']
+        self.log(console, "NEWICK_BUF: '" + newick_buf + "'")
+
+        # init ETE3 objects
+        species_tree = ete3.Tree(newick_buf)
+        prune_retain_list = []  # prune() method takes list of leaves to keep
+        prune_remove_list = []
+        leaves_trimmed = False
+        for n in species_tree.traverse():
+            if n.is_leaf():
+                genome_id = n.name
+                genome_ref = genome_ref_by_id[genome_id]
+                (ws_id, obj_id, version) = genome_ref.split('/')
+                genome_ref_versionless = str(ws_id)+'/'+str(obj_id)
+                if wobble_version and genome_ref_versionless in retained_genome_refs_versionless:
+                    prune_retain_list.append(n.name)
+                    self.log(console, "Retaining "+n.name) # DEBUG
+                elif genome_ref in retained_genome_refs:
+                    prune_retain_list.append(n.name)
+                    self.log(console, "Retaining "+n.name) # DEBUG
+                else:
+                    prune_remove_list.append(n.name)
+
+        if len(prune_retain_list) < 3:
+            raise ValueError ("ABORT: less than 3 leaves left so output tree not meaningful")
+        if len(prune_remove_list) > 0:
+            leaves_trimmed = True
+            self.log(console, "Pruning following genomes from SpeciesTree")
+            for genome_id in prune_remove_list:
+                self.log(console, "\t"+"Removing from SpeciesTree "+genome_id+" ref: "+genome_ref_by_id[genome_id])
+            # prune() takes keep list, not remove list
+            species_tree.prune (prune_retain_list)
+        else:
+            self.log(console, "No genomes found to remove from SpeciesTree")
+
+
+        #### STEP 6: upload trimmed tree
+        ##
+        if leaves_trimmed:
+            self.log(console,"UPLOADING RESULTS")  # DEBUG
+
+            tree_name = params['output_tree_name']
+            if params.get('desc'):
+                tree_description = params['desc']
+            else:
+                tree_description = tree_in['desc']+" TRIMMED "
+                for genome_id in prune_remove_list:
+                    tree_description += " "+genome_id+"("+genome_ref_by_id[genome_id]+")"
+            tree_type = 'SpeciesTree'
+            species_tree.ladderize()
+            output_newick_buf = species_tree.write()
+            if not output_newick_buf.endswith(';'):
+                output_newick_buf += ';'
+            self.log(console,"\nNEWICK:\n"+output_newick_buf+"\n")
+        
+            # Extract info from input tree
+            #
+            tree_attributes = None
+            default_node_labels = None
+            ws_refs = None
+            kb_refs = None
+            leaf_list = None
+            if 'default_node_labels' in tree_in:
+                default_node_labels = dict()
+                leaf_list = []
+                for node_id in tree_in['default_node_labels'].keys():
+                    genome_id = node_id
+                    if genome_id in prune_retain_list:
+                        default_node_labels[node_id] = tree_in['default_node_labels'][node_id]
+                        leaf_list.append(node_id)
+            if 'ws_refs' in tree_in.keys() and tree_in['ws_refs'] != None:
+                ws_refs = dict()
+                for node_id in tree_in['ws_refs'].keys():
+                    genome_id = node_id
+                    if genome_id in prune_retain_list:
+                        ws_refs[node_id] = tree_in['ws_refs'][node_id]
+            if 'kb_refs' in tree_in.keys() and tree_in['kb_refs'] != None:
+                kb_refs = dict()
+                for node_id in tree_in['kb_refs'].keys():
+                    genome_id = node_id
+                    if genome_id in prune_retain_list:
+                        kb_refs[node_id] = tree_in['kb_refs'][node_id]
+
+            # Build output_Tree structure
+            #
+            output_Tree = {
+                      'name': tree_name,
+                      'description': tree_description,
+                      'type': tree_type,
+                      'tree': output_newick_buf
+                     }
+            if tree_attributes != None:
+                output_Tree['tree_attributes'] = tree_attributes
+            if default_node_labels != None:
+                output_Tree['default_node_labels'] = default_node_labels
+            if ws_refs != None:
+                output_Tree['ws_refs'] = ws_refs 
+            if kb_refs != None:
+                output_Tree['kb_refs'] = kb_refs
+            if leaf_list != None:
+                output_Tree['leaf_list'] = leaf_list 
+
+            # Store output_Tree
+            #
+            try:
+                tree_out_obj_info = wsClient.save_objects({
+                    'workspace': params['workspace_name'],
+                    'objects':[{
+                        'type': 'KBaseTrees.Tree',
+                        'data': output_Tree,
+                        'name': params['output_tree_name'],
+                        'meta': {},
+                        'provenance': provenance
+                    }]
+                })[0]
+            except Exception as e:
+                raise ValueError('Unable to save tree '+params['output_tree_name']+' object to workspace '+str(params['workspace_name'])+': ' + str(e))
+                #to get the full stack trace: traceback.format_exc()
+
+            output_tree_ref = '/'.join([str(tree_out_obj_info[WSID_I]),
+                                        str(tree_out_obj_info[OBJID_I]),
+                                        str(tree_out_obj_info[VERSION_I])])
+
+
+        #### STEP 7: call view_tree() to make report (if trimmed)
+        ##
+        report_info = dict()
+        reportName = 'trim_speciestree_to_genomeset_report_' + str(uuid.uuid4())
+        #report += output_newick_buf+"\n"
+        reportObj = {'objects_created': [],
+                     'direct_html_link_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+        }
+        if not leaves_trimmed:
+            # Create report obj
+            report_text = "No genomes found in GenomeSet "+input_genomeSet_name+" to remove from SpeciesTree "+intree_name
+            reportObj['text_message'] = report_text
+        else:
+            # RUN view_tree() and forward report object through
+            view_tree_Params = {'workspace_name': params['workspace_name'],
+                                'input_tree_ref': output_tree_ref,
+                                'desc': tree_description
+                            }
+            self.log(console, "RUNNING view_tree() for tree: " + output_tree_ref)
+
+            view_tree_retVal = self.view_tree(ctx, view_tree_Params)[0]
+            
+            # can't just pass forward report because we created objects we need to add
+            try:
+                view_tree_reportObj = wsClient.get_objects([{'ref': view_tree_retVal['report_ref']}])[0]['data']
+            except Exception as e:
+                raise ValueError('Unable to fetch view_tree() report from workspace: ' + str(e))
+                #to get the full stack trace: traceback.format_exc()
+
+            # can't just copy substructures because format of those fields in report object different from the format needed to pass to create_extended_report() method
+            #for field in ('direct_html_link_index', 'file_links', 'html_links'):
+            #    reportObj[field] = view_tree_reportObj[field]
+            #    self.log<(console, "REPORT "+field+": "+pformat(view_tree_reportObj[field]))  # DEBUG
+            #
+            reportObj['direct_html_link_index'] = view_tree_reportObj['direct_html_link_index']
+            for html_link_item in view_tree_reportObj['html_links']:
+                #this_shock_id = html_link_item['URL']
+                this_shock_id = re.sub('^.*/', '', html_link_item['URL'])
+                self.log(console, "CREATING REPORT: this_shock_id: "+this_shock_id)  # DEBUG
+                new_html_link_item = {'shock_id': this_shock_id,
+                                      'name': html_link_item['name'],
+                                      'label': html_link_item['label']
+                                    }
+                reportObj['html_links'].append(new_html_link_item)
+            for file_link_item in view_tree_reportObj['file_links']:
+                #this_shock_id = file_link_item['URL']
+                this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+                self.log(console, "CREATING REPORT: this_shock_id: "+this_shock_id)  # DEBUG
+                new_file_link_item = {'shock_id': this_shock_id,
+                                      'name': file_link_item['name'],
+                                      'label': file_link_item['label']
+                                    }
+                reportObj['file_links'].append(new_file_link_item)
+
+            reportObj['objects_created'].append({'ref': output_tree_ref,
+                                                 'description': params['output_tree_name']+' Trimmed Tree'})
+
+
+        # save report object
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        report_info = reportClient.create_extended_report(reportObj)
+
+
+        # Done
+        #
+        self.log(console, "BUILDING RETURN OBJECT")
+        output = {'report_name': report_info['name'],
+                  'report_ref': report_info['ref']
+                  }
+
+        self.log(console, "trim_speciestree_to_genomeset() DONE")
+        #END trim_speciestree_to_genomeset
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method trim_speciestree_to_genomeset return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]
@@ -7514,7 +7879,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 16: Create report obj
         ##
-        reportName = 'blast_report_' + str(uuid.uuid4())
+        reportName = 'genome_homolog_context_report_' + str(uuid.uuid4())
         #report += output_newick_buf+"\n"
         reportObj = {'objects_created': [],
                      'direct_html_link_index': 0,
