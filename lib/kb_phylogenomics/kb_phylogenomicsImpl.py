@@ -1178,7 +1178,6 @@ This module contains methods for running and visualizing results of phylogenomic
                                 'desc': tree_description
                             }
             self.log(console, "RUNNING view_tree() for tree: " + output_tree_ref)
-
             view_tree_retVal = self.view_tree(ctx, view_tree_Params)[0]
             
             # can't just pass forward report because we created objects we need to add
@@ -1197,7 +1196,6 @@ This module contains methods for running and visualizing results of phylogenomic
             for html_link_item in view_tree_reportObj['html_links']:
                 #this_shock_id = html_link_item['URL']
                 this_shock_id = re.sub('^.*/', '', html_link_item['URL'])
-                self.log(console, "CREATING REPORT: this_shock_id: "+this_shock_id)  # DEBUG
                 new_html_link_item = {'shock_id': this_shock_id,
                                       'name': html_link_item['name'],
                                       'label': html_link_item['label']
@@ -1206,7 +1204,6 @@ This module contains methods for running and visualizing results of phylogenomic
             for file_link_item in view_tree_reportObj['file_links']:
                 #this_shock_id = file_link_item['URL']
                 this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
-                self.log(console, "CREATING REPORT: this_shock_id: "+this_shock_id)  # DEBUG
                 new_file_link_item = {'shock_id': this_shock_id,
                                       'name': file_link_item['name'],
                                       'label': file_link_item['label']
