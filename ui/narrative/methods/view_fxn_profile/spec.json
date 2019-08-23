@@ -8315,7 +8315,7 @@
             "optional": false,
             "advanced": true,
             "allow_multiple": false,
-            "default_values": [ "50" ],
+            "default_values": [ "25" ],
             "field_type": "text",
             "text_options": {
 	    	"validate_as": "float",
