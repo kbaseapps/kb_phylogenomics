@@ -1531,7 +1531,17 @@ This module contains methods for running and visualizing results of phylogenomic
             if arg not in params or params[arg] == None or params[arg] == '':
                 raise ValueError("Must define required param: '" + arg + "'")
 
-        if params['namespace'] == 'custom':
+        if params['namespace'] != 'custom':
+            if params.get('custom_target_fams') \
+               and (params['custom_target_fams'].get('target_fams') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_COG') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_SEED')):
+
+                self.log(console, "CUSTOM_TARGET_FAMS found.  Resetting NAMESPACE param to 'custom'")
+                params['namespace'] = 'custom'
+        else:
             if ('custom_target_fams' not in params or not params['custom_target_fams']) \
                 or (
                     ('target_fams' not in params['custom_target_fams']
@@ -2695,7 +2705,17 @@ This module contains methods for running and visualizing results of phylogenomic
             if arg not in params or params[arg] == None or params[arg] == '':
                 raise ValueError("Must define required param: '" + arg + "'")
 
-        if params['namespace'] == 'custom':
+        if params['namespace'] != 'custom':
+            if params.get('custom_target_fams') \
+               and (params['custom_target_fams'].get('target_fams') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_COG') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_SEED')):
+
+                self.log(console, "CUSTOM_TARGET_FAMS found.  Resetting NAMESPACE param to 'custom'")
+                params['namespace'] = 'custom'
+        else:
             if ('custom_target_fams' not in params or not params['custom_target_fams']) \
                 or (
                     ('target_fams' not in params['custom_target_fams']
@@ -3898,7 +3918,17 @@ This module contains methods for running and visualizing results of phylogenomic
             if arg not in params or params[arg] == None or params[arg] == '':
                 raise ValueError("Must define required param: '" + arg + "'")
 
-        if params['namespace'] == 'custom':
+        if params['namespace'] != 'custom':
+            if params.get('custom_target_fams') \
+               and (params['custom_target_fams'].get('target_fams') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_COG') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_PFAM') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_TIGR') \
+                    or params['custom_target_fams'].get('extra_target_fam_groups_SEED')):
+
+                self.log(console, "CUSTOM_TARGET_FAMS found.  Resetting NAMESPACE param to 'custom'")
+                params['namespace'] = 'custom'
+        else:
             if ('custom_target_fams' not in params or not params['custom_target_fams']) \
                 or (
                     ('target_fams' not in params['custom_target_fams']
