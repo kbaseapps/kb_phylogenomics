@@ -4467,7 +4467,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         if len(genome_refs) < 3:
             error_msg = "Too few remaining genomes ("+str(len(genome_refs))+") to draw meaningful tree.  Need at least 3.  Please use 'View Function Profile for Genomes' App instead"
-            self.log(console, error_message)
+            self.log(console, error_msg)
             raise ValueError ("ABORT: "+error_msg)
 
 
