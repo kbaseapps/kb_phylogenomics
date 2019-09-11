@@ -41,7 +41,7 @@ parameters :
             If "skip repeat annotations" (the default) is selected, this App will skip the annotation of any Genome that already has an object with its domain annotations in your data panel. If "overwrite domain annotations" is selected, this App will redo domain annotation on these Genomes, potentially overwriting older domain annotations.
 
 description : |
-    <p>This App uses the same process as the <a href="https://kbase.us/applist/apps/DomainAnnotation/annotate_domains_in_a_genome/release">Annotate Domains in a Genome</a> App, but does so on all Genomes within a GenomeSet.</p>
+    <p>This App uses the same process as the <a href="https://kbase.us/applist/apps/DomainAnnotation/annotate_domains_in_a_genome/release">Annotate Domains in a Genome</a> App, but does so on all Genomes within a GenomeSet or a SpeciesTree.</p>
 
     <p>This App identifies protein domains from widely used domain libraries. It requires a Genome as input, which must already have annotated protein-encoding genes (e.g., those identified using the <a href=”https://narrative.kbase.us/#catalog/apps/RAST_SDK/reannotate_microbial_genome/release”>Annotate Microbial Genome</a> or <a href=”https://narrative.kbase.us/#catalog/apps/RAST_SDK/annotate_contigset/release”>Annotate Microbial Assembly</a> Apps).</p>
 

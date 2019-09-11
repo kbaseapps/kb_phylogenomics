@@ -11,6 +11,7 @@ __Changes__
 - VFP Apps: added option to specify Genome Obj Name, Obj Ver, and/or Sci name in report
 - VFP Apps: check for Domain Annotation in current workspace first
 - VFP GenomeSet and FeatureSet: sort by genome disp name and require unique
+- VFP Apps: updated App Docs to reflect changes
 - Domain Annotation for Genomes App: allow Species Tree as input
 - View Tree App: color user genome or reference genome, whichever there are fewer of
 - Trim SpeciesTree to GenomeSet App: added
