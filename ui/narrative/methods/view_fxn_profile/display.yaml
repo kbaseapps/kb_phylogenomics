@@ -6,8 +6,7 @@ name: View Function Profile for Genomes - v1.4.0
 tooltip: |
     Examine the general functional distribution or specific functional gene families for a GenomeSet.
 
-screenshots:
-    []
+screenshots: [ view_fxn_profile-table1.png ]
 
 icon: domains_profile-purple.png
 

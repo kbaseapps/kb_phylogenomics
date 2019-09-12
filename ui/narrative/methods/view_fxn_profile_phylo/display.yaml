@@ -6,7 +6,7 @@ name: View Function Profile for a Phylogenetic Tree - v1.4.0
 tooltip: |
     Examine the distribution of functional gene families for organisms in a phylogenetic SpeciesTree.
 
-screenshots: []
+screenshots: [ view_fxn_profile_phylo-table1.png ]
 
 icon: domains_phylo-purple.png
 
