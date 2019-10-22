@@ -39,7 +39,11 @@ class kb_phylogenomics(object):
            show a KBase Tree and make newick and images downloadable) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
-           parameter "desc" of String
+           parameter "desc" of String, parameter "show_genome_obj_name" of
+           type "bool", parameter "color_for_reference_genomes" of String,
+           parameter "color_for_skeleton_genomes" of String, parameter
+           "color_for_user_genomes" of String, parameter "tree_shape" of
+           String
         :returns: instance of type "view_tree_Output" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """
@@ -55,12 +59,39 @@ class kb_phylogenomics(object):
            parameter "input_genomeSet_ref" of type "data_obj_ref", parameter
            "input_tree_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "enforce_genome_version_match" of type "bool"
+           String, parameter "show_genome_obj_name" of type "bool", parameter
+           "enforce_genome_version_match" of type "bool", parameter
+           "color_for_reference_genomes" of String, parameter
+           "color_for_skeleton_genomes" of String, parameter
+           "color_for_user_genomes" of String, parameter "tree_shape" of
+           String
         :returns: instance of type "trim_speciestree_to_genomeset_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
         """
         return self._client.call_method('kb_phylogenomics.trim_speciestree_to_genomeset',
+                                        [params], self._service_ver, context)
+
+    def build_microbial_speciestree(self, params, context=None):
+        """
+        :param params: instance of type "build_microbial_speciestree_Input"
+           (build_microbial_speciestree() ** ** run Insert Set of Genomes
+           into Species Tree with extra features) -> structure: parameter
+           "workspace_name" of type "workspace_name" (** Common types),
+           parameter "input_genome_refs" of type "data_obj_ref", parameter
+           "output_tree_name" of type "data_obj_name", parameter "desc" of
+           String, parameter "show_genome_obj_name" of type "bool", parameter
+           "skeleton_set" of String, parameter "num_proximal_sisters" of
+           Long, parameter "proximal_sisters_ANI_spacing" of Double,
+           parameter "color_for_reference_genomes" of String, parameter
+           "color_for_skeleton_genomes" of String, parameter
+           "color_for_user_genomes" of String, parameter "tree_shape" of
+           String
+        :returns: instance of type "build_microbial_speciestree_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        return self._client.call_method('kb_phylogenomics.build_microbial_speciestree',
                                         [params], self._service_ver, context)
 
     def run_DomainAnnotation_Sets(self, params, context=None):

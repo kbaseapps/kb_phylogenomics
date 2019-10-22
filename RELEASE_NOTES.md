@@ -1,3 +1,7 @@
+### Version 1.5.0
+__Changes__
+- Added Build Microbial SpeciesTree App
+
 ### Version 1.4.0
 __Changes__
 - View Functional Profile [aka VFP / view_fxn_profile*()] Apps: skip Genomes for which a DomainAnnotation is not found

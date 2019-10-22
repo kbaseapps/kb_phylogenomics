@@ -43,9 +43,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.4.0"
+    VERSION = "1.5.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "ce203136a65723c7cc32346196c4dc7042596ec9"
+    GIT_COMMIT_HASH = "3230a28aec8993d65688de33960ddce70b50435e"
 
     #BEGIN_CLASS_HEADER
 
@@ -575,7 +575,11 @@ This module contains methods for running and visualizing results of phylogenomic
            show a KBase Tree and make newick and images downloadable) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
-           parameter "desc" of String
+           parameter "desc" of String, parameter "show_genome_obj_name" of
+           type "bool", parameter "color_for_reference_genomes" of String,
+           parameter "color_for_skeleton_genomes" of String, parameter
+           "color_for_user_genomes" of String, parameter "tree_shape" of
+           String
         :returns: instance of type "view_tree_Output" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
         """
@@ -905,7 +909,12 @@ This module contains methods for running and visualizing results of phylogenomic
            parameter "input_genomeSet_ref" of type "data_obj_ref", parameter
            "input_tree_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "enforce_genome_version_match" of type "bool"
+           String, parameter "show_genome_obj_name" of type "bool", parameter
+           "enforce_genome_version_match" of type "bool", parameter
+           "color_for_reference_genomes" of String, parameter
+           "color_for_skeleton_genomes" of String, parameter
+           "color_for_user_genomes" of String, parameter "tree_shape" of
+           String
         :returns: instance of type "trim_speciestree_to_genomeset_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -1232,6 +1241,37 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method trim_speciestree_to_genomeset return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def build_microbial_speciestree(self, ctx, params):
+        """
+        :param params: instance of type "build_microbial_speciestree_Input"
+           (build_microbial_speciestree() ** ** run Insert Set of Genomes
+           into Species Tree with extra features) -> structure: parameter
+           "workspace_name" of type "workspace_name" (** Common types),
+           parameter "input_genome_refs" of type "data_obj_ref", parameter
+           "output_tree_name" of type "data_obj_name", parameter "desc" of
+           String, parameter "show_genome_obj_name" of type "bool", parameter
+           "skeleton_set" of String, parameter "num_proximal_sisters" of
+           Long, parameter "proximal_sisters_ANI_spacing" of Double,
+           parameter "color_for_reference_genomes" of String, parameter
+           "color_for_skeleton_genomes" of String, parameter
+           "color_for_user_genomes" of String, parameter "tree_shape" of
+           String
+        :returns: instance of type "build_microbial_speciestree_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN build_microbial_speciestree
+        #END build_microbial_speciestree
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method build_microbial_speciestree return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]

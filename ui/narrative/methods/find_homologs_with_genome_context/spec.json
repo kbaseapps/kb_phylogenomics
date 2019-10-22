@@ -5,7 +5,7 @@
     ],
     "contact": "http://kbase.us/contact-us/",
     "visible": true,
-    "categories": ["inactive", "comparative_genomics"],
+    "categories": ["active", "comparative_genomics"],
     "widgets": {
         "input": null,
         "output": "no-display"
