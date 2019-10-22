@@ -25,7 +25,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "workspace_name",
     "input_tree_ref",
-    "desc"
+    "desc",
+    "show_genome_obj_name",
+    "color_for_reference_genomes",
+    "color_for_skeleton_genomes",
+    "color_for_user_genomes",
+    "tree_shape"
 })
 public class ViewTreeInput {
 
@@ -35,6 +40,16 @@ public class ViewTreeInput {
     private String inputTreeRef;
     @JsonProperty("desc")
     private String desc;
+    @JsonProperty("show_genome_obj_name")
+    private Long showGenomeObjName;
+    @JsonProperty("color_for_reference_genomes")
+    private String colorForReferenceGenomes;
+    @JsonProperty("color_for_skeleton_genomes")
+    private String colorForSkeletonGenomes;
+    @JsonProperty("color_for_user_genomes")
+    private String colorForUserGenomes;
+    @JsonProperty("tree_shape")
+    private String treeShape;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -82,6 +97,81 @@ public class ViewTreeInput {
         return this;
     }
 
+    @JsonProperty("show_genome_obj_name")
+    public Long getShowGenomeObjName() {
+        return showGenomeObjName;
+    }
+
+    @JsonProperty("show_genome_obj_name")
+    public void setShowGenomeObjName(Long showGenomeObjName) {
+        this.showGenomeObjName = showGenomeObjName;
+    }
+
+    public ViewTreeInput withShowGenomeObjName(Long showGenomeObjName) {
+        this.showGenomeObjName = showGenomeObjName;
+        return this;
+    }
+
+    @JsonProperty("color_for_reference_genomes")
+    public String getColorForReferenceGenomes() {
+        return colorForReferenceGenomes;
+    }
+
+    @JsonProperty("color_for_reference_genomes")
+    public void setColorForReferenceGenomes(String colorForReferenceGenomes) {
+        this.colorForReferenceGenomes = colorForReferenceGenomes;
+    }
+
+    public ViewTreeInput withColorForReferenceGenomes(String colorForReferenceGenomes) {
+        this.colorForReferenceGenomes = colorForReferenceGenomes;
+        return this;
+    }
+
+    @JsonProperty("color_for_skeleton_genomes")
+    public String getColorForSkeletonGenomes() {
+        return colorForSkeletonGenomes;
+    }
+
+    @JsonProperty("color_for_skeleton_genomes")
+    public void setColorForSkeletonGenomes(String colorForSkeletonGenomes) {
+        this.colorForSkeletonGenomes = colorForSkeletonGenomes;
+    }
+
+    public ViewTreeInput withColorForSkeletonGenomes(String colorForSkeletonGenomes) {
+        this.colorForSkeletonGenomes = colorForSkeletonGenomes;
+        return this;
+    }
+
+    @JsonProperty("color_for_user_genomes")
+    public String getColorForUserGenomes() {
+        return colorForUserGenomes;
+    }
+
+    @JsonProperty("color_for_user_genomes")
+    public void setColorForUserGenomes(String colorForUserGenomes) {
+        this.colorForUserGenomes = colorForUserGenomes;
+    }
+
+    public ViewTreeInput withColorForUserGenomes(String colorForUserGenomes) {
+        this.colorForUserGenomes = colorForUserGenomes;
+        return this;
+    }
+
+    @JsonProperty("tree_shape")
+    public String getTreeShape() {
+        return treeShape;
+    }
+
+    @JsonProperty("tree_shape")
+    public void setTreeShape(String treeShape) {
+        this.treeShape = treeShape;
+    }
+
+    public ViewTreeInput withTreeShape(String treeShape) {
+        this.treeShape = treeShape;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -94,7 +184,7 @@ public class ViewTreeInput {
 
     @Override
     public String toString() {
-        return ((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", showGenomeObjName=")+ showGenomeObjName)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

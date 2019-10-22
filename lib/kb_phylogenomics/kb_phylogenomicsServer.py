@@ -346,6 +346,10 @@ class Application(object):
                              name='kb_phylogenomics.trim_speciestree_to_genomeset',
                              types=[dict])
         self.method_authentication['kb_phylogenomics.trim_speciestree_to_genomeset'] = 'required'  # noqa
+        self.rpc_service.add(impl_kb_phylogenomics.build_microbial_speciestree,
+                             name='kb_phylogenomics.build_microbial_speciestree',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.build_microbial_speciestree'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.run_DomainAnnotation_Sets,
                              name='kb_phylogenomics.run_DomainAnnotation_Sets',
                              types=[dict])

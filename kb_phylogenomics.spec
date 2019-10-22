@@ -24,6 +24,12 @@ module kb_phylogenomics {
         /*data_obj_ref   input_genomeSet_ref;*/
 	data_obj_ref   input_tree_ref;
 	string         desc;
+	bool           show_genome_obj_name;
+
+	string         color_for_reference_genomes;
+	string         color_for_skeleton_genomes;
+	string         color_for_user_genomes;
+	string         tree_shape;  /* circle, wedge, rect */
     } view_tree_Input;
 
     typedef structure {
@@ -46,7 +52,13 @@ module kb_phylogenomics {
 	data_obj_ref   input_tree_ref;
 	data_obj_name  output_tree_name;
 	string         desc;
+	bool           show_genome_obj_name;
+
 	bool           enforce_genome_version_match;
+        string         color_for_reference_genomes;
+	string         color_for_skeleton_genomes;
+	string         color_for_user_genomes;
+	string         tree_shape;  /* circle, wedge, rect */
     } trim_speciestree_to_genomeset_Input;
 
     typedef structure {
@@ -56,6 +68,36 @@ module kb_phylogenomics {
 
     funcdef trim_speciestree_to_genomeset(trim_speciestree_to_genomeset_Input params) 
         returns (trim_speciestree_to_genomeset_Output output) 
+        authentication required;
+
+
+    /* build_microbial_speciestree()
+    **
+    ** run Insert Set of Genomes into Species Tree with extra features
+    */
+    typedef structure {
+        workspace_name workspace_name;
+        data_obj_ref   input_genome_refs;  /* list of refs can be Genome, GenomeSet, or SpeciesTree */
+	data_obj_name  output_tree_name;
+	string         desc;
+	bool           show_genome_obj_name;
+
+	string         skeleton_set;  /* RefSeq-Isolates, RefSeq+MAGs, GTDB? */
+	int            num_proximal_sisters;
+	float          proximal_sisters_ANI_spacing;
+	string         color_for_reference_genomes;
+	string         color_for_skeleton_genomes;
+	string         color_for_user_genomes;
+	string         tree_shape;  /* circle, wedge, rect */
+    } build_microbial_speciestree_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } build_microbial_speciestree_Output;
+
+    funcdef build_microbial_speciestree(build_microbial_speciestree_Input params) 
+        returns (build_microbial_speciestree_Output output) 
         authentication required;
 
 

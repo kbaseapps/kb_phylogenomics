@@ -7,6 +7,10 @@
   "type" : "sdk",
   "version_tag" : "release"
 }, {
+  "module_name" : "FastANI",
+  "type" : "sdk",
+  "version_tag" : "release"
+}, {
   "module_name" : "GenomeFileUtil",
   "type" : "sdk",
   "version_tag" : "release"
@@ -16,6 +20,10 @@
   "version_tag" : "release"
 }, {
   "module_name" : "KBaseReport",
+  "type" : "sdk",
+  "version_tag" : "release"
+}, {
+  "module_name" : "SpeciesTreeBuilder",
   "type" : "sdk",
   "version_tag" : "release"
 }, {

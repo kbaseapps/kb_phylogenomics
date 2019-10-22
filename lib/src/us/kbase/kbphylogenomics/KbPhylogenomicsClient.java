@@ -198,6 +198,23 @@ public class KbPhylogenomicsClient {
     }
 
     /**
+     * <p>Original spec-file function name: build_microbial_speciestree</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.BuildMicrobialSpeciestreeInput BuildMicrobialSpeciestreeInput} (original type "build_microbial_speciestree_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.BuildMicrobialSpeciestreeOutput BuildMicrobialSpeciestreeOutput} (original type "build_microbial_speciestree_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public BuildMicrobialSpeciestreeOutput buildMicrobialSpeciestree(BuildMicrobialSpeciestreeInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<BuildMicrobialSpeciestreeOutput>> retType = new TypeReference<List<BuildMicrobialSpeciestreeOutput>>() {};
+        List<BuildMicrobialSpeciestreeOutput> res = caller.jsonrpcCall("kb_phylogenomics.build_microbial_speciestree", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
      * <p>Original spec-file function name: run_DomainAnnotation_Sets</p>
      * <pre>
      * </pre>
