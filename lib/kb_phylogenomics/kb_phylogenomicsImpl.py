@@ -7340,10 +7340,60 @@ This module contains methods for running and visualizing results of phylogenomic
             except:
                 raise ValueError("unable to fetch genome: " + genome_ref)
 
+
+            # get Contig IDs and lengths
+            contig_ids = []
+            contig_lens = []
+            if genome_obj.get('contig_ids') and genome_obj.get('contig_lengths'):
+                contig_ids = genome_obj['contig_ids']
+                contig_lens = genome_obj['contig_lengths']
+
+            # else need to get contig IDs and lengths from assembly or contig_set
+            else:
+                # Get genome_assembly_refs
+                this_genome_assemby_ref = None
+                this_genome_assembly_type = None
+                if not genome_obj.get('contigset_ref') and not genome_obj.get('assembly_ref'):
+                    msg = "Genome ref:" + genome_ref + genome_sci_name_by_ref[genome_ref] + \
+                          " MISSING BOTH contigset_ref AND assembly_ref.  Cannot process.  Exiting."
+                    self.log(console, msg)
+                    #self.log(invalid_msgs, msg)
+                    #continue
+                    raise ValueError(msg)
+                elif genome_obj.get('assembly_ref'):
+                    msg = "Genome ref:" + genome_ref + genome_sci_name_by_ref[base_genome_ref] + \
+                          " USING assembly_ref: " + str(base_genome_obj['assembly_ref'])
+                    self.log(console, msg)
+                    this_genome_assembly_ref = genome_obj['assembly_ref']
+                    this_genome_assembly_type = 'assembly'
+                elif genome_obj.get('contigset_ref'):
+                    msg = "Genome ref:" + genome_ref + genome_sci_name_by_ref[base_genome_ref] + \
+                          " USING contigset_ref: " + str(base_genome_obj['contigset_ref'])
+                    self.log(console, msg)
+                    this_genome_assembly_ref = base_genome_obj['contigset_ref']
+                    this_genome_assembly_type = 'contigset'
+
+                # get assembly obj and read contig ids and lengths (both contigset obj and assembly obj have list of contigs that
+                try:
+                    #objects_list = wsClient.get_objects2({'objects':[{'ref':input_ref}]})['data']
+                    ass_obj = wsClient.get_objects([{'ref': this_genome_assembly_ref}])[0]['data']
+                except:
+                    raise ValueError("unable to fetch assembly: " + this_genome_assembly_ref)
+
+                if this_genome_assembly_type == 'assembly':
+                    for contig_key in sorted(ass_obj['contigs'].keys()):
+                        contig_ids.append(ass_obj['contigs'][contig_key]['contig_id'])
+                        contig_lens.append(ass_obj['contigs'][contig_key]['length'])
+                        #print ("CONTIG_ID: '"+str(contig_id)+"' CONTIG_LEN: '"+str(contig_len)+"'\n")  # DEBUG
+                else:  # contigset obj
+                    for contig in ass_obj['contigs']:
+                        contig_ids.append(contig['id'])
+                        contig_lens.append(contig['length'])
+
             # put contig ids in order by length
             contig_ids_by_len = dict()
-            for contig_i,contig_id in enumerate(genome_obj['contig_ids']):
-                contig_len = genome_obj['contig_lengths'][contig_i]
+            for contig_i,contig_id in enumerate(contig_ids):
+                contig_len = contig_lens[contig_i]
                 try:
                     len_seen = contig_ids_by_len[contig_len][0]
                 except:
