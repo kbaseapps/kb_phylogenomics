@@ -7354,23 +7354,23 @@ This module contains methods for running and visualizing results of phylogenomic
                 this_genome_assemby_ref = None
                 this_genome_assembly_type = None
                 if not genome_obj.get('contigset_ref') and not genome_obj.get('assembly_ref'):
-                    msg = "Genome ref:" + genome_ref + genome_sci_name_by_ref[genome_ref] + \
+                    msg = "Genome ref:" + genome_ref + \
                           " MISSING BOTH contigset_ref AND assembly_ref.  Cannot process.  Exiting."
                     self.log(console, msg)
                     #self.log(invalid_msgs, msg)
                     #continue
                     raise ValueError(msg)
                 elif genome_obj.get('assembly_ref'):
-                    msg = "Genome ref:" + genome_ref + genome_sci_name_by_ref[base_genome_ref] + \
-                          " USING assembly_ref: " + str(base_genome_obj['assembly_ref'])
+                    msg = "Genome ref:" + genome_ref + \
+                          " USING assembly_ref: " + str(genome_obj['assembly_ref'])
                     self.log(console, msg)
                     this_genome_assembly_ref = genome_obj['assembly_ref']
                     this_genome_assembly_type = 'assembly'
                 elif genome_obj.get('contigset_ref'):
-                    msg = "Genome ref:" + genome_ref + genome_sci_name_by_ref[base_genome_ref] + \
-                          " USING contigset_ref: " + str(base_genome_obj['contigset_ref'])
+                    msg = "Genome ref:" + genome_ref + \
+                          " USING contigset_ref: " + str(genome_obj['contigset_ref'])
                     self.log(console, msg)
-                    this_genome_assembly_ref = base_genome_obj['contigset_ref']
+                    this_genome_assembly_ref = genome_obj['contigset_ref']
                     this_genome_assembly_type = 'contigset'
 
                 # get assembly obj and read contig ids and lengths (both contigset obj and assembly obj have list of contigs that
