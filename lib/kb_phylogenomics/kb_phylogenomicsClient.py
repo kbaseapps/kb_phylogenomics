@@ -94,6 +94,20 @@ class kb_phylogenomics(object):
         return self._client.call_method('kb_phylogenomics.build_microbial_speciestree',
                                         [params], self._service_ver, context)
 
+    def localize_DomainAnnotations(self, params, context=None):
+        """
+        :param params: instance of type "localize_DomainAnnotations_Input"
+           (localize_DomainAnnotations() ** ** point all DomainAnnotations at
+           local copies of Genome Objects) -> structure: parameter
+           "workspace_name" of type "workspace_name" (** Common types),
+           parameter "input_DomainAnnotation_refs" of type "data_obj_ref"
+        :returns: instance of type "localize_DomainAnnotations_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        return self._client.call_method('kb_phylogenomics.localize_DomainAnnotations',
+                                        [params], self._service_ver, context)
+
     def run_DomainAnnotation_Sets(self, params, context=None):
         """
         :param params: instance of type "run_DomainAnnotation_Sets_Input"

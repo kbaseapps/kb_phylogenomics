@@ -350,6 +350,10 @@ class Application(object):
                              name='kb_phylogenomics.build_microbial_speciestree',
                              types=[dict])
         self.method_authentication['kb_phylogenomics.build_microbial_speciestree'] = 'required'  # noqa
+        self.rpc_service.add(impl_kb_phylogenomics.localize_DomainAnnotations,
+                             name='kb_phylogenomics.localize_DomainAnnotations',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.localize_DomainAnnotations'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.run_DomainAnnotation_Sets,
                              name='kb_phylogenomics.run_DomainAnnotation_Sets',
                              types=[dict])

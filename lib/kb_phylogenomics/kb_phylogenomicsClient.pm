@@ -464,6 +464,104 @@ build_microbial_speciestree_Output is a reference to a hash where the following 
  
 
 
+=head2 localize_DomainAnnotations
+
+  $output = $obj->localize_DomainAnnotations($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_phylogenomics.localize_DomainAnnotations_Input
+$output is a kb_phylogenomics.localize_DomainAnnotations_Output
+localize_DomainAnnotations_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_DomainAnnotation_refs has a value which is a kb_phylogenomics.data_obj_ref
+workspace_name is a string
+data_obj_ref is a string
+localize_DomainAnnotations_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_phylogenomics.localize_DomainAnnotations_Input
+$output is a kb_phylogenomics.localize_DomainAnnotations_Output
+localize_DomainAnnotations_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_DomainAnnotation_refs has a value which is a kb_phylogenomics.data_obj_ref
+workspace_name is a string
+data_obj_ref is a string
+localize_DomainAnnotations_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub localize_DomainAnnotations
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function localize_DomainAnnotations (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to localize_DomainAnnotations:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'localize_DomainAnnotations');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_phylogenomics.localize_DomainAnnotations",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'localize_DomainAnnotations',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method localize_DomainAnnotations",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'localize_DomainAnnotations',
+				       );
+    }
+}
+ 
+
+
 =head2 run_DomainAnnotation_Sets
 
   $output = $obj->run_DomainAnnotation_Sets($params)
@@ -2348,6 +2446,77 @@ tree_shape has a value which is a string
 
 
 =head2 build_microbial_speciestree_Output
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 localize_DomainAnnotations_Input
+
+=over 4
+
+
+
+=item Description
+
+localize_DomainAnnotations()
+**
+** point all DomainAnnotations at local copies of Genome Objects
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_DomainAnnotation_refs has a value which is a kb_phylogenomics.data_obj_ref
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_DomainAnnotation_refs has a value which is a kb_phylogenomics.data_obj_ref
+
+
+=end text
+
+=back
+
+
+
+=head2 localize_DomainAnnotations_Output
 
 =over 4
 

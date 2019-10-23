@@ -1,0 +1,59 @@
+{
+    "ver": "1.5.0",
+    "authors": [
+        "dylan"
+    ],
+    "contact": "http://kbase.us/contact-us/",
+    "visible": true,
+    "categories": ["active", "utilities"],
+    "widgets": {
+        "input": null,
+        "output": "no-display"
+    },
+    "parameters": [ 
+        {
+            "id": "input_DomainAnnotation_refs",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": true,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseGeneFamilies.DomainAnnotation" ]
+            }
+        }
+    ],
+    "behavior": {
+        "service-mapping": {
+            "url": "",
+            "name": "kb_phylogenomics",
+            "method": "localize_DomainAnnotations",
+            "input_mapping": [
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "workspace_name"
+                },
+                {
+                    "input_parameter": "input_DomainAnnotation_refs",
+		    "target_property": "input_DomainAnnotation_refs",
+		    "target_type_transform": "list<resolved-ref>"
+                }
+            ],
+            "output_mapping": [
+                {
+                    "service_method_output_path": [0, "report_name"],
+                    "target_property": "report_name"
+                },
+                {
+                    "service_method_output_path": [0, "report_ref"],
+                    "target_property": "report_ref"
+                },
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "workspace_name"
+                }
+            ]
+        }
+    },
+    "job_id_output_field": "docker"
+}

@@ -101,6 +101,25 @@ module kb_phylogenomics {
         authentication required;
 
 
+    /* localize_DomainAnnotations()
+    **
+    ** point all DomainAnnotations at local copies of Genome Objects
+    */
+    typedef structure {
+        workspace_name workspace_name;
+	data_obj_ref input_DomainAnnotation_refs;
+    } localize_DomainAnnotations_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } localize_DomainAnnotations_Output;
+
+    funcdef localize_DomainAnnotations(localize_DomainAnnotations_Input params) 
+        returns (localize_DomainAnnotations_Output output) 
+        authentication required;
+
+
     /* run_DomainAnnotation_Sets()
     **
     ** run the DomainAnnotation App against a GenomeSet
