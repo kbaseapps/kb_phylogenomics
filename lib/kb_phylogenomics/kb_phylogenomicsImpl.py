@@ -1329,7 +1329,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 
         for info in local_genome_obj_info_list:
             local_genome_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
-            local_genome_name = info[NAME_i]
+            local_genome_name = info[NAME_I]
             local_genome_name_by_ref[local_genome_ref]  = local_genome_name
             local_genome_ref_by_name[local_genome_name] = local_genome_ref
 
@@ -1373,6 +1373,11 @@ This module contains methods for running and visualizing results of phylogenomic
                 self.log(console, msg)
                 report_text.append(msg)
                 msg = "SKIPPING localization of DomainAnnotation object "+domain_obj_name
+                self.log(console, msg)
+                report_text.append(msg)
+                continue
+            elif local_genome_ref_by_name[remote_genome_name] == remote_genome_ref:
+                msg = "Local Genome Object of name "+remote_genome_name+" is already pointed to by DomainAnnotation "+domain_obj_name
                 self.log(console, msg)
                 report_text.append(msg)
                 continue
