@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Homolog Genome Context - v1.3.1
+name: Homolog Genome Context - v1.5.0
 
 tooltip: |
     Find Homologs for a Collection of Genes and View in Genome Context
