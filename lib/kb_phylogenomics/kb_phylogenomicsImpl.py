@@ -45,7 +45,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.5.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "3230a28aec8993d65688de33960ddce70b50435e"
+    GIT_COMMIT_HASH = "9199e981f2df175f3ea9392d5ea29f236c7a7f36"
 
     #BEGIN_CLASS_HEADER
 
@@ -1272,6 +1272,155 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method build_microbial_speciestree return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def localize_DomainAnnotations(self, ctx, params):
+        """
+        :param params: instance of type "localize_DomainAnnotations_Input"
+           (localize_DomainAnnotations() ** ** point all DomainAnnotations at
+           local copies of Genome Objects) -> structure: parameter
+           "workspace_name" of type "workspace_name" (** Common types),
+           parameter "input_DomainAnnotation_refs" of type "data_obj_ref"
+        :returns: instance of type "localize_DomainAnnotations_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN localize_DomainAnnotations
+        console = []
+        self.log(console, 'Running localize_DomainAnnotations() with params=')
+        self.log(console, "\n" + pformat(params))
+
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
+        headers = {'Authorization': 'OAuth ' + token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+
+        ### STEP 1: basic parameter checks + parsing
+        required_params = ['workspace_name']
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
+
+
+        ### STEP 2: read the local genomes names and refs
+        local_genome_name_by_ref = dict()
+        local_genome_ref_by_name = dict()
+        local_genome_obj_info_list = []
+        try:
+            local_genome_obj_info_list.extend(wsClient.list_objects(
+                {'workspaces': [params['workspace_name']], 'type': "KBaseGenomes.Genome"}))
+        except Exception as e:
+            raise ValueError("Unable to list Genome objects from workspace: " + str(workspace_name) + " " + str(e))
+                
+        for info in local_genome_obj_info_list:
+            local_genome_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
+            local_genome_name = info[NAME_i]
+            local_genome_name_by_ref[local_genome_ref]  = local_genome_name
+            local_genome_ref_by_name[local_genome_name] = local_genome_ref
+
+
+        ### STEP 3: Read local DomainAnnotation objects, find remote genome name, replace with local ref, and save DomainAnnotation
+        report_text = []
+        objects_created = []
+        local_DomainAnnotation_refs = []
+        if params.get('input_DomainAnnotation_refs'):
+            local_DomainAnnotation_refs = params['input_DomainAnnotation_refs']
+        else:
+            dom_annot_obj_info_list = []
+            # read local workspace first
+            try:
+                dom_annot_obj_info_list.extend(wsClient.list_objects(
+                    {'workspaces': [params['workspace_name']], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
+            except Exception as e:
+                raise ValueError("Unable to list DomainAnnotation objects from workspace: " + str(workspace_name) + " " + str(e))
+
+            for info in dom_annot_obj_info_list:
+                dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
+                local_DomainAnnotation_refs.append(dom_annot_ref)
+
+        # go through each DomainAnnotation object and replace the genome_ref
+        for dom_annot_ref in local_DomainAnnotation_refs:
+            try:
+                domain_obj = wsClient.get_objects([{'ref': dom_annot_ref}])[0]
+            except:
+                raise ValueError("unable to fetch domain annotation: " + dom_annot_ref)
+            domain_data = domain_obj['data']
+            domain_info = domain_obj['info']
+            domain_obj_name = domain_info[NAME_I]
+
+            # read remote genome ref from domain data object
+            remote_genome_ref = domain_data['genome_ref']
+            remote_genome_obj_info = wsClient.get_object_info_new({'objects': [{'ref': remote_genome_ref}]})[0]
+            remote_genome_name = remote_genome_obj_info[NAME_I]
+
+            if not local_genome_ref_by_name.get(remote_genome_name):
+                msg = "No local Genome Object of name "+remote_genome_name+" found for DomainAnnotation "+domain_obj_name
+                self.log(console, msg)
+                report_text.append(msg)
+                msg = "SKIPPING localization of DomainAnnotation object "+domain_obj_name
+                self.log(console, msg)
+                report_text.append(msg)
+                continue
+            
+            # change genome ref to local copy
+            local_genome_ref = local_genome_ref_by_name[remote_genome_name]
+            domain_data['genome_ref'] = local_genome_ref
+            msg = "Setting DomainAnnotation object "+domain_obj_name+" to local copy of Genome "+remote_genome_name+" with local ref "+local_genome_ref
+            self.log(console, msg)
+            report_text.append(msg)
+
+            # save DomainAnnotation object
+            provenance = [{}]
+            if 'provenance' in ctx:
+                provenance = ctx['provenance']
+            provenance[0]['input_ws_objects'] = [str(remote_genome_ref), str(local_genome_ref)]
+
+            new_obj_info = wsClient.save_objects({
+                'workspace': params['workspace_name'],
+                'objects': [
+                    {'type': 'KBaseGeneFamilies.DomainAnnotation',
+                     'data': domain_data,
+                     'name': domain_obj_name,
+                     'meta': {},
+                     'provenance': provenance
+                 }]
+            })[0]
+            objects_created.append(
+                {'ref': str(new_obj_info[WSID_I]) + '/' + str(new_obj_info[OBJID_I]) + '/' + str(new_obj_info[VERSION_I]), 'description': 'localized DomainAnnotation for '+remote_genome_name})
+
+
+        ### STEP 4: build and save the report
+        reportObj = {
+            'objects_created': [],
+            'text_message': "\n".join(report_text)
+        }
+        SERVICE_VER = 'release'
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        report_info = reportClient.create({'report': reportObj, 'workspace_name': params['workspace_name']})
+
+        ### STEP 6: construct the output to send back
+        output = {'report_name': report_info['name'], 'report_ref': report_info['ref']}
+
+        #END localize_DomainAnnotations
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method localize_DomainAnnotations return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]

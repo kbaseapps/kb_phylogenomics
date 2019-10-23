@@ -215,6 +215,23 @@ public class KbPhylogenomicsClient {
     }
 
     /**
+     * <p>Original spec-file function name: localize_DomainAnnotations</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.LocalizeDomainAnnotationsInput LocalizeDomainAnnotationsInput} (original type "localize_DomainAnnotations_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.LocalizeDomainAnnotationsOutput LocalizeDomainAnnotationsOutput} (original type "localize_DomainAnnotations_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public LocalizeDomainAnnotationsOutput localizeDomainAnnotations(LocalizeDomainAnnotationsInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<LocalizeDomainAnnotationsOutput>> retType = new TypeReference<List<LocalizeDomainAnnotationsOutput>>() {};
+        List<LocalizeDomainAnnotationsOutput> res = caller.jsonrpcCall("kb_phylogenomics.localize_DomainAnnotations", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
      * <p>Original spec-file function name: run_DomainAnnotation_Sets</p>
      * <pre>
      * </pre>
