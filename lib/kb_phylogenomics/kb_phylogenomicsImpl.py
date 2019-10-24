@@ -1369,15 +1369,15 @@ This module contains methods for running and visualizing results of phylogenomic
             remote_genome_name = remote_genome_obj_info[NAME_I]
 
             if not local_genome_ref_by_name.get(remote_genome_name):
-                msg = "No local Genome Object of name "+remote_genome_name+" found for DomainAnnotation "+domain_obj_name
-                self.log(console, msg)
-                report_text.append(msg)
                 msg = "SKIPPING localization of DomainAnnotation object "+domain_obj_name
+                msg += "No local Genome Object of name "+remote_genome_name+" found for DomainAnnotation "+domain_obj_name
+                msg += "\n"
                 self.log(console, msg)
                 report_text.append(msg)
                 continue
             elif local_genome_ref_by_name[remote_genome_name] == remote_genome_ref:
                 msg = "Local Genome Object of name "+remote_genome_name+" is already pointed to by DomainAnnotation "+domain_obj_name
+                msg += "\n"
                 self.log(console, msg)
                 report_text.append(msg)
                 continue
@@ -1386,6 +1386,7 @@ This module contains methods for running and visualizing results of phylogenomic
             local_genome_ref = local_genome_ref_by_name[remote_genome_name]
             domain_data['genome_ref'] = local_genome_ref
             msg = "Setting DomainAnnotation object "+domain_obj_name+" to local copy of Genome "+remote_genome_name+" with local ref "+local_genome_ref
+            msg += "\n"
             self.log(console, msg)
             report_text.append(msg)
 
