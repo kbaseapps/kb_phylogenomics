@@ -1368,24 +1368,121 @@ This module contains methods for running and visualizing results of phylogenomic
             remote_genome_obj_info = wsClient.get_object_info_new({'objects': [{'ref': remote_genome_ref}]})[0]
             remote_genome_name = remote_genome_obj_info[NAME_I]
 
-            if not local_genome_ref_by_name.get(remote_genome_name):
-                msg = "No local Genome Object of name "+remote_genome_name+" found for DomainAnnotation "+domain_obj_name
-                self.log(console, msg)
-                report_text.append(msg)
-                msg = "SKIPPING localization of DomainAnnotation object "+domain_obj_name
-                self.log(console, msg)
-                report_text.append(msg)
-                continue
-            elif local_genome_ref_by_name[remote_genome_name] == remote_genome_ref:
-                msg = "Local Genome Object of name "+remote_genome_name+" is already pointed to by DomainAnnotation "+domain_obj_name
+            # we already got one
+            if local_genome_ref_by_name[remote_genome_name] == remote_genome_ref:
+                msg = "Local Genome Object of name "+remote_genome_name+" is already pointed to by DomainAnnotation "+domain_obj_name+"."
+                msg += "\n"
                 self.log(console, msg)
                 report_text.append(msg)
                 continue
-            
+
+            # let's get one
+            elif not local_genome_ref_by_name.get(remote_genome_name):
+                msg = "No local Genome Object of name "+remote_genome_name+" found for DomainAnnotation "+domain_obj_name+".  Making local copy,"
+                msg += "\n"
+                self.log(console, msg)
+                report_text.append(msg)
+                
+                # get Genome obj, copy Assembly obj, set assembly pointer in Genome, and save
+                try:
+                    genome_obj_data = wsClient.get_objects([{'ref':remote_genome_ref}])[0]['data']
+                except:
+                    raise ValueError("unable to fetch genome: " + remote_genome_ref)
+
+# HERE
+                genome_assembly_type = None
+                if not genome_obj_data.get('contig_set_ref') and not genome_obj_data.get('assembly_ref'):
+                    msg = "Genome " + remote_genome_name + \
+                          " (ref:" + remote_genome_ref + ") " + \
+                          " MISSING BOTH contigset_ref AND assembly_ref.  Cannot process.  Exiting."
+                    self.log(console, msg)
+                    #self.log(invalid_msgs, msg)
+                    #continue
+                    raise ValueError(msg)
+                elif genome_obj_data.get('assembly_ref'):
+                    msg = "Genome " + remote_genome_name + \
+                          " (ref:" + remote_genome_ref + ") " + \
+                          " USING assembly_ref: " + str(genome_obj_data['assembly_ref'])
+                    self.log(console, msg)
+                    genome_assembly_ref = genome_obj_data['assembly_ref']
+                    genome_assembly_type = 'assembly'
+                elif genome_obj_data.get('contigset_ref'):
+                    msg = "Genome " + remote_genome_name + \
+                          " (ref:" + remote_genome_ref + ") " + \
+                          " USING contigset_ref: " + str(genome_obj_data['contigset_ref'])
+                    self.log(console, msg)
+                    genome_assembly_ref = genome_obj_data['contigset_ref']
+                    genome_assembly_type = 'contigset'
+
+                try:
+                    ass_obj = wsClient.get_objects([{'ref': genome_assembly_ref}])[0]
+                    ass_data = ass_obj['data']
+                    ass_info = ass_obj['info']
+                    ass_name = ass_info[NAME_I]
+                except:
+                    raise ValueError("unable to fetch assembly: " + genome_assembly_ref)
+
+                # save assembly to local workspace
+                provenance = [{}]
+                if 'provenance' in ctx:
+                    provenance = ctx['provenance']
+                provenance[0]['input_ws_objects'] = [str(genome_assembly_ref)]
+
+                ass_obj_type = "KBaseGenomeAnnotations.Assembly"
+                if genome_assembly_type == 'contigset':
+                    ass_obj_type = "KBaseGenomes.ContigSet"
+                new_obj_info = wsClient.save_objects({
+                    'workspace': params['workspace_name'],
+                    'objects': [
+                        {'type': ass_obj_type,
+                         'data': ass_data,
+                         'name': ass_name,
+                         'meta': {},
+                         'provenance': provenance
+                     }]
+                })[0]
+                local_assembly_ref = '{}/{}/{}'.format(new_obj_info[WSID_I],
+                                                       new_obj_info[OBJID_I],
+                                                       new_obj_info[VERSION_I])
+                objects_created.append(
+                    {'ref': local_assembly_ref, 'description': 'localized Assembly for '+remote_genome_name})
+
+                # reset ref for assembly in Genome obj
+                if genome_assembly_type == 'assembly':
+                    genome_obj_data['assembly_ref'] = local_assembly_ref
+                else:  # contigset obj
+                    genome_obj_data['contig_set_ref'] = local_assembly_ref
+
+                # save genome to local workspace
+                provenance = [{}]
+                if 'provenance' in ctx:
+                    provenance = ctx['provenance']
+                provenance[0]['input_ws_objects'] = [str(remote_genome_ref)]
+
+                genome_obj_type = "KBaseGenomes.Genome"
+                new_obj_info = wsClient.save_objects({
+                    'workspace': params['workspace_name'],
+                    'objects': [
+                        {'type': genome_obj_type,
+                         'data': genome_obj_data,
+                         'name': remote_genome_name,
+                         'meta': {},
+                         'provenance': provenance
+                     }]
+                })[0]
+                local_genome_ref = '{}/{}/{}'.format(new_obj_info[WSID_I],
+                                                     new_obj_info[OBJID_I],
+                                                     new_obj_info[VERSION_I])
+                objects_created.append(
+                    {'ref': local_genome_ref, 'description': 'localized Genome for '+remote_genome_name})
+                local_genome_ref_by_name[remote_genome_name] = local_genome_ref
+
+
             # change genome ref to local copy
             local_genome_ref = local_genome_ref_by_name[remote_genome_name]
             domain_data['genome_ref'] = local_genome_ref
             msg = "Setting DomainAnnotation object "+domain_obj_name+" to local copy of Genome "+remote_genome_name+" with local ref "+local_genome_ref
+            msg += "\n"
             self.log(console, msg)
             report_text.append(msg)
 
