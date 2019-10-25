@@ -1369,7 +1369,8 @@ This module contains methods for running and visualizing results of phylogenomic
             remote_genome_name = remote_genome_obj_info[NAME_I]
 
             # we already got one
-            if local_genome_ref_by_name[remote_genome_name] == remote_genome_ref:
+            if local_genome_ref_by_name.get(remote_genome_name) \
+               and local_genome_ref_by_name[remote_genome_name] == remote_genome_ref:
                 msg = "Local Genome Object of name "+remote_genome_name+" is already pointed to by DomainAnnotation "+domain_obj_name+"."
                 msg += "\n"
                 self.log(console, msg)
