@@ -1342,6 +1342,7 @@ This module contains methods for running and visualizing results of phylogenomic
         report_text = []
         objects_created = []
         local_DomainAnnotation_refs = []
+        WsID = None
         if params.get('input_DomainAnnotation_refs'):
             local_DomainAnnotation_refs = params['input_DomainAnnotation_refs']
         else:
@@ -1354,6 +1355,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 raise ValueError("Unable to list DomainAnnotation objects from workspace: " + str(workspace_name) + " " + str(e))
 
             for info in dom_annot_obj_info_list:
+                WsID = info[WSID_I]
                 dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
                 local_DomainAnnotation_refs.append(dom_annot_ref)
 
@@ -1436,24 +1438,23 @@ This module contains methods for running and visualizing results of phylogenomic
                 ass_obj_type = "KBaseGenomeAnnotations.Assembly"
                 if genome_assembly_type == 'contigset':
                     ass_obj_type = "KBaseGenomes.ContigSet"
+                #new_obj_info = wsClient.save_objects({
+                #    'workspace': params['workspace_name'],
                 new_obj_info = dfuClient.save_objects({
-                    'workspace': params['workspace_name'],
+                    'id': WsID,
                     'objects': [
                         {'type': ass_obj_type,
                          'data': ass_data,
-                         'name': ass_name
+                         'name': ass_name,
+                         'meta': {},
+                         'provenance': provenance
                      }]
                 })[0]
-#                         'name': ass_name,
-#                         'meta': {},
-#                         'provenance': provenance
-#                     }]
-#                })[0]
                 local_assembly_ref = '{}/{}/{}'.format(new_obj_info[WSID_I],
                                                        new_obj_info[OBJID_I],
                                                        new_obj_info[VERSION_I])
-                objects_created.append(
-                    {'ref': local_assembly_ref, 'description': 'localized Assembly for '+remote_genome_name})
+                #objects_created.append(
+                #    {'ref': local_assembly_ref, 'description': 'localized Assembly for '+remote_genome_name})
 
                 # reset ref for assembly in Genome obj
                 if genome_assembly_type == 'assembly':
@@ -1465,11 +1466,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 provenance = [{}]
                 if 'provenance' in ctx:
                     provenance = ctx['provenance']
-                #provenance[0]['input_ws_objects'] = [str(remote_genome_ref)]
+                provenance[0]['input_ws_objects'] = [str(remote_genome_ref)]
 
                 genome_obj_type = "KBaseGenomes.Genome"
-                new_obj_info = wsClient.save_objects({
-                    'workspace': params['workspace_name'],
+                #new_obj_info = wsClient.save_objects({
+                #    'workspace': params['workspace_name'],
+                new_obj_info = dfuClient.save_objects({
+                    'id': WsID,
                     'objects': [
                         {'type': genome_obj_type,
                          'data': genome_obj_data,
@@ -1481,8 +1484,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 local_genome_ref = '{}/{}/{}'.format(new_obj_info[WSID_I],
                                                      new_obj_info[OBJID_I],
                                                      new_obj_info[VERSION_I])
-                objects_created.append(
-                    {'ref': local_genome_ref, 'description': 'localized Genome for '+remote_genome_name})
+                #objects_created.append(
+                #    {'ref': local_genome_ref, 'description': 'localized Genome for '+remote_genome_name})
                 local_genome_ref_by_name[remote_genome_name] = local_genome_ref
 
 
@@ -1500,8 +1503,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 provenance = ctx['provenance']
             provenance[0]['input_ws_objects'] = [str(remote_genome_ref), str(local_genome_ref)]
 
-            new_obj_info = wsClient.save_objects({
-                'workspace': params['workspace_name'],
+            #new_obj_info = wsClient.save_objects({
+            #    'workspace': params['workspace_name'],
+            new_obj_info = dfuClient.save_objects({
+                'id': WsID,
                 'objects': [
                     {'type': 'KBaseGeneFamilies.DomainAnnotation',
                      'data': domain_data,
@@ -1516,7 +1521,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         ### STEP 4: build and save the report
         reportObj = {
-            'objects_created': [],
+            'objects_created': objects_created,
             'text_message': "\n".join(report_text)
         }
         SERVICE_VER = 'release'
