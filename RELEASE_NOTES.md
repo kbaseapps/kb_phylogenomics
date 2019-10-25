@@ -1,7 +1,6 @@
 ### Version 1.5.0
 __Changes__
 - Added Build Microbial SpeciesTree App
-- Added Localize Domain Annotations App
 
 
 ### Version 1.4.0
