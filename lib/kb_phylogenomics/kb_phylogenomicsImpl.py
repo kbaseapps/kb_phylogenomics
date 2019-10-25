@@ -1427,7 +1427,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 provenance = [{}]
                 if 'provenance' in ctx:
                     provenance = ctx['provenance']
-                provenance[0]['input_ws_objects'] = [str(genome_assembly_ref)]
+                #provenance[0]['input_ws_objects'] = [str(genome_assembly_ref)]
 
                 ass_obj_type = "KBaseGenomeAnnotations.Assembly"
                 if genome_assembly_type == 'contigset':
@@ -1458,7 +1458,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 provenance = [{}]
                 if 'provenance' in ctx:
                     provenance = ctx['provenance']
-                provenance[0]['input_ws_objects'] = [str(remote_genome_ref)]
+                #provenance[0]['input_ws_objects'] = [str(remote_genome_ref)]
 
                 genome_obj_type = "KBaseGenomes.Genome"
                 new_obj_info = wsClient.save_objects({
