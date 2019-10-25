@@ -1305,6 +1305,10 @@ This module contains methods for running and visualizing results of phylogenomic
             wsClient = workspaceService(self.workspaceURL, token=token)
         except:
             raise ValueError("unable to instantiate wsClient")
+        try:
+            dfuClient = DFUClient(self.callbackURL)
+        except:
+            raise ValueError("unable to instantiate dfuClient")
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
         env['KB_AUTH_TOKEN'] = token
@@ -1427,21 +1431,24 @@ This module contains methods for running and visualizing results of phylogenomic
                 provenance = [{}]
                 if 'provenance' in ctx:
                     provenance = ctx['provenance']
-                #provenance[0]['input_ws_objects'] = [str(genome_assembly_ref)]
+                provenance[0]['input_ws_objects'] = [str(genome_assembly_ref)]
 
                 ass_obj_type = "KBaseGenomeAnnotations.Assembly"
                 if genome_assembly_type == 'contigset':
                     ass_obj_type = "KBaseGenomes.ContigSet"
-                new_obj_info = wsClient.save_objects({
+                new_obj_info = dfuClient.save_objects({
                     'workspace': params['workspace_name'],
                     'objects': [
                         {'type': ass_obj_type,
                          'data': ass_data,
-                         'name': ass_name,
-                         'meta': {},
-                         'provenance': provenance
+                         'name': ass_name
                      }]
                 })[0]
+#                         'name': ass_name,
+#                         'meta': {},
+#                         'provenance': provenance
+#                     }]
+#                })[0]
                 local_assembly_ref = '{}/{}/{}'.format(new_obj_info[WSID_I],
                                                        new_obj_info[OBJID_I],
                                                        new_obj_info[VERSION_I])
