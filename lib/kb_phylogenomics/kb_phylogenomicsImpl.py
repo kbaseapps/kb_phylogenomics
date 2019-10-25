@@ -1445,9 +1445,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     'objects': [
                         {'type': ass_obj_type,
                          'data': ass_data,
-                         'name': ass_name,
-                         'meta': {},
-                         'provenance': provenance
+                         'name': ass_name
+                         #'meta': {},
+                         #'provenance': provenance
                      }]
                 })[0]
                 local_assembly_ref = '{}/{}/{}'.format(new_obj_info[WSID_I],
@@ -1476,9 +1476,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     'objects': [
                         {'type': genome_obj_type,
                          'data': genome_obj_data,
-                         'name': remote_genome_name,
-                         'meta': {},
-                         'provenance': provenance
+                         'name': remote_genome_name
+                         #'meta': {},
+                         #'provenance': provenance
                      }]
                 })[0]
                 local_genome_ref = '{}/{}/{}'.format(new_obj_info[WSID_I],
@@ -1510,9 +1510,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 'objects': [
                     {'type': 'KBaseGeneFamilies.DomainAnnotation',
                      'data': domain_data,
-                     'name': domain_obj_name,
-                     'meta': {},
-                     'provenance': provenance
+                     'name': domain_obj_name
+                     #'meta': {},
+                     #'provenance': provenance
                  }]
             })[0]
             objects_created.append(
