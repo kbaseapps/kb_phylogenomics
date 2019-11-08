@@ -1327,22 +1327,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         input_ref = params['input_genomeSet_ref']
         try:
-            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
-            input_obj_name = input_obj_info[NAME_I]
-            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
-        except Exception as e:
-            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
-        accepted_input_types = ["KBaseSearch.GenomeSet"]
-        if input_obj_type not in accepted_input_types:
-            raise ValueError("Input object of type '" + input_obj_type +
-                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
-        input_genomeSet_name = input_obj_name
-
-
-        # get set obj
-        try:
             query_genomeSet_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
-            query_genomeSet_obj_data = genomeSet_obj['data']
+            query_genomeSet_obj_data = query_genomeSet_obj['data']
         except:
             raise ValueError("unable to fetch genomeSet: " + input_ref)
 
@@ -1361,13 +1347,14 @@ This module contains methods for running and visualizing results of phylogenomic
         skeleton_genome_ref_dict = dict()
         if params.get('skeleton_set'):
             skeleton_ws_id = 50737;
-            skeleton_genomeset_obj_name = 'Phylogenetic_Skeleton-'+params['skeleton_set']+".GenomeSet"
+            skeleton_genomeSet_obj_name = 'Phylogenetic_Skeleton-'+params['skeleton_set']+".GenomeSet"
+
             # get set obj
             try:
-                skeleton_genomeSet_obj = wsClient.get_objects2({'objects':[{'wsid': skeleton_ws_id,'name':skeleton_genomeset_obj_name}]})[0]
-                skeleton_genomeSet_obj_data = skeleton_genomeSet_obj['data']
+                skeleton_genomeSet_obj = wsClient.get_objects2({'objects':[{'wsid': skeleton_ws_id,'name':skeleton_genomeSet_obj_name}]})['data'][0]
             except:
-                raise ValueError("unable to fetch skeleton genomeSet: " + skeleton_genomeset_obj_name + " from ws "+str(ws_id))
+                raise ValueError("unable to fetch skeleton genomeSet: " + skeleton_genomeSet_obj_name + " from ws "+str(skeleton_ws_id))
+            skeleton_genomeSet_obj_data = skeleton_genomeSet_obj['data']
                 
             for genome_id in skeleton_genomeSet_obj_data['elements'].keys():
                 genome_ref = skeleton_genomeSet_obj_data['elements'][genome_id]['ref']
@@ -1388,14 +1375,16 @@ This module contains methods for running and visualizing results of phylogenomic
         # STEP 5: call species tree app and get back created object
         #
         #"SpeciesTreeBuilder/insert_genomeset_into_species_tree"
-        untrimmed_tree_name = output_tree_name+'-UNTRIMMED'
-        untrimmed_genomeSet_name = untrimmed_output_tree_name+'.GenomeSet'
+        untrimmed_tree_name = params['output_tree_name']+'-UNTRIMMED'
+        untrimmed_genomeSet_name = untrimmed_tree_name+'.GenomeSet'
         species_tree_app_params = {
-            "param0": params['input_genomeSet_ref'],
-            "param1": 1,
+            "out_workspace": params['workspace_name'],
+            "new_genomes": combined_genome_ref_order,
+            "nearest_genome_count": 1,
             "copy_genomes": 0,
-            "treeID": untrimmed_tree_name,
-            "genomeSetName": untrimmed_genomeSet_name
+            "out_tree_id": untrimmed_tree_name,
+            "out_genomeset_ref": None
+            #"out_genomeset_ref": untrimmed_genomeSet_name
         }
         try:
             #SERVICE_VER = 'dev'  # DEBUG
@@ -1405,7 +1394,7 @@ This module contains methods for running and visualizing results of phylogenomic
         except:
             raise ValueError("unable to instantiate SpeciesTreeBuilder Client")       
         # run
-        speciesTree_retVal = speciesTreeClient.insert_genomeset_into_species_tree(species_tree_app_params)[0]
+        speciesTree_retVal = speciesTreeClient.construct_species_tree(species_tree_app_params)[0]
         untrimmed_speciesTree_obj = wsClient.get_objects2({'objects':[{'workspace':params['workspace_name'],'name':untrimmed_tree_name}]})['data'][0]
         untrimmed_speciesTree_obj_info = untrimmed_speciesTree_obj['info']
         untrimmed_speciesTree_obj_data = untrimmed_speciesTree_obj['data']

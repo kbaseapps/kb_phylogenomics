@@ -1111,36 +1111,30 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
         # input_data
         genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
-        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
-        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
-        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+        #genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        #genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        #genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
 
         genome_ref_0 = self.getWsName() + '/' + str(genomeInfo_0[0]) + '/' + str(genomeInfo_0[4])
-        genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
-        genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
-        genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
+        #genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
+        #genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
+        #genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
 
         #feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
         #feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
         #feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
         #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
 
-        # upload Tree
-        genome_refs_map = { '23880/3/1': genome_ref_0,
-                            '23880/4/1': genome_ref_1,
-                            '23880/5/1': genome_ref_2,
-                            '23880/6/1': genome_ref_3
-                        }
-
         # upload genomeSet
-        genome_ref_list = [genome_ref_0, genome_ref_1, genome_ref_2, genome_ref_3]
+        #genome_ref_list = [genome_ref_0, genome_ref_1, genome_ref_2, genome_ref_3]
+        genome_ref_list = [genome_ref_0]
         genome_scinames = dict()
         genome_objnames = dict()
         genome_refs_by_objname = dict()
         genome_scinames[genome_ref_0] = 'Candidatus Carsonella ruddii HT isolate Thao2000'
-        genome_scinames[genome_ref_1] = 'Wolbachia endosymbiont of Onchocerca ochengi'
-        genome_scinames[genome_ref_2] = 'Wolbachia endosymbiont of Trichogramma pretiosum'
-        genome_scinames[genome_ref_3] = 'Wolbachia sp. wRi'
+        #genome_scinames[genome_ref_1] = 'Wolbachia endosymbiont of Onchocerca ochengi'
+        #genome_scinames[genome_ref_2] = 'Wolbachia endosymbiont of Trichogramma pretiosum'
+        #genome_scinames[genome_ref_3] = 'Wolbachia sp. wRi'
         for genome_ref in genome_ref_list: 
             try:
                 [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
@@ -1153,7 +1147,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
         # build GenomeSet obj
         testGS = {
-            'description': 'three genomes',
+            'description': 'one genome',
             'elements': dict()
         }
         for genome_ref in genome_ref_list: 
