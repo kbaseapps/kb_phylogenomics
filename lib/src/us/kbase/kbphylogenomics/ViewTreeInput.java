@@ -26,7 +26,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "input_tree_ref",
     "desc",
-    "show_genome_obj_name",
+    "genome_disp_name_config",
+    "show_skeleton_genome_sci_name",
     "color_for_reference_genomes",
     "color_for_skeleton_genomes",
     "color_for_user_genomes",
@@ -40,8 +41,10 @@ public class ViewTreeInput {
     private String inputTreeRef;
     @JsonProperty("desc")
     private String desc;
-    @JsonProperty("show_genome_obj_name")
-    private Long showGenomeObjName;
+    @JsonProperty("genome_disp_name_config")
+    private String genomeDispNameConfig;
+    @JsonProperty("show_skeleton_genome_sci_name")
+    private Long showSkeletonGenomeSciName;
     @JsonProperty("color_for_reference_genomes")
     private String colorForReferenceGenomes;
     @JsonProperty("color_for_skeleton_genomes")
@@ -97,18 +100,33 @@ public class ViewTreeInput {
         return this;
     }
 
-    @JsonProperty("show_genome_obj_name")
-    public Long getShowGenomeObjName() {
-        return showGenomeObjName;
+    @JsonProperty("genome_disp_name_config")
+    public String getGenomeDispNameConfig() {
+        return genomeDispNameConfig;
     }
 
-    @JsonProperty("show_genome_obj_name")
-    public void setShowGenomeObjName(Long showGenomeObjName) {
-        this.showGenomeObjName = showGenomeObjName;
+    @JsonProperty("genome_disp_name_config")
+    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
     }
 
-    public ViewTreeInput withShowGenomeObjName(Long showGenomeObjName) {
-        this.showGenomeObjName = showGenomeObjName;
+    public ViewTreeInput withGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+        return this;
+    }
+
+    @JsonProperty("show_skeleton_genome_sci_name")
+    public Long getShowSkeletonGenomeSciName() {
+        return showSkeletonGenomeSciName;
+    }
+
+    @JsonProperty("show_skeleton_genome_sci_name")
+    public void setShowSkeletonGenomeSciName(Long showSkeletonGenomeSciName) {
+        this.showSkeletonGenomeSciName = showSkeletonGenomeSciName;
+    }
+
+    public ViewTreeInput withShowSkeletonGenomeSciName(Long showSkeletonGenomeSciName) {
+        this.showSkeletonGenomeSciName = showSkeletonGenomeSciName;
         return this;
     }
 
@@ -184,7 +202,7 @@ public class ViewTreeInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", showGenomeObjName=")+ showGenomeObjName)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

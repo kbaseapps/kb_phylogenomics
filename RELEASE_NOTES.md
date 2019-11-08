@@ -1,6 +1,7 @@
 ### Version 1.5.0
 __Changes__
 - Added Build Microbial SpeciesTree App
+- Fixed ContigSet/Assembly bug in Homolog Genome Context App
 
 
 ### Version 1.4.0

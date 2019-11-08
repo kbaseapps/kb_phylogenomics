@@ -127,7 +127,8 @@ view_tree_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	desc has a value which is a string
-	show_genome_obj_name has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
+	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
@@ -151,7 +152,8 @@ view_tree_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	desc has a value which is a string
-	show_genome_obj_name has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
+	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
@@ -241,7 +243,8 @@ trim_speciestree_to_genomeset_Input is a reference to a hash where the following
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 	desc has a value which is a string
-	show_genome_obj_name has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
+	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
@@ -269,7 +272,8 @@ trim_speciestree_to_genomeset_Input is a reference to a hash where the following
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 	desc has a value which is a string
-	show_genome_obj_name has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
+	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
@@ -360,7 +364,8 @@ build_microbial_speciestree_Input is a reference to a hash where the following k
 	input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 	desc has a value which is a string
-	show_genome_obj_name has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
+	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	skeleton_set has a value which is a string
 	num_proximal_sisters has a value which is an int
 	proximal_sisters_ANI_spacing has a value which is a float
@@ -389,7 +394,8 @@ build_microbial_speciestree_Input is a reference to a hash where the following k
 	input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 	desc has a value which is a string
-	show_genome_obj_name has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
+	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	skeleton_set has a value which is a string
 	num_proximal_sisters has a value which is an int
 	proximal_sisters_ANI_spacing has a value which is a float
@@ -2236,7 +2242,8 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
-show_genome_obj_name has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
+show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
@@ -2252,7 +2259,8 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
-show_genome_obj_name has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
+show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
@@ -2321,7 +2329,8 @@ input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
-show_genome_obj_name has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
+show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
@@ -2340,7 +2349,8 @@ input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
-show_genome_obj_name has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
+show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
@@ -2409,7 +2419,8 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
-show_genome_obj_name has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
+show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 skeleton_set has a value which is a string
 num_proximal_sisters has a value which is an int
 proximal_sisters_ANI_spacing has a value which is a float
@@ -2429,7 +2440,8 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
-show_genome_obj_name has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
+show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 skeleton_set has a value which is a string
 num_proximal_sisters has a value which is an int
 proximal_sisters_ANI_spacing has a value which is a float

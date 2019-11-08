@@ -28,7 +28,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "input_tree_ref",
     "output_tree_name",
     "desc",
-    "show_genome_obj_name",
+    "genome_disp_name_config",
+    "show_skeleton_genome_sci_name",
     "enforce_genome_version_match",
     "color_for_reference_genomes",
     "color_for_skeleton_genomes",
@@ -47,8 +48,10 @@ public class TrimSpeciestreeToGenomesetInput {
     private String outputTreeName;
     @JsonProperty("desc")
     private String desc;
-    @JsonProperty("show_genome_obj_name")
-    private Long showGenomeObjName;
+    @JsonProperty("genome_disp_name_config")
+    private String genomeDispNameConfig;
+    @JsonProperty("show_skeleton_genome_sci_name")
+    private Long showSkeletonGenomeSciName;
     @JsonProperty("enforce_genome_version_match")
     private Long enforceGenomeVersionMatch;
     @JsonProperty("color_for_reference_genomes")
@@ -136,18 +139,33 @@ public class TrimSpeciestreeToGenomesetInput {
         return this;
     }
 
-    @JsonProperty("show_genome_obj_name")
-    public Long getShowGenomeObjName() {
-        return showGenomeObjName;
+    @JsonProperty("genome_disp_name_config")
+    public String getGenomeDispNameConfig() {
+        return genomeDispNameConfig;
     }
 
-    @JsonProperty("show_genome_obj_name")
-    public void setShowGenomeObjName(Long showGenomeObjName) {
-        this.showGenomeObjName = showGenomeObjName;
+    @JsonProperty("genome_disp_name_config")
+    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
     }
 
-    public TrimSpeciestreeToGenomesetInput withShowGenomeObjName(Long showGenomeObjName) {
-        this.showGenomeObjName = showGenomeObjName;
+    public TrimSpeciestreeToGenomesetInput withGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+        return this;
+    }
+
+    @JsonProperty("show_skeleton_genome_sci_name")
+    public Long getShowSkeletonGenomeSciName() {
+        return showSkeletonGenomeSciName;
+    }
+
+    @JsonProperty("show_skeleton_genome_sci_name")
+    public void setShowSkeletonGenomeSciName(Long showSkeletonGenomeSciName) {
+        this.showSkeletonGenomeSciName = showSkeletonGenomeSciName;
+    }
+
+    public TrimSpeciestreeToGenomesetInput withShowSkeletonGenomeSciName(Long showSkeletonGenomeSciName) {
+        this.showSkeletonGenomeSciName = showSkeletonGenomeSciName;
         return this;
     }
 
@@ -238,7 +256,7 @@ public class TrimSpeciestreeToGenomesetInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((("TrimSpeciestreeToGenomesetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", showGenomeObjName=")+ showGenomeObjName)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((("TrimSpeciestreeToGenomesetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
