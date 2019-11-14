@@ -24,7 +24,8 @@ module kb_phylogenomics {
         /*data_obj_ref   input_genomeSet_ref;*/
 	data_obj_ref   input_tree_ref;
 	string         desc;
-	bool           show_genome_obj_name;
+        string         genome_disp_name_config;
+        bool           show_skeleton_genome_sci_name;
 
 	string         color_for_reference_genomes;
 	string         color_for_skeleton_genomes;
@@ -52,7 +53,8 @@ module kb_phylogenomics {
 	data_obj_ref   input_tree_ref;
 	data_obj_name  output_tree_name;
 	string         desc;
-	bool           show_genome_obj_name;
+        string         genome_disp_name_config;
+        bool           show_skeleton_genome_sci_name;
 
 	bool           enforce_genome_version_match;
         string         color_for_reference_genomes;
@@ -80,7 +82,8 @@ module kb_phylogenomics {
         data_obj_ref   input_genome_refs;  /* list of refs can be Genome, GenomeSet, or SpeciesTree */
 	data_obj_name  output_tree_name;
 	string         desc;
-	bool           show_genome_obj_name;
+        string         genome_disp_name_config;
+        bool           show_skeleton_genome_sci_name;
 
 	string         skeleton_set;  /* RefSeq-Isolates, RefSeq+MAGs, GTDB? */
 	int            num_proximal_sisters;

@@ -18,6 +18,7 @@ import matplotlib.pyplot as pyplot  # use this instead
 from matplotlib.patches import Arc
 from matplotlib.patches import Rectangle
 
+from installed_clients.SpeciesTreeBuilderClient import SpeciesTreeBuilder
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.DataFileUtilClient import DataFileUtil as DFUClient
 from installed_clients.DomainAnnotationClient import DomainAnnotation
@@ -45,7 +46,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.5.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "9199e981f2df175f3ea9392d5ea29f236c7a7f36"
+    GIT_COMMIT_HASH = "8df4f99145d6286ae603f004d8d2b28d3ad9c137"
 
     #BEGIN_CLASS_HEADER
 
@@ -575,9 +576,10 @@ This module contains methods for running and visualizing results of phylogenomic
            show a KBase Tree and make newick and images downloadable) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
-           parameter "desc" of String, parameter "show_genome_obj_name" of
-           type "bool", parameter "color_for_reference_genomes" of String,
-           parameter "color_for_skeleton_genomes" of String, parameter
+           parameter "desc" of String, parameter "genome_disp_name_config" of
+           String, parameter "show_skeleton_genome_sci_name" of type "bool",
+           parameter "color_for_reference_genomes" of String, parameter
+           "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "view_tree_Output" -> structure: parameter
@@ -727,6 +729,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # init ETE3 objects
         t = ete3.Tree(newick_buf)
+        t.ladderize()
         ts = ete3.TreeStyle()
 
         # determine if there are more user or non-user genomes in tree to color fewer
@@ -909,7 +912,8 @@ This module contains methods for running and visualizing results of phylogenomic
            parameter "input_genomeSet_ref" of type "data_obj_ref", parameter
            "input_tree_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "show_genome_obj_name" of type "bool", parameter
+           String, parameter "genome_disp_name_config" of String, parameter
+           "show_skeleton_genome_sci_name" of type "bool", parameter
            "enforce_genome_version_match" of type "bool", parameter
            "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
@@ -1253,7 +1257,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "workspace_name" of type "workspace_name" (** Common types),
            parameter "input_genome_refs" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "show_genome_obj_name" of type "bool", parameter
+           String, parameter "genome_disp_name_config" of String, parameter
+           "show_skeleton_genome_sci_name" of type "bool", parameter
            "skeleton_set" of String, parameter "num_proximal_sisters" of
            Long, parameter "proximal_sisters_ANI_spacing" of Double,
            parameter "color_for_reference_genomes" of String, parameter
@@ -1267,6 +1272,215 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN build_microbial_speciestree
+
+        #### STEP 0: init
+        ##
+        dfu = DFUClient(self.callbackURL)
+        console = []
+        invalid_msgs = []
+        self.log(console, 'Running build_microbial_speciestree() with params=')
+        self.log(console, "\n" + pformat(params))
+        report = ''
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
+
+
+        #### STEP 1: do some basic checks
+        ##
+        required_params = ['workspace_name',
+                           'input_genomeSet_ref',
+                           'skeleton_set',
+                           'output_tree_name'
+                           ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
+
+
+        #### STEP 2: load the method provenance from the context object
+        ##
+        self.log(console, "SETTING PROVENANCE")  # DEBUG
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects'] = []
+        provenance[0]['input_ws_objects'].append(params['input_genomeSet_ref'])
+        provenance[0]['service'] = 'kb_phylogenomics'
+        provenance[0]['method'] = 'build_microbial_speciestree'
+
+
+        #### STEP 3: Get Query Genomes
+        #
+        input_ref = params['input_genomeSet_ref']
+        try:
+            query_genomeSet_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
+            query_genomeSet_obj_data = query_genomeSet_obj['data']
+        except:
+            raise ValueError("unable to fetch genomeSet: " + input_ref)
+
+        # store query genome refs
+        query_genome_ref_order = []
+        query_genome_ref_dict = dict()
+        for genome_id in query_genomeSet_obj_data['elements'].keys():
+            genome_ref = query_genomeSet_obj_data['elements'][genome_id]['ref']
+            query_genome_ref_dict[genome_ref] = True
+            query_genome_ref_order.append(genome_ref)
+
+
+        # STEP 4: Combine Query genomes with skeleton genomes
+        #
+        skeleton_genome_ref_order = []
+        skeleton_genome_ref_dict = dict()
+        if params.get('skeleton_set'):
+            #skeleton_ws_id = 45087;  # CI
+            skeleton_ws_id = 50737;  # PROD
+            skeleton_genomeSet_obj_name = 'Phylogenetic_Skeleton-'+params['skeleton_set']+".GenomeSet"
+
+            # get set obj
+            try:
+                skeleton_genomeSet_obj = wsClient.get_objects2({'objects':[{'wsid': skeleton_ws_id,'name':skeleton_genomeSet_obj_name}]})['data'][0]
+            except:
+                raise ValueError("unable to fetch skeleton genomeSet: " + skeleton_genomeSet_obj_name + " from ws "+str(skeleton_ws_id))
+            skeleton_genomeSet_obj_data = skeleton_genomeSet_obj['data']
+                
+            for genome_id in skeleton_genomeSet_obj_data['elements'].keys():
+                genome_ref = skeleton_genomeSet_obj_data['elements'][genome_id]['ref']
+                skeleton_genome_ref_dict[genome_ref] = True
+                skeleton_genome_ref_order.append(genome_ref)
+
+        # merge
+        combined_genome_ref_order = []
+        combined_genome_ref_dict = dict()
+        for genome_ref in query_genome_ref_order:
+            combined_genome_ref_dict[genome_ref] = True
+            combined_genome_ref_order.append(genome_ref)
+        for genome_ref in skeleton_genome_ref_order:
+            combined_genome_ref_dict[genome_ref] = True
+            combined_genome_ref_order.append(genome_ref)
+
+        # DEBUG
+        self.log (console, "GENOME REFS: "+"\t".join(combined_genome_ref_order))
+
+
+        # STEP 5: call species tree app and get back created object
+        #
+        #"SpeciesTreeBuilder/insert_genomeset_into_species_tree"
+        untrimmed_tree_name = params['output_tree_name']+'-UNTRIMMED'
+        untrimmed_genomeSet_name = untrimmed_tree_name+'.GenomeSet'
+        species_tree_app_params = {
+            "out_workspace": params['workspace_name'],
+            #"new_genomes": combined_genome_ref_order,
+            "new_genomes": query_genome_ref_order,
+            #"nearest_genome_count": 1,
+            "nearest_genome_count": 3,
+            "copy_genomes": 0,
+            "out_tree_id": untrimmed_tree_name,
+            #"out_genomeset_ref": None,
+            "out_genomeset_ref": untrimmed_genomeSet_name,
+            "use_ribosomal_s9_only": 0
+        }
+        # DEBUG
+        self.log(console, "SPECIES_TREE_PARAMS: ")
+        self.log(console, str(species_tree_app_params))
+
+        try:
+            #SERVICE_VER = 'dev'  # DEBUG
+            SERVICE_VER = 'release'
+            speciesTreeClient = SpeciesTreeBuilder(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
+            #speciesTreeClient = SpeciesTreeBuilder(url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
+        except:
+            raise ValueError("unable to instantiate SpeciesTreeBuilder Client")       
+        # run
+        #speciesTree_retVal = speciesTreeClient.construct_species_tree(species_tree_app_params)[0]
+        speciesTree_retVal = speciesTreeClient.construct_species_tree(species_tree_app_params)
+        untrimmed_speciesTree_obj = wsClient.get_objects2({'objects':[{'workspace':params['workspace_name'],'name':untrimmed_tree_name}]})['data'][0]
+        untrimmed_speciesTree_obj_info = untrimmed_speciesTree_obj['info']
+        untrimmed_speciesTree_obj_data = untrimmed_speciesTree_obj['data']
+
+        untrimmed_speciesTree_obj_ref = '/'.join([str(untrimmed_speciesTree_obj_info[WSID_I]),
+                                                  str(untrimmed_speciesTree_obj_info[OBJID_I]),
+                                                  str(untrimmed_speciesTree_obj_info[VERSION_I])])
+                                                  
+
+# HERE
+
+        #### STEP N: build report
+        ##
+        report_info = dict()
+        reportName = 'build_microbial_speciestree_report_' + str(uuid.uuid4())
+        #report += output_newick_buf+"\n"
+        reportObj = {'objects_created': [],
+                     'direct_html_link_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+        }
+            
+
+        """
+        # can't just pass forward report because we created objects we need to add
+        try:
+            species_tree_reportObj = wsClient.get_objects([{'ref': speciesTree_retVal['report_ref']}])[0]['data']
+        except Exception as e:
+            raise ValueError('Unable to fetch species_tree() report from workspace: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+
+        # can't just copy substructures because format of those fields in report object different from the format needed to pass to create_extended_report() method
+        #for field in ('direct_html_link_index', 'file_links', 'html_links'):
+        #    reportObj[field] = view_tree_reportObj[field]
+        #    self.log<(console, "REPORT "+field+": "+pformat(view_tree_reportObj[field]))  # DEBUG
+        #
+        reportObj['direct_html_link_index'] = species_tree_reportObj['direct_html_link_index']
+        for html_link_item in view_tree_reportObj['html_links']:
+            #this_shock_id = html_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', html_link_item['URL'])
+            new_html_link_item = {'shock_id': this_shock_id,
+                                  'name': html_link_item['name'],
+                                  'label': html_link_item['label']
+            }
+            reportObj['html_links'].append(new_html_link_item)
+        for file_link_item in view_tree_reportObj['file_links']:
+            #this_shock_id = file_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+            new_file_link_item = {'shock_id': this_shock_id,
+                                  'name': file_link_item['name'],
+                                  'label': file_link_item['label']
+            }
+            reportObj['file_links'].append(new_file_link_item)
+
+        reportObj['objects_created'].append({'ref': untrimmed_speciesTree_obj_ref,
+                                             'description': params['output_tree_name']+' Species Tree'})
+        """
+
+        # save report object
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        report_info = reportClient.create_extended_report(reportObj)
+
+
+        # Done
+        #
+        self.log(console, "BUILDING RETURN OBJECT")
+        output = {'report_name': report_info['name'],
+                  'report_ref': report_info['ref']
+                  }
+
+        self.log(console, "build_microbial_speciestree() DONE")
         #END build_microbial_speciestree
 
         # At some point might do deeper type checking...

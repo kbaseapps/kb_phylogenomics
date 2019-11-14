@@ -39,9 +39,10 @@ class kb_phylogenomics(object):
            show a KBase Tree and make newick and images downloadable) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
-           parameter "desc" of String, parameter "show_genome_obj_name" of
-           type "bool", parameter "color_for_reference_genomes" of String,
-           parameter "color_for_skeleton_genomes" of String, parameter
+           parameter "desc" of String, parameter "genome_disp_name_config" of
+           String, parameter "show_skeleton_genome_sci_name" of type "bool",
+           parameter "color_for_reference_genomes" of String, parameter
+           "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "view_tree_Output" -> structure: parameter
@@ -59,7 +60,8 @@ class kb_phylogenomics(object):
            parameter "input_genomeSet_ref" of type "data_obj_ref", parameter
            "input_tree_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "show_genome_obj_name" of type "bool", parameter
+           String, parameter "genome_disp_name_config" of String, parameter
+           "show_skeleton_genome_sci_name" of type "bool", parameter
            "enforce_genome_version_match" of type "bool", parameter
            "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
@@ -80,7 +82,8 @@ class kb_phylogenomics(object):
            "workspace_name" of type "workspace_name" (** Common types),
            parameter "input_genome_refs" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "show_genome_obj_name" of type "bool", parameter
+           String, parameter "genome_disp_name_config" of String, parameter
+           "show_skeleton_genome_sci_name" of type "bool", parameter
            "skeleton_set" of String, parameter "num_proximal_sisters" of
            Long, parameter "proximal_sisters_ANI_spacing" of Double,
            parameter "color_for_reference_genomes" of String, parameter
