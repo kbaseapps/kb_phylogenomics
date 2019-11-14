@@ -1,0 +1,104 @@
+#
+# define display information
+#
+name: Build Microbial SpeciesTree - v1.5.0
+
+tooltip: |
+    Build Species Tree for your Microbial Genomes, including Reference Genomes and Tree Skeleton with Phylum Exemplars
+
+screenshots: []
+
+icon: tree-purple.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_genome_refs :
+        ui-name : |
+            Genomes
+        short-hint : |
+            The Genomes, GenomeSet, or SpeciesTree containing the User genomes.
+    desc :
+        ui-name : |
+            Description
+        short-hint : |
+            A description of the SpeciesTree which will be added to the title in the tree image.
+    genome_disp_name_config :
+        ui-name : |
+            Display genome as
+        short-hint : |
+            Choose whether to show the Genome Object name, the version, and/or the Scientific Name for query genomes in Tree figure.
+    show_skeleton_genome_sci_name :
+        ui-name : |
+            Include skeleton species name
+        short-hint : |
+            Choose whether to show the Skeleton Species Name in the Tree figure.
+    skeleton_set :
+        ui-name : |
+            Skeleton exemplar set
+        short-hint : |
+            Include lineage exemplars to form a skeleton for the Species Tree.
+    num_proximal_sisters :
+        ui-name : |
+            Proximal reference sister count
+        short-hint : |
+            Specify the number of close relatives from reference genome database.
+    proximal_sisters_ANI_spacing :
+        ui-name : |
+            Proximal sisters ANI spacing
+        short-hint : |
+            Enforce diversity between proximal sister genomes by trying to space them out by average nucleotide identity (ANI).
+    color_for_reference_genomes :
+        ui-name : |
+            Color proximal sisters
+        short-hint : |
+            Add color to final species tree image for proximal sister leaves.
+    color_for_skeleton_genomes :
+        ui-name : |
+            Color skeleton exemplars
+        short-hint : |
+            Add color to final species tree image for skeleton phylum exemplar leaves.
+    color_for_user_genomes :
+        ui-name : |
+            Color user genomes
+        short-hint : |
+            Add color to final species tree image for user genome leaves.
+    tree_shape :
+        ui-name : |
+            Tree shape
+        short-hint : |
+            Pick the shape for the tree in the generated image.
+    output_tree_name :
+        ui-name : |
+            Output Tree
+        short-hint : |
+            The name of the output Tree object
+
+description : |
+    <p>This App allows the user to build a microbial <b><i>SpeciesTree</i></b> of their genomes, with options to include Phylum exemplar genomes to act as a skeleton and public reference genomes.</p>
+
+    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> Dylan Chivian, based on the Insert Genomes into Species Tree App developed by Paramvir Dehal and Roman Sutormin. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+
+
+publications :
+    -
+        pmid: 29979655
+        display-text : |
+            Arkin AP, Cottingham RW, Henry CS, Harris NL, Stevens RL, Maslov S, et al. KBase: The United States Department of Energy Systems Biology Knowledgebase. Nature Biotechnology. 2018;36: 566. doi: 10.1038/nbt.4163
+        link: https://www.nature.com/articles/nbt.4163
