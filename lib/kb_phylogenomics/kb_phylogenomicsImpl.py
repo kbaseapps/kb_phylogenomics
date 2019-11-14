@@ -729,6 +729,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # init ETE3 objects
         t = ete3.Tree(newick_buf)
+        t.ladderize()
         ts = ete3.TreeStyle()
 
         # determine if there are more user or non-user genomes in tree to color fewer
@@ -1346,7 +1347,8 @@ This module contains methods for running and visualizing results of phylogenomic
         skeleton_genome_ref_order = []
         skeleton_genome_ref_dict = dict()
         if params.get('skeleton_set'):
-            skeleton_ws_id = 50737;
+            #skeleton_ws_id = 45087;  # CI
+            skeleton_ws_id = 50737;  # PROD
             skeleton_genomeSet_obj_name = 'Phylogenetic_Skeleton-'+params['skeleton_set']+".GenomeSet"
 
             # get set obj
@@ -1371,6 +1373,9 @@ This module contains methods for running and visualizing results of phylogenomic
             combined_genome_ref_dict[genome_ref] = True
             combined_genome_ref_order.append(genome_ref)
 
+        # DEBUG
+        self.log (console, "GENOME REFS: "+"\t".join(combined_genome_ref_order))
+
 
         # STEP 5: call species tree app and get back created object
         #
@@ -1379,22 +1384,30 @@ This module contains methods for running and visualizing results of phylogenomic
         untrimmed_genomeSet_name = untrimmed_tree_name+'.GenomeSet'
         species_tree_app_params = {
             "out_workspace": params['workspace_name'],
-            "new_genomes": combined_genome_ref_order,
-            "nearest_genome_count": 1,
+            #"new_genomes": combined_genome_ref_order,
+            "new_genomes": query_genome_ref_order,
+            #"nearest_genome_count": 1,
+            "nearest_genome_count": 3,
             "copy_genomes": 0,
             "out_tree_id": untrimmed_tree_name,
-            "out_genomeset_ref": None
-            #"out_genomeset_ref": untrimmed_genomeSet_name
+            #"out_genomeset_ref": None,
+            "out_genomeset_ref": untrimmed_genomeSet_name,
+            "use_ribosomal_s9_only": 0
         }
+        # DEBUG
+        self.log(console, "SPECIES_TREE_PARAMS: ")
+        self.log(console, str(species_tree_app_params))
+
         try:
             #SERVICE_VER = 'dev'  # DEBUG
             SERVICE_VER = 'release'
             speciesTreeClient = SpeciesTreeBuilder(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
-            #daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
+            #speciesTreeClient = SpeciesTreeBuilder(url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
             raise ValueError("unable to instantiate SpeciesTreeBuilder Client")       
         # run
-        speciesTree_retVal = speciesTreeClient.construct_species_tree(species_tree_app_params)[0]
+        #speciesTree_retVal = speciesTreeClient.construct_species_tree(species_tree_app_params)[0]
+        speciesTree_retVal = speciesTreeClient.construct_species_tree(species_tree_app_params)
         untrimmed_speciesTree_obj = wsClient.get_objects2({'objects':[{'workspace':params['workspace_name'],'name':untrimmed_tree_name}]})['data'][0]
         untrimmed_speciesTree_obj_info = untrimmed_speciesTree_obj['info']
         untrimmed_speciesTree_obj_data = untrimmed_speciesTree_obj['data']
@@ -1406,7 +1419,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
 # HERE
 
-        #### STEP 7: build report
+        #### STEP N: build report
         ##
         report_info = dict()
         reportName = 'build_microbial_speciestree_report_' + str(uuid.uuid4())
@@ -1419,6 +1432,8 @@ This module contains methods for running and visualizing results of phylogenomic
                      'report_object_name': reportName
         }
             
+
+        """
         # can't just pass forward report because we created objects we need to add
         try:
             species_tree_reportObj = wsClient.get_objects([{'ref': speciesTree_retVal['report_ref']}])[0]['data']
@@ -1451,7 +1466,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         reportObj['objects_created'].append({'ref': untrimmed_speciesTree_obj_ref,
                                              'description': params['output_tree_name']+' Species Tree'})
-
+        """
 
         # save report object
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
