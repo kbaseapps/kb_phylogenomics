@@ -1177,7 +1177,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
         obj_out_type = 'KBaseTrees.Tree'
         skeleton_set = 'RefSeq-Isolates'
         params = { 'workspace_name':               self.getWsName(),
-                   'input_genomeSet_ref':          genomeSet_ref,
+                   'input_genome_refs':            [genomeSet_ref],
                    'output_tree_name':             obj_out_name,
                    'desc':                         'test tree',
                    'skeleton_set':                 skeleton_set

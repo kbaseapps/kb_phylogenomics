@@ -1334,10 +1334,10 @@ This module contains methods for running and visualizing results of phylogenomic
         for input_ref in params['input_genome_refs']:
             try:
                 query_genome_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
-                query_genome_obj_data = query_genomeSet_obj['data']
-                query_genome_obj_info = query_genomeSet_obj['data']
+                query_genome_obj_data = query_genome_obj['data']
+                query_genome_obj_info = query_genome_obj['info']
             except:
-                raise ValueError("unable to fetch genomeSet: " + input_ref)
+                raise ValueError("unable to fetch input genome object: " + input_ref)
 
             # just a genome
             if query_genome_obj_info[TYPE_I] in genome_obj_types:
@@ -1347,13 +1347,13 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # elif handle tree type
 
-            elif query_genome_obj_type[TYPE_I] in genomeSet_obj_types:
+            elif query_genome_obj_info[TYPE_I] in genomeSet_obj_types:
                 raise ValueError ("bad type for input_genome_refs")
 
             # else it's a genomeSet
             else:  
-                for genome_id in query_genomes_obj_data['elements'].keys():
-                    genome_ref = query_genomes_obj_data['elements'][genome_id]['ref']
+                for genome_id in query_genome_obj_data['elements'].keys():
+                    genome_ref = query_genome_obj_data['elements'][genome_id]['ref']
                     if genome_ref not in query_genome_ref_dict:
                         query_genome_ref_dict[genome_ref] = True
                         query_genome_ref_order.append(genome_ref)
