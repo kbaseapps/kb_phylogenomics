@@ -1302,7 +1302,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #### STEP 1: do some basic checks
         ##
         required_params = ['workspace_name',
-                           'input_genomeSet_ref',
+                           'input_genome_refs',
                            'skeleton_set',
                            'output_tree_name'
                            ]
@@ -1319,27 +1319,44 @@ This module contains methods for running and visualizing results of phylogenomic
             provenance = ctx['provenance']
         # add additional info to provenance here, in this case the input data object reference
         provenance[0]['input_ws_objects'] = []
-        provenance[0]['input_ws_objects'].append(params['input_genomeSet_ref'])
+        provenance[0]['input_ws_objects'].extend(params['input_genome_refs'])
         provenance[0]['service'] = 'kb_phylogenomics'
         provenance[0]['method'] = 'build_microbial_speciestree'
 
 
         #### STEP 3: Get Query Genomes
         #
-        input_ref = params['input_genomeSet_ref']
-        try:
-            query_genomeSet_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
-            query_genomeSet_obj_data = query_genomeSet_obj['data']
-        except:
-            raise ValueError("unable to fetch genomeSet: " + input_ref)
-
-        # store query genome refs
         query_genome_ref_order = []
         query_genome_ref_dict = dict()
-        for genome_id in query_genomeSet_obj_data['elements'].keys():
-            genome_ref = query_genomeSet_obj_data['elements'][genome_id]['ref']
-            query_genome_ref_dict[genome_ref] = True
-            query_genome_ref_order.append(genome_ref)
+        genomeSet_obj_types = ["KBaseSearch.GenomeSet", "KBaseSets.GenomeSet"]
+        genome_obj_types = ["KBaseGenomes.Genome", "KBaseGenomeAnnotations.Genome"]
+
+        for input_ref in params['input_genome_refs']:
+            try:
+                query_genome_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
+                query_genome_obj_data = query_genomeSet_obj['data']
+                query_genome_obj_info = query_genomeSet_obj['data']
+            except:
+                raise ValueError("unable to fetch genomeSet: " + input_ref)
+
+            # just a genome
+            if query_genome_obj_info[TYPE_I] in genome_obj_types:
+                if input_ref not in query_genome_ref_dict:
+                    query_genome_ref_dict[input_ref] = True
+                    query_genome_ref_order.append(input_ref)
+
+            # elif handle tree type
+
+            elif query_genome_obj_type[TYPE_I] in genomeSet_obj_types:
+                raise ValueError ("bad type for input_genome_refs")
+
+            # else it's a genomeSet
+            else:  
+                for genome_id in query_genomes_obj_data['elements'].keys():
+                    genome_ref = query_genomes_obj_data['elements'][genome_id]['ref']
+                    if genome_ref not in query_genome_ref_dict:
+                        query_genome_ref_dict[genome_ref] = True
+                        query_genome_ref_order.append(genome_ref)
 
 
         # STEP 4: Combine Query genomes with skeleton genomes
