@@ -1332,12 +1332,12 @@ This module contains methods for running and visualizing results of phylogenomic
         genome_obj_types = ["KBaseGenomes.Genome", "KBaseGenomeAnnotations.Genome"]
 
         for input_ref in params['input_genome_refs']:
-            try:
-                query_genome_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
-                query_genome_obj_data = query_genomeSet_obj['data']
-                query_genome_obj_info = query_genomeSet_obj['data']
-            except:
-                raise ValueError("unable to fetch genomeSet: " + input_ref)
+            #try:
+            query_genome_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
+            query_genome_obj_data = query_genomeSet_obj['data']
+            query_genome_obj_info = query_genomeSet_obj['info']
+            #except:
+            #    raise ValueError("unable to fetch input genome object: " + input_ref)
 
             # just a genome
             if query_genome_obj_info[TYPE_I] in genome_obj_types:
