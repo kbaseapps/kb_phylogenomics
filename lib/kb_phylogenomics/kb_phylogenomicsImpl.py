@@ -1394,11 +1394,62 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log (console, "GENOME REFS: "+"\t".join(combined_genome_ref_order))
 
 
-        # STEP 5: call species tree app and get back created object
+        # STEP 5: prep for untrimmed tree and tree GenomeSet
+        trimmed_tree_name = params['output_tree_name']
+        untrimmed_tree_name = trimmed_tree_name+'-UNTRIMMED'
+        trimmed_genomeSet_name = trimmed_tree_name+'.GenomeSet'
+        untrimmed_genomeSet_name = untrimmed_tree_name+'.GenomeSet'
+        trimmedGS = {
+            'description': 'trimmed species tree genomes',
+            'elements': dict()
+        }
+        for genome_i,genome_ref in enumerate(combined_genome_ref_order):
+            trimmedGS['elements'][str(genome_i)] = { 'ref': genome_ref }
+
+        # save trimmed genomeset
+        gs_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                             'objects': [
+                                                 {
+                                                     'type':'KBaseSearch.GenomeSet',
+                                                     'data':trimmedGS,
+                                                     'name':trimmed_genomeSet_name,
+                                                     'meta':{},
+                                                     'provenance':[
+                                                         {
+                                                             'service':'kb_phylogenomics',
+                                                             'method':'build_microbial_speciestree'
+                                                         }
+                                                     ]
+                                                 }]})[0]
+        #pprint(gs_obj_info)
+        untrimmed_genomeSet_ref = '/'.join([str(gs_obj_info[WSID_I]),
+                                            str(gs_obj_info[OBJID_I]),
+                                            str(gs_obj_info[VERSION_I])])
+
+        # save untrimmed genomeset (really just a target for SpeciesTreeBuilder)
+        gs_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
+                                             'objects': [
+                                                 {
+                                                     'type':'KBaseSearch.GenomeSet',
+                                                     'data':trimmedGS,
+                                                     'name':untrimmed_genomeSet_name,
+                                                     'meta':{},
+                                                     'provenance':[
+                                                         {
+                                                             'service':'kb_phylogenomics',
+                                                             'method':'build_microbial_speciestree'
+                                                         }
+                                                     ]
+                                                 }]})[0]
+        #pprint(gs_obj_info)
+        untrimmed_genomeSet_ref = '/'.join([str(gs_obj_info[WSID_I]),
+                                            str(gs_obj_info[OBJID_I]),
+                                            str(gs_obj_info[VERSION_I])])
+
+
+        # STEP 6: call species tree app and get back created object
         #
         #"SpeciesTreeBuilder/insert_genomeset_into_species_tree"
-        untrimmed_tree_name = params['output_tree_name']+'-UNTRIMMED'
-        untrimmed_genomeSet_name = untrimmed_tree_name+'.GenomeSet'
         species_tree_app_params = {
             "out_workspace": params['workspace_name'],
             #"new_genomes": combined_genome_ref_order,
@@ -1408,7 +1459,8 @@ This module contains methods for running and visualizing results of phylogenomic
             "copy_genomes": 0,
             "out_tree_id": untrimmed_tree_name,
             #"out_genomeset_ref": None,
-            "out_genomeset_ref": untrimmed_genomeSet_name,
+            #"out_genomeset_ref": untrimmed_genomeSet_name,
+            "out_genomeset_ref": untrimmed_genomeSet_ref,
             "use_ribosomal_s9_only": 0
         }
         # DEBUG
