@@ -1163,7 +1163,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                                                             'provenance':[
                                                                 {
                                                                     'service':'kb_phylogenomics',
-                                                                    'method':'test_view_fxn_profile'
+                                                                    'method':'build_microbial_speciestree'
                                                                 }
                                                             ]
                                                         }]
