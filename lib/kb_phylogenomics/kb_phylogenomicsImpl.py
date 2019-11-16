@@ -1422,9 +1422,9 @@ This module contains methods for running and visualizing results of phylogenomic
                                                      ]
                                                  }]})[0]
         #pprint(gs_obj_info)
-        untrimmed_genomeSet_ref = '/'.join([str(gs_obj_info[WSID_I]),
-                                            str(gs_obj_info[OBJID_I]),
-                                            str(gs_obj_info[VERSION_I])])
+        trimmed_genomeSet_ref = '/'.join([str(gs_obj_info[WSID_I]),
+                                          str(gs_obj_info[OBJID_I]),
+                                          str(gs_obj_info[VERSION_I])])
 
         # save untrimmed genomeset (really just a target for SpeciesTreeBuilder)
         gs_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
@@ -1442,9 +1442,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                                      ]
                                                  }]})[0]
         #pprint(gs_obj_info)
-        untrimmed_genomeSet_ref = '/'.join([str(gs_obj_info[WSID_I]),
-                                            str(gs_obj_info[OBJID_I]),
-                                            str(gs_obj_info[VERSION_I])])
+        untrimmed_genomeSet_ref = '/'.join([params['workspace_name'],
+                                            untrimmed_genomeSet_name])
+                                            #str(gs_obj_info[OBJID_I])])
+                                            #str(gs_obj_info[VERSION_I])])
 
 
         # STEP 6: call species tree app and get back created object
