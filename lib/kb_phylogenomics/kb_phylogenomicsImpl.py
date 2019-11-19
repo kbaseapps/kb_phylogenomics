@@ -1201,7 +1201,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                 'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
                                 'reference_genome_ref_dict':    params['reference_genome_ref_dict'],
                                 'skeleton_genome_ref_dict':     params['skeleton_genome_ref_dict'],
-                                'user_genome_ref_dict':         params['user_genome_ref_dict',
+                                'user_genome_ref_dict':         params['user_genome_ref_dict'],
                                 'color_for_reference_genomes':  params['color_for_reference_genomes'],
                                 'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
                                 'color_for_user_genomes':       params['color_for_user_genomes'],
