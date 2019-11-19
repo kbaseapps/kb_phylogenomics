@@ -1389,9 +1389,10 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in skeleton_genome_ref_order:
             combined_genome_ref_dict[genome_ref] = True
             combined_genome_ref_order.append(genome_ref)
+        provenance[0]['input_ws_objects'].extend(skeleton_genome_ref_order)
 
         # DEBUG
-        self.log (console, "GENOME REFS: "+"\t".join(combined_genome_ref_order))
+        #self.log (console, "GENOME REFS: "+"\t".join(combined_genome_ref_order))
 
 
         # STEP 5: prep for untrimmed tree and tree GenomeSet
@@ -1451,17 +1452,18 @@ This module contains methods for running and visualizing results of phylogenomic
         # STEP 6: call species tree app and get back created object
         #
         #"SpeciesTreeBuilder/insert_genomeset_into_species_tree"
+        nearest_genome_count = 1
+        if len(combined_genome_ref_order) < 3:
+            nearest_genome_count = 3 - len(combined_genome_ref_order)
         species_tree_app_params = {
             "out_workspace": params['workspace_name'],
-            #"new_genomes": combined_genome_ref_order,
-            "new_genomes": query_genome_ref_order,
-            #"nearest_genome_count": 1,
-            "nearest_genome_count": 3,
+            "new_genomes": combined_genome_ref_order,
+            #"new_genomes": query_genome_ref_order,
+            "nearest_genome_count": nearest_genome_count,
             "copy_genomes": 0,
             "out_tree_id": untrimmed_tree_name,
-            #"out_genomeset_ref": None,
-            #"out_genomeset_ref": untrimmed_genomeSet_name,
-            "out_genomeset_ref": untrimmed_genomeSet_ref,
+            # out_genomeset_ref format must be "workspace_name/obj_name"
+            "out_genomeset_ref": untrimmed_genomeSet_ref,  
             "use_ribosomal_s9_only": 0
         }
         # DEBUG
