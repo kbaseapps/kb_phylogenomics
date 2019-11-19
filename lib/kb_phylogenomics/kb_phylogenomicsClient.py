@@ -41,8 +41,12 @@ class kb_phylogenomics(object):
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
            parameter "desc" of String, parameter "genome_disp_name_config" of
            String, parameter "show_skeleton_genome_sci_name" of type "bool",
-           parameter "color_for_reference_genomes" of String, parameter
-           "color_for_skeleton_genomes" of String, parameter
+           parameter "reference_genome_ref_dict" of mapping from type
+           "data_obj_ref" to String, parameter "skeleton_genome_ref_dict" of
+           mapping from type "data_obj_ref" to String, parameter
+           "user_genome_ref_dict" of mapping from type "data_obj_ref" to
+           String, parameter "color_for_reference_genomes" of String,
+           parameter "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "view_tree_Output" -> structure: parameter
@@ -63,6 +67,10 @@ class kb_phylogenomics(object):
            String, parameter "genome_disp_name_config" of String, parameter
            "show_skeleton_genome_sci_name" of type "bool", parameter
            "enforce_genome_version_match" of type "bool", parameter
+           "reference_genome_ref_dict" of mapping from type "data_obj_ref" to
+           String, parameter "skeleton_genome_ref_dict" of mapping from type
+           "data_obj_ref" to String, parameter "user_genome_ref_dict" of
+           mapping from type "data_obj_ref" to String, parameter
            "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter "tree_shape" of

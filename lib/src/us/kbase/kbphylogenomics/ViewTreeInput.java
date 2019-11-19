@@ -28,6 +28,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "desc",
     "genome_disp_name_config",
     "show_skeleton_genome_sci_name",
+    "reference_genome_ref_dict",
+    "skeleton_genome_ref_dict",
+    "user_genome_ref_dict",
     "color_for_reference_genomes",
     "color_for_skeleton_genomes",
     "color_for_user_genomes",
@@ -36,81 +39,87 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class ViewTreeInput {
 
     @JsonProperty("workspace_name")
-    private String workspaceName;
+    private java.lang.String workspaceName;
     @JsonProperty("input_tree_ref")
-    private String inputTreeRef;
+    private java.lang.String inputTreeRef;
     @JsonProperty("desc")
-    private String desc;
+    private java.lang.String desc;
     @JsonProperty("genome_disp_name_config")
-    private String genomeDispNameConfig;
+    private java.lang.String genomeDispNameConfig;
     @JsonProperty("show_skeleton_genome_sci_name")
     private Long showSkeletonGenomeSciName;
+    @JsonProperty("reference_genome_ref_dict")
+    private Map<String, String> referenceGenomeRefDict;
+    @JsonProperty("skeleton_genome_ref_dict")
+    private Map<String, String> skeletonGenomeRefDict;
+    @JsonProperty("user_genome_ref_dict")
+    private Map<String, String> userGenomeRefDict;
     @JsonProperty("color_for_reference_genomes")
-    private String colorForReferenceGenomes;
+    private java.lang.String colorForReferenceGenomes;
     @JsonProperty("color_for_skeleton_genomes")
-    private String colorForSkeletonGenomes;
+    private java.lang.String colorForSkeletonGenomes;
     @JsonProperty("color_for_user_genomes")
-    private String colorForUserGenomes;
+    private java.lang.String colorForUserGenomes;
     @JsonProperty("tree_shape")
-    private String treeShape;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private java.lang.String treeShape;
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     @JsonProperty("workspace_name")
-    public String getWorkspaceName() {
+    public java.lang.String getWorkspaceName() {
         return workspaceName;
     }
 
     @JsonProperty("workspace_name")
-    public void setWorkspaceName(String workspaceName) {
+    public void setWorkspaceName(java.lang.String workspaceName) {
         this.workspaceName = workspaceName;
     }
 
-    public ViewTreeInput withWorkspaceName(String workspaceName) {
+    public ViewTreeInput withWorkspaceName(java.lang.String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
 
     @JsonProperty("input_tree_ref")
-    public String getInputTreeRef() {
+    public java.lang.String getInputTreeRef() {
         return inputTreeRef;
     }
 
     @JsonProperty("input_tree_ref")
-    public void setInputTreeRef(String inputTreeRef) {
+    public void setInputTreeRef(java.lang.String inputTreeRef) {
         this.inputTreeRef = inputTreeRef;
     }
 
-    public ViewTreeInput withInputTreeRef(String inputTreeRef) {
+    public ViewTreeInput withInputTreeRef(java.lang.String inputTreeRef) {
         this.inputTreeRef = inputTreeRef;
         return this;
     }
 
     @JsonProperty("desc")
-    public String getDesc() {
+    public java.lang.String getDesc() {
         return desc;
     }
 
     @JsonProperty("desc")
-    public void setDesc(String desc) {
+    public void setDesc(java.lang.String desc) {
         this.desc = desc;
     }
 
-    public ViewTreeInput withDesc(String desc) {
+    public ViewTreeInput withDesc(java.lang.String desc) {
         this.desc = desc;
         return this;
     }
 
     @JsonProperty("genome_disp_name_config")
-    public String getGenomeDispNameConfig() {
+    public java.lang.String getGenomeDispNameConfig() {
         return genomeDispNameConfig;
     }
 
     @JsonProperty("genome_disp_name_config")
-    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
+    public void setGenomeDispNameConfig(java.lang.String genomeDispNameConfig) {
         this.genomeDispNameConfig = genomeDispNameConfig;
     }
 
-    public ViewTreeInput withGenomeDispNameConfig(String genomeDispNameConfig) {
+    public ViewTreeInput withGenomeDispNameConfig(java.lang.String genomeDispNameConfig) {
         this.genomeDispNameConfig = genomeDispNameConfig;
         return this;
     }
@@ -130,79 +139,124 @@ public class ViewTreeInput {
         return this;
     }
 
+    @JsonProperty("reference_genome_ref_dict")
+    public Map<String, String> getReferenceGenomeRefDict() {
+        return referenceGenomeRefDict;
+    }
+
+    @JsonProperty("reference_genome_ref_dict")
+    public void setReferenceGenomeRefDict(Map<String, String> referenceGenomeRefDict) {
+        this.referenceGenomeRefDict = referenceGenomeRefDict;
+    }
+
+    public ViewTreeInput withReferenceGenomeRefDict(Map<String, String> referenceGenomeRefDict) {
+        this.referenceGenomeRefDict = referenceGenomeRefDict;
+        return this;
+    }
+
+    @JsonProperty("skeleton_genome_ref_dict")
+    public Map<String, String> getSkeletonGenomeRefDict() {
+        return skeletonGenomeRefDict;
+    }
+
+    @JsonProperty("skeleton_genome_ref_dict")
+    public void setSkeletonGenomeRefDict(Map<String, String> skeletonGenomeRefDict) {
+        this.skeletonGenomeRefDict = skeletonGenomeRefDict;
+    }
+
+    public ViewTreeInput withSkeletonGenomeRefDict(Map<String, String> skeletonGenomeRefDict) {
+        this.skeletonGenomeRefDict = skeletonGenomeRefDict;
+        return this;
+    }
+
+    @JsonProperty("user_genome_ref_dict")
+    public Map<String, String> getUserGenomeRefDict() {
+        return userGenomeRefDict;
+    }
+
+    @JsonProperty("user_genome_ref_dict")
+    public void setUserGenomeRefDict(Map<String, String> userGenomeRefDict) {
+        this.userGenomeRefDict = userGenomeRefDict;
+    }
+
+    public ViewTreeInput withUserGenomeRefDict(Map<String, String> userGenomeRefDict) {
+        this.userGenomeRefDict = userGenomeRefDict;
+        return this;
+    }
+
     @JsonProperty("color_for_reference_genomes")
-    public String getColorForReferenceGenomes() {
+    public java.lang.String getColorForReferenceGenomes() {
         return colorForReferenceGenomes;
     }
 
     @JsonProperty("color_for_reference_genomes")
-    public void setColorForReferenceGenomes(String colorForReferenceGenomes) {
+    public void setColorForReferenceGenomes(java.lang.String colorForReferenceGenomes) {
         this.colorForReferenceGenomes = colorForReferenceGenomes;
     }
 
-    public ViewTreeInput withColorForReferenceGenomes(String colorForReferenceGenomes) {
+    public ViewTreeInput withColorForReferenceGenomes(java.lang.String colorForReferenceGenomes) {
         this.colorForReferenceGenomes = colorForReferenceGenomes;
         return this;
     }
 
     @JsonProperty("color_for_skeleton_genomes")
-    public String getColorForSkeletonGenomes() {
+    public java.lang.String getColorForSkeletonGenomes() {
         return colorForSkeletonGenomes;
     }
 
     @JsonProperty("color_for_skeleton_genomes")
-    public void setColorForSkeletonGenomes(String colorForSkeletonGenomes) {
+    public void setColorForSkeletonGenomes(java.lang.String colorForSkeletonGenomes) {
         this.colorForSkeletonGenomes = colorForSkeletonGenomes;
     }
 
-    public ViewTreeInput withColorForSkeletonGenomes(String colorForSkeletonGenomes) {
+    public ViewTreeInput withColorForSkeletonGenomes(java.lang.String colorForSkeletonGenomes) {
         this.colorForSkeletonGenomes = colorForSkeletonGenomes;
         return this;
     }
 
     @JsonProperty("color_for_user_genomes")
-    public String getColorForUserGenomes() {
+    public java.lang.String getColorForUserGenomes() {
         return colorForUserGenomes;
     }
 
     @JsonProperty("color_for_user_genomes")
-    public void setColorForUserGenomes(String colorForUserGenomes) {
+    public void setColorForUserGenomes(java.lang.String colorForUserGenomes) {
         this.colorForUserGenomes = colorForUserGenomes;
     }
 
-    public ViewTreeInput withColorForUserGenomes(String colorForUserGenomes) {
+    public ViewTreeInput withColorForUserGenomes(java.lang.String colorForUserGenomes) {
         this.colorForUserGenomes = colorForUserGenomes;
         return this;
     }
 
     @JsonProperty("tree_shape")
-    public String getTreeShape() {
+    public java.lang.String getTreeShape() {
         return treeShape;
     }
 
     @JsonProperty("tree_shape")
-    public void setTreeShape(String treeShape) {
+    public void setTreeShape(java.lang.String treeShape) {
         this.treeShape = treeShape;
     }
 
-    public ViewTreeInput withTreeShape(String treeShape) {
+    public ViewTreeInput withTreeShape(java.lang.String treeShape) {
         this.treeShape = treeShape;
         return this;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperties(String name, Object value) {
+    public void setAdditionalProperties(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
     @Override
-    public String toString() {
-        return ((((((((((((((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+    public java.lang.String toString() {
+        return ((((((((((((((((((((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", referenceGenomeRefDict=")+ referenceGenomeRefDict)+", skeletonGenomeRefDict=")+ skeletonGenomeRefDict)+", userGenomeRefDict=")+ userGenomeRefDict)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
