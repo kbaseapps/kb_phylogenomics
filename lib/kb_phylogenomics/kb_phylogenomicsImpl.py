@@ -1188,7 +1188,14 @@ This module contains methods for running and visualizing results of phylogenomic
             # RUN view_tree() and forward report object through
             view_tree_Params = {'workspace_name': params['workspace_name'],
                                 'input_tree_ref': output_tree_ref,
-                                'desc': tree_description
+                                'desc': tree_description,
+                                'genome_disp_name_config': params['genome_disp_name_config'],
+                                'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
+                                'color_for_reference_genomes':  params['color_for_reference_genomes'],
+                                'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
+                                'color_for_user_genomes':       params['color_for_user_genomes'],
+                                'tree_shape':                   params['tree_shape']
+
                             }
             self.log(console, "RUNNING view_tree() for tree: " + output_tree_ref)
             view_tree_retVal = self.view_tree(ctx, view_tree_Params)[0]
@@ -1488,10 +1495,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                                   str(untrimmed_speciesTree_obj_info[OBJID_I]),
                                                   str(untrimmed_speciesTree_obj_info[VERSION_I])])
                                                   
-
-# HERE
-
-        #### STEP N: build report
+        #### STEP 7: call trim_speciestree_to_genomeset() to make report
         ##
         report_info = dict()
         reportName = 'build_microbial_speciestree_report_' + str(uuid.uuid4())
@@ -1503,14 +1507,28 @@ This module contains methods for running and visualizing results of phylogenomic
                      'workspace_name': params['workspace_name'],
                      'report_object_name': reportName
         }
+        # RUN trim_speciestree_to_genomeset() and forward report object through
+        trim_tree_Params = {'workspace_name':          params['workspace_name'],
+                            'input_genomeSet_ref':     trimmed_genomeSet_ref,
+                            'input_tree_ref':          untrimmed_speciesTree_obj_ref,
+                            'output_tree_name':        params['output_tree_name'],
+                            'desc':                    params['desc'],
+                            'genome_disp_name_config': params['genome_disp_name_config'],
+                            'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
+                            'enforce_genome_version_match': 1,
+                            'color_for_reference_genomes':  params['color_for_reference_genomes'],
+                            'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
+                            'color_for_user_genomes':       params['color_for_user_genomes'],
+                            'tree_shape':                   params['tree_shape']
+        }
+        self.log(console, "RUNNING trim_speciestree_to_genomeset() for tree: " + untrimmed_tree_name+" genomeSet: "+trimmed_genomeSet_name)
+        trim_tree_retVal = self.trim_speciestree_to_genomeset(ctx, trim_tree_Params)[0]
             
-
-        """
         # can't just pass forward report because we created objects we need to add
         try:
-            species_tree_reportObj = wsClient.get_objects([{'ref': speciesTree_retVal['report_ref']}])[0]['data']
+            trim_tree_reportObj = wsClient.get_objects([{'ref': trim_tree_retVal['report_ref']}])[0]['data']
         except Exception as e:
-            raise ValueError('Unable to fetch species_tree() report from workspace: ' + str(e))
+            raise ValueError('Unable to fetch trim_speciestree_to_genomeset() report from workspace: ' + str(e))
             #to get the full stack trace: traceback.format_exc()
 
         # can't just copy substructures because format of those fields in report object different from the format needed to pass to create_extended_report() method
@@ -1518,8 +1536,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #    reportObj[field] = view_tree_reportObj[field]
         #    self.log<(console, "REPORT "+field+": "+pformat(view_tree_reportObj[field]))  # DEBUG
         #
-        reportObj['direct_html_link_index'] = species_tree_reportObj['direct_html_link_index']
-        for html_link_item in view_tree_reportObj['html_links']:
+        reportObj['direct_html_link_index'] = trim_tree_reportObj['direct_html_link_index']
+        for html_link_item in trim_tree_reportObj['html_links']:
             #this_shock_id = html_link_item['URL']
             this_shock_id = re.sub('^.*/', '', html_link_item['URL'])
             new_html_link_item = {'shock_id': this_shock_id,
@@ -1527,7 +1545,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                   'label': html_link_item['label']
             }
             reportObj['html_links'].append(new_html_link_item)
-        for file_link_item in view_tree_reportObj['file_links']:
+        for file_link_item in trim_tree_reportObj['file_links']:
             #this_shock_id = file_link_item['URL']
             this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
             new_file_link_item = {'shock_id': this_shock_id,
@@ -1536,11 +1554,9 @@ This module contains methods for running and visualizing results of phylogenomic
             }
             reportObj['file_links'].append(new_file_link_item)
 
-        reportObj['objects_created'].append({'ref': untrimmed_speciesTree_obj_ref,
-                                             'description': params['output_tree_name']+' Species Tree'})
-        """
+        reportObj['objects_created'].append({'ref': trim_tree_reportObj['objects_created'][0]['ref'],
+                                             'description': params['desc']})
 
-        # save report object
         reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
         report_info = reportClient.create_extended_report(reportObj)
 
