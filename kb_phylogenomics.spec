@@ -20,17 +20,19 @@ module kb_phylogenomics {
     ** show a KBase Tree and make newick and images downloadable
     */
     typedef structure {
-        workspace_name workspace_name;
-        /*data_obj_ref   input_genomeSet_ref;*/
-	data_obj_ref   input_tree_ref;
-	string         desc;
-        string         genome_disp_name_config;
-        bool           show_skeleton_genome_sci_name;
+        workspace_name  workspace_name;
+	data_obj_ref    input_tree_ref;
+	string          desc;
+        string          genome_disp_name_config;
+        bool            show_skeleton_genome_sci_name;
 
-	string         color_for_reference_genomes;
-	string         color_for_skeleton_genomes;
-	string         color_for_user_genomes;
-	string         tree_shape;  /* circle, wedge, rect */
+	mapping<data_obj_ref,string> reference_genome_ref_dict;
+	mapping<data_obj_ref,string> skeleton_genome_ref_dict;
+	mapping<data_obj_ref,string> user_genome_ref_dict;
+	string          color_for_reference_genomes;
+	string          color_for_skeleton_genomes;
+	string          color_for_user_genomes;
+	string          tree_shape;  /* circle, wedge, rect */
     } view_tree_Input;
 
     typedef structure {
@@ -48,19 +50,22 @@ module kb_phylogenomics {
     ** reduce tree to match genomes found in genomeset
     */
     typedef structure {
-        workspace_name workspace_name;
-        data_obj_ref   input_genomeSet_ref;
-	data_obj_ref   input_tree_ref;
-	data_obj_name  output_tree_name;
-	string         desc;
-        string         genome_disp_name_config;
-        bool           show_skeleton_genome_sci_name;
+        workspace_name  workspace_name;
+        data_obj_ref    input_genomeSet_ref;
+	data_obj_ref    input_tree_ref;
+	data_obj_name   output_tree_name;
+	string          desc;
+        string          genome_disp_name_config;
+        bool            show_skeleton_genome_sci_name;
 
-	bool           enforce_genome_version_match;
-        string         color_for_reference_genomes;
-	string         color_for_skeleton_genomes;
-	string         color_for_user_genomes;
-	string         tree_shape;  /* circle, wedge, rect */
+	bool            enforce_genome_version_match;
+	mapping<data_obj_ref,string> reference_genome_ref_dict;
+	mapping<data_obj_ref,string> skeleton_genome_ref_dict;
+	mapping<data_obj_ref,string> user_genome_ref_dict;
+        string          color_for_reference_genomes;
+	string          color_for_skeleton_genomes;
+	string          color_for_user_genomes;
+	string          tree_shape;  /* circle, wedge, rect */
     } trim_speciestree_to_genomeset_Input;
 
     typedef structure {

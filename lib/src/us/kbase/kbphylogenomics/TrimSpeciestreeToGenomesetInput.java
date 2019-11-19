@@ -31,6 +31,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "genome_disp_name_config",
     "show_skeleton_genome_sci_name",
     "enforce_genome_version_match",
+    "reference_genome_ref_dict",
+    "skeleton_genome_ref_dict",
+    "user_genome_ref_dict",
     "color_for_reference_genomes",
     "color_for_skeleton_genomes",
     "color_for_user_genomes",
@@ -39,117 +42,123 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class TrimSpeciestreeToGenomesetInput {
 
     @JsonProperty("workspace_name")
-    private String workspaceName;
+    private java.lang.String workspaceName;
     @JsonProperty("input_genomeSet_ref")
-    private String inputGenomeSetRef;
+    private java.lang.String inputGenomeSetRef;
     @JsonProperty("input_tree_ref")
-    private String inputTreeRef;
+    private java.lang.String inputTreeRef;
     @JsonProperty("output_tree_name")
-    private String outputTreeName;
+    private java.lang.String outputTreeName;
     @JsonProperty("desc")
-    private String desc;
+    private java.lang.String desc;
     @JsonProperty("genome_disp_name_config")
-    private String genomeDispNameConfig;
+    private java.lang.String genomeDispNameConfig;
     @JsonProperty("show_skeleton_genome_sci_name")
     private Long showSkeletonGenomeSciName;
     @JsonProperty("enforce_genome_version_match")
     private Long enforceGenomeVersionMatch;
+    @JsonProperty("reference_genome_ref_dict")
+    private Map<String, String> referenceGenomeRefDict;
+    @JsonProperty("skeleton_genome_ref_dict")
+    private Map<String, String> skeletonGenomeRefDict;
+    @JsonProperty("user_genome_ref_dict")
+    private Map<String, String> userGenomeRefDict;
     @JsonProperty("color_for_reference_genomes")
-    private String colorForReferenceGenomes;
+    private java.lang.String colorForReferenceGenomes;
     @JsonProperty("color_for_skeleton_genomes")
-    private String colorForSkeletonGenomes;
+    private java.lang.String colorForSkeletonGenomes;
     @JsonProperty("color_for_user_genomes")
-    private String colorForUserGenomes;
+    private java.lang.String colorForUserGenomes;
     @JsonProperty("tree_shape")
-    private String treeShape;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private java.lang.String treeShape;
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     @JsonProperty("workspace_name")
-    public String getWorkspaceName() {
+    public java.lang.String getWorkspaceName() {
         return workspaceName;
     }
 
     @JsonProperty("workspace_name")
-    public void setWorkspaceName(String workspaceName) {
+    public void setWorkspaceName(java.lang.String workspaceName) {
         this.workspaceName = workspaceName;
     }
 
-    public TrimSpeciestreeToGenomesetInput withWorkspaceName(String workspaceName) {
+    public TrimSpeciestreeToGenomesetInput withWorkspaceName(java.lang.String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
 
     @JsonProperty("input_genomeSet_ref")
-    public String getInputGenomeSetRef() {
+    public java.lang.String getInputGenomeSetRef() {
         return inputGenomeSetRef;
     }
 
     @JsonProperty("input_genomeSet_ref")
-    public void setInputGenomeSetRef(String inputGenomeSetRef) {
+    public void setInputGenomeSetRef(java.lang.String inputGenomeSetRef) {
         this.inputGenomeSetRef = inputGenomeSetRef;
     }
 
-    public TrimSpeciestreeToGenomesetInput withInputGenomeSetRef(String inputGenomeSetRef) {
+    public TrimSpeciestreeToGenomesetInput withInputGenomeSetRef(java.lang.String inputGenomeSetRef) {
         this.inputGenomeSetRef = inputGenomeSetRef;
         return this;
     }
 
     @JsonProperty("input_tree_ref")
-    public String getInputTreeRef() {
+    public java.lang.String getInputTreeRef() {
         return inputTreeRef;
     }
 
     @JsonProperty("input_tree_ref")
-    public void setInputTreeRef(String inputTreeRef) {
+    public void setInputTreeRef(java.lang.String inputTreeRef) {
         this.inputTreeRef = inputTreeRef;
     }
 
-    public TrimSpeciestreeToGenomesetInput withInputTreeRef(String inputTreeRef) {
+    public TrimSpeciestreeToGenomesetInput withInputTreeRef(java.lang.String inputTreeRef) {
         this.inputTreeRef = inputTreeRef;
         return this;
     }
 
     @JsonProperty("output_tree_name")
-    public String getOutputTreeName() {
+    public java.lang.String getOutputTreeName() {
         return outputTreeName;
     }
 
     @JsonProperty("output_tree_name")
-    public void setOutputTreeName(String outputTreeName) {
+    public void setOutputTreeName(java.lang.String outputTreeName) {
         this.outputTreeName = outputTreeName;
     }
 
-    public TrimSpeciestreeToGenomesetInput withOutputTreeName(String outputTreeName) {
+    public TrimSpeciestreeToGenomesetInput withOutputTreeName(java.lang.String outputTreeName) {
         this.outputTreeName = outputTreeName;
         return this;
     }
 
     @JsonProperty("desc")
-    public String getDesc() {
+    public java.lang.String getDesc() {
         return desc;
     }
 
     @JsonProperty("desc")
-    public void setDesc(String desc) {
+    public void setDesc(java.lang.String desc) {
         this.desc = desc;
     }
 
-    public TrimSpeciestreeToGenomesetInput withDesc(String desc) {
+    public TrimSpeciestreeToGenomesetInput withDesc(java.lang.String desc) {
         this.desc = desc;
         return this;
     }
 
     @JsonProperty("genome_disp_name_config")
-    public String getGenomeDispNameConfig() {
+    public java.lang.String getGenomeDispNameConfig() {
         return genomeDispNameConfig;
     }
 
     @JsonProperty("genome_disp_name_config")
-    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
+    public void setGenomeDispNameConfig(java.lang.String genomeDispNameConfig) {
         this.genomeDispNameConfig = genomeDispNameConfig;
     }
 
-    public TrimSpeciestreeToGenomesetInput withGenomeDispNameConfig(String genomeDispNameConfig) {
+    public TrimSpeciestreeToGenomesetInput withGenomeDispNameConfig(java.lang.String genomeDispNameConfig) {
         this.genomeDispNameConfig = genomeDispNameConfig;
         return this;
     }
@@ -184,79 +193,124 @@ public class TrimSpeciestreeToGenomesetInput {
         return this;
     }
 
+    @JsonProperty("reference_genome_ref_dict")
+    public Map<String, String> getReferenceGenomeRefDict() {
+        return referenceGenomeRefDict;
+    }
+
+    @JsonProperty("reference_genome_ref_dict")
+    public void setReferenceGenomeRefDict(Map<String, String> referenceGenomeRefDict) {
+        this.referenceGenomeRefDict = referenceGenomeRefDict;
+    }
+
+    public TrimSpeciestreeToGenomesetInput withReferenceGenomeRefDict(Map<String, String> referenceGenomeRefDict) {
+        this.referenceGenomeRefDict = referenceGenomeRefDict;
+        return this;
+    }
+
+    @JsonProperty("skeleton_genome_ref_dict")
+    public Map<String, String> getSkeletonGenomeRefDict() {
+        return skeletonGenomeRefDict;
+    }
+
+    @JsonProperty("skeleton_genome_ref_dict")
+    public void setSkeletonGenomeRefDict(Map<String, String> skeletonGenomeRefDict) {
+        this.skeletonGenomeRefDict = skeletonGenomeRefDict;
+    }
+
+    public TrimSpeciestreeToGenomesetInput withSkeletonGenomeRefDict(Map<String, String> skeletonGenomeRefDict) {
+        this.skeletonGenomeRefDict = skeletonGenomeRefDict;
+        return this;
+    }
+
+    @JsonProperty("user_genome_ref_dict")
+    public Map<String, String> getUserGenomeRefDict() {
+        return userGenomeRefDict;
+    }
+
+    @JsonProperty("user_genome_ref_dict")
+    public void setUserGenomeRefDict(Map<String, String> userGenomeRefDict) {
+        this.userGenomeRefDict = userGenomeRefDict;
+    }
+
+    public TrimSpeciestreeToGenomesetInput withUserGenomeRefDict(Map<String, String> userGenomeRefDict) {
+        this.userGenomeRefDict = userGenomeRefDict;
+        return this;
+    }
+
     @JsonProperty("color_for_reference_genomes")
-    public String getColorForReferenceGenomes() {
+    public java.lang.String getColorForReferenceGenomes() {
         return colorForReferenceGenomes;
     }
 
     @JsonProperty("color_for_reference_genomes")
-    public void setColorForReferenceGenomes(String colorForReferenceGenomes) {
+    public void setColorForReferenceGenomes(java.lang.String colorForReferenceGenomes) {
         this.colorForReferenceGenomes = colorForReferenceGenomes;
     }
 
-    public TrimSpeciestreeToGenomesetInput withColorForReferenceGenomes(String colorForReferenceGenomes) {
+    public TrimSpeciestreeToGenomesetInput withColorForReferenceGenomes(java.lang.String colorForReferenceGenomes) {
         this.colorForReferenceGenomes = colorForReferenceGenomes;
         return this;
     }
 
     @JsonProperty("color_for_skeleton_genomes")
-    public String getColorForSkeletonGenomes() {
+    public java.lang.String getColorForSkeletonGenomes() {
         return colorForSkeletonGenomes;
     }
 
     @JsonProperty("color_for_skeleton_genomes")
-    public void setColorForSkeletonGenomes(String colorForSkeletonGenomes) {
+    public void setColorForSkeletonGenomes(java.lang.String colorForSkeletonGenomes) {
         this.colorForSkeletonGenomes = colorForSkeletonGenomes;
     }
 
-    public TrimSpeciestreeToGenomesetInput withColorForSkeletonGenomes(String colorForSkeletonGenomes) {
+    public TrimSpeciestreeToGenomesetInput withColorForSkeletonGenomes(java.lang.String colorForSkeletonGenomes) {
         this.colorForSkeletonGenomes = colorForSkeletonGenomes;
         return this;
     }
 
     @JsonProperty("color_for_user_genomes")
-    public String getColorForUserGenomes() {
+    public java.lang.String getColorForUserGenomes() {
         return colorForUserGenomes;
     }
 
     @JsonProperty("color_for_user_genomes")
-    public void setColorForUserGenomes(String colorForUserGenomes) {
+    public void setColorForUserGenomes(java.lang.String colorForUserGenomes) {
         this.colorForUserGenomes = colorForUserGenomes;
     }
 
-    public TrimSpeciestreeToGenomesetInput withColorForUserGenomes(String colorForUserGenomes) {
+    public TrimSpeciestreeToGenomesetInput withColorForUserGenomes(java.lang.String colorForUserGenomes) {
         this.colorForUserGenomes = colorForUserGenomes;
         return this;
     }
 
     @JsonProperty("tree_shape")
-    public String getTreeShape() {
+    public java.lang.String getTreeShape() {
         return treeShape;
     }
 
     @JsonProperty("tree_shape")
-    public void setTreeShape(String treeShape) {
+    public void setTreeShape(java.lang.String treeShape) {
         this.treeShape = treeShape;
     }
 
-    public TrimSpeciestreeToGenomesetInput withTreeShape(String treeShape) {
+    public TrimSpeciestreeToGenomesetInput withTreeShape(java.lang.String treeShape) {
         this.treeShape = treeShape;
         return this;
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperties(String name, Object value) {
+    public void setAdditionalProperties(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
     @Override
-    public String toString() {
-        return ((((((((((((((((((((((((((("TrimSpeciestreeToGenomesetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+    public java.lang.String toString() {
+        return ((((((((((((((((((((((((((((((((("TrimSpeciestreeToGenomesetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", referenceGenomeRefDict=")+ referenceGenomeRefDict)+", skeletonGenomeRefDict=")+ skeletonGenomeRefDict)+", userGenomeRefDict=")+ userGenomeRefDict)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

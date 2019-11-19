@@ -129,6 +129,9 @@ view_tree_Input is a reference to a hash where the following keys are defined:
 	desc has a value which is a string
 	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
+	reference_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+	skeleton_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+	user_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
@@ -154,6 +157,9 @@ view_tree_Input is a reference to a hash where the following keys are defined:
 	desc has a value which is a string
 	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
+	reference_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+	skeleton_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+	user_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
@@ -246,6 +252,9 @@ trim_speciestree_to_genomeset_Input is a reference to a hash where the following
 	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+	reference_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+	skeleton_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+	user_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
@@ -275,6 +284,9 @@ trim_speciestree_to_genomeset_Input is a reference to a hash where the following
 	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+	reference_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+	skeleton_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+	user_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
@@ -2244,6 +2256,9 @@ input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
 genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
+reference_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+skeleton_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+user_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
@@ -2261,6 +2276,9 @@ input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
 genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
+reference_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+skeleton_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+user_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
@@ -2332,6 +2350,9 @@ desc has a value which is a string
 genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+reference_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+skeleton_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+user_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
@@ -2352,6 +2373,9 @@ desc has a value which is a string
 genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+reference_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+skeleton_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
+user_genome_ref_dict has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a string
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string

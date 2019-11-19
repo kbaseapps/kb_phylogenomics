@@ -46,7 +46,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.5.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "8df4f99145d6286ae603f004d8d2b28d3ad9c137"
+    GIT_COMMIT_HASH = "13bdd2541eb47b824f4e19f22570f4b453cba13c"
 
     #BEGIN_CLASS_HEADER
 
@@ -578,8 +578,12 @@ This module contains methods for running and visualizing results of phylogenomic
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
            parameter "desc" of String, parameter "genome_disp_name_config" of
            String, parameter "show_skeleton_genome_sci_name" of type "bool",
-           parameter "color_for_reference_genomes" of String, parameter
-           "color_for_skeleton_genomes" of String, parameter
+           parameter "reference_genome_ref_dict" of mapping from type
+           "data_obj_ref" to String, parameter "skeleton_genome_ref_dict" of
+           mapping from type "data_obj_ref" to String, parameter
+           "user_genome_ref_dict" of mapping from type "data_obj_ref" to
+           String, parameter "color_for_reference_genomes" of String,
+           parameter "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "view_tree_Output" -> structure: parameter
@@ -915,6 +919,10 @@ This module contains methods for running and visualizing results of phylogenomic
            String, parameter "genome_disp_name_config" of String, parameter
            "show_skeleton_genome_sci_name" of type "bool", parameter
            "enforce_genome_version_match" of type "bool", parameter
+           "reference_genome_ref_dict" of mapping from type "data_obj_ref" to
+           String, parameter "skeleton_genome_ref_dict" of mapping from type
+           "data_obj_ref" to String, parameter "user_genome_ref_dict" of
+           mapping from type "data_obj_ref" to String, parameter
            "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter "tree_shape" of
@@ -976,7 +984,7 @@ This module contains methods for running and visualizing results of phylogenomic
         provenance[0]['input_ws_objects'].append(params['input_tree_ref'])
         provenance[0]['input_ws_objects'].append(params['input_genomeSet_ref'])
         provenance[0]['service'] = 'kb_phylogenomics'
-        provenance[0]['method'] = 'trim_tree_to_genomeset'
+        provenance[0]['method'] = 'trim_speciestree_to_genomeset'
 
 
         #### STEP 3: Get tree object and store genome id and ref relationship
@@ -1191,6 +1199,9 @@ This module contains methods for running and visualizing results of phylogenomic
                                 'desc': tree_description,
                                 'genome_disp_name_config': params['genome_disp_name_config'],
                                 'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
+                                'reference_genome_ref_dict':    params['reference_genome_ref_dict'],
+                                'skeleton_genome_ref_dict':     params['skeleton_genome_ref_dict'],
+                                'user_genome_ref_dict':         params['user_genome_ref_dict'],
                                 'color_for_reference_genomes':  params['color_for_reference_genomes'],
                                 'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
                                 'color_for_user_genomes':       params['color_for_user_genomes'],
@@ -1349,7 +1360,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # just a genome
             if query_genome_obj_info[TYPE_I] in genome_obj_types:
                 if input_ref not in query_genome_ref_dict:
-                    query_genome_ref_dict[input_ref] = True
+                    query_genome_ref_dict[input_ref] = 'true'  # need string to pass
                     query_genome_ref_order.append(input_ref)
 
             # elif handle tree type
@@ -1362,7 +1373,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 for genome_id in query_genome_obj_data['elements'].keys():
                     genome_ref = query_genome_obj_data['elements'][genome_id]['ref']
                     if genome_ref not in query_genome_ref_dict:
-                        query_genome_ref_dict[genome_ref] = True
+                        query_genome_ref_dict[genome_ref] = 'true'
                         query_genome_ref_order.append(genome_ref)
 
 
@@ -1384,10 +1395,18 @@ This module contains methods for running and visualizing results of phylogenomic
                 
             for genome_id in skeleton_genomeSet_obj_data['elements'].keys():
                 genome_ref = skeleton_genomeSet_obj_data['elements'][genome_id]['ref']
-                skeleton_genome_ref_dict[genome_ref] = True
+                skeleton_genome_ref_dict[genome_ref] = 'true'
                 skeleton_genome_ref_order.append(genome_ref)
 
-        # merge
+
+        # STEP 5: Get proximal sisters for user genomes
+        #
+        reference_genome_ref_order = []
+        reference_genome_ref_dict = dict()
+
+
+        # STEP 6: merge genome sets
+        #
         combined_genome_ref_order = []
         combined_genome_ref_dict = dict()
         for genome_ref in query_genome_ref_order:
@@ -1396,13 +1415,17 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_ref in skeleton_genome_ref_order:
             combined_genome_ref_dict[genome_ref] = True
             combined_genome_ref_order.append(genome_ref)
-        provenance[0]['input_ws_objects'].extend(skeleton_genome_ref_order)
+        if len(skeleton_genome_ref_order) > 0:
+            provenance[0]['input_ws_objects'].extend(skeleton_genome_ref_order)
+        if len(reference_genome_ref_order) > 0:
+            provenance[0]['input_ws_objects'].extend(reference_genome_ref_order)
 
         # DEBUG
         #self.log (console, "GENOME REFS: "+"\t".join(combined_genome_ref_order))
 
 
-        # STEP 5: prep for untrimmed tree and tree GenomeSet
+        # STEP 7: prep for untrimmed tree and tree GenomeSet
+        #
         trimmed_tree_name = params['output_tree_name']
         untrimmed_tree_name = trimmed_tree_name+'-UNTRIMMED'
         trimmed_genomeSet_name = trimmed_tree_name+'.GenomeSet'
@@ -1456,7 +1479,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                             #str(gs_obj_info[VERSION_I])])
 
 
-        # STEP 6: call species tree app and get back created object
+        # STEP 8: call species tree app and get back created object
         #
         #"SpeciesTreeBuilder/insert_genomeset_into_species_tree"
         nearest_genome_count = 1
@@ -1495,7 +1518,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                                   str(untrimmed_speciesTree_obj_info[OBJID_I]),
                                                   str(untrimmed_speciesTree_obj_info[VERSION_I])])
                                                   
-        #### STEP 7: call trim_speciestree_to_genomeset() to make report
+        #### STEP 9: call trim_speciestree_to_genomeset() to make report
         ##
         report_info = dict()
         reportName = 'build_microbial_speciestree_report_' + str(uuid.uuid4())
@@ -1516,6 +1539,9 @@ This module contains methods for running and visualizing results of phylogenomic
                             'genome_disp_name_config': params['genome_disp_name_config'],
                             'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
                             'enforce_genome_version_match': 1,
+                            'reference_genome_ref_dict':       reference_genome_ref_dict,
+                            'skeleton_genome_ref_dict':        skeleton_genome_ref_dict,
+                            'user_genome_ref_dict':            query_genome_ref_dict,
                             'color_for_reference_genomes':  params['color_for_reference_genomes'],
                             'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
                             'color_for_user_genomes':       params['color_for_user_genomes'],
