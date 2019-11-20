@@ -1378,7 +1378,28 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError("unable to instantiate wsClient")
 
 
-        #### STEP 1: do some basic checks
+        #### STEP 1: Configure Skeleton Genome info
+        ##
+        skeleton_file = 'Phylogenetic_Skeleton.tsv'
+        config_dir = os.path.join ('data', 'skeleton_genomes')
+        skeleton_path = os.path.join (config_dir, skeleton_file)
+        skeleton_genomes_config = dict()
+        with open (skeleton_path, 'r') as skeleton_handle:
+            for skeleton_line in skeleton_handle.readline():
+                skeleton_row = skeleton_line.split("\t")
+                if skeleton_line.startswith('KBase Phylo Ref'):
+                    headers = skeleton_row
+                    continue
+                if skeleton_row[0] != None and skeleton_row[0] != '':
+                    genome_ref = skeleton_row[0]
+                    skeleton_genomes_config[genome_ref] = dict()
+                    for col_i,datum in enumerate(skeleton_row):
+                        skeleton_genomes_config_info[genome_ref][headers[col_i]] = datum
+                        # DEBUG
+                        self.log(console, "Genome data: "+genome_ref+" "+headers[col_i]+": "+datum
+
+
+        #### STEP 2: do some basic checks
         ##
         required_params = ['workspace_name',
                            'input_genome_refs',
@@ -1390,7 +1411,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 raise ValueError("Must define required param: '" + arg + "'")
 
 
-        #### STEP 2: load the method provenance from the context object
+        #### STEP 3: load the method provenance from the context object
         ##
         self.log(console, "SETTING PROVENANCE")  # DEBUG
         provenance = [{}]
@@ -1403,8 +1424,8 @@ This module contains methods for running and visualizing results of phylogenomic
         provenance[0]['method'] = 'build_microbial_speciestree'
 
 
-        #### STEP 3: Get Query Genomes
-        #
+        #### STEP 4: Get Query Genomes
+        ##
         query_genome_ref_order = []
         query_genome_ref_dict = dict()
         genomeSet_obj_types = ["KBaseSearch.GenomeSet", "KBaseSets.GenomeSet"]
@@ -1438,8 +1459,14 @@ This module contains methods for running and visualizing results of phylogenomic
                         query_genome_ref_order.append(genome_ref)
 
 
-        # STEP 4: Combine Query genomes with skeleton genomes
-        #
+        #### STEP 5: Get proximal sisters for user genomes
+        ##
+        reference_genome_ref_order = []
+        reference_genome_ref_dict = dict()
+
+
+        #### STEP 6: Combine Query genomes with skeleton genomes
+        ##
         skeleton_genome_ref_order = []
         skeleton_genome_ref_dict = dict()
         if params.get('skeleton_set'):
@@ -1460,14 +1487,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 skeleton_genome_ref_order.append(genome_ref)
 
 
-        # STEP 5: Get proximal sisters for user genomes
-        #
-        reference_genome_ref_order = []
-        reference_genome_ref_dict = dict()
-
-
-        # STEP 6: merge genome sets
-        #
+        #### STEP 7: merge genome sets
+        ##
         combined_genome_ref_order = []
         combined_genome_ref_dict = dict()
         for genome_ref in query_genome_ref_order:
@@ -1485,8 +1506,8 @@ This module contains methods for running and visualizing results of phylogenomic
         #self.log (console, "GENOME REFS: "+"\t".join(combined_genome_ref_order))
 
 
-        # STEP 7: prep for untrimmed tree and tree GenomeSet
-        #
+        #### STEP 8: prep for untrimmed tree and tree GenomeSet
+        ##
         trimmed_tree_name = params['output_tree_name']
         untrimmed_tree_name = trimmed_tree_name+'-UNTRIMMED'
         trimmed_genomeSet_name = trimmed_tree_name+'.GenomeSet'
@@ -1540,8 +1561,8 @@ This module contains methods for running and visualizing results of phylogenomic
                                             #str(gs_obj_info[VERSION_I])])
 
 
-        # STEP 8: call species tree app and get back created object
-        #
+        #### STEP 9: call species tree app and get back created object
+        ##
         #"SpeciesTreeBuilder/insert_genomeset_into_species_tree"
         nearest_genome_count = 1
         if len(combined_genome_ref_order) < 3:
@@ -1578,8 +1599,9 @@ This module contains methods for running and visualizing results of phylogenomic
         untrimmed_speciesTree_obj_ref = '/'.join([str(untrimmed_speciesTree_obj_info[WSID_I]),
                                                   str(untrimmed_speciesTree_obj_info[OBJID_I]),
                                                   str(untrimmed_speciesTree_obj_info[VERSION_I])])
+
                                                   
-        #### STEP 9: call trim_speciestree_to_genomeset() to make report
+        #### STEP 10: call trim_speciestree_to_genomeset() to make report
         ##
         report_info = dict()
         reportName = 'build_microbial_speciestree_report_' + str(uuid.uuid4())
