@@ -737,10 +737,14 @@ This module contains methods for running and visualizing results of phylogenomic
         ts = ete3.TreeStyle()
 
         # determine if there are more user or non-user genomes in tree to color fewer
-        #user_genome_color      = "#fafcc2"
-        user_genome_color      = "#fee787"  # light mustard
-        reference_genome_color = "#dfcffc"  # light violet
-
+        #user_genome_color      = "#fafcc2"   # too light yellow
+        leaf_colors = dict()
+        leaf_colors['white']     = "#FFFFFF"
+        leaf_colors['mustard']   = "#FEE787"
+        leaf_colors['violet']    = "#DFCFFC"
+        leaf_colors['lightblue'] = "#A8EAFC"
+        default_user_genome_color = leaf_colors['mustard']
+        default_reference_genome_color = leaf_colors['lightblue']
         color_by_user_genome = False
         color_by_reference_genome = False
         genome_total = 0
@@ -754,6 +758,57 @@ This module contains methods for running and visualizing results of phylogenomic
             color_by_user_genome = True
         else:
             color_by_reference_genome = True
+
+        # check for user, skeleton, and/or reference color override
+        if tree_in.get('default_node_labels') and tree_in.get('ws_refs'):
+            genome_ref_to_label_dict = dict()
+            genome_label_to_ref_dict = dict()
+            genome_ref_to_color_dict = dict()
+            for genome_node_id in tree_in['default_node_labels'].keys():
+                genome_label = tree_in['default_node_labels'][genome_node_id]
+                genome_ref   = tree_in['ws_refs'][genome_node_id]
+                genome_ref_to_label_dict[genome_ref] = genome_label
+                genome_label_to_ref_dict[genome_label] = genome_ref
+
+                # reference genome colors
+                if params.get('reference_genome_ref_dict'):
+                    color_by_user_genome = False
+                    color_by_reference_genome = False
+                    for genome_ref in params['reference_genome_ref_dict'].keys():
+                        genome_ref_to_color_dict[genome_ref] = leaf_colors['white']
+                        if params['reference_genome_ref_dict'][genome_ref] == 'true':
+                            if params.get('color_for_reference_genomes') and \
+                               params['color_for_reference_genomes'] != 'no_color':
+                                genome_ref_to_color_dict[genome_ref] = leaf_colors[params['color_for_reference_genomes']]
+                        else:
+                            genome_ref_to_color_dict[genome_ref] = params['reference_genome_ref_dict'][genome_ref]
+
+                # skeleton genome colors
+                if params.get('skeleton_genome_ref_dict'):
+                    color_by_user_genome = False
+                    color_by_reference_genome = False
+                    for genome_ref in params['skeleton_genome_ref_dict'].keys():
+                        genome_ref_to_color_dict[genome_ref] = leaf_colors['white']
+                        if params['skeleton_genome_ref_dict'][genome_ref] == 'true':
+                            if params.get('color_for_skeleton_genomes') and \
+                               params['color_for_skeleton_genomes'] != 'no_color':
+                                genome_ref_to_color_dict[genome_ref] = leaf_colors[params['color_for_skeleton_genomes']]
+                        else:
+                            genome_ref_to_color_dict[genome_ref] = params['skeleton_genome_ref_dict'][genome_ref]
+
+                # user genome colors
+                if params.get('user_genome_ref_dict'):
+                    color_by_user_genome = False
+                    color_by_reference_genome = False
+                    for genome_ref in params['user_genome_ref_dict'].keys():
+                        genome_ref_to_color_dict[genome_ref] = leaf_colors['white']
+                        if params['user_genome_ref_dict'][genome_ref] == 'true':
+                            if params.get('color_for_user_genomes') and \
+                               params['color_for_user_genomes'] != 'no_color':
+                                genome_ref_to_color_dict[genome_ref] = leaf_colors[params['color_for_user_genomes']]
+                        else:
+                            genome_ref_to_color_dict[genome_ref] = params['user_genome_ref_dict'][genome_ref]
+
 
         # customize
         ts.show_leaf_name = True
@@ -790,9 +845,15 @@ This module contains methods for running and visualizing results of phylogenomic
             if n.is_leaf():
                 style = copy.copy(leaf_style)
                 if color_by_user_genome and "User Genome" in n.name:
-                    style["bgcolor"] = user_genome_color
+                    style["bgcolor"] = default_user_genome_color
                 elif color_by_reference_genome and "User Genome" not in n.name:
-                    style["bgcolor"] = reference_genome_color
+                    style["bgcolor"] = default_reference_genome_color
+                else:
+                    genome_ref_to_label_dict = dict()
+                    genome_ref = genome_label_to_ref_dict[n.name]
+                    if genome_ref_to_color_dict.get(genome_ref):
+                        style["bgcolor"] = genome_ref_to_color_dict[genome_ref]
+                    
             else:
                 style = copy.copy(node_style)
 
