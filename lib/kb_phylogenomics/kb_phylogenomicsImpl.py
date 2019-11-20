@@ -766,7 +766,7 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_ref_to_color_dict = dict()
             for genome_node_id in tree_in['default_node_labels'].keys():
                 genome_label = tree_in['default_node_labels'][genome_node_id]
-                genome_ref   = tree_in['ws_refs'][genome_node_id]
+                genome_ref   = tree_in['ws_refs'][genome_node_id]['g'][0]
                 genome_ref_to_label_dict[genome_ref] = genome_label
                 genome_label_to_ref_dict[genome_label] = genome_ref
 
