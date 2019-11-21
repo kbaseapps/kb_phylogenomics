@@ -1489,30 +1489,30 @@ This module contains methods for running and visualizing results of phylogenomic
                 query_genome_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
                 query_genome_obj_data = query_genome_obj['data']
                 query_genome_obj_info = query_genome_obj['info']
+                query_genome_obj_type = query_genome_obj_info[TYPE_I].split('-')[0]
             except:
                 raise ValueError("unable to fetch input genome object: " + input_ref)
 
             # just a genome
-            if query_genome_obj_info[TYPE_I] in genome_obj_types:
+            if query_genome_obj_type in genome_obj_types:
                 if input_ref not in query_genome_disp:
                     query_genome_disp[input_ref] = dict()
                     query_genome_disp[input_ref]['color'] = 'default'
                     query_genome_ref_order.append(input_ref)
 
-            # handle tree type
-            elif query_genome_obj_info[TYPE_I] in tree_obj_types:
-                for genome_id in sorted(query_genome_obj_data['ws_refs'].keys()):
-                    genome_ref = query_genome_obj_data['ws_refs'][genome_id]['g'][0]
+            # handle genomeSet
+            elif query_genome_obj_type in genomeSet_obj_types:
+                for genome_id in sorted(query_genome_obj_data['elements'].keys()):
+                    genome_ref = query_genome_obj_data['elements'][genome_id]['ref']
                     if genome_ref not in query_genome_disp:
                         query_genome_disp[genome_ref] = dict()
                         query_genome_disp[genome_ref]['color'] = 'default'
                         query_genome_ref_order.append(genome_ref)
-                
 
-            # handle genomeSet
-            elif query_genome_obj_info[TYPE_I] in genomeSet_obj_types:
-                for genome_id in sorted(query_genome_obj_data['elements'].keys()):
-                    genome_ref = query_genome_obj_data['elements'][genome_id]['ref']
+            # handle tree type
+            elif query_genome_obj_type in tree_obj_types:
+                for genome_id in sorted(query_genome_obj_data['ws_refs'].keys()):
+                    genome_ref = query_genome_obj_data['ws_refs'][genome_id]['g'][0]
                     if genome_ref not in query_genome_disp:
                         query_genome_disp[genome_ref] = dict()
                         query_genome_disp[genome_ref]['color'] = 'default'
