@@ -46,7 +46,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.5.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "13bdd2541eb47b824f4e19f22570f4b453cba13c"
+    GIT_COMMIT_HASH = "88e36ae66502d278a62b3ff19ccb5dcf3db04ffc"
 
     #BEGIN_CLASS_HEADER
 
@@ -578,12 +578,13 @@ This module contains methods for running and visualizing results of phylogenomic
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
            parameter "desc" of String, parameter "genome_disp_name_config" of
            String, parameter "show_skeleton_genome_sci_name" of type "bool",
-           parameter "reference_genome_ref_dict" of mapping from type
-           "data_obj_ref" to String, parameter "skeleton_genome_ref_dict" of
-           mapping from type "data_obj_ref" to String, parameter
-           "user_genome_ref_dict" of mapping from type "data_obj_ref" to
-           String, parameter "color_for_reference_genomes" of String,
-           parameter "color_for_skeleton_genomes" of String, parameter
+           parameter "reference_genome_disp" of mapping from type
+           "data_obj_ref" to mapping from String to String, parameter
+           "skeleton_genome_disp" of mapping from type "data_obj_ref" to
+           mapping from String to String, parameter "user_genome_disp" of
+           mapping from type "data_obj_ref" to mapping from String to String,
+           parameter "color_for_reference_genomes" of String, parameter
+           "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "view_tree_Output" -> structure: parameter
@@ -666,6 +667,38 @@ This module contains methods for running and visualizing results of phylogenomic
         except:
             raise ValueError('error uploading newick file to shock')
 
+
+        #### STEP 4: change disp labels if provided as input
+        ##
+        genome_ref_to_label_disp = dict()
+        if tree_in.get('default_node_labels') and tree_in.get('ws_refs'):
+            genome_ref_to_node_id = dict()
+            genome_node_id_to_ref = dict()
+            for genome_node_id in tree_in['default_node_labels'].keys():
+                genome_label = tree_in['default_node_labels'][genome_node_id]
+                genome_ref   = tree_in['ws_refs'][genome_node_id]['g'][0]
+                if genome_ref_to_node_id.get(genome_ref):
+                    raise ValueError ("FAILURE: repeat genome_ref "+genome_ref+" in tree")
+                if genome_node_id_to_ref.get(genome_node_id):
+                    raise ValueError ("FAILURE: repeat genome_node_id "+genome_node_id+" in tree")
+                genome_ref_to_node_id[genome_ref] = genome_node_id
+                genome_node_id_to_ref[genome_node_id] = genome_ref
+                genome_ref_to_label_disp[genome_ref] = genome_label
+
+        if params.get('reference_genome_disp'):
+            for genome_ref in params['reference_genome_disp']:
+                if params['reference_genome_disp'].get('label'):
+                    genome_ref_to_label_disp[genome_ref] = params['reference_genome_disp']['label']
+        if params.get('skeleton_genome_disp'):
+            for genome_ref in params['skeleton_genome_disp']:
+                if params['skeleton_genome_disp'].get('label'):
+                    genome_ref_to_label_disp[genome_ref] = params['skeleton_genome_disp']['label']
+        if params.get('user_genome_disp'):
+            for genome_ref in params['user_genome_disp']:
+                if params['user_genome_disp'].get('label'):
+                    genome_ref_to_label_disp[genome_ref] = params['user_genome_disp']['label']
+
+
         #### STEP 4: if labels defined, make separate newick-labels file
         ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
         ##
@@ -681,7 +714,13 @@ This module contains methods for running and visualizing results of phylogenomic
             mod_newick_buf = re.sub('\|', '%' + '|'.encode("hex"), mod_newick_buf)
             #for row_id in new_ids.keys():
             for node_id in tree_in['default_node_labels'].keys():
-                label = tree_in['default_node_labels'][node_id]
+                label = None
+                if node_id in genome_node_id_to_ref:
+                    genome_ref = genome_node_id_to_ref[node_id]
+                    if genome_ref in genome_ref_to_label_disp:
+                        label = genome_ref_to_label_disp[genome_ref]
+                if not label:
+                    label = tree_in['default_node_labels'][node_id]
                 #self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
                 label = re.sub(' \(kb[^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
                 label = re.sub('\s', '_', label)
@@ -715,6 +754,7 @@ This module contains methods for running and visualizing results of phylogenomic
             except:
                 raise ValueError('error uploading newick labels file to shock')
 
+
         #### STEP 5: Create html with tree image
         ##
         html_output_dir = os.path.join(output_dir, 'output_html.' + str(timestamp))
@@ -727,8 +767,8 @@ This module contains methods for running and visualizing results of phylogenomic
         output_png_file_path = os.path.join(html_output_dir, png_file)
         output_pdf_file_path = os.path.join(output_dir, pdf_file)
         newick_buf = tree_in['tree']
-        if 'default_node_labels' in tree_in:
-            newick_buf = mod_newick_buf
+        #if 'default_node_labels' in tree_in:
+        #    newick_buf = mod_newick_buf
         self.log(console, "NEWICK_BUF: '" + newick_buf + "'")
 
         # init ETE3 objects
@@ -752,62 +792,64 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in t.traverse():
             if n.is_leaf():
                 genome_total += 1
-                if "User Genome" in n.name:
-                    user_genome_cnt += 1
+                #if "User Genome" in n.name:
+                #    user_genome_cnt += 1
+                node_id = n.name
+                if node_id in genome_node_id_to_ref:
+                    genome_ref = genome_node_id_to_ref
+                    if genome_ref in genome_ref_to_label:
+                        if "User Genome" in genome_ref_to_label[genome_ref]:
+                            user_genome_cnt += 1
         if float(user_genome_cnt) / float(genome_total) < 0.5:
             color_by_user_genome = True
         else:
             color_by_reference_genome = True
 
         # check for user, skeleton, and/or reference color override
-        if tree_in.get('default_node_labels') and tree_in.get('ws_refs'):
-            genome_ref_to_label_dict = dict()
-            genome_label_to_ref_dict = dict()
-            genome_ref_to_color_dict = dict()
-            for genome_node_id in tree_in['default_node_labels'].keys():
-                genome_label = tree_in['default_node_labels'][genome_node_id]
-                genome_ref   = tree_in['ws_refs'][genome_node_id]['g'][0]
-                genome_ref_to_label_dict[genome_ref] = genome_label
-                genome_label_to_ref_dict[genome_label] = genome_ref
+        if tree_in.get('ws_refs'):
+            genome_ref_to_color = dict()
+
+            for genome_node_id in tree_in['ws_refs'].keys():
+                genome_ref = tree_in['ws_refs'][genome_node_id]['g'][0]
 
                 # reference genome colors
-                if params.get('reference_genome_ref_dict'):
+                if params.get('reference_genome_disp'):
                     color_by_user_genome = False
                     color_by_reference_genome = False
-                    for genome_ref in params['reference_genome_ref_dict'].keys():
-                        genome_ref_to_color_dict[genome_ref] = leaf_colors['white']
-                        if params['reference_genome_ref_dict'][genome_ref] == 'true':
+                    for genome_ref in params['reference_genome_disp'].keys():
+                        genome_ref_to_color[genome_ref] = leaf_colors['white']
+                        if params['reference_genome_disp'][genome_ref]['color'] == 'default':
                             if params.get('color_for_reference_genomes') and \
                                params['color_for_reference_genomes'] != 'no_color':
-                                genome_ref_to_color_dict[genome_ref] = leaf_colors[params['color_for_reference_genomes']]
+                                genome_ref_to_color[genome_ref] = leaf_colors[params['color_for_reference_genomes']]
                         else:
-                            genome_ref_to_color_dict[genome_ref] = params['reference_genome_ref_dict'][genome_ref]
+                            genome_ref_to_color[genome_ref] = params['reference_genome_disp'][genome_ref]['color']
 
                 # skeleton genome colors
-                if params.get('skeleton_genome_ref_dict'):
+                if params.get('skeleton_genome_disp'):
                     color_by_user_genome = False
                     color_by_reference_genome = False
-                    for genome_ref in params['skeleton_genome_ref_dict'].keys():
-                        genome_ref_to_color_dict[genome_ref] = leaf_colors['white']
-                        if params['skeleton_genome_ref_dict'][genome_ref] == 'true':
+                    for genome_ref in params['skeleton_genome_disp'].keys():
+                        genome_ref_to_color[genome_ref] = leaf_colors['white']
+                        if params['skeleton_genome_disp'][genome_ref]['color'] == 'default':
                             if params.get('color_for_skeleton_genomes') and \
                                params['color_for_skeleton_genomes'] != 'no_color':
-                                genome_ref_to_color_dict[genome_ref] = leaf_colors[params['color_for_skeleton_genomes']]
+                                genome_ref_to_color[genome_ref] = leaf_colors[params['color_for_skeleton_genomes']]
                         else:
-                            genome_ref_to_color_dict[genome_ref] = params['skeleton_genome_ref_dict'][genome_ref]
+                            genome_ref_to_color[genome_ref] = params['skeleton_genome_disp'][genome_ref]['color']
 
                 # user genome colors
-                if params.get('user_genome_ref_dict'):
+                if params.get('user_genome_disp'):
                     color_by_user_genome = False
                     color_by_reference_genome = False
-                    for genome_ref in params['user_genome_ref_dict'].keys():
-                        genome_ref_to_color_dict[genome_ref] = leaf_colors['white']
-                        if params['user_genome_ref_dict'][genome_ref] == 'true':
+                    for genome_ref in params['user_genome_disp'].keys():
+                        genome_ref_to_color[genome_ref] = leaf_colors['white']
+                        if params['user_genome_disp'][genome_ref]['color'] == 'default':
                             if params.get('color_for_user_genomes') and \
                                params['color_for_user_genomes'] != 'no_color':
-                                genome_ref_to_color_dict[genome_ref] = leaf_colors[params['color_for_user_genomes']]
+                                genome_ref_to_color[genome_ref] = leaf_colors[params['color_for_user_genomes']]
                         else:
-                            genome_ref_to_color_dict[genome_ref] = params['user_genome_ref_dict'][genome_ref]
+                            genome_ref_to_color[genome_ref] = params['user_genome_disp'][genome_ref]['color']
 
 
         # customize
@@ -844,15 +886,24 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in t.traverse():
             if n.is_leaf():
                 style = copy.copy(leaf_style)
+
+                node_id = n.name
+                if node_id in genome_node_id_to_ref:
+                    genome_ref = genome_node_id_to_ref
+                    if genome_ref in genome_ref_to_label:
+                        label = genome_ref_to_label[genome_ref]
+                    else:
+                        label = n.name
+
+                n.name = label
+
                 if color_by_user_genome and "User Genome" in n.name:
                     style["bgcolor"] = default_user_genome_color
                 elif color_by_reference_genome and "User Genome" not in n.name:
                     style["bgcolor"] = default_reference_genome_color
                 else:
-                    genome_ref_to_label_dict = dict()
-                    genome_ref = genome_label_to_ref_dict[n.name]
-                    if genome_ref_to_color_dict.get(genome_ref):
-                        style["bgcolor"] = genome_ref_to_color_dict[genome_ref]
+                    if genome_ref in genome_ref_to_color:
+                        style["bgcolor"] = genome_ref_to_color[genome_ref]
                     
             else:
                 style = copy.copy(node_style)
@@ -980,10 +1031,11 @@ This module contains methods for running and visualizing results of phylogenomic
            String, parameter "genome_disp_name_config" of String, parameter
            "show_skeleton_genome_sci_name" of type "bool", parameter
            "enforce_genome_version_match" of type "bool", parameter
-           "reference_genome_ref_dict" of mapping from type "data_obj_ref" to
-           String, parameter "skeleton_genome_ref_dict" of mapping from type
-           "data_obj_ref" to String, parameter "user_genome_ref_dict" of
-           mapping from type "data_obj_ref" to String, parameter
+           "reference_genome_disp" of mapping from type "data_obj_ref" to
+           mapping from String to String, parameter "skeleton_genome_disp" of
+           mapping from type "data_obj_ref" to mapping from String to String,
+           parameter "user_genome_disp" of mapping from type "data_obj_ref"
+           to mapping from String to String, parameter
            "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter "tree_shape" of
@@ -1260,9 +1312,9 @@ This module contains methods for running and visualizing results of phylogenomic
                                 'desc': tree_description,
                                 'genome_disp_name_config': params['genome_disp_name_config'],
                                 'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
-                                'reference_genome_ref_dict':    params['reference_genome_ref_dict'],
-                                'skeleton_genome_ref_dict':     params['skeleton_genome_ref_dict'],
-                                'user_genome_ref_dict':         params['user_genome_ref_dict'],
+                                'reference_genome_disp':    params['reference_genome_disp'],
+                                'skeleton_genome_disp':     params['skeleton_genome_disp'],
+                                'user_genome_disp':         params['user_genome_disp'],
                                 'color_for_reference_genomes':  params['color_for_reference_genomes'],
                                 'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
                                 'color_for_user_genomes':       params['color_for_user_genomes'],
@@ -1381,22 +1433,23 @@ This module contains methods for running and visualizing results of phylogenomic
         #### STEP 1: Configure Skeleton Genome info
         ##
         skeleton_file = 'Phylogenetic_Skeleton.tsv'
-        config_dir = os.path.join ('data', 'skeleton_genomes')
+        config_dir = os.path.join (os.path.sep, 'kb', 'module', 'data', 'skeleton_genomes')
         skeleton_path = os.path.join (config_dir, skeleton_file)
         skeleton_genomes_config = dict()
+        headers = []
         with open (skeleton_path, 'r') as skeleton_handle:
-            for skeleton_line in skeleton_handle.readline():
+            for skeleton_line in skeleton_handle.readlines():
+                skeleton_line = skeleton_line.rstrip()
                 skeleton_row = skeleton_line.split("\t")
-                if skeleton_line.startswith('KBase Phylo Ref'):
+                if skeleton_row[0] == 'KBase Phylo Ref':
                     headers = skeleton_row
-                    continue
-                if skeleton_row[0] != None and skeleton_row[0] != '':
+                elif skeleton_row[0] != None and skeleton_row[0] != '':
                     genome_ref = skeleton_row[0]
                     skeleton_genomes_config[genome_ref] = dict()
                     for col_i,datum in enumerate(skeleton_row):
-                        skeleton_genomes_config_info[genome_ref][headers[col_i]] = datum
+                        skeleton_genomes_config[genome_ref][headers[col_i]] = datum
                         # DEBUG
-                        self.log(console, "Genome data: "+genome_ref+" "+headers[col_i]+": "+datum
+                        self.log(console, "Skeleton Genome DB info: "+genome_ref+" "+headers[col_i]+": "+datum)
 
 
         #### STEP 2: do some basic checks
@@ -1427,7 +1480,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #### STEP 4: Get Query Genomes
         ##
         query_genome_ref_order = []
-        query_genome_ref_dict = dict()
+        query_genome_disp = dict()
         genomeSet_obj_types = ["KBaseSearch.GenomeSet", "KBaseSets.GenomeSet"]
         genome_obj_types = ["KBaseGenomes.Genome", "KBaseGenomeAnnotations.Genome"]
 
@@ -1441,8 +1494,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # just a genome
             if query_genome_obj_info[TYPE_I] in genome_obj_types:
-                if input_ref not in query_genome_ref_dict:
-                    query_genome_ref_dict[input_ref] = 'true'  # need string to pass
+                if input_ref not in query_genome_disp:
+                    query_genome_disp[input_ref] = dict()
+                    query_genome_disp[input_ref]['color'] = 'default'
                     query_genome_ref_order.append(input_ref)
 
             # elif handle tree type
@@ -1454,21 +1508,22 @@ This module contains methods for running and visualizing results of phylogenomic
             else:  
                 for genome_id in query_genome_obj_data['elements'].keys():
                     genome_ref = query_genome_obj_data['elements'][genome_id]['ref']
-                    if genome_ref not in query_genome_ref_dict:
-                        query_genome_ref_dict[genome_ref] = 'true'
+                    if genome_ref not in query_genome_disp:
+                        query_genome_disp[genome_ref] = dict()
+                        query_genome_disp[genome_ref]['color'] = 'default'
                         query_genome_ref_order.append(genome_ref)
 
 
         #### STEP 5: Get proximal sisters for user genomes
         ##
         reference_genome_ref_order = []
-        reference_genome_ref_dict = dict()
+        reference_genome_disp = dict()
 
 
-        #### STEP 6: Combine Query genomes with skeleton genomes
+        #### STEP 6: Get Skeleton genomes
         ##
         skeleton_genome_ref_order = []
-        skeleton_genome_ref_dict = dict()
+        skeleton_genome_disp = dict()
         if params.get('skeleton_set'):
             #skeleton_ws_id = 45087;  # CI
             skeleton_ws_id = 50737;  # PROD
@@ -1483,19 +1538,31 @@ This module contains methods for running and visualizing results of phylogenomic
                 
             for genome_id in skeleton_genomeSet_obj_data['elements'].keys():
                 genome_ref = skeleton_genomeSet_obj_data['elements'][genome_id]['ref']
-                skeleton_genome_ref_dict[genome_ref] = 'true'
+                skeleton_genome_disp[genome_ref] = dict()
+                skeleton_genome_disp[genome_ref]['color'] = 'default'
                 skeleton_genome_ref_order.append(genome_ref)
+
+                # add skeleton genome extra disp info
+                lineage_info = []
+                lineage_info.append(skeleton_genomes_config[genome_ref]['Phylum'])
+                if skeleton_genome_disp[genome_ref].get('Class'):
+                    lineage_info.append(skeleton_genomes_config[genome_ref]['Class'])
+                if skeleton_genome_disp[genome_ref].get('Order'):
+                    lineage_info.append(skeleton_genomes_config[genome_ref]['Order'])
+                skeleton_genome_disp[genome_ref]['label'] = "["+" > ".join(lineage_info)+"]"
+                if params.get('show_skeleton_genome_sci_name'):
+                    skeleton_genome_disp[genome_ref]['label'] += " "+skeleton_genome_info[genome_ref]['Species Name']
+                    skeleton_genome_disp[genome_ref]['label'] += " ["+skeleton_genome_info[genome_ref]['Isolate / MAG / SAG']+"]"
 
 
         #### STEP 7: merge genome sets
         ##
         combined_genome_ref_order = []
-        combined_genome_ref_dict = dict()
         for genome_ref in query_genome_ref_order:
-            combined_genome_ref_dict[genome_ref] = True
             combined_genome_ref_order.append(genome_ref)
         for genome_ref in skeleton_genome_ref_order:
-            combined_genome_ref_dict[genome_ref] = True
+            combined_genome_ref_order.append(genome_ref)
+        for genome_ref in reference_genome_ref_order:
             combined_genome_ref_order.append(genome_ref)
         if len(skeleton_genome_ref_order) > 0:
             provenance[0]['input_ws_objects'].extend(skeleton_genome_ref_order)
@@ -1622,9 +1689,9 @@ This module contains methods for running and visualizing results of phylogenomic
                             'genome_disp_name_config': params['genome_disp_name_config'],
                             'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
                             'enforce_genome_version_match': 1,
-                            'reference_genome_ref_dict':       reference_genome_ref_dict,
-                            'skeleton_genome_ref_dict':        skeleton_genome_ref_dict,
-                            'user_genome_ref_dict':            query_genome_ref_dict,
+                            'reference_genome_disp':        reference_genome_disp,
+                            'skeleton_genome_disp':         skeleton_genome_disp,
+                            'user_genome_disp':             query_genome_disp,
                             'color_for_reference_genomes':  params['color_for_reference_genomes'],
                             'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
                             'color_for_user_genomes':       params['color_for_user_genomes'],

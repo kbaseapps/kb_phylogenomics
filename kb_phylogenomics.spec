@@ -26,9 +26,9 @@ module kb_phylogenomics {
         string          genome_disp_name_config;
         bool            show_skeleton_genome_sci_name;
 
-	mapping<data_obj_ref,string> reference_genome_ref_dict;
-	mapping<data_obj_ref,string> skeleton_genome_ref_dict;
-	mapping<data_obj_ref,string> user_genome_ref_dict;
+	mapping<data_obj_ref,mapping<string,string>> reference_genome_disp;
+	mapping<data_obj_ref,mapping<string,string>> skeleton_genome_disp;
+	mapping<data_obj_ref,mapping<string,string>> user_genome_disp;
 	string          color_for_reference_genomes;
 	string          color_for_skeleton_genomes;
 	string          color_for_user_genomes;
@@ -59,9 +59,9 @@ module kb_phylogenomics {
         bool            show_skeleton_genome_sci_name;
 
 	bool            enforce_genome_version_match;
-	mapping<data_obj_ref,string> reference_genome_ref_dict;
-	mapping<data_obj_ref,string> skeleton_genome_ref_dict;
-	mapping<data_obj_ref,string> user_genome_ref_dict;
+	mapping<data_obj_ref,mapping<string,string>> reference_genome_disp;
+	mapping<data_obj_ref,mapping<string,string>> skeleton_genome_disp;
+	mapping<data_obj_ref,mapping<string,string>> user_genome_disp;
         string          color_for_reference_genomes;
 	string          color_for_skeleton_genomes;
 	string          color_for_user_genomes;

@@ -28,9 +28,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "desc",
     "genome_disp_name_config",
     "show_skeleton_genome_sci_name",
-    "reference_genome_ref_dict",
-    "skeleton_genome_ref_dict",
-    "user_genome_ref_dict",
+    "reference_genome_disp",
+    "skeleton_genome_disp",
+    "user_genome_disp",
     "color_for_reference_genomes",
     "color_for_skeleton_genomes",
     "color_for_user_genomes",
@@ -48,12 +48,12 @@ public class ViewTreeInput {
     private java.lang.String genomeDispNameConfig;
     @JsonProperty("show_skeleton_genome_sci_name")
     private Long showSkeletonGenomeSciName;
-    @JsonProperty("reference_genome_ref_dict")
-    private Map<String, String> referenceGenomeRefDict;
-    @JsonProperty("skeleton_genome_ref_dict")
-    private Map<String, String> skeletonGenomeRefDict;
-    @JsonProperty("user_genome_ref_dict")
-    private Map<String, String> userGenomeRefDict;
+    @JsonProperty("reference_genome_disp")
+    private Map<String, Map<String, String>> referenceGenomeDisp;
+    @JsonProperty("skeleton_genome_disp")
+    private Map<String, Map<String, String>> skeletonGenomeDisp;
+    @JsonProperty("user_genome_disp")
+    private Map<String, Map<String, String>> userGenomeDisp;
     @JsonProperty("color_for_reference_genomes")
     private java.lang.String colorForReferenceGenomes;
     @JsonProperty("color_for_skeleton_genomes")
@@ -139,48 +139,48 @@ public class ViewTreeInput {
         return this;
     }
 
-    @JsonProperty("reference_genome_ref_dict")
-    public Map<String, String> getReferenceGenomeRefDict() {
-        return referenceGenomeRefDict;
+    @JsonProperty("reference_genome_disp")
+    public Map<String, Map<String, String>> getReferenceGenomeDisp() {
+        return referenceGenomeDisp;
     }
 
-    @JsonProperty("reference_genome_ref_dict")
-    public void setReferenceGenomeRefDict(Map<String, String> referenceGenomeRefDict) {
-        this.referenceGenomeRefDict = referenceGenomeRefDict;
+    @JsonProperty("reference_genome_disp")
+    public void setReferenceGenomeDisp(Map<String, Map<String, String>> referenceGenomeDisp) {
+        this.referenceGenomeDisp = referenceGenomeDisp;
     }
 
-    public ViewTreeInput withReferenceGenomeRefDict(Map<String, String> referenceGenomeRefDict) {
-        this.referenceGenomeRefDict = referenceGenomeRefDict;
+    public ViewTreeInput withReferenceGenomeDisp(Map<String, Map<String, String>> referenceGenomeDisp) {
+        this.referenceGenomeDisp = referenceGenomeDisp;
         return this;
     }
 
-    @JsonProperty("skeleton_genome_ref_dict")
-    public Map<String, String> getSkeletonGenomeRefDict() {
-        return skeletonGenomeRefDict;
+    @JsonProperty("skeleton_genome_disp")
+    public Map<String, Map<String, String>> getSkeletonGenomeDisp() {
+        return skeletonGenomeDisp;
     }
 
-    @JsonProperty("skeleton_genome_ref_dict")
-    public void setSkeletonGenomeRefDict(Map<String, String> skeletonGenomeRefDict) {
-        this.skeletonGenomeRefDict = skeletonGenomeRefDict;
+    @JsonProperty("skeleton_genome_disp")
+    public void setSkeletonGenomeDisp(Map<String, Map<String, String>> skeletonGenomeDisp) {
+        this.skeletonGenomeDisp = skeletonGenomeDisp;
     }
 
-    public ViewTreeInput withSkeletonGenomeRefDict(Map<String, String> skeletonGenomeRefDict) {
-        this.skeletonGenomeRefDict = skeletonGenomeRefDict;
+    public ViewTreeInput withSkeletonGenomeDisp(Map<String, Map<String, String>> skeletonGenomeDisp) {
+        this.skeletonGenomeDisp = skeletonGenomeDisp;
         return this;
     }
 
-    @JsonProperty("user_genome_ref_dict")
-    public Map<String, String> getUserGenomeRefDict() {
-        return userGenomeRefDict;
+    @JsonProperty("user_genome_disp")
+    public Map<String, Map<String, String>> getUserGenomeDisp() {
+        return userGenomeDisp;
     }
 
-    @JsonProperty("user_genome_ref_dict")
-    public void setUserGenomeRefDict(Map<String, String> userGenomeRefDict) {
-        this.userGenomeRefDict = userGenomeRefDict;
+    @JsonProperty("user_genome_disp")
+    public void setUserGenomeDisp(Map<String, Map<String, String>> userGenomeDisp) {
+        this.userGenomeDisp = userGenomeDisp;
     }
 
-    public ViewTreeInput withUserGenomeRefDict(Map<String, String> userGenomeRefDict) {
-        this.userGenomeRefDict = userGenomeRefDict;
+    public ViewTreeInput withUserGenomeDisp(Map<String, Map<String, String>> userGenomeDisp) {
+        this.userGenomeDisp = userGenomeDisp;
         return this;
     }
 
@@ -256,7 +256,7 @@ public class ViewTreeInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", referenceGenomeRefDict=")+ referenceGenomeRefDict)+", skeletonGenomeRefDict=")+ skeletonGenomeRefDict)+", userGenomeRefDict=")+ userGenomeRefDict)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", referenceGenomeDisp=")+ referenceGenomeDisp)+", skeletonGenomeDisp=")+ skeletonGenomeDisp)+", userGenomeDisp=")+ userGenomeDisp)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
