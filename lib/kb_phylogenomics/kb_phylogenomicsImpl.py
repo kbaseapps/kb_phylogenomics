@@ -796,7 +796,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 #    user_genome_cnt += 1
                 node_id = n.name
                 if node_id in genome_node_id_to_ref:
-                    genome_ref = genome_node_id_to_ref
+                    genome_ref = genome_node_id_to_ref[node_id]
                     if genome_ref in genome_ref_to_label_disp:
                         if "User Genome" in genome_ref_to_label_disp[genome_ref]:
                             user_genome_cnt += 1
@@ -889,7 +889,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 node_id = n.name
                 if node_id in genome_node_id_to_ref:
-                    genome_ref = genome_node_id_to_ref
+                    genome_ref = genome_node_id_to_ref[node_id]
                     if genome_ref in genome_ref_to_label_disp:
                         label = genome_ref_to_label_disp[genome_ref]
                     else:
