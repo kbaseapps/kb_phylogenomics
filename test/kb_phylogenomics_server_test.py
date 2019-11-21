@@ -1098,6 +1098,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
         self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
         self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
 
+
     #### Build Microbial SpeciesTree
     ##
     # HIDE @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
