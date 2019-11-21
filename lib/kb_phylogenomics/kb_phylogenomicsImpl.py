@@ -797,8 +797,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 node_id = n.name
                 if node_id in genome_node_id_to_ref:
                     genome_ref = genome_node_id_to_ref
-                    if genome_ref in genome_ref_to_label:
-                        if "User Genome" in genome_ref_to_label[genome_ref]:
+                    if genome_ref in genome_ref_to_label_disp:
+                        if "User Genome" in genome_ref_to_label_disp[genome_ref]:
                             user_genome_cnt += 1
         if float(user_genome_cnt) / float(genome_total) < 0.5:
             color_by_user_genome = True
@@ -890,8 +890,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 node_id = n.name
                 if node_id in genome_node_id_to_ref:
                     genome_ref = genome_node_id_to_ref
-                    if genome_ref in genome_ref_to_label:
-                        label = genome_ref_to_label[genome_ref]
+                    if genome_ref in genome_ref_to_label_disp:
+                        label = genome_ref_to_label_disp[genome_ref]
                     else:
                         label = n.name
 
