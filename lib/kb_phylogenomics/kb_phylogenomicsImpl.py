@@ -686,17 +686,17 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_ref_to_label_disp[genome_ref] = genome_label
 
         if params.get('reference_genome_disp'):
-            for genome_ref in params['reference_genome_disp']:
-                if params['reference_genome_disp'].get('label'):
-                    genome_ref_to_label_disp[genome_ref] = params['reference_genome_disp']['label']
+            for genome_ref in params['reference_genome_disp'].keys():
+                if params['reference_genome_disp'][genome_ref].get('label'):
+                    genome_ref_to_label_disp[genome_ref] = params['reference_genome_disp'][genome_ref]['label']
         if params.get('skeleton_genome_disp'):
-            for genome_ref in params['skeleton_genome_disp']:
-                if params['skeleton_genome_disp'].get('label'):
-                    genome_ref_to_label_disp[genome_ref] = params['skeleton_genome_disp']['label']
+            for genome_ref in params['skeleton_genome_disp'].keys():
+                if params['skeleton_genome_disp'][genome_ref].get('label'):
+                    genome_ref_to_label_disp[genome_ref] = params['skeleton_genome_disp'][genome_ref]['label']
         if params.get('user_genome_disp'):
-            for genome_ref in params['user_genome_disp']:
-                if params['user_genome_disp'].get('label'):
-                    genome_ref_to_label_disp[genome_ref] = params['user_genome_disp']['label']
+            for genome_ref in params['user_genome_disp'].keys():
+                if params['user_genome_disp'][genome_ref].get('label'):
+                    genome_ref_to_label_disp[genome_ref] = params['user_genome_disp'][genome_ref]['label']
 
 
         #### STEP 4: if labels defined, make separate newick-labels file
@@ -1482,8 +1482,8 @@ This module contains methods for running and visualizing results of phylogenomic
         query_genome_ref_order = []
         query_genome_disp = dict()
         genomeSet_obj_types = ["KBaseSearch.GenomeSet", "KBaseSets.GenomeSet"]
-        genome_obj_types = ["KBaseGenomes.Genome", "KBaseGenomeAnnotations.Genome"]
-
+        genome_obj_types    = ["KBaseGenomes.Genome", "KBaseGenomeAnnotations.Genome"]
+        tree_obj_types      = ["KBaseTrees.Tree"]
         for input_ref in params['input_genome_refs']:
             try:
                 query_genome_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
@@ -1499,19 +1499,26 @@ This module contains methods for running and visualizing results of phylogenomic
                     query_genome_disp[input_ref]['color'] = 'default'
                     query_genome_ref_order.append(input_ref)
 
-            # elif handle tree type
+            # handle tree type
+            elif query_genome_obj_info[TYPE_I] in tree_obj_types:
+                for genome_id in sorted(query_genome_obj_data['ws_refs'].keys()):
+                    genome_ref = query_genome_obj_data['ws_refs'][genome_id]['g'][0]
+                    if genome_ref not in query_genome_disp:
+                        query_genome_disp[genome_ref] = dict()
+                        query_genome_disp[genome_ref]['color'] = 'default'
+                        query_genome_ref_order.append(genome_ref)
+                
 
+            # handle genomeSet
             elif query_genome_obj_info[TYPE_I] in genomeSet_obj_types:
-                raise ValueError ("bad type for input_genome_refs")
-
-            # else it's a genomeSet
-            else:  
-                for genome_id in query_genome_obj_data['elements'].keys():
+                for genome_id in sorted(query_genome_obj_data['elements'].keys()):
                     genome_ref = query_genome_obj_data['elements'][genome_id]['ref']
                     if genome_ref not in query_genome_disp:
                         query_genome_disp[genome_ref] = dict()
                         query_genome_disp[genome_ref]['color'] = 'default'
                         query_genome_ref_order.append(genome_ref)
+            else:  
+                raise ValueError ("bad type for input_genome_refs")
 
 
         #### STEP 5: Get proximal sisters for user genomes
