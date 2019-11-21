@@ -1435,7 +1435,7 @@ This module contains methods for running and visualizing results of phylogenomic
         skeleton_file = 'Phylogenetic_Skeleton.tsv'
         config_dir = os.path.join (os.path.sep, 'kb', 'module', 'data', 'skeleton_genomes')
         skeleton_path = os.path.join (config_dir, skeleton_file)
-        skeleton_genomes_config = dict()
+        skeleton_genome_config = dict()
         headers = []
         with open (skeleton_path, 'r') as skeleton_handle:
             for skeleton_line in skeleton_handle.readlines():
@@ -1445,9 +1445,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     headers = skeleton_row
                 elif skeleton_row[0] != None and skeleton_row[0] != '':
                     genome_ref = skeleton_row[0]
-                    skeleton_genomes_config[genome_ref] = dict()
+                    skeleton_genome_config[genome_ref] = dict()
                     for col_i,datum in enumerate(skeleton_row):
-                        skeleton_genomes_config[genome_ref][headers[col_i]] = datum
+                        skeleton_genome_config[genome_ref][headers[col_i]] = datum
                         # DEBUG
                         self.log(console, "Skeleton Genome DB info: "+genome_ref+" "+headers[col_i]+": "+datum)
 
@@ -1544,15 +1544,15 @@ This module contains methods for running and visualizing results of phylogenomic
 
                 # add skeleton genome extra disp info
                 lineage_info = []
-                lineage_info.append(skeleton_genomes_config[genome_ref]['Phylum'])
+                lineage_info.append(skeleton_genome_config[genome_ref]['Phylum'])
                 if skeleton_genome_disp[genome_ref].get('Class'):
-                    lineage_info.append(skeleton_genomes_config[genome_ref]['Class'])
+                    lineage_info.append(skeleton_genome_config[genome_ref]['Class'])
                 if skeleton_genome_disp[genome_ref].get('Order'):
-                    lineage_info.append(skeleton_genomes_config[genome_ref]['Order'])
+                    lineage_info.append(skeleton_genome_config[genome_ref]['Order'])
                 skeleton_genome_disp[genome_ref]['label'] = "["+" > ".join(lineage_info)+"]"
                 if params.get('show_skeleton_genome_sci_name'):
-                    skeleton_genome_disp[genome_ref]['label'] += " "+skeleton_genome_info[genome_ref]['Species Name']
-                    skeleton_genome_disp[genome_ref]['label'] += " ["+skeleton_genome_info[genome_ref]['Isolate / MAG / SAG']+"]"
+                    skeleton_genome_disp[genome_ref]['label'] += " "+skeleton_genome_config[genome_ref]['Species Name']
+                    skeleton_genome_disp[genome_ref]['label'] += " ["+skeleton_genome_config[genome_ref]['Isolate / MAG / SAG']+"]"
 
 
         #### STEP 7: merge genome sets
