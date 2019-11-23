@@ -101,7 +101,7 @@
             "optional": false,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "RefSeq-Isolates" ],
+            "default_values": [ "Bacteria-Archaea-Isolates-MAGs-SAGs" ],
             "field_type": "dropdown",
             "dropdown_options": {
 	    	"options": [
@@ -112,16 +112,34 @@
 					"ui-name": "skeleton_set-none"
 				},
 				{
-					"value": "RefSeq-Isolates",
-					"display": "RefSeq-Isolates",
-					"id": "skeleton_set-RefSeq-Isolates",
-					"ui-name": "skeleton_set-RefSeq-Isolates"
+					"value": "test",
+					"display": "test",
+					"id": "skeleton_set-test",
+					"ui-name": "skeleton_set-test"
 				},
 				{
-					"value": "RefSeq-Isolates-MAGs-SAGs",
-					"display": "RefSeq-Isolates+MAGs+SAGs",
-					"id": "skeleton_set-RefSeq-Isolates-MAGs-SAGs",
-					"ui-name": "skeleton_set-RefSeq-Isolates-MAGs-SAGs"
+					"value": "Bacteria-Archaea-Isolates-MAGs-SAGs",
+					"display": "Bacteria + Archaea: Isolates + MAGs + SAGs",
+					"id": "skeleton_set-Bacteria-Archaea-Isolates-MAGs-SAGs",
+					"ui-name": "skeleton_set-Bacteria-Archaea-Isolates-MAGs-SAGs"
+				},
+				{
+					"value": "Bacteria-Isolates",
+					"display": "Bacteria: Isolates",
+					"id": "skeleton_set-Bacteria-Isolates",
+					"ui-name": "skeleton_set-Bacteria-Isolates"
+				},
+				{
+					"value": "Bacteria-Isolates-MAGs-SAGs",
+					"display": "Bacteria: Isolates + MAGs + SAGs",
+					"id": "skeleton_set-Bacteria-Isolates-MAGs-SAGs",
+					"ui-name": "skeleton_set-Bacteria-Isolates-MAGs-SAGs"
+				},
+				{
+					"value": "Archaea-Isolates-MAGs-SAGs",
+					"display": "Archaea: Isolates + MAGs + SAGs",
+					"id": "skeleton_set-Archaea-Isolates-MAGs-SAGs",
+					"ui-name": "skeleton_set-Archaea-Isolates-MAGs-SAGs"
 				}
 		]
             }
