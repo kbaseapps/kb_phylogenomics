@@ -1552,9 +1552,9 @@ This module contains methods for running and visualizing results of phylogenomic
                 # add skeleton genome extra disp info
                 lineage_info = []
                 lineage_info.append(skeleton_genome_config[genome_ref]['Phylum'])
-                if skeleton_genome_disp[genome_ref].get('Class'):
+                if skeleton_genome_config[genome_ref].get('Class'):
                     lineage_info.append(skeleton_genome_config[genome_ref]['Class'])
-                if skeleton_genome_disp[genome_ref].get('Order'):
+                if skeleton_genome_config[genome_ref].get('Order'):
                     lineage_info.append(skeleton_genome_config[genome_ref]['Order'])
                 skeleton_genome_disp[genome_ref]['label'] = "["+" > ".join(lineage_info)+"]"
                 if params.get('show_skeleton_genome_sci_name'):
