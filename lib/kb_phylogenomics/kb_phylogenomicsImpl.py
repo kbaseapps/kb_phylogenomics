@@ -44,7 +44,7 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.5.0"
+    VERSION = "1.5.1"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
     GIT_COMMIT_HASH = "88e36ae66502d278a62b3ff19ccb5dcf3db04ffc"
 
@@ -8287,6 +8287,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 raise ValueError("unable to fetch report: " + this_report_ref)
 
             # read hits and store hits for each genome
+            if not this_report_obj.get('objects_created'):
+                self.log (console, 'NO HITS within thresholds for query '+query_feature_id+' from genome '+query_genome_ref+'.  Consider relaxing BLASTp thresolds to get more hits')
+                continue
+
             hits_ref = this_report_obj['objects_created'][0]['ref']
             created_objects.append({'ref': hits_ref, 'description': 'Homologs of '+genome_names[query_genome_ref]+' '+query_feature_id})
             try:
@@ -8294,7 +8298,7 @@ This module contains methods for running and visualizing results of phylogenomic
             except:
                 raise ValueError("unable to fetch hits for " + output_individual_FS_name+'('+hits_ref+')')
             hits_by_query_and_genome_ref[query_full_feature_id] = dict()
-            hit_cnt_by_genome_ref = dict()
+            this_query_hit_cnt_by_genome_ref = dict()
             for hit_feature_id in hits_obj['elements'].keys():
 
                 # record string length of feature ids
@@ -8306,10 +8310,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 for genome_ref in hits_obj['elements'][hit_feature_id]:
                     if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                         hits_by_query_and_genome_ref[query_full_feature_id][genome_ref] = []
-                        hit_cnt_by_genome_ref[genome_ref] = 0
+                        this_query_hit_cnt_by_genome_ref[genome_ref] = 0
                         
                     hits_by_query_and_genome_ref[query_full_feature_id][genome_ref].append(hit_feature_id)
-                    hit_cnt_by_genome_ref[genome_ref] += 1
+                    this_query_hit_cnt_by_genome_ref[genome_ref] += 1
                     """
                     # handle duplicate queries
                     hit_full_feature_id = genome_ref + genome_ref_feature_id_delim + hit_feature_id
@@ -8320,9 +8324,9 @@ This module contains methods for running and visualizing results of phylogenomic
                         hits_by_full_feature_id[query_full_feature_id][hit_full_feature_id] = True
                     """
             for genome_ref in genome_ref_order:
-                if genome_ref in hit_cnt_by_genome_ref:
-                    if hit_cnt_by_genome_ref[genome_ref] > max_hit_cnt:
-                        max_hit_cnt = hit_cnt_by_genome_ref[genome_ref]
+                if genome_ref in this_query_hit_cnt_by_genome_ref:
+                    if this_query_hit_cnt_by_genome_ref[genome_ref] > max_hit_cnt:
+                        max_hit_cnt = this_query_hit_cnt_by_genome_ref[genome_ref]
 
         
         #### STEP 11: Determine proximity-based clusters within each contig
@@ -8589,7 +8593,8 @@ This module contains methods for running and visualizing results of phylogenomic
             
             hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(genome_fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
-                if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
+                if query_full_feature_id not in hits_by_query_and_genome_ref \
+                   or genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                     hit_table_html += ['<td valign=top align=center bgcolor='+row_bg_color+'>']
                     hit_table_html += ['<table border=0 cellpadding='+str(hit_cellpadding)+' cellspacing='+str(hit_cellspacing)+'>']
                     hit_table_html += ['<tr><td valign=top align=center bgcolor='+row_bg_color+'> --- </td></tr>']
