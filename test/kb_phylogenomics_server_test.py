@@ -1101,7 +1101,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Microbial SpeciesTree
     ##
-    # HIDE @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
     def test_build_microbial_speciestree_01(self):
         method = 'build_microbial_speciestree'
 
@@ -1265,7 +1265,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                                                             'provenance':[
                                                                 {
                                                                     'service':'kb_phylogenomics',
-                                                                    'method':'test_view_fxn_profile_featureSet'
+                                                                    'method':'test_find_homologs_with_genome_context_featureSet'
                                                                 }
                                                             ]
                                                         }]
@@ -1284,6 +1284,110 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'ident_thresh': 40.0,
                    'e_value': .001,
                    'bitscore': 50,
+                   'overlap_fraction': 50.0,
+                   'color_seed': 1
+               }
+        ret = self.getImpl().find_homologs_with_genome_context(self.getContext(),params)[0]
+        self.assertIsNotNone(ret['report_ref'])
+
+        # check created obj
+        #report_obj = self.getWsClient().get_objects2({'objects':[{'ref':ret['report_ref']}]})['data'][0]['data']
+        #report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
+        #self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
+
+        #created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        #self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
+        #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
+    #### Find Homologs with Genome Context (with queries with no matches)
+    ##
+    # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_02()")  # uncomment to skip
+    def test_find_homologs_with_genome_context_02(self):
+        method = 'find_homologs_with_genome_context'
+
+        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("=============================\n\n")
+
+        # input_data
+        genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+
+        genome_ref_0 = self.getWsName() + '/' + str(genomeInfo_0[0]) + '/' + str(genomeInfo_0[4])
+        genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
+        genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
+        genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
+
+        feature_id_0_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
+        feature_id_0_1 = 'A355_RS00035'
+        feature_id_0_2 = 'A355_RS00040'
+        feature_id_0_3 = 'A355_RS00125'
+        feature_id_0_4 = 'A355_RS00130'
+        feature_id_1_0 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
+        feature_id_1_1 = 'WOO_RS00200'
+        feature_id_1_2 = 'WOO_RS03660'
+        feature_id_1_3 = 'WOO_RS03665'
+        feature_id_1_4 = 'WOO_RS00250'
+        #feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
+        #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
+
+        # upload Tree
+        genome_refs_map = { '23880/3/1': genome_ref_0,
+                            '23880/4/1': genome_ref_1,
+                            '23880/5/1': genome_ref_2,
+                            '23880/6/1': genome_ref_3
+                        }
+        obj_info = self.getTreeInfo('Tiny_things.SpeciesTree', 0, genome_refs_map)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        tree_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        # build FeatureSet obj
+        testFS = {
+            'description': 'a few features',
+            'elements': { feature_id_0_0: [genome_ref_0],
+                          feature_id_0_1: [genome_ref_0],
+#                          feature_id_0_2: [genome_ref_0],
+#                          feature_id_0_3: [genome_ref_0],
+#                          feature_id_0_4: [genome_ref_0],
+#                          feature_id_1_0: [genome_ref_1],
+#                          feature_id_1_1: [genome_ref_1],
+#                          feature_id_1_2: [genome_ref_1]
+                          #feature_id_1_3: [genome_ref_1],
+                          #feature_id_1_4: [genome_ref_1]
+                      }
+        }
+        
+        obj_info = self.getWsClient().save_objects({'workspace': self.getWsName(),       
+                                                    'objects': [
+                                                        {
+                                                            'type':'KBaseCollections.FeatureSet',
+                                                            'data':testFS,
+                                                            'name':method+'.test_2_FeatureSet',
+                                                            'meta':{},
+                                                            'provenance':[
+                                                                {
+                                                                    'service':'kb_phylogenomics',
+                                                                    'method':'test_find_homologs_with_genome_context_featureSet'
+                                                                }
+                                                            ]
+                                                        }]
+                                                })[0]
+
+        pprint(obj_info)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        query_featureSet_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        # run that sucker
+        params = { 'workspace_name': self.getWsName(),
+                   'input_speciesTree_ref': tree_ref,
+                   'input_featureSet_ref': query_featureSet_ref,
+                   'save_per_genome_featureSets': 0,
+                   'neighbor_thresh': 10,
+                   'ident_thresh': 40.0,
+                   'e_value': .001,
+                   'bitscore': 10000000000000000000000000,  # this should do it
                    'overlap_fraction': 50.0,
                    'color_seed': 1
                }

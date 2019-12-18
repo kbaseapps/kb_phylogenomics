@@ -1,8 +1,12 @@
+### Version 1.5.1
+__Changes__
+- Handle query genes with zero results in Homolog Genome Context App
+- Add query_2 input option to Build Microbial SpeciesTree App
+
 ### Version 1.5.0
 __Changes__
 - Added Build Microbial SpeciesTree App
 - Fixed ContigSet/Assembly bug in Homolog Genome Context App
-
 
 ### Version 1.4.0
 __Changes__
