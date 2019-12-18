@@ -1,5 +1,5 @@
 {
-    "ver": "1.5.0",
+    "ver": "1.5.1",
     "authors": [
         "dylan"
     ],
@@ -74,7 +74,7 @@
             "optional": false,
             "advanced": false,
             "allow_multiple": false,
-            "default_values": [ "40.0" ],
+            "default_values": [ "20.0" ],
             "field_type": "text",
             "text_options": {
                 "validate_as": "float",
