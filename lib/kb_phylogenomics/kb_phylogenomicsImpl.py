@@ -788,7 +788,6 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_colors['lightblue'] = "#A8EAFC"
         leaf_colors['darkblue']  = "#A8C1FC"
         default_user_genome_color = leaf_colors['mustard']
-        default_user2_genome_color = leaf_colors['darkblue']
         default_reference_genome_color = leaf_colors['lightblue']
         color_by_user_genome = False
         color_by_reference_genome = False
@@ -921,7 +920,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     style["bgcolor"] = default_reference_genome_color
                 else:
                     if genome_ref in genome_ref_to_color:
-                        style["bgcolor"] = genome_ref_to_color[genome_ref]
+                        #style["bgcolor"] = genome_ref_to_color[genome_ref]
+                        style["hz_line_color"] = genome_ref_to_color[genome_ref]
+                        style["hz_line_width"] = 5 * leaf_style["hz_line_width"]
                     
             else:
                 style = copy.copy(node_style)
@@ -1562,7 +1563,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # just a genome
             if query_genome_obj_type in genome_obj_types:
-                if input_ref not in query_genome_disp:
+                if input_ref not in query2_genome_disp:
                     query2_genome_disp[input_ref] = dict()
                     query2_genome_disp[input_ref]['color'] = 'default'
                     query2_genome_ref_order.append(input_ref)
@@ -1768,11 +1769,11 @@ This module contains methods for running and visualizing results of phylogenomic
                             'reference_genome_disp':        reference_genome_disp,
                             'skeleton_genome_disp':         skeleton_genome_disp,
                             'user_genome_disp':             query_genome_disp,
-                            'user2_genome_disp':             query2_genome_disp,
+                            'user2_genome_disp':            query2_genome_disp,
                             'color_for_reference_genomes':  params['color_for_reference_genomes'],
                             'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
                             'color_for_user_genomes':       params['color_for_user_genomes'],
-                            'color_for_user2_genomes':       params['color_for_user2_genomes'],
+                            'color_for_user2_genomes':      params['color_for_user2_genomes'],
                             'tree_shape':                   params['tree_shape']
         }
         self.log(console, "RUNNING trim_speciestree_to_genomeset() for tree: " + untrimmed_tree_name+" genomeSet: "+trimmed_genomeSet_name)
