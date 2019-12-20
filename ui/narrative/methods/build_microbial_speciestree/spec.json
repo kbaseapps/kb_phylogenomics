@@ -1,5 +1,5 @@
 {
-    "ver": "1.5.0",
+    "ver": "1.5.1",
     "authors": [
         "dylan"
     ],
@@ -13,6 +13,17 @@
     "parameters": [ 
         {
             "id": "input_genome_refs",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": true,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseSearch.GenomeSet","KBaseGenomes.Genome","KBaseTrees.Tree" ]
+            }
+        },
+        {
+            "id": "input_genome2_refs",
             "optional": false,
             "advanced": false,
             "allow_multiple": true,
@@ -243,6 +254,30 @@
             }
         },
         {
+            "id": "color_for_user2_genomes",
+            "optional": true,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "darkblue" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "no_color",
+					"display": "no color",
+					"id": "add_color_to_user2_genomes-no_color",
+					"ui-name": "add_color_to_user2_genomes-no_color"
+				},
+				{
+					"value": "darkblue",
+					"display": "darkblue",
+					"id": "add_color_to_user2_genomes-darkblue",
+					"ui-name": "add_color_to_user2_genomes-darkblue"
+				}
+		]
+            }
+        },
+        {
             "id": "tree_shape",
             "optional": true,
             "advanced": true,
@@ -289,6 +324,11 @@
 		    "target_type_transform": "list<resolved-ref>"
                 },
                 {
+                    "input_parameter": "input_genome2_refs",
+		    "target_property": "input_genome2_refs",
+		    "target_type_transform": "list<resolved-ref>"
+                },
+                {
                     "input_parameter": "desc",
 		    "target_property": "desc"
                 },
@@ -323,6 +363,10 @@
                 {
                     "input_parameter": "color_for_user_genomes",
 		    "target_property": "color_for_user_genomes"
+                },
+                {
+                    "input_parameter": "color_for_user2_genomes",
+		    "target_property": "color_for_user2_genomes"
                 },
                 {
                     "input_parameter": "tree_shape",

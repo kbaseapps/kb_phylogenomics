@@ -1,14 +1,14 @@
 #
 # define display information
 #
-name: Build Microbial SpeciesTree - v1.5.0
+name: Build Microbial SpeciesTree - v1.5.1
 
 tooltip: |
     Build Species Tree for your Microbial Genomes, including Reference Genomes and Tree Skeleton with Phylum Exemplars
 
 screenshots: []
 
-icon: tree-purple.png
+icon: speciestree-purple.png
 
 #
 # define a set of similar methods that might be useful to the user
@@ -31,9 +31,14 @@ suggestions:
 parameters :
     input_genome_refs :
         ui-name : |
-            Genomes
+            Query Genomes
         short-hint : |
-            The Genomes, GenomeSet, or SpeciesTree containing the User genomes.
+            The Genomes, GenomeSet, or SpeciesTree containing the Query genomes.
+    input_genome2_refs :
+        ui-name : |
+            Additional Genomes
+        short-hint : |
+            The Genomes, GenomeSet, or SpeciesTree containing Additional genomes.
     desc :
         ui-name : |
             Description
@@ -78,7 +83,12 @@ parameters :
         ui-name : |
             Color user genomes
         short-hint : |
-            Add color to final species tree image for user genome leaves.
+            Add color to final species tree image for query genome leaves.
+    color_for_user2_genomes :
+        ui-name : |
+            Color additional genomes
+        short-hint : |
+            Add color to final species tree image for additional genome leaves.
     tree_shape :
         ui-name : |
             Tree shape

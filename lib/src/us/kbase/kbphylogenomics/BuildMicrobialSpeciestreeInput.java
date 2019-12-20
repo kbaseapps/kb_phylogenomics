@@ -35,6 +35,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "color_for_reference_genomes",
     "color_for_skeleton_genomes",
     "color_for_user_genomes",
+    "color_for_user2_genomes",
     "tree_shape"
 })
 public class BuildMicrobialSpeciestreeInput {
@@ -63,6 +64,8 @@ public class BuildMicrobialSpeciestreeInput {
     private String colorForSkeletonGenomes;
     @JsonProperty("color_for_user_genomes")
     private String colorForUserGenomes;
+    @JsonProperty("color_for_user2_genomes")
+    private String colorForUser2Genomes;
     @JsonProperty("tree_shape")
     private String treeShape;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -247,6 +250,21 @@ public class BuildMicrobialSpeciestreeInput {
         return this;
     }
 
+    @JsonProperty("color_for_user2_genomes")
+    public String getColorForUser2Genomes() {
+        return colorForUser2Genomes;
+    }
+
+    @JsonProperty("color_for_user2_genomes")
+    public void setColorForUser2Genomes(String colorForUser2Genomes) {
+        this.colorForUser2Genomes = colorForUser2Genomes;
+    }
+
+    public BuildMicrobialSpeciestreeInput withColorForUser2Genomes(String colorForUser2Genomes) {
+        this.colorForUser2Genomes = colorForUser2Genomes;
+        return this;
+    }
+
     @JsonProperty("tree_shape")
     public String getTreeShape() {
         return treeShape;
@@ -274,7 +292,7 @@ public class BuildMicrobialSpeciestreeInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((((((("BuildMicrobialSpeciestreeInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRefs=")+ inputGenomeRefs)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", skeletonSet=")+ skeletonSet)+", numProximalSisters=")+ numProximalSisters)+", proximalSistersANISpacing=")+ proximalSistersANISpacing)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((("BuildMicrobialSpeciestreeInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRefs=")+ inputGenomeRefs)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", skeletonSet=")+ skeletonSet)+", numProximalSisters=")+ numProximalSisters)+", proximalSistersANISpacing=")+ proximalSistersANISpacing)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", colorForUser2Genomes=")+ colorForUser2Genomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

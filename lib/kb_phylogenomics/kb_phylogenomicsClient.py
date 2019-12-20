@@ -46,9 +46,12 @@ class kb_phylogenomics(object):
            "skeleton_genome_disp" of mapping from type "data_obj_ref" to
            mapping from String to String, parameter "user_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
-           parameter "color_for_reference_genomes" of String, parameter
+           parameter "user2_genome_disp" of mapping from type "data_obj_ref"
+           to mapping from String to String, parameter
+           "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
-           "color_for_user_genomes" of String, parameter "tree_shape" of
+           "color_for_user_genomes" of String, parameter
+           "color_for_user2_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "view_tree_Output" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
@@ -72,10 +75,12 @@ class kb_phylogenomics(object):
            mapping from String to String, parameter "skeleton_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
            parameter "user_genome_disp" of mapping from type "data_obj_ref"
-           to mapping from String to String, parameter
-           "color_for_reference_genomes" of String, parameter
+           to mapping from String to String, parameter "user2_genome_disp" of
+           mapping from type "data_obj_ref" to mapping from String to String,
+           parameter "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
-           "color_for_user_genomes" of String, parameter "tree_shape" of
+           "color_for_user_genomes" of String, parameter
+           "color_for_user2_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "trim_speciestree_to_genomeset_Output" ->
            structure: parameter "report_name" of String, parameter
@@ -98,7 +103,8 @@ class kb_phylogenomics(object):
            Long, parameter "proximal_sisters_ANI_spacing" of Double,
            parameter "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
-           "color_for_user_genomes" of String, parameter "tree_shape" of
+           "color_for_user_genomes" of String, parameter
+           "color_for_user2_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "build_microbial_speciestree_Output" ->
            structure: parameter "report_name" of String, parameter

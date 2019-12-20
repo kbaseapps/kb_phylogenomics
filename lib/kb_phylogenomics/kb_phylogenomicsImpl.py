@@ -46,7 +46,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.5.1"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "88e36ae66502d278a62b3ff19ccb5dcf3db04ffc"
+    GIT_COMMIT_HASH = "9a15480a5f41f7eaf71235012ff0c0bd37d5893a"
 
     #BEGIN_CLASS_HEADER
 
@@ -583,9 +583,12 @@ This module contains methods for running and visualizing results of phylogenomic
            "skeleton_genome_disp" of mapping from type "data_obj_ref" to
            mapping from String to String, parameter "user_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
-           parameter "color_for_reference_genomes" of String, parameter
+           parameter "user2_genome_disp" of mapping from type "data_obj_ref"
+           to mapping from String to String, parameter
+           "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
-           "color_for_user_genomes" of String, parameter "tree_shape" of
+           "color_for_user_genomes" of String, parameter
+           "color_for_user2_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "view_tree_Output" -> structure: parameter
            "report_name" of String, parameter "report_ref" of String
@@ -783,7 +786,9 @@ This module contains methods for running and visualizing results of phylogenomic
         leaf_colors['mustard']   = "#FEE787"
         leaf_colors['violet']    = "#DFCFFC"
         leaf_colors['lightblue'] = "#A8EAFC"
+        leaf_colors['darkblue']  = "#A8C1FC"
         default_user_genome_color = leaf_colors['mustard']
+        default_user2_genome_color = leaf_colors['darkblue']
         default_reference_genome_color = leaf_colors['lightblue']
         color_by_user_genome = False
         color_by_reference_genome = False
@@ -850,6 +855,19 @@ This module contains methods for running and visualizing results of phylogenomic
                                 genome_ref_to_color[genome_ref] = leaf_colors[params['color_for_user_genomes']]
                         else:
                             genome_ref_to_color[genome_ref] = params['user_genome_disp'][genome_ref]['color']
+
+                # user2 genome colors
+                if params.get('user2_genome_disp'):
+                    color_by_user_genome = False
+                    color_by_reference_genome = False
+                    for genome_ref in params['user2_genome_disp'].keys():
+                        genome_ref_to_color[genome_ref] = leaf_colors['white']
+                        if params['user2_genome_disp'][genome_ref]['color'] == 'default':
+                            if params.get('color_for_user2_genomes') and \
+                               params['color_for_user2_genomes'] != 'no_color':
+                                genome_ref_to_color[genome_ref] = leaf_colors[params['color_for_user2_genomes']]
+                        else:
+                            genome_ref_to_color[genome_ref] = params['user2_genome_disp'][genome_ref]['color']
 
 
         # customize
@@ -1035,10 +1053,12 @@ This module contains methods for running and visualizing results of phylogenomic
            mapping from String to String, parameter "skeleton_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
            parameter "user_genome_disp" of mapping from type "data_obj_ref"
-           to mapping from String to String, parameter
-           "color_for_reference_genomes" of String, parameter
+           to mapping from String to String, parameter "user2_genome_disp" of
+           mapping from type "data_obj_ref" to mapping from String to String,
+           parameter "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
-           "color_for_user_genomes" of String, parameter "tree_shape" of
+           "color_for_user_genomes" of String, parameter
+           "color_for_user2_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "trim_speciestree_to_genomeset_Output" ->
            structure: parameter "report_name" of String, parameter
@@ -1315,9 +1335,11 @@ This module contains methods for running and visualizing results of phylogenomic
                                 'reference_genome_disp':    params['reference_genome_disp'],
                                 'skeleton_genome_disp':     params['skeleton_genome_disp'],
                                 'user_genome_disp':         params['user_genome_disp'],
+                                'user2_genome_disp':        params['user2_genome_disp'],
                                 'color_for_reference_genomes':  params['color_for_reference_genomes'],
                                 'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
                                 'color_for_user_genomes':       params['color_for_user_genomes'],
+                                'color_for_user2_genomes':      params['color_for_user2_genomes'],
                                 'tree_shape':                   params['tree_shape']
 
                             }
@@ -1394,7 +1416,8 @@ This module contains methods for running and visualizing results of phylogenomic
            Long, parameter "proximal_sisters_ANI_spacing" of Double,
            parameter "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
-           "color_for_user_genomes" of String, parameter "tree_shape" of
+           "color_for_user_genomes" of String, parameter
+           "color_for_user2_genomes" of String, parameter "tree_shape" of
            String
         :returns: instance of type "build_microbial_speciestree_Output" ->
            structure: parameter "report_name" of String, parameter
@@ -1521,6 +1544,50 @@ This module contains methods for running and visualizing results of phylogenomic
                 raise ValueError ("bad type for input_genome_refs")
 
 
+        #### STEP 4.b: Get Additional User Genomes
+        ##
+        query2_genome_ref_order = []
+        query2_genome_disp = dict()
+        genomeSet_obj_types = ["KBaseSearch.GenomeSet", "KBaseSets.GenomeSet"]
+        genome_obj_types    = ["KBaseGenomes.Genome", "KBaseGenomeAnnotations.Genome"]
+        tree_obj_types      = ["KBaseTrees.Tree"]
+        for input_ref in params['input_genome2_refs']:
+            try:
+                query_genome_obj = wsClient.get_objects2({'objects':[{'ref': input_ref}]})['data'][0]
+                query_genome_obj_data = query_genome_obj['data']
+                query_genome_obj_info = query_genome_obj['info']
+                query_genome_obj_type = query_genome_obj_info[TYPE_I].split('-')[0]
+            except:
+                raise ValueError("unable to fetch input genome object: " + input_ref)
+
+            # just a genome
+            if query_genome_obj_type in genome_obj_types:
+                if input_ref not in query_genome_disp:
+                    query2_genome_disp[input_ref] = dict()
+                    query2_genome_disp[input_ref]['color'] = 'default'
+                    query2_genome_ref_order.append(input_ref)
+
+            # handle genomeSet
+            elif query_genome_obj_type in genomeSet_obj_types:
+                for genome_id in sorted(query_genome_obj_data['elements'].keys()):
+                    genome_ref = query_genome_obj_data['elements'][genome_id]['ref']
+                    if genome_ref not in query2_genome_disp:
+                        query2_genome_disp[genome_ref] = dict()
+                        query2_genome_disp[genome_ref]['color'] = 'default'
+                        query2_genome_ref_order.append(genome_ref)
+
+            # handle tree type
+            elif query_genome_obj_type in tree_obj_types:
+                for genome_id in sorted(query_genome_obj_data['ws_refs'].keys()):
+                    genome_ref = query_genome_obj_data['ws_refs'][genome_id]['g'][0]
+                    if genome_ref not in query2_genome_disp:
+                        query2_genome_disp[genome_ref] = dict()
+                        query2_genome_disp[genome_ref]['color'] = 'default'
+                        query2_genome_ref_order.append(genome_ref)
+            else:  
+                raise ValueError ("bad type for input_genome2_refs")
+
+
         #### STEP 5: Get proximal sisters for user genomes
         ##
         reference_genome_ref_order = []
@@ -1566,6 +1633,8 @@ This module contains methods for running and visualizing results of phylogenomic
         ##
         combined_genome_ref_order = []
         for genome_ref in query_genome_ref_order:
+            combined_genome_ref_order.append(genome_ref)
+        for genome_ref in query2_genome_ref_order:
             combined_genome_ref_order.append(genome_ref)
         for genome_ref in skeleton_genome_ref_order:
             combined_genome_ref_order.append(genome_ref)
@@ -1699,9 +1768,11 @@ This module contains methods for running and visualizing results of phylogenomic
                             'reference_genome_disp':        reference_genome_disp,
                             'skeleton_genome_disp':         skeleton_genome_disp,
                             'user_genome_disp':             query_genome_disp,
+                            'user2_genome_disp':             query2_genome_disp,
                             'color_for_reference_genomes':  params['color_for_reference_genomes'],
                             'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
                             'color_for_user_genomes':       params['color_for_user_genomes'],
+                            'color_for_user2_genomes':       params['color_for_user2_genomes'],
                             'tree_shape':                   params['tree_shape']
         }
         self.log(console, "RUNNING trim_speciestree_to_genomeset() for tree: " + untrimmed_tree_name+" genomeSet: "+trimmed_genomeSet_name)

@@ -29,9 +29,11 @@ module kb_phylogenomics {
 	mapping<data_obj_ref,mapping<string,string>> reference_genome_disp;
 	mapping<data_obj_ref,mapping<string,string>> skeleton_genome_disp;
 	mapping<data_obj_ref,mapping<string,string>> user_genome_disp;
+	mapping<data_obj_ref,mapping<string,string>> user2_genome_disp;
 	string          color_for_reference_genomes;
 	string          color_for_skeleton_genomes;
 	string          color_for_user_genomes;
+	string          color_for_user2_genomes;
 	string          tree_shape;  /* circle, wedge, rect */
     } view_tree_Input;
 
@@ -62,9 +64,11 @@ module kb_phylogenomics {
 	mapping<data_obj_ref,mapping<string,string>> reference_genome_disp;
 	mapping<data_obj_ref,mapping<string,string>> skeleton_genome_disp;
 	mapping<data_obj_ref,mapping<string,string>> user_genome_disp;
+	mapping<data_obj_ref,mapping<string,string>> user2_genome_disp;
         string          color_for_reference_genomes;
 	string          color_for_skeleton_genomes;
 	string          color_for_user_genomes;
+	string          color_for_user2_genomes;
 	string          tree_shape;  /* circle, wedge, rect */
     } trim_speciestree_to_genomeset_Input;
 
@@ -96,6 +100,7 @@ module kb_phylogenomics {
 	string         color_for_reference_genomes;
 	string         color_for_skeleton_genomes;
 	string         color_for_user_genomes;
+	string         color_for_user2_genomes;
 	string         tree_shape;  /* circle, wedge, rect */
     } build_microbial_speciestree_Input;
 

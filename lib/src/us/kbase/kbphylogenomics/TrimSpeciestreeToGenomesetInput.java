@@ -34,9 +34,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "reference_genome_disp",
     "skeleton_genome_disp",
     "user_genome_disp",
+    "user2_genome_disp",
     "color_for_reference_genomes",
     "color_for_skeleton_genomes",
     "color_for_user_genomes",
+    "color_for_user2_genomes",
     "tree_shape"
 })
 public class TrimSpeciestreeToGenomesetInput {
@@ -63,12 +65,16 @@ public class TrimSpeciestreeToGenomesetInput {
     private Map<String, Map<String, String>> skeletonGenomeDisp;
     @JsonProperty("user_genome_disp")
     private Map<String, Map<String, String>> userGenomeDisp;
+    @JsonProperty("user2_genome_disp")
+    private Map<String, Map<String, String>> user2GenomeDisp;
     @JsonProperty("color_for_reference_genomes")
     private java.lang.String colorForReferenceGenomes;
     @JsonProperty("color_for_skeleton_genomes")
     private java.lang.String colorForSkeletonGenomes;
     @JsonProperty("color_for_user_genomes")
     private java.lang.String colorForUserGenomes;
+    @JsonProperty("color_for_user2_genomes")
+    private java.lang.String colorForUser2Genomes;
     @JsonProperty("tree_shape")
     private java.lang.String treeShape;
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
@@ -238,6 +244,21 @@ public class TrimSpeciestreeToGenomesetInput {
         return this;
     }
 
+    @JsonProperty("user2_genome_disp")
+    public Map<String, Map<String, String>> getUser2GenomeDisp() {
+        return user2GenomeDisp;
+    }
+
+    @JsonProperty("user2_genome_disp")
+    public void setUser2GenomeDisp(Map<String, Map<String, String>> user2GenomeDisp) {
+        this.user2GenomeDisp = user2GenomeDisp;
+    }
+
+    public TrimSpeciestreeToGenomesetInput withUser2GenomeDisp(Map<String, Map<String, String>> user2GenomeDisp) {
+        this.user2GenomeDisp = user2GenomeDisp;
+        return this;
+    }
+
     @JsonProperty("color_for_reference_genomes")
     public java.lang.String getColorForReferenceGenomes() {
         return colorForReferenceGenomes;
@@ -283,6 +304,21 @@ public class TrimSpeciestreeToGenomesetInput {
         return this;
     }
 
+    @JsonProperty("color_for_user2_genomes")
+    public java.lang.String getColorForUser2Genomes() {
+        return colorForUser2Genomes;
+    }
+
+    @JsonProperty("color_for_user2_genomes")
+    public void setColorForUser2Genomes(java.lang.String colorForUser2Genomes) {
+        this.colorForUser2Genomes = colorForUser2Genomes;
+    }
+
+    public TrimSpeciestreeToGenomesetInput withColorForUser2Genomes(java.lang.String colorForUser2Genomes) {
+        this.colorForUser2Genomes = colorForUser2Genomes;
+        return this;
+    }
+
     @JsonProperty("tree_shape")
     public java.lang.String getTreeShape() {
         return treeShape;
@@ -310,7 +346,7 @@ public class TrimSpeciestreeToGenomesetInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((((((((((((((((("TrimSpeciestreeToGenomesetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", referenceGenomeDisp=")+ referenceGenomeDisp)+", skeletonGenomeDisp=")+ skeletonGenomeDisp)+", userGenomeDisp=")+ userGenomeDisp)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((((((((("TrimSpeciestreeToGenomesetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", referenceGenomeDisp=")+ referenceGenomeDisp)+", skeletonGenomeDisp=")+ skeletonGenomeDisp)+", userGenomeDisp=")+ userGenomeDisp)+", user2GenomeDisp=")+ user2GenomeDisp)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", colorForUser2Genomes=")+ colorForUser2Genomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
