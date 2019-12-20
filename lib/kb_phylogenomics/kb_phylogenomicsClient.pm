@@ -132,9 +132,11 @@ view_tree_Input is a reference to a hash where the following keys are defined:
 	reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	user_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
+	user2_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
+	color_for_user2_genomes has a value which is a string
 	tree_shape has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
@@ -160,9 +162,11 @@ view_tree_Input is a reference to a hash where the following keys are defined:
 	reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	user_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
+	user2_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
+	color_for_user2_genomes has a value which is a string
 	tree_shape has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
@@ -255,9 +259,11 @@ trim_speciestree_to_genomeset_Input is a reference to a hash where the following
 	reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	user_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
+	user2_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
+	color_for_user2_genomes has a value which is a string
 	tree_shape has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
@@ -287,9 +293,11 @@ trim_speciestree_to_genomeset_Input is a reference to a hash where the following
 	reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	user_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
+	user2_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
+	color_for_user2_genomes has a value which is a string
 	tree_shape has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
@@ -384,6 +392,7 @@ build_microbial_speciestree_Input is a reference to a hash where the following k
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
+	color_for_user2_genomes has a value which is a string
 	tree_shape has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
@@ -414,6 +423,7 @@ build_microbial_speciestree_Input is a reference to a hash where the following k
 	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
+	color_for_user2_genomes has a value which is a string
 	tree_shape has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
@@ -2259,9 +2269,11 @@ show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 user_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
+user2_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
+color_for_user2_genomes has a value which is a string
 tree_shape has a value which is a string
 
 </pre>
@@ -2279,9 +2291,11 @@ show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 user_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
+user2_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
+color_for_user2_genomes has a value which is a string
 tree_shape has a value which is a string
 
 
@@ -2353,9 +2367,11 @@ enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 user_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
+user2_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
+color_for_user2_genomes has a value which is a string
 tree_shape has a value which is a string
 
 </pre>
@@ -2376,9 +2392,11 @@ enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 user_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
+user2_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
+color_for_user2_genomes has a value which is a string
 tree_shape has a value which is a string
 
 
@@ -2451,6 +2469,7 @@ proximal_sisters_ANI_spacing has a value which is a float
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
+color_for_user2_genomes has a value which is a string
 tree_shape has a value which is a string
 
 </pre>
@@ -2472,6 +2491,7 @@ proximal_sisters_ANI_spacing has a value which is a float
 color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
+color_for_user2_genomes has a value which is a string
 tree_shape has a value which is a string
 
 
