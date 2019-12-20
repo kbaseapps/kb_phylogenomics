@@ -1231,7 +1231,10 @@ This module contains methods for running and visualizing results of phylogenomic
             if params.get('desc'):
                 tree_description = params['desc']
             else:
-                tree_description = tree_in['desc']+" TRIMMED "
+                if tree_in.get('desc'):
+                    tree_description = tree_in['desc']+" TRIMMED "
+                else:
+                    tree_description = "Tree TRIMMED "
                 for genome_id in prune_remove_list:
                     tree_description += " "+genome_id+"("+genome_ref_by_id[genome_id]+")"
             tree_type = 'SpeciesTree'
