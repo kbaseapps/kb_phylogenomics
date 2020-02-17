@@ -1,3 +1,7 @@
+### Version 1.6.0
+__Changes__
+- updated Pfam version to 32.0 in DomainAnnotation_Sets()
+
 ### Version 1.5.1
 __Changes__
 - Handle query genes with zero results in Homolog Genome Context App
