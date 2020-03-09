@@ -273,7 +273,7 @@ This module contains methods for running and visualizing results of phylogenomic
         domain_cat_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_funcat.txt')
         #domain_cat_names_path['SEED']  = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
         domain_fam_names_path['SEED'] = os.path.join(domain_desc_basepath, 'SEED_subsys.txt')
-        
+
         cats = []
         cat2name = dict()
         cat2group = dict()
@@ -371,7 +371,7 @@ This module contains methods for running and visualizing results of phylogenomic
         extra_target_fam_groups = []
         domfam2group = dict()
         domfam2name = dict()
-        
+
         # custom domains
         if params['namespace'] == 'custom':
 
@@ -542,7 +542,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 and params['namespace'] != 'TIGR' \
                 and params['namespace'] != 'SEED':
             raise ValueError("Unknown namespace: '" + str(params['namespace']) + "'")
-        
+
         return(cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading, target_fams,
                extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name)
 
@@ -923,7 +923,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         #style["bgcolor"] = genome_ref_to_color[genome_ref]
                         style["hz_line_color"] = genome_ref_to_color[genome_ref]
                         style["hz_line_width"] = 5 * leaf_style["hz_line_width"]
-                    
+
             else:
                 style = copy.copy(node_style)
 
@@ -1144,7 +1144,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for genome_id in tree_in['default_node_labels'].keys():
             genome_ref = tree_in['ws_refs'][genome_id]['g'][0]
             genome_id_by_ref[genome_ref] = genome_id
-            genome_ref_by_id[genome_id] = genome_ref        
+            genome_ref_by_id[genome_id] = genome_ref
 
 
         #### STEP 4: Get GenomeSet object
@@ -1243,7 +1243,7 @@ This module contains methods for running and visualizing results of phylogenomic
             if not output_newick_buf.endswith(';'):
                 output_newick_buf += ';'
             self.log(console,"\nNEWICK:\n"+output_newick_buf+"\n")
-        
+
             # Extract info from input tree
             #
             tree_attributes = None
@@ -1285,11 +1285,11 @@ This module contains methods for running and visualizing results of phylogenomic
             if default_node_labels != None:
                 output_Tree['default_node_labels'] = default_node_labels
             if ws_refs != None:
-                output_Tree['ws_refs'] = ws_refs 
+                output_Tree['ws_refs'] = ws_refs
             if kb_refs != None:
                 output_Tree['kb_refs'] = kb_refs
             if leaf_list != None:
-                output_Tree['leaf_list'] = leaf_list 
+                output_Tree['leaf_list'] = leaf_list
 
             # Store output_Tree
             #
@@ -1349,7 +1349,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             }
             self.log(console, "RUNNING view_tree() for tree: " + output_tree_ref)
             view_tree_retVal = self.view_tree(ctx, view_tree_Params)[0]
-            
+
             # can't just pass forward report because we created objects we need to add
             try:
                 view_tree_reportObj = wsClient.get_objects([{'ref': view_tree_retVal['report_ref']}])[0]['data']
@@ -1544,7 +1544,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         query_genome_disp[genome_ref] = dict()
                         query_genome_disp[genome_ref]['color'] = 'default'
                         query_genome_ref_order.append(genome_ref)
-            else:  
+            else:
                 raise ValueError ("bad type for input_genome_refs")
 
 
@@ -1588,7 +1588,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         query2_genome_disp[genome_ref] = dict()
                         query2_genome_disp[genome_ref]['color'] = 'default'
                         query2_genome_ref_order.append(genome_ref)
-            else:  
+            else:
                 raise ValueError ("bad type for input_genome2_refs")
 
 
@@ -1613,7 +1613,7 @@ This module contains methods for running and visualizing results of phylogenomic
             except:
                 raise ValueError("unable to fetch skeleton genomeSet: " + skeleton_genomeSet_obj_name + " from ws "+str(skeleton_ws_id))
             skeleton_genomeSet_obj_data = skeleton_genomeSet_obj['data']
-                
+
             for genome_id in skeleton_genomeSet_obj_data['elements'].keys():
                 genome_ref = skeleton_genomeSet_obj_data['elements'][genome_id]['ref']
                 skeleton_genome_disp[genome_ref] = dict()
@@ -1722,7 +1722,7 @@ This module contains methods for running and visualizing results of phylogenomic
             "copy_genomes": 0,
             "out_tree_id": untrimmed_tree_name,
             # out_genomeset_ref format must be "workspace_name/obj_name"
-            "out_genomeset_ref": untrimmed_genomeSet_ref,  
+            "out_genomeset_ref": untrimmed_genomeSet_ref,
             "use_ribosomal_s9_only": 0
         }
         # DEBUG
@@ -1735,7 +1735,7 @@ This module contains methods for running and visualizing results of phylogenomic
             speciesTreeClient = SpeciesTreeBuilder(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
             #speciesTreeClient = SpeciesTreeBuilder(url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
-            raise ValueError("unable to instantiate SpeciesTreeBuilder Client")       
+            raise ValueError("unable to instantiate SpeciesTreeBuilder Client")
         # run
         #speciesTree_retVal = speciesTreeClient.construct_species_tree(species_tree_app_params)[0]
         speciesTree_retVal = speciesTreeClient.construct_species_tree(species_tree_app_params)
@@ -1747,7 +1747,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                                   str(untrimmed_speciesTree_obj_info[OBJID_I]),
                                                   str(untrimmed_speciesTree_obj_info[VERSION_I])])
 
-                                                  
+
         #### STEP 10: call trim_speciestree_to_genomeset() to make report
         ##
         report_info = dict()
@@ -1781,7 +1781,7 @@ This module contains methods for running and visualizing results of phylogenomic
         }
         self.log(console, "RUNNING trim_speciestree_to_genomeset() for tree: " + untrimmed_tree_name+" genomeSet: "+trimmed_genomeSet_name)
         trim_tree_retVal = self.trim_speciestree_to_genomeset(ctx, trim_tree_Params)[0]
-            
+
         # can't just pass forward report because we created objects we need to add
         try:
             trim_tree_reportObj = wsClient.get_objects([{'ref': trim_tree_retVal['report_ref']}])[0]['data']
@@ -1890,7 +1890,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 {'workspaces': [params['workspace_name']], 'type': "KBaseGenomes.Genome"}))
         except Exception as e:
             raise ValueError("Unable to list Genome objects from workspace: " + str(workspace_name) + " " + str(e))
-                
+
         for info in local_genome_obj_info_list:
             local_genome_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
             local_genome_name = info[NAME_I]
@@ -1949,7 +1949,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 msg += "\n"
                 self.log(console, msg)
                 report_text.append(msg)
-                
+
                 # get Genome obj, copy Assembly obj, set assembly pointer in Genome, and save
                 try:
                     genome_obj_data = wsClient.get_objects([{'ref':remote_genome_ref}])[0]['data']
@@ -2249,7 +2249,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     {'ids': [ws_id], 'type': "KBaseGeneFamilies.DomainAnnotation"}))
             except Exception as e:
                 raise ValueError("Unable to list DomainAnnotation objects from workspace: " + str(ws_id) + " " + str(e))
-                
+
         for info in dom_annot_obj_info_list:
             dom_annot_ref = str(info[WSID_I]) + '/' + str(info[OBJID_I]) + '/' + str(info[VERSION_I])
             try:
@@ -2419,8 +2419,8 @@ This module contains methods for running and visualizing results of phylogenomic
                 error_msg = "If you select 'Custom' Domain Namespace, you must also Enable some Custom Domains or Custom Domain Groups"
                 self.log (console, "ABORT: "+error_msg)
                 raise ValueError("ABORT: "+error_msg)
-                    
- 
+
+
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
         show_blanks = False
@@ -2463,7 +2463,7 @@ This module contains methods for running and visualizing results of phylogenomic
         features_by_custom_target_fam = dict()
         custom_target_fam_features_hit = False
 
-        
+
         # STEP 1 - Get the Data
         # get genome set
         #
@@ -2530,7 +2530,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                  "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
-            
+
             try:
                 genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
             except:
@@ -2725,7 +2725,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_ref = domain_data['genome_ref']
                 if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
                     # skip extra domainannots
-                    if genome_ref not in genome_refs:  
+                    if genome_ref not in genome_refs:
                         continue
                 else:
                     (ws_id, obj_id, version) = genome_ref.split('/')
@@ -2878,7 +2878,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     genome_refs = new_genome_refs
                     self.log(console, "SKIP option selected. If you wish to include the below Genomes, you must run the 'Domain Annotation' App first")
                     self.log(console, "\n".join(missing_annot))
-                        
+
         # DEBUG
         #for genome_ref in genome_refs:
         #    self.log (console, "SEED ANNOT CNT B: '"+str(genes_with_hits_cnt[genome_ref]['SEED'])+"'")
@@ -2984,7 +2984,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         total_genes = genes_with_hits_cnt[genome_ref][namespace]
                     else:
                         total_genes = genome_CDS_count_by_ref[genome_ref]
- 
+
                     if total_genes > 0:
                         table_data[genome_ref][cat] /= float(total_genes)
                         table_data[genome_ref][cat] *= 100.0
@@ -3314,7 +3314,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             val = math.log(val, log_base)
                         if overall_high_val == overall_low_val:
                             denom = 1.0
-                        else: 
+                        else:
                             denom = float(overall_high_val - overall_low_val)
                         cell_color_i = max_color - \
                             int(round(max_color * (val - overall_low_val) / denom))
@@ -3592,7 +3592,7 @@ This module contains methods for running and visualizing results of phylogenomic
             ):
                 error_msg = "If you select 'Custom' Domain Namespace, you must also Enable some Custom Domains or Custom Domain Groups"
                 self.log (console, "ABORT: "+error_msg)
-                raise ValueError("ABORT: "+error_msg)                    
+                raise ValueError("ABORT: "+error_msg)
 
 
         # base config
@@ -3631,13 +3631,13 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         (cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading, target_fams,
          extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name) = self._configure_categories(params)
-        
+
         # instantiate custom FeatureSets
         #
         features_by_custom_target_fam = dict()
         custom_target_fam_features_hit = False
 
-        
+
         # STEP 1 - Get the Data
         # get genome set from featureSet
         #
@@ -3989,7 +3989,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         dom_hits_by_namespace = dict()
                         top_hit_evalue_by_namespace = dict()
                         top_hit_dom_by_namespace = dict()
-                        
+
                         for namespace in namespace_classes:
                             dom_hits_by_namespace[namespace] = dict()
                             top_hit_evalue_by_namespace[namespace] = 100
@@ -4526,7 +4526,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             val = math.log(val, log_base)
                         if overall_high_val == overall_low_val:
                             denom = 1.0
-                        else: 
+                        else:
                             denom = float(overall_high_val - overall_low_val)
                         cell_color_i = max_color - \
                                       int(round(max_color * (val - overall_low_val) / denom))
@@ -4806,7 +4806,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 error_msg = "If you select 'Custom' Domain Namespace, you must also Enable some Custom Domains or Custom Domain Groups"
                 self.log (console, "ABORT: "+error_msg)
                 raise ValueError("ABORT: "+error_msg)
-                    
+
 
         # base config
         namespace_classes = ['COG', 'PF', 'TIGR', 'SEED']
@@ -4853,7 +4853,7 @@ This module contains methods for running and visualizing results of phylogenomic
         features_by_custom_target_fam = dict()
         custom_target_fam_features_hit = False
 
-        
+
         # STEP 1 - Get the Data
         # get speciesTree
         #
@@ -5188,7 +5188,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             dom_hits_by_namespace[namespace] = dict()
                             top_hit_evalue_by_namespace[namespace] = 100
                             top_hit_dom_by_namespace[namespace] = None
-                            
+
                         for domfam in gene_hits_dict.keys():
                             if domfam.startswith('PF'):
                                 domfam_clean = re.sub('\.[^\.]*$', '', domfam)
@@ -5829,7 +5829,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             val = math.log(val, log_base)
                         if overall_high_val == overall_low_val:
                             denom = 1.0
-                        else: 
+                        else:
                             denom = float(overall_high_val - overall_low_val)
                         cell_color_i = max_color - \
                                       int(round(max_color * (val - overall_low_val) / denom))
@@ -7165,6 +7165,8 @@ This module contains methods for running and visualizing results of phylogenomic
         if input_obj_type not in accepted_input_types:
             raise ValueError("Input object of type '" + input_obj_type +
                              "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
+        if len(ws.get_objects([{'ref': input_ref}])[0]['data']['default_node_labels']) >= 4:
+            raise ValueError("Input species tree must have more than two species.")
 
         # get set obj
         try:
@@ -7254,7 +7256,7 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError("unable to fetch genome: " + input_ref)
 
 
-        # check for each species tree genome in pangenome, and possibly adjust 
+        # check for each species tree genome in pangenome, and possibly adjust
         #    species tree if skipping allowed (reverse not required)
         #
         missing_in_pangenome = []
@@ -7262,7 +7264,7 @@ This module contains methods for running and visualizing results of phylogenomic
         updated_pg_genome_refs = []
         for pg_genome_ref in pg_obj['genome_refs']:
             (ws_id, obj_id, version) = pg_genome_ref.split('/')
-            genome_ref_versionless = ws_id+'/'+obj_id 
+            genome_ref_versionless = ws_id+'/'+obj_id
             if genome_ref_versionless in genome_ref_by_versionless:
                 updated_pg_genome_refs.append(genome_ref_by_versionless[genome_ref_versionless])
         for genome_ref in genome_refs:
@@ -7871,7 +7873,7 @@ This module contains methods for running and visualizing results of phylogenomic
         output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-            
+
         # clients
         #SERVICE_VER = 'dev'  # DEBUG
         SERVICE_VER = 'beta'
@@ -7997,7 +7999,7 @@ This module contains methods for running and visualizing results of phylogenomic
             try:
                 genomeSet_obj_info = wsClient.save_objects({'workspace': params['workspace_name'],
                                                             'objects': [
-                                                                { 
+                                                                {
                                                                     'type':'KBaseSearch.GenomeSet',
                                                                     'data':tree_GS_obj,
                                                                     'name':tree_GS_name,
@@ -8007,20 +8009,20 @@ This module contains methods for running and visualizing results of phylogenomic
                                                                             'service':'kb_phylogenomics',
                                                                             'method':'find_homologs_with_genome_context',
                                                                             'input_ws_objects': [params['input_speciesTree_ref']]
-                                                                            
+
                                                                         }
                                                                     ]
                                                                 }]
                                                         })[0]
                 tree_derived_genomeSet_ref = str(genomeSet_obj_info[WSID_I])+'/'+str(genomeSet_obj_info[OBJID_I])+'/'+str(genomeSet_obj_info[VERSION_I])
-                
+
             except Exception as e:
                 raise ValueError ("unable to save GenomeSet from Tree object: " + str(e))
                 #to get the full stack trace: traceback.format_exc()
         else:
             tree_derived_genomeSet_ref = genomeSet_ref
 
-        
+
         #### STEP 4: get genome names from tree
         ##
         genome_names = dict()
@@ -8030,7 +8032,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_names[genome_ref] = genome_obj_info[NAME_I]
             except Exception as e:
                 raise ValueError('Unable to get genome object from workspace: (' + genome_ref + ')' + str(e))
-            
+
 
         #### STEP 5: if labels defined, make separate newick-labels file
         ##     (NOTE: adjust IDs so ETE3 parse doesn't choke on conflicting chars)
@@ -8289,10 +8291,10 @@ This module contains methods for running and visualizing results of phylogenomic
                 individual_FS_prov[0]['input_ws_objects'].append(params['input_featureSet_ref'])
                 individual_FS_prov[0]['service'] = 'kb_phylogenomics'
                 individual_FS_prov[0]['method'] = 'find_homologs_with_genome_context'
-            
+
                 individual_FS_obj = {
                     'description': featureSet_obj['description']+' - '+element_id,
-                    'elements': { 
+                    'elements': {
                         element_id: [genome_ref]
                     }
                 }
@@ -8381,13 +8383,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 if longest_feature_id_by_query[query_full_feature_id] < len(hit_feature_id):
                     longest_feature_id_by_query[query_full_feature_id] = len(hit_feature_id)
 
-                
+
                 # store hits by query and record number of hits to each genome
                 for genome_ref in hits_obj['elements'][hit_feature_id]:
                     if genome_ref not in hits_by_query_and_genome_ref[query_full_feature_id].keys():
                         hits_by_query_and_genome_ref[query_full_feature_id][genome_ref] = []
                         this_query_hit_cnt_by_genome_ref[genome_ref] = 0
-                        
+
                     hits_by_query_and_genome_ref[query_full_feature_id][genome_ref].append(hit_feature_id)
                     this_query_hit_cnt_by_genome_ref[genome_ref] += 1
                     """
@@ -8404,7 +8406,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     if this_query_hit_cnt_by_genome_ref[genome_ref] > max_hit_cnt:
                         max_hit_cnt = this_query_hit_cnt_by_genome_ref[genome_ref]
 
-        
+
         #### STEP 11: Determine proximity-based clusters within each contig
         ##
         cluster_by_genome_by_fid = dict()
@@ -8417,7 +8419,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 try:
                     hit_list = hits_by_genome_ref[genome_ref]
                 except:
-                    hits_by_genome_ref[genome_ref] = dict()                    
+                    hits_by_genome_ref[genome_ref] = dict()
                 for fid in hits_by_query_and_genome_ref[query_full_feature_id][genome_ref]:
                     hits_by_genome_ref[genome_ref][fid] = True
 
@@ -8514,7 +8516,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # y2 = mh * 5 + bh
             # 3.885 - mh*6 = y2 - mh*5 -> mh = 3.885 - y2
             # bh = 3.885 - mh*6 = 3.885 - 6*(3.885 - y2) = 6*y2 - 5*3.885 = 6*y2 - 19.425
-        
+
             # guess y2=3.2375
             # guess y2=3.25
             # guess y2=3.20
@@ -8666,7 +8668,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 disp_label = '<b><i>'+label+'</i></b>'
             link_open = '<A HREF="'+'https://narrative.kbase.us/#dataview/'+str(genome_ref)+'" target="'+str(genome_ref)+'" style="color:'+genome_text_color+';text-decoration:none">'
             link_close = '</A>'
-            
+
             hit_table_html += ['<td bgcolor='+str('#ffffff')+' valign=top align=left>'+'<font size='+str(genome_fontsize)+'>'+link_open + disp_label + link_close+'</font>'+'</td>']
             for query_i,query_full_feature_id in enumerate(sorted_input_full_feature_ids):
                 if query_full_feature_id not in hits_by_query_and_genome_ref \
@@ -8704,7 +8706,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             spaces = ''
                             for space_i in range(int(space_margin/2)):
                                 spaces += '&nbsp;'
-                            #spaces = '<pre>'+spaces+'</pre>'   
+                            #spaces = '<pre>'+spaces+'</pre>'
                             disp_hit_id = '<nobr>'+spaces + disp_hit_id + spaces+'</nobr>'
 
                         disp_hit_id = '<pre>' + disp_hit_id + '</pre>'
@@ -8788,7 +8790,7 @@ This module contains methods for running and visualizing results of phylogenomic
                     continue
                 for hit_id in sorted(hits_by_genome_ref[genome_ref]):
                     per_genome_featureSet_elements[hit_id] = [genome_ref]
-        
+
                 per_genome_FS_prov = [{}]
                 if 'provenance' in ctx:
                     per_genome_FS_prov = ctx['provenance']
@@ -8798,7 +8800,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 per_genome_FS_prov[0]['input_ws_objects'].append(genome_ref)
                 per_genome_FS_prov[0]['service'] = 'kb_phylogenomics'
                 per_genome_FS_prov[0]['method'] = 'find_homologs_with_genome_context'
-            
+
                 per_genome_FS_obj = {
                     'description': 'Hits to Genome '+genome_ref+' by '+input_featureSet_name,
                     'elements': per_genome_featureSet_elements
@@ -8938,17 +8940,17 @@ This module contains methods for running and visualizing results of phylogenomic
 
         params['namespace'] = 'SEED'
         params['custom_target_fams'] = dict()
-        
+
         (cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading, target_fams,
          extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name) = self._configure_categories(params)
-        
+
         output = dict()
         output['cats'] = cats
         output['cat2name'] = cat2name
         output['cat2group'] = cat2group
         output['domfam2cat'] = domfam2cat
         output['cat2domfams'] = cat2domfams
-        
+
         #END get_configure_categories
 
         # At some point might do deeper type checking...
