@@ -7165,7 +7165,7 @@ This module contains methods for running and visualizing results of phylogenomic
         if input_obj_type not in accepted_input_types:
             raise ValueError("Input object of type '" + input_obj_type +
                              "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
-        if len(ws.get_objects([{'ref': input_ref}])[0]['data']['default_node_labels']) >= 4:
+        if len(wsClient.get_objects([{'ref': input_ref}])[0]['data']['default_node_labels']) >= 4:
             raise ValueError("Input species tree must have more than two species.")
 
         # get set obj
