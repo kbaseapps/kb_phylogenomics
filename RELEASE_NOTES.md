@@ -1,6 +1,7 @@
 ### Version 1.6.0
 __Changes__
 - updated Pfam version to 32.0 in DomainAnnotation_Sets()
+- added Build_Gene_Tree() App
 
 ### Version 1.5.1
 __Changes__

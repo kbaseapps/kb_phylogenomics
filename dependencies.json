@@ -17,6 +17,18 @@
 }, {
   "module_name" : "kb_blast",
   "type" : "sdk",
+  "version_tag" : "beta"
+}, {
+  "module_name" : "kb_fasttree",
+  "type" : "sdk",
+  "version_tag" : "release"
+}, {
+  "module_name" : "kb_gblocks",
+  "type" : "sdk",
+  "version_tag" : "release"
+}, {
+  "module_name" : "kb_muscle",
+  "type" : "sdk",
   "version_tag" : "release"
 }, {
   "module_name" : "KBaseReport",

@@ -15,6 +15,47 @@ module kb_phylogenomics {
     typedef int    bool;
 
 
+    /* build_gene_tree()
+    **
+    ** build a gene tree for a featureset
+    */
+    typedef structure {
+        workspace_name  workspace_name;
+        string         desc;
+        data_obj_ref   input_featureSet_ref;
+        data_obj_name  output_tree_name;
+
+        int            muscle_maxiters;
+        float          muscle_maxhours;
+
+        int            gblocks_trim_level;                   /* 0=no gaps allowed, 1=half gaps allowed, 2=all gaps allowed */
+        int            gblocks_min_seqs_for_conserved;       /* 0=use MSA-depth-derived default */
+        int            gblocks_min_seqs_for_flank;           /* 0=use MSA-depth-derived default */
+        int            gblocks_max_pos_contig_nonconserved;  /* 8=default */
+        int            gblocks_min_block_len;                /* 10=default */
+        int            gblocks_remove_mask_positions_flag;   /* 0=false,1=true default=0 */
+
+        int            fasttree_fastest;  /* boolean */
+        int            fasttree_pseudo;   /* boolean */
+        int            fasttree_gtr;      /* boolean */
+        int            fasttree_wag;      /* boolean */
+        int            fasttree_noml;     /* boolean */
+        int            fasttree_nome;     /* boolean */
+        int            fasttree_cat;      /* actually is an int */
+        int            fasttree_nocat;    /* boolean */
+        int            fasttree_gamma;    /* boolean */
+    } build_gene_tree_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } build_gene_tree_Output;
+
+    funcdef build_gene_tree(build_gene_tree_Input params) 
+        returns (build_gene_tree_Output output) 
+        authentication required;
+
+
     /* view_tree()
     **
     ** show a KBase Tree and make newick and images downloadable
@@ -89,6 +130,7 @@ module kb_phylogenomics {
     typedef structure {
         workspace_name workspace_name;
         data_obj_ref   input_genome_refs;  /* list of refs can be Genome, GenomeSet, or SpeciesTree */
+        data_obj_ref   input_genome2_refs;  /* list of refs can be Genome, GenomeSet, or SpeciesTree */
 	data_obj_name  output_tree_name;
 	string         desc;
         string         genome_disp_name_config;

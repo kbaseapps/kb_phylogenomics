@@ -18,12 +18,15 @@ import matplotlib.pyplot as pyplot  # use this instead
 from matplotlib.patches import Arc
 from matplotlib.patches import Rectangle
 
-from installed_clients.SpeciesTreeBuilderClient import SpeciesTreeBuilder
-from installed_clients.KBaseReportClient import KBaseReport
+from installed_clients.WorkspaceClient import Workspace as workspaceService
 from installed_clients.DataFileUtilClient import DataFileUtil as DFUClient
+from installed_clients.KBaseReportClient import KBaseReport
+from installed_clients.SpeciesTreeBuilderClient import SpeciesTreeBuilder
 from installed_clients.DomainAnnotationClient import DomainAnnotation
 from installed_clients.kb_blastClient import kb_blast
-from installed_clients.WorkspaceClient import Workspace as workspaceService
+from installed_clients.kb_muscleClient import kb_muscle
+from installed_clients.kb_gblocksClient import kb_gblocks
+from installed_clients.kb_fasttreeClient import kb_fasttree
 #END_HEADER
 
 
@@ -44,9 +47,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.5.1"
-    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "9a15480a5f41f7eaf71235012ff0c0bd37d5893a"
+    VERSION = "1.6.0"
+    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
+    GIT_COMMIT_HASH = "c24806899ff92ee0eae8ec24624f568efee8c250"
 
     #BEGIN_CLASS_HEADER
 
@@ -569,6 +572,275 @@ This module contains methods for running and visualizing results of phylogenomic
         #END_CONSTRUCTOR
         pass
 
+
+    def build_gene_tree(self, ctx, params):
+        """
+        :param params: instance of type "build_gene_tree_Input"
+           (build_gene_tree() ** ** build a gene tree for a featureset) ->
+           structure: parameter "workspace_name" of type "workspace_name" (**
+           Common types), parameter "desc" of String, parameter
+           "input_featureSet_ref" of type "data_obj_ref", parameter
+           "output_tree_name" of type "data_obj_name", parameter
+           "muscle_maxiters" of Long, parameter "muscle_maxhours" of Double,
+           parameter "gblocks_trim_level" of Long, parameter
+           "gblocks_min_seqs_for_conserved" of Long, parameter
+           "gblocks_min_seqs_for_flank" of Long, parameter
+           "gblocks_max_pos_contig_nonconserved" of Long, parameter
+           "gblocks_min_block_len" of Long, parameter
+           "gblocks_remove_mask_positions_flag" of Long, parameter
+           "fasttree_fastest" of Long, parameter "fasttree_pseudo" of Long,
+           parameter "fasttree_gtr" of Long, parameter "fasttree_wag" of
+           Long, parameter "fasttree_noml" of Long, parameter "fasttree_nome"
+           of Long, parameter "fasttree_cat" of Long, parameter
+           "fasttree_nocat" of Long, parameter "fasttree_gamma" of Long
+        :returns: instance of type "build_gene_tree_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN build_gene_tree
+
+        #### STEP 0: init
+        ##
+        console = []
+        invalid_msgs = []
+        self.log(console, 'Running build_gene_tree() with params=')
+        self.log(console, "\n" + pformat(params))
+        report = ''
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        html_dir = os.path.join(output_dir, 'html')
+        if not os.path.exists(html_dir):
+            os.makedirs(html_dir)
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'beta'  # DEBUG
+        #SERVICE_VER = 'release'
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except Exception as e:
+            raise ValueError("unable to instantiate wsClient. "+str(e))
+        try:
+            dfuClient = DFUClient(self.callbackURL, token=token, service_ver=SERVICE_VER)
+        except Exception as e:
+            raise ValueError("unable to instantiate dfuClient. "+str(e))
+
+
+        #### STEP 1: do some basic checks, and set defaults
+        ##
+        required_params = ['workspace_name',
+                           'input_featureSet_ref',
+                           'output_tree_name'
+                          ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
+
+        param_defaults = { 'desc': 'KBase Gene Tree '+params['output_tree_name'],
+                           'muscle_maxiters': '16',
+                           'muscle_maxhours': '0.5',
+                           'gblocks_trim_level': '0',
+                           'gblocks_min_seqs_for_conserved': '0',
+                           'gblocks_min_seqs_for_flank': '0',
+                           'gblocks_max_pos_contig_nonconserved': '8',
+                           'gblocks_min_block_len': '10',
+                           'gblocks_remove_mask_positions_flag': '0',
+                           'fasttree_fastest': '0',
+                           'fasttree_pseudo': '0',
+                           'fasttree_gtr': '0',
+                           'fasttree_wag': '0',
+                           'fasttree_noml': '0',
+                           'fasttree_nome': '0',
+                           'fasttree_cat': '20',
+                           'fasttree_nocat': '0',
+                           'fasttree_gamma': '0'
+                           }
+        for arg in sorted(param_defaults.keys()):
+            if arg not in params or params[arg] == None or params[arg] == '':
+                params[arg] = param_defaults[arg]
+                self.log (console, 'setting param '+arg+' = '+str(param_defaults[arg]))
+
+
+        #### STEP 2: load the method provenance from the context object
+        ##
+        self.log(console, "SETTING PROVENANCE")  # DEBUG
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects'] = []
+        provenance[0]['input_ws_objects'].append(params['input_featureSet_ref'])
+        provenance[0]['service'] = 'kb_phylogenomics'
+        provenance[0]['method'] = 'build_gene_tree'
+
+
+        #### STEP 3: Run MUSCLE
+        ##
+        sub_method = 'MUSCLE'
+        self.log(console, "RUNNING "+sub_method)
+        muscle_msa_name = params['output_tree_name']+'-MUSCLE.MSA'
+        muscle_params = {'workspace_name': params['workspace_name'],
+                         'desc': params['desc'] + ' MUSCLE MSA',
+                         'input_ref': params['input_featureSet_ref'],
+                         'output_name': muscle_msa_name,
+                         'maxiters': params['muscle_maxiters'],
+                         'maxhours': params['muscle_maxhours']
+                     }
+        try:
+            muscleClient = kb_muscle(self.callbackURL, token=token, service_ver=SERVICE_VER)
+        except Exception as e:
+            raise ValueError("unable to instantiate muscleClient. "+str(e))
+        try:
+            this_retVal = muscleClient.MUSCLE_prot(muscle_params)
+        except Exception as e:
+            raise ValueError ("unable to run "+sub_method+". "+str(e))
+        try:
+            this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
+        except Exception as e:
+            raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
+        try:
+            muscle_msa_ref = this_report_obj['objects_created'][0]['ref']
+        except Exception as e:
+            raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+
+
+        #### STEP 4: Run GBLOCKS
+        ##
+        sub_method = 'GBLOCKS'
+        self.log(console, "RUNNING "+sub_method)
+        gblocks_msa_name = params['output_tree_name']+'-GBLOCKS.MSA'
+        gblocks_params = {'workspace_name': params['workspace_name'],
+                          'desc': params['desc'] + ' GBLOCKS MSA',
+                          'input_ref': muscle_msa_ref,
+                          'output_name': gblocks_msa_name,
+                          'trim_level': params['gblocks_trim_level'],
+                          'min_seqs_for_conserved': params['gblocks_min_seqs_for_conserved'],
+                          'min_seqs_for_flank': params['gblocks_min_seqs_for_flank'],
+                          'max_pos_contig_nonconserved': params['gblocks_max_pos_contig_nonconserved'],
+                          'min_block_len': params['gblocks_min_block_len'],
+                          'remove_mask_positions_flag': params['gblocks_remove_mask_positions_flag']
+                     }
+        try:
+            gblocksClient = kb_gblocks(self.callbackURL, token=token, service_ver=SERVICE_VER)
+        except Exception as e:
+            raise ValueError("unable to instantiate gblocksClient. "+str(e))
+        try:
+            this_retVal = gblocksClient.run_Gblocks(gblocks_params)
+        except Exception as e:
+            raise ValueError ("unable to run "+sub_method+". "+str(e))
+        try:
+            this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
+        except Exception as e:
+            raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
+        try:
+            gblocks_msa_ref = this_report_obj['objects_created'][0]['ref']
+        except Exception as e:
+            raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+
+
+        #### STEP 5: Run FASTTREE
+        ##
+        sub_method = 'FASTTREE-2'
+        self.log(console, "RUNNING "+sub_method)
+        fasttree_output_name = params['output_tree_name']
+        fasttree_params = {'workspace_name': params['workspace_name'],
+                           'desc': params['desc'],
+                           'input_ref': gblocks_msa_ref,
+                           'output_name': fasttree_output_name,
+                           'species_tree_flag': '0',
+                           'intree_ref': None,
+                           'fastest': params['fasttree_fastest'],
+                           'pseudo': params['fasttree_pseudo'],
+                           'gtr': params['fasttree_gtr'],
+                           'wag': params['fasttree_wag'],
+                           'noml': params['fasttree_noml'],
+                           'nome': params['fasttree_nome'],
+                           'cat': params['fasttree_cat'],
+                           'nocat': params['fasttree_nocat'],
+                           'gamma': params['fasttree_gamma']
+                       }
+        try:
+            fasttreeClient = kb_fasttree(self.callbackURL, token=token, service_ver=SERVICE_VER)
+        except Exception as e:
+            raise ValueError("unable to instantiate fasttreeClient. "+str(e))
+        try:
+            this_retVal = fasttreeClient.run_FastTree(fasttree_params)
+        except Exception as e:
+            raise ValueError ("unable to run "+sub_method+". "+str(e))
+        try:
+            this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
+        except Exception as e:
+            raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
+        try:
+            fasttree_tree_ref = this_report_obj['objects_created'][0]['ref']
+        except Exception as e:
+            raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+        fasttree_reportObj = this_report_obj
+
+
+        #### STEP 6: Create Report
+        ##
+        reportName = 'build_gene_tree_report_' + str(uuid.uuid4())
+        reportObj = {'objects_created': [],
+                     'direct_html_link_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+                     }
+        # can't just copy substructures because format of those fields in report object different from the format needed to pass to create_extended_report() method
+        # for example, below doesn't work
+        #for field in ('direct_html_link_index', 'file_links', 'html_links'):
+        #    reportObj[field] = view_tree_reportObj[field]
+        #    self.log<(console, "REPORT "+field+": "+pformat(view_tree_reportObj[field]))  # DEBUG
+        #
+        reportObj['direct_html_link_index'] = fasttree_reportObj['direct_html_link_index']
+        for html_link_item in fasttree_reportObj['html_links']:
+            #this_shock_id = html_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', html_link_item['URL'])
+            new_html_link_item = {'shock_id': this_shock_id,
+                                  'name': html_link_item['name'],
+                                  'label': html_link_item['label']
+            }
+            reportObj['html_links'].append(new_html_link_item)
+        for file_link_item in fasttree_reportObj['file_links']:
+            #this_shock_id = file_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+            new_file_link_item = {'shock_id': this_shock_id,
+                                  'name': file_link_item['name'],
+                                  'label': file_link_item['label']
+            }
+            reportObj['file_links'].append(new_file_link_item)
+
+        reportObj['objects_created'].append({'ref': fasttree_tree_ref,
+                                             'description': 'Build Gene Tree '+params['output_tree_name']})
+
+
+        # save report object
+        try:
+            reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        except:
+            raise ValueError ("unable to instantiate KBaseReport")
+        report_info = reportClient.create_extended_report(reportObj)
+
+        # Done
+        self.log(console, "BUILDING RETURN OBJECT")
+        output = {'report_name': report_info['name'],
+                  'report_ref': report_info['ref']
+                  }
+
+        self.log(console, "build_gene_tree() DONE")
+        #END build_gene_tree
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method build_gene_tree return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
 
     def view_tree(self, ctx, params):
         """
@@ -1413,6 +1685,7 @@ This module contains methods for running and visualizing results of phylogenomic
            into Species Tree with extra features) -> structure: parameter
            "workspace_name" of type "workspace_name" (** Common types),
            parameter "input_genome_refs" of type "data_obj_ref", parameter
+           "input_genome2_refs" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
            String, parameter "genome_disp_name_config" of String, parameter
            "show_skeleton_genome_sci_name" of type "bool", parameter
@@ -7165,6 +7438,8 @@ This module contains methods for running and visualizing results of phylogenomic
         if input_obj_type not in accepted_input_types:
             raise ValueError("Input object of type '" + input_obj_type +
                              "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
+        if len(wsClient.get_objects([{'ref': input_ref}])[0]['data']['default_node_labels']) <= 3:
+            raise ValueError("Input species tree must have more than two species.")
 
         # get set obj
         try:

@@ -330,7 +330,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
-    @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_01_GenomeSet(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -434,7 +434,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
-    @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_02_SpeciesTree(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -506,7 +506,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for GenomeSet
     ##
-    @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
     def test_view_fxn_profile_01(self):
         method = 'view_fxn_profile'
 
@@ -622,7 +622,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for FeatureSet
     ##
-    @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
     def test_view_fxn_profile_featureSet_01(self):
         method = 'view_fxn_profile_featureSet'
 
@@ -738,7 +738,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for Tree
     ##
-    @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
     def test_view_fxn_profile_phylo_01(self):
         method = 'view_fxn_profile_phylo'
 
@@ -820,7 +820,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome Circle Plot
     ##
-    @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
     def test_view_pan_circle_plot_01(self):
         method = 'view_pan_circle_plot'
 
@@ -881,7 +881,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome on Tree
     ##
-    @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
     def test_view_pan_phylo_01(self):
         method = 'view_pan_phylo'
 
@@ -943,7 +943,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Tree
     ##
-    @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
     def test_view_tree_01(self):
         method = 'view_tree'
 
@@ -996,7 +996,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Trim SpeciesTree to GenomeSet
     ##
-    @unittest.skip("skipped test_trim_speciestree_to_genomeset_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_trim_speciestree_to_genomeset_01()")  # uncomment to skip
     def test_trim_speciestree_to_genomeset_01(self):
         method = 'trim_speciestree_to_genomeset'
 
@@ -1101,7 +1101,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Microbial SpeciesTree
     ##
-    @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
     def test_build_microbial_speciestree_01(self):
         method = 'build_microbial_speciestree'
 
@@ -1198,7 +1198,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Find Homologs with Genome Context
     ##
-    @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
     def test_find_homologs_with_genome_context_01(self):
         method = 'find_homologs_with_genome_context'
 
@@ -1404,9 +1404,103 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
         
 
+    #### Build Gene Tree
+    ##
+    # HIDE @unittest.skip("skipped test_build_gene_tree_01()")  # uncomment to skip
+    def test_build_gene_tree_01(self):
+        method = 'build_gene_tree'
+
+        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("==================================================\n\n")
+
+        # input_data
+        genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+
+        genome_ref_0 = self.getWsName() + '/' + str(genomeInfo_0[0]) + '/' + str(genomeInfo_0[4])
+        genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
+        genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
+        genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
+
+        feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
+        feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
+        feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
+        feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
+
+        # build FeatureSet obj
+        testFS = {
+            'description': 'F0 ATP Synthase subunit B',
+            'elements': { feature_id_0: [genome_ref_0],
+                          feature_id_1: [genome_ref_1],
+                          feature_id_2: [genome_ref_2],
+                          feature_id_3: [genome_ref_3]
+                      }
+        }
+        
+        obj_info = self.getWsClient().save_objects({'workspace': self.getWsName(),       
+                                                    'objects': [
+                                                        {
+                                                            'type':'KBaseCollections.FeatureSet',
+                                                            'data':testFS,
+                                                            'name':method+'.test_FeatureSet',
+                                                            'meta':{},
+                                                            'provenance':[
+                                                                {
+                                                                    'service':'kb_phylogenomics',
+                                                                    'method':'test_build_gene_tree'
+                                                                }
+                                                            ]
+                                                        }]
+                                                })[0]
+
+        pprint(obj_info)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        featureSet_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+
+        # run that sucker
+        obj_out_name = method+'.geneTree'
+        obj_out_type = 'KBaseTrees.Tree'
+        params = { 'workspace_name': self.getWsName(),
+                   'desc': 'gene tree for '+testFS['description'],
+                   'input_featureSet_ref': featureSet_ref,
+                   'output_tree_name': obj_out_name,
+                   'muscle_maxiters': '16',
+                   'muscle_maxours': '0.5',
+                   'gblocks_trim_level': '1',
+                   'gblocks_min_seqs_for_conserved': '0',
+                   'gblocks_min_seqs_for_flank': '0',
+                   'gblocks_max_pos_contig_nonconserved': '8',
+                   'gblocks_min_block_len': '10',
+                   'gblocks_remove_mask_positions_flag': '0',
+                   'fasttree_fastest': '0',
+                   'fasttree_pseudo': '0',
+                   'fasttree_gtr': '0',
+                   'fasttree_wag': '0',
+                   'fasttree_noml': '0',
+                   'fasttree_nome': '0',
+                   'fasttree_cat': '20',
+                   'fasttree_nocat': '0',
+                   'fasttree_gamma': '0'
+               }
+        ret = self.getImpl().build_gene_tree(self.getContext(),params)[0]
+        self.assertIsNotNone(ret['report_ref'])
+
+        # check created obj
+        report_obj = self.getWsClient().get_objects2({'objects':[{'ref':ret['report_ref']}]})['data'][0]['data']
+        report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
+        self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
+
+        created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
+        self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
     #### Get Categories auto-configure method
     ##
-    @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
+    # HIDE @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
     def test_get_categories(self):
         method = 'get_configure_categories'
 

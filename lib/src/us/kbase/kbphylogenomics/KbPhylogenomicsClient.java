@@ -164,6 +164,23 @@ public class KbPhylogenomicsClient {
     }
 
     /**
+     * <p>Original spec-file function name: build_gene_tree</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.BuildGeneTreeInput BuildGeneTreeInput} (original type "build_gene_tree_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.BuildGeneTreeOutput BuildGeneTreeOutput} (original type "build_gene_tree_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public BuildGeneTreeOutput buildGeneTree(BuildGeneTreeInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<BuildGeneTreeOutput>> retType = new TypeReference<List<BuildGeneTreeOutput>>() {};
+        List<BuildGeneTreeOutput> res = caller.jsonrpcCall("kb_phylogenomics.build_gene_tree", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
      * <p>Original spec-file function name: view_tree</p>
      * <pre>
      * </pre>
