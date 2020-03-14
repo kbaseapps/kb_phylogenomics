@@ -338,6 +338,10 @@ class Application(object):
         self.serverlog.set_log_level(6)
         self.rpc_service = JSONRPCServiceCustom()
         self.method_authentication = dict()
+        self.rpc_service.add(impl_kb_phylogenomics.build_gene_tree,
+                             name='kb_phylogenomics.build_gene_tree',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.build_gene_tree'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_tree,
                              name='kb_phylogenomics.view_tree',
                              types=[dict])

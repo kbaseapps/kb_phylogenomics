@@ -33,6 +33,32 @@ class kb_phylogenomics(object):
             trust_all_ssl_certificates=trust_all_ssl_certificates,
             auth_svc=auth_svc)
 
+    def build_gene_tree(self, params, context=None):
+        """
+        :param params: instance of type "build_gene_tree_Input"
+           (build_gene_tree() ** ** build a gene tree for a featureset) ->
+           structure: parameter "workspace_name" of type "workspace_name" (**
+           Common types), parameter "desc" of String, parameter
+           "input_featureSet_ref" of type "data_obj_ref", parameter
+           "output_tree_name" of type "data_obj_name", parameter
+           "muscle_maxiters" of Long, parameter "muscle_maxhours" of Double,
+           parameter "gblocks_trim_level" of Long, parameter
+           "gblocks_min_seqs_for_conserved" of Long, parameter
+           "gblocks_min_seqs_for_flank" of Long, parameter
+           "gblocks_max_pos_contig_nonconserved" of Long, parameter
+           "gblocks_min_block_len" of Long, parameter
+           "gblocks_remove_mask_positions_flag" of Long, parameter
+           "fasttree_fastest" of Long, parameter "fasttree_pseudo" of Long,
+           parameter "fasttree_gtr" of Long, parameter "fasttree_wag" of
+           Long, parameter "fasttree_noml" of Long, parameter "fasttree_nome"
+           of Long, parameter "fasttree_cat" of Long, parameter
+           "fasttree_nocat" of Long, parameter "fasttree_gamma" of Long
+        :returns: instance of type "build_gene_tree_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        return self._client.call_method('kb_phylogenomics.build_gene_tree',
+                                        [params], self._service_ver, context)
+
     def view_tree(self, params, context=None):
         """
         :param params: instance of type "view_tree_Input" (view_tree() ** **
@@ -96,6 +122,7 @@ class kb_phylogenomics(object):
            into Species Tree with extra features) -> structure: parameter
            "workspace_name" of type "workspace_name" (** Common types),
            parameter "input_genome_refs" of type "data_obj_ref", parameter
+           "input_genome2_refs" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
            String, parameter "genome_disp_name_config" of String, parameter
            "show_skeleton_genome_sci_name" of type "bool", parameter

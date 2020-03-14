@@ -1,0 +1,208 @@
+#
+# define display information
+#
+name: Build Gene Tree - v1.6.0
+
+tooltip: |
+    Build Gene Tree for a set of homologously related genes in a FeatureSet
+
+screenshots: []
+
+icon: genetree-purple.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_featureSet_ref :
+        ui-name : |
+            Features
+        short-hint : |
+            The related features
+    desc :
+        ui-name : |
+            Description
+        short-hint : |
+            A description of the Gene Tree which will be added to the title in the tree image.
+    muscle_maxiters:
+        ui-name : |
+            MUSCLE Max Iterations
+        short-hint : |
+            Limit iterations even if not converged (default: 16)
+    muscle_maxhours:
+        ui-name : |
+            MUSCLE Max Hours
+        short-hint : |
+            Limit time MUSCLE will run (default: 30 min)
+    gblocks_trim_level:
+        ui-name : |
+            GBLOCKS Trim Level
+        short-hint : |
+            0=No gaps permitted, 1=Half occupancy, 2=Gaps ignored
+    gblocks_min_seqs_for_conserved:
+        ui-name : |
+            GBLOCKS Min Seqs for Conserved Pos
+        short-hint : |
+            Minimum number of sequences required with a conserved residue.
+        long-hint : |
+            Minimum number of sequences required with a conserved residue before a position (column) is considered a "Conserved Position". 0=Use MSA-derived default (e.g. for 14 seqs, default is 8).  Value must be &gt;= than N/2+1 and &lt;= Min Seqs For Flank Pos, where N=number of sequences.
+    gblocks_min_seqs_for_flank:
+        ui-name : |
+            GBLOCKS Min Seqs for Flank Pos
+        short-hint : |
+            Minimum number of sequences required with a residue in a position (column) flanking a conserved position.
+        long-hint : |
+            Minimum number of sequences required with a residue in a position (column) flanking a conserved position before being considered a "Flank Position". 0=Use MSA-derived default (e.g. for 14 seqs, default is 11).  Value must be %gt;= Min Seqs for Conserved Pos and &lt;= N, where N=number of sequences.
+    gblocks_max_pos_contig_nonconserved:
+        ui-name : |
+            GBLOCKS Max Num Non-Conserved Pos
+        short-hint : |
+            Maximum number of non-conserved positions (columns) that may be included in a block.
+        long-hint : |
+            Maximum number of non-conserved positions (columns) that may be included in a block; 8=default.  Value must be >= 0 and <= number of aligned positions (32000 upper bound).
+    gblocks_min_block_len:
+        ui-name : |
+            GBLOCKS Min Block Len
+        short-hint : |
+            Minimum number of positions (columns) required to include a block in the output MSA.
+        long-hint : |
+            Minimum number of positions (columns) required to include a block in the output MSA; 10=default.  Value must be >= 2 and <= number of aligned positions (32000 upper bound).
+    gblocks_remove_mask_positions_flag:
+        ui-name : |
+            GBLOCKS Remove Masked Pos?
+        short-hint : |
+            "X" masking characters in first row?
+        long-hint : |
+            If first row of MSA has "X" masking characters, remove those positions (columns) from output MSA; Usually used for hypervariable regions (e.g. 16S); OFF=default.
+    fasttree_fastest:
+        ui-name : |
+            FASTTREE-2 Fastest?
+        short-hint : |
+            Speed up the neighbor joining phase & reduce memory usage (recommended for >50,000 sequences)
+    fasttree_pseudo:
+        ui-name : |
+            FASTTREE-2 Pseudo Count?
+        short-hint : |
+            Use pseudocounts (recommended for highly gapped sequences)
+    fasttree_gtr:
+        ui-name : |
+            FASTTREE-2 GTR?
+        short-hint : |
+            Generalized time-reversible model (nucleotide alignments only)
+    fasttree_wag:
+        ui-name : |
+            FASTTREE-2 WAG?
+        short-hint : |
+            Whelan-And-Goldman 2001 model (amino acid alignments only)
+    fasttree_noml:
+        ui-name : |
+            FASTTREE-2 No ML?
+        short-hint : |
+            Turn off maximum-likelihood
+    fasttree_nome:
+        ui-name : |
+            FASTTREE-2 No ME?
+        short-hint : |
+            Turn off minimum-evolution NNIs and SPRs
+    fasttree_cat:
+        ui-name : |
+            FASTTREE-2 Num Rate Catgories (CAT)
+        short-hint : |
+            number of rate categories of sites (default 20)
+    fasttree_nocat:
+        ui-name : |
+            FASTTREE-2 No Cat?
+        short-hint : |
+            Use Constant Rates (instead of above Num Rate Categories)
+    fasttree_gamma:
+        ui-name : |
+            FASTTREE-2 Gamma
+        short-hint : |
+            After optimizing the tree under the CAT approximation, rescale the lengths to optimize the Gamma20 likelihood
+    output_tree_name :
+        ui-name : |
+            Output Tree
+        short-hint : |
+            The name of the output Tree object
+
+description : |
+    <p>This App allows the user to build a phylogenetic tree of related protein encoding genes using the amino acid sequences.</p>
+
+    <p>Running this App is the functional equivalent to running each of the Apps in the <a href="https://narrative.kbase.us/narrative/22290">Build a Gene Tree</a> Tutorial Narrative, but is invoked as a single App.  It includes the same parameters as would be given to each of the steps separately, starting with <a href="https://narrative.kbase.us/#catalog/apps/kb_muscle/MUSCLE_prot">MUSCLE</a> to build the initial Multiple Sequence Alignment (MSA), then <a href="https://narrative.kbase.us/#catalog/apps/kb_gblocks/run_Gblocks">Gblocks</a> to trim the MSA to the less variable regions, and finally <a href="https://narrative.kbase.us/#catalog/apps/kb_fasttree/run_FastTree">FastTree-2</a> to build the phylogenetic inference from the distances between the sequences in the MSA.</a>
+
+    <p><hr></p>
+    <p><b>MUSCLE</b> performs a Multiple Sequence Alignment (MSA) of homologously related sequences.</p>
+
+    <p><b>Gblocks</b> trims Multiple Sequence Alignments (MSAs) to capture the conserved blocks that may be more reliable regions from which to compare evolutionary rates, such as for tree building.  Gblocks 0.91b from http://molevol.cmima.csic.es/castresana/Gblocks.html</p>
+
+    <p><b>FastTree-2</b> builds a Phylogenetic Tree reconstruction from a Multiple Sequence Alignment (MSA) of protein sequences.  Tree display uses ETE3 (v3.0.0b35).  FastTree2.1.9 from <a href="http://www.microbesonline.org/fasttree/">http://www.microbesonline.org/fasttree/</a></p>
+
+    <p><hr></p>
+    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong><a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a></strong>.</p>
+
+
+publications :
+    -
+        pmid: 29979655
+        display-text : |
+            Arkin AP, Cottingham RW, Henry CS, Harris NL, Stevens RL, Maslov S, et al. KBase: The United States Department of Energy Systems Biology Knowledgebase. Nature Biotechnology. 2018;36: 566. doi: 10.1038/nbt.4163
+        link: https://www.nature.com/articles/nbt.4163
+publications :
+
+    -
+        display-text: |
+            Edgar RC. MUSCLE: multiple sequence alignment with high accuracy and high throughput. Nucleic Acids Res. 2004;32: 1792–1797. doi:10.1093/nar/gkh340
+        link: https://academic.oup.com/nar/article/32/5/1792/2380623
+
+    -
+        display-text: |
+            MUSCLE 3.8.425 from
+        link: http://www.drive5.com/muscle/
+
+    -
+        display-text: |
+            Castresana J. Selection of Conserved Blocks from Multiple Alignments for Their Use in Phylogenetic Analysis. Mol Biol Evol. 2000;17: 540–552. doi:10.1093/oxfordjournals.molbev.a026334
+        link: https://academic.oup.com/mbe/article/17/4/540/1127654
+
+    -
+        display-text: |
+            Talavera G, Castresana J, Kjer K, Page R, Sullivan J. Improvement of Phylogenies after Removing Divergent and Ambiguously Aligned Blocks from Protein Sequence Alignments. Syst Biol. 2007;56: 564–577. doi:10.1080/10635150701472164
+        link: https://academic.oup.com/sysbio/article/56/4/564/1682121
+
+    -
+        pmid : 26921390
+        display-text: |
+            Huerta-Cepas J, Serra F, Bork P. ETE 3: Reconstruction, Analysis, and Visualization of Phylogenomic Data. Mol Biol Evol. 2016;33: 1635–1638. doi:10.1093/molbev/msw046
+        link: https://www.ncbi.nlm.nih.gov/pubmed/26921390
+
+    -
+        display-text: |
+            ETE3 source:
+        link: http://etetoolkit.org
+
+    -
+        pmid : 19377059
+        display-text: |
+            Price MN, Dehal PS, Arkin AP. FastTree: computing large minimum evolution trees with profiles instead of a distance matrix. Mol Biol Evol. 2009;26: 1641–1650. doi:10.1093/molbev/msp077
+        link: https://www.ncbi.nlm.nih.gov/pubmed/19377059
+
+    -
+        pmid : 20224823
+        display-text: |
+            Price MN, Dehal PS, Arkin AP. FastTree 2 – Approximately Maximum-Likelihood Trees for Large Alignments. PLOS ONE. 2010;5: e9490. doi:10.1371/journal.pone.0009490
+        link: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0009490
