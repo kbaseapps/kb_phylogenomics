@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Homolog Genome Context - v1.5.1
+name: Homolog Genome Context - v1.6.0
 
 tooltip: |
     Find Homologs for a Collection of Genes and View in Genome Context
@@ -43,6 +43,11 @@ parameters :
             The Species Tree of the Genomes being searched
         long-hint  : |
             The Species Tree of the Genomes being searched (must include all query genomes)
+    genome_disp_name_config :
+        ui-name : |
+            Display genome as
+        short-hint : |
+            Use the object name, object version, and/or scientific name of the Genome in the function profile report
     save_per_genome_featureSets :
         ui-name : |
             Save homologs by genome

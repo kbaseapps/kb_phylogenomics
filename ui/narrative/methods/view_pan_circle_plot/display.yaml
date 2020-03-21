@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Pangenome Circle Plot - v1.2.0
+name: Pangenome Circle Plot - v1.6.0
 
 tooltip: |
     View a microbial Pangenome as a circle plot.
@@ -50,6 +50,11 @@ parameters :
             Outgroup Genome(s)
         short-hint : |
             The Genome(s) to use as outgroup to distinguish clade-specific core.
+    genome_disp_name_config :
+        ui-name : |
+            Display genome as
+        short-hint : |
+            Use the object name, object version, and/or scientific name of the Genome in the function profile report
     save_featuresets :
         ui-name : |
             Save pangenome FeatureSets

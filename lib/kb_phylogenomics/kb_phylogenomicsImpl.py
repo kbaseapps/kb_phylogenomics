@@ -48,8 +48,8 @@ This module contains methods for running and visualizing results of phylogenomic
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.6.0"
-    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "c24806899ff92ee0eae8ec24624f568efee8c250"
+    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
+    GIT_COMMIT_HASH = "64b646a4fccffd811f0122a85b38c106f9678581"
 
     #BEGIN_CLASS_HEADER
 
@@ -581,10 +581,11 @@ This module contains methods for running and visualizing results of phylogenomic
            Common types), parameter "desc" of String, parameter
            "input_featureSet_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter
-           "muscle_maxiters" of Long, parameter "muscle_maxhours" of Double,
-           parameter "gblocks_trim_level" of Long, parameter
-           "gblocks_min_seqs_for_conserved" of Long, parameter
-           "gblocks_min_seqs_for_flank" of Long, parameter
+           "genome_disp_name_config" of String, parameter "skip_trimming" of
+           type "bool", parameter "muscle_maxiters" of Long, parameter
+           "muscle_maxhours" of Double, parameter "gblocks_trim_level" of
+           Long, parameter "gblocks_min_seqs_for_conserved" of Long,
+           parameter "gblocks_min_seqs_for_flank" of Long, parameter
            "gblocks_max_pos_contig_nonconserved" of Long, parameter
            "gblocks_min_block_len" of Long, parameter
            "gblocks_remove_mask_positions_flag" of Long, parameter
@@ -604,6 +605,8 @@ This module contains methods for running and visualizing results of phylogenomic
         ##
         console = []
         invalid_msgs = []
+        objects_created = []
+        file_links = []
         self.log(console, 'Running build_gene_tree() with params=')
         self.log(console, "\n" + pformat(params))
         report = ''
@@ -640,6 +643,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 raise ValueError("Must define required param: '" + arg + "'")
 
         param_defaults = { 'desc': 'KBase Gene Tree '+params['output_tree_name'],
+                           'skip_trimming': '0',
                            'muscle_maxiters': '16',
                            'muscle_maxhours': '0.5',
                            'gblocks_trim_level': '0',
@@ -706,39 +710,65 @@ This module contains methods for running and visualizing results of phylogenomic
         except Exception as e:
             raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
 
+        # attach created items to final report
+        objects_created.extend(this_report_obj['objects_created'])
+        for file_link_item in this_report_obj['file_links']:
+            #this_shock_id = file_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+            new_file_link_item = {'shock_id': this_shock_id,
+                                  'name': file_link_item['name'],
+                                  'label': file_link_item['label']
+            }
+            file_links.append(new_file_link_item)
+
 
         #### STEP 4: Run GBLOCKS
         ##
         sub_method = 'GBLOCKS'
-        self.log(console, "RUNNING "+sub_method)
-        gblocks_msa_name = params['output_tree_name']+'-GBLOCKS.MSA'
-        gblocks_params = {'workspace_name': params['workspace_name'],
-                          'desc': params['desc'] + ' GBLOCKS MSA',
-                          'input_ref': muscle_msa_ref,
-                          'output_name': gblocks_msa_name,
-                          'trim_level': params['gblocks_trim_level'],
-                          'min_seqs_for_conserved': params['gblocks_min_seqs_for_conserved'],
-                          'min_seqs_for_flank': params['gblocks_min_seqs_for_flank'],
-                          'max_pos_contig_nonconserved': params['gblocks_max_pos_contig_nonconserved'],
-                          'min_block_len': params['gblocks_min_block_len'],
-                          'remove_mask_positions_flag': params['gblocks_remove_mask_positions_flag']
-                     }
-        try:
-            gblocksClient = kb_gblocks(self.callbackURL, token=token, service_ver=SERVICE_VER)
-        except Exception as e:
-            raise ValueError("unable to instantiate gblocksClient. "+str(e))
-        try:
-            this_retVal = gblocksClient.run_Gblocks(gblocks_params)
-        except Exception as e:
-            raise ValueError ("unable to run "+sub_method+". "+str(e))
-        try:
-            this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
-        except Exception as e:
-            raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
-        try:
-            gblocks_msa_ref = this_report_obj['objects_created'][0]['ref']
-        except Exception as e:
-            raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+        if not params.get('skip_trimming') or int(params['skip_trimming']) == 1:
+            self.log(console, "SKIPPING "+sub_method)
+        else:
+            self.log(console, "RUNNING "+sub_method)
+            gblocks_msa_name = params['output_tree_name']+'-GBLOCKS.MSA'
+            gblocks_params = {'workspace_name': params['workspace_name'],
+                              'desc': params['desc'] + ' GBLOCKS MSA',
+                              'input_ref': muscle_msa_ref,
+                              'output_name': gblocks_msa_name,
+                              'trim_level': params['gblocks_trim_level'],
+                              'min_seqs_for_conserved': params['gblocks_min_seqs_for_conserved'],
+                              'min_seqs_for_flank': params['gblocks_min_seqs_for_flank'],
+                              'max_pos_contig_nonconserved': params['gblocks_max_pos_contig_nonconserved'],
+                              'min_block_len': params['gblocks_min_block_len'],
+                              'remove_mask_positions_flag': params['gblocks_remove_mask_positions_flag']
+            }
+            try:
+                gblocksClient = kb_gblocks(self.callbackURL, token=token, service_ver=SERVICE_VER)
+            except Exception as e:
+                raise ValueError("unable to instantiate gblocksClient. "+str(e))
+            try:
+                this_retVal = gblocksClient.run_Gblocks(gblocks_params)
+            except Exception as e:
+                raise ValueError ("unable to run "+sub_method+". "+str(e))
+            try:
+                this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
+            except Exception as e:
+                raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
+            try:
+                gblocks_msa_ref = this_report_obj['objects_created'][0]['ref']
+            except Exception as e:
+                raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+            objects_created.extend(this_report_obj['objects_created'])
+
+            # attach created items to final report
+            objects_created.extend(this_report_obj['objects_created'])
+            for file_link_item in this_report_obj['file_links']:
+                #this_shock_id = file_link_item['URL']
+                this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+                new_file_link_item = {'shock_id': this_shock_id,
+                                      'name': file_link_item['name'],
+                                      'label': file_link_item['label']
+                }
+                file_links.append(new_file_link_item)
 
 
         #### STEP 5: Run FASTTREE
@@ -780,6 +810,17 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
         fasttree_reportObj = this_report_obj
 
+        # attach created items to final report
+        objects_created.extend(this_report_obj['objects_created'])
+        for file_link_item in this_report_obj['file_links']:
+            #this_shock_id = file_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+            new_file_link_item = {'shock_id': this_shock_id,
+                                  'name': file_link_item['name'],
+                                  'label': file_link_item['label']
+            }
+            file_links.append(new_file_link_item)
+
 
         #### STEP 6: Create Report
         ##
@@ -806,17 +847,9 @@ This module contains methods for running and visualizing results of phylogenomic
                                   'label': html_link_item['label']
             }
             reportObj['html_links'].append(new_html_link_item)
-        for file_link_item in fasttree_reportObj['file_links']:
-            #this_shock_id = file_link_item['URL']
-            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
-            new_file_link_item = {'shock_id': this_shock_id,
-                                  'name': file_link_item['name'],
-                                  'label': file_link_item['label']
-            }
-            reportObj['file_links'].append(new_file_link_item)
 
-        reportObj['objects_created'].append({'ref': fasttree_tree_ref,
-                                             'description': 'Build Gene Tree '+params['output_tree_name']})
+        reportObj['file_links'] = file_links
+        reportObj['objects_created'] = objects_created
 
 
         # save report object
@@ -6339,7 +6372,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "input_pangenome_ref" of type "data_obj_ref", parameter
            "input_compare_genome_refs" of type "data_obj_ref", parameter
            "input_outgroup_genome_refs" of type "data_obj_ref", parameter
-           "save_featuresets" of type "bool"
+           "save_featuresets" of type "bool", parameter
+           "genome_disp_name_config" of String
         :returns: instance of type "view_pan_circle_plot_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -7371,7 +7405,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "save_featuresets" of type "bool", parameter
            "skip_missing_genomes" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool"
+           "enforce_genome_version_match" of type "bool", parameter
+           "genome_disp_name_config" of String
         :returns: instance of type "view_pan_phylo_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -8119,7 +8154,7 @@ This module contains methods for running and visualizing results of phylogenomic
            "neighbor_thresh" of Long, parameter "ident_thresh" of Double,
            parameter "overlap_fraction" of Double, parameter "e_value" of
            Double, parameter "bitscore" of Double, parameter "color_seed" of
-           Double
+           Double, parameter "genome_disp_name_config" of String
         :returns: instance of type "find_homologs_with_genome_context_Output"
            -> structure: parameter "report_name" of String, parameter
            "report_ref" of String

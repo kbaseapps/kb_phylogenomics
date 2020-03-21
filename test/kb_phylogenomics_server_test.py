@@ -1493,7 +1493,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
         report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
         self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
 
-        created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        last_obj_index = len(report_obj['objects_created']) - 1
+        created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][last_obj_index]['ref']}]})[0]
         self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
         self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
 

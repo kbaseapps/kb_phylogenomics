@@ -128,6 +128,8 @@ build_gene_tree_Input is a reference to a hash where the following keys are defi
 	desc has a value which is a string
 	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	genome_disp_name_config has a value which is a string
+	skip_trimming has a value which is a kb_phylogenomics.bool
 	muscle_maxiters has a value which is an int
 	muscle_maxhours has a value which is a float
 	gblocks_trim_level has a value which is an int
@@ -148,6 +150,7 @@ build_gene_tree_Input is a reference to a hash where the following keys are defi
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 build_gene_tree_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -165,6 +168,8 @@ build_gene_tree_Input is a reference to a hash where the following keys are defi
 	desc has a value which is a string
 	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	genome_disp_name_config has a value which is a string
+	skip_trimming has a value which is a kb_phylogenomics.bool
 	muscle_maxiters has a value which is an int
 	muscle_maxhours has a value which is a float
 	gblocks_trim_level has a value which is an int
@@ -185,6 +190,7 @@ build_gene_tree_Input is a reference to a hash where the following keys are defi
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 build_gene_tree_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -1388,6 +1394,7 @@ view_pan_circle_plot_Input is a reference to a hash where the following keys are
 	input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	save_featuresets has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1410,6 +1417,7 @@ view_pan_circle_plot_Input is a reference to a hash where the following keys are
 	input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	save_featuresets has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1796,6 +1804,7 @@ view_pan_phylo_Input is a reference to a hash where the following keys are defin
 	save_featuresets has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1818,6 +1827,7 @@ view_pan_phylo_Input is a reference to a hash where the following keys are defin
 	save_featuresets has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1908,6 +1918,7 @@ find_homologs_with_genome_context_Input is a reference to a hash where the follo
 	e_value has a value which is a float
 	bitscore has a value which is a float
 	color_seed has a value which is a float
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1934,6 +1945,7 @@ find_homologs_with_genome_context_Input is a reference to a hash where the follo
 	e_value has a value which is a float
 	bitscore has a value which is a float
 	color_seed has a value which is a float
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -2405,6 +2417,8 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 desc has a value which is a string
 input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+genome_disp_name_config has a value which is a string
+skip_trimming has a value which is a kb_phylogenomics.bool
 muscle_maxiters has a value which is an int
 muscle_maxhours has a value which is a float
 gblocks_trim_level has a value which is an int
@@ -2434,6 +2448,8 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 desc has a value which is a string
 input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+genome_disp_name_config has a value which is a string
+skip_trimming has a value which is a kb_phylogenomics.bool
 muscle_maxiters has a value which is an int
 muscle_maxhours has a value which is a float
 gblocks_trim_level has a value which is an int
@@ -3382,6 +3398,7 @@ input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
 
 </pre>
 
@@ -3396,6 +3413,7 @@ input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
 
 
 =end text
@@ -3680,6 +3698,7 @@ input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
 
 </pre>
 
@@ -3694,6 +3713,7 @@ input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
 
 
 =end text
@@ -3763,6 +3783,7 @@ overlap_fraction has a value which is a float
 e_value has a value which is a float
 bitscore has a value which is a float
 color_seed has a value which is a float
+genome_disp_name_config has a value which is a string
 
 </pre>
 
@@ -3781,6 +3802,7 @@ overlap_fraction has a value which is a float
 e_value has a value which is a float
 bitscore has a value which is a float
 color_seed has a value which is a float
+genome_disp_name_config has a value which is a string
 
 
 =end text

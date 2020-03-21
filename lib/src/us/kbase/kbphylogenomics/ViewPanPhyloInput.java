@@ -28,7 +28,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "input_speciesTree_ref",
     "save_featuresets",
     "skip_missing_genomes",
-    "enforce_genome_version_match"
+    "enforce_genome_version_match",
+    "genome_disp_name_config"
 })
 public class ViewPanPhyloInput {
 
@@ -44,6 +45,8 @@ public class ViewPanPhyloInput {
     private Long skipMissingGenomes;
     @JsonProperty("enforce_genome_version_match")
     private Long enforceGenomeVersionMatch;
+    @JsonProperty("genome_disp_name_config")
+    private String genomeDispNameConfig;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -136,6 +139,21 @@ public class ViewPanPhyloInput {
         return this;
     }
 
+    @JsonProperty("genome_disp_name_config")
+    public String getGenomeDispNameConfig() {
+        return genomeDispNameConfig;
+    }
+
+    @JsonProperty("genome_disp_name_config")
+    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+    }
+
+    public ViewPanPhyloInput withGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -148,7 +166,7 @@ public class ViewPanPhyloInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((("ViewPanPhyloInput"+" [workspaceName=")+ workspaceName)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", saveFeaturesets=")+ saveFeaturesets)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((("ViewPanPhyloInput"+" [workspaceName=")+ workspaceName)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", saveFeaturesets=")+ saveFeaturesets)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

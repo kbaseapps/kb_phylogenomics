@@ -41,10 +41,11 @@ class kb_phylogenomics(object):
            Common types), parameter "desc" of String, parameter
            "input_featureSet_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter
-           "muscle_maxiters" of Long, parameter "muscle_maxhours" of Double,
-           parameter "gblocks_trim_level" of Long, parameter
-           "gblocks_min_seqs_for_conserved" of Long, parameter
-           "gblocks_min_seqs_for_flank" of Long, parameter
+           "genome_disp_name_config" of String, parameter "skip_trimming" of
+           type "bool", parameter "muscle_maxiters" of Long, parameter
+           "muscle_maxhours" of Double, parameter "gblocks_trim_level" of
+           Long, parameter "gblocks_min_seqs_for_conserved" of Long,
+           parameter "gblocks_min_seqs_for_flank" of Long, parameter
            "gblocks_max_pos_contig_nonconserved" of Long, parameter
            "gblocks_min_block_len" of Long, parameter
            "gblocks_remove_mask_positions_flag" of Long, parameter
@@ -289,7 +290,8 @@ class kb_phylogenomics(object):
            "input_pangenome_ref" of type "data_obj_ref", parameter
            "input_compare_genome_refs" of type "data_obj_ref", parameter
            "input_outgroup_genome_refs" of type "data_obj_ref", parameter
-           "save_featuresets" of type "bool"
+           "save_featuresets" of type "bool", parameter
+           "genome_disp_name_config" of String
         :returns: instance of type "view_pan_circle_plot_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -352,7 +354,8 @@ class kb_phylogenomics(object):
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "save_featuresets" of type "bool", parameter
            "skip_missing_genomes" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool"
+           "enforce_genome_version_match" of type "bool", parameter
+           "genome_disp_name_config" of String
         :returns: instance of type "view_pan_phylo_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -373,7 +376,7 @@ class kb_phylogenomics(object):
            "neighbor_thresh" of Long, parameter "ident_thresh" of Double,
            parameter "overlap_fraction" of Double, parameter "e_value" of
            Double, parameter "bitscore" of Double, parameter "color_seed" of
-           Double
+           Double, parameter "genome_disp_name_config" of String
         :returns: instance of type "find_homologs_with_genome_context_Output"
            -> structure: parameter "report_name" of String, parameter
            "report_ref" of String

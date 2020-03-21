@@ -25,7 +25,10 @@ module kb_phylogenomics {
         data_obj_ref   input_featureSet_ref;
         data_obj_name  output_tree_name;
 
-        int            muscle_maxiters;
+        string         genome_disp_name_config;
+	bool           skip_trimming;  /* 0=use_trimming, 1=skip_trimming */
+
+	int            muscle_maxiters;
         float          muscle_maxhours;
 
         int            gblocks_trim_level;                   /* 0=no gaps allowed, 1=half gaps allowed, 2=all gaps allowed */
@@ -355,6 +358,7 @@ module kb_phylogenomics {
         data_obj_ref   input_compare_genome_refs;
         data_obj_ref   input_outgroup_genome_refs;
 	bool           save_featuresets;
+        string         genome_disp_name_config;
     } view_pan_circle_plot_Input;
 
     typedef structure {
@@ -438,6 +442,7 @@ module kb_phylogenomics {
 	bool           save_featuresets;
 	bool           skip_missing_genomes;
 	bool           enforce_genome_version_match;
+        string         genome_disp_name_config;
     } view_pan_phylo_Input;
 
     typedef structure {
@@ -465,6 +470,7 @@ module kb_phylogenomics {
 	float          e_value;
 	float          bitscore;
 	float          color_seed;
+        string         genome_disp_name_config;
     } find_homologs_with_genome_context_Input;
 
     typedef structure {

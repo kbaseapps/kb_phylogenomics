@@ -27,6 +27,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "desc",
     "input_featureSet_ref",
     "output_tree_name",
+    "genome_disp_name_config",
+    "skip_trimming",
     "muscle_maxiters",
     "muscle_maxhours",
     "gblocks_trim_level",
@@ -55,6 +57,10 @@ public class BuildGeneTreeInput {
     private String inputFeatureSetRef;
     @JsonProperty("output_tree_name")
     private String outputTreeName;
+    @JsonProperty("genome_disp_name_config")
+    private String genomeDispNameConfig;
+    @JsonProperty("skip_trimming")
+    private Long skipTrimming;
     @JsonProperty("muscle_maxiters")
     private Long muscleMaxiters;
     @JsonProperty("muscle_maxhours")
@@ -148,6 +154,36 @@ public class BuildGeneTreeInput {
 
     public BuildGeneTreeInput withOutputTreeName(String outputTreeName) {
         this.outputTreeName = outputTreeName;
+        return this;
+    }
+
+    @JsonProperty("genome_disp_name_config")
+    public String getGenomeDispNameConfig() {
+        return genomeDispNameConfig;
+    }
+
+    @JsonProperty("genome_disp_name_config")
+    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+    }
+
+    public BuildGeneTreeInput withGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+        return this;
+    }
+
+    @JsonProperty("skip_trimming")
+    public Long getSkipTrimming() {
+        return skipTrimming;
+    }
+
+    @JsonProperty("skip_trimming")
+    public void setSkipTrimming(Long skipTrimming) {
+        this.skipTrimming = skipTrimming;
+    }
+
+    public BuildGeneTreeInput withSkipTrimming(Long skipTrimming) {
+        this.skipTrimming = skipTrimming;
         return this;
     }
 
@@ -418,7 +454,7 @@ public class BuildGeneTreeInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((((((((((((((((((((((("BuildGeneTreeInput"+" [workspaceName=")+ workspaceName)+", desc=")+ desc)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", outputTreeName=")+ outputTreeName)+", muscleMaxiters=")+ muscleMaxiters)+", muscleMaxhours=")+ muscleMaxhours)+", gblocksTrimLevel=")+ gblocksTrimLevel)+", gblocksMinSeqsForConserved=")+ gblocksMinSeqsForConserved)+", gblocksMinSeqsForFlank=")+ gblocksMinSeqsForFlank)+", gblocksMaxPosContigNonconserved=")+ gblocksMaxPosContigNonconserved)+", gblocksMinBlockLen=")+ gblocksMinBlockLen)+", gblocksRemoveMaskPositionsFlag=")+ gblocksRemoveMaskPositionsFlag)+", fasttreeFastest=")+ fasttreeFastest)+", fasttreePseudo=")+ fasttreePseudo)+", fasttreeGtr=")+ fasttreeGtr)+", fasttreeWag=")+ fasttreeWag)+", fasttreeNoml=")+ fasttreeNoml)+", fasttreeNome=")+ fasttreeNome)+", fasttreeCat=")+ fasttreeCat)+", fasttreeNocat=")+ fasttreeNocat)+", fasttreeGamma=")+ fasttreeGamma)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((((((((((((((((((((("BuildGeneTreeInput"+" [workspaceName=")+ workspaceName)+", desc=")+ desc)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", outputTreeName=")+ outputTreeName)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", skipTrimming=")+ skipTrimming)+", muscleMaxiters=")+ muscleMaxiters)+", muscleMaxhours=")+ muscleMaxhours)+", gblocksTrimLevel=")+ gblocksTrimLevel)+", gblocksMinSeqsForConserved=")+ gblocksMinSeqsForConserved)+", gblocksMinSeqsForFlank=")+ gblocksMinSeqsForFlank)+", gblocksMaxPosContigNonconserved=")+ gblocksMaxPosContigNonconserved)+", gblocksMinBlockLen=")+ gblocksMinBlockLen)+", gblocksRemoveMaskPositionsFlag=")+ gblocksRemoveMaskPositionsFlag)+", fasttreeFastest=")+ fasttreeFastest)+", fasttreePseudo=")+ fasttreePseudo)+", fasttreeGtr=")+ fasttreeGtr)+", fasttreeWag=")+ fasttreeWag)+", fasttreeNoml=")+ fasttreeNoml)+", fasttreeNome=")+ fasttreeNome)+", fasttreeCat=")+ fasttreeCat)+", fasttreeNocat=")+ fasttreeNocat)+", fasttreeGamma=")+ fasttreeGamma)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
