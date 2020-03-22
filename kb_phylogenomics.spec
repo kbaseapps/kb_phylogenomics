@@ -470,7 +470,6 @@ module kb_phylogenomics {
 	float          e_value;
 	float          bitscore;
 	float          color_seed;
-        string         genome_disp_name_config;
     } find_homologs_with_genome_context_Input;
 
     typedef structure {

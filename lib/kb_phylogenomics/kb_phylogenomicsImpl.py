@@ -636,7 +636,8 @@ This module contains methods for running and visualizing results of phylogenomic
         ##
         required_params = ['workspace_name',
                            'input_featureSet_ref',
-                           'output_tree_name'
+                           'output_tree_name',
+                           'genome_disp_name_config'
                           ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
@@ -3485,12 +3486,13 @@ This module contains methods for running and visualizing results of phylogenomic
             else:
                 genome_disp_name = genome_sci_name
 
-            if genome_disp_name in genome_ref_by_disp_name:
+            if genome_disp_name in genome_disp_name_seen:
                 error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report"
                 self.log (console, "ABORT: "+error_msg)
                 raise ValueError ("ABORT: "+error_msg)
 
             genome_ref_by_disp_name[genome_disp_name] = genome_ref
+            
 
         # html report buffer
         html_report_lines = []
@@ -6405,7 +6407,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # param checks
         required_params = ['input_genome_ref',
-                           'input_pangenome_ref'
+                           'input_pangenome_ref',
+                           'genome_disp_name_config'
                            ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
@@ -6428,10 +6431,16 @@ This module contains methods for running and visualizing results of phylogenomic
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
 
+        # init mappings
+        #
+        genome_obj_name_by_ref = dict()
+        genome_obj_ver_by_ref = dict()
+        genome_sci_name_by_ref = dict()
+        genome_disp_name_by_ref = dict()
+
         # get base genome
         #
         self.log(console, "GETTING BASE GENOME OBJECT")
-        genome_sci_name_by_ref = dict()
         base_genome_ref = input_ref = params['input_genome_ref']
         base_genome_obj_name = None
         try:
@@ -6439,6 +6448,9 @@ This module contains methods for running and visualizing results of phylogenomic
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             base_genome_obj_name = input_obj_info[NAME_I]
             base_genome_obj_name = base_genome_obj_name.replace(" ", "_")
+            base_genome_obj_ver  = input_obj_info[VERSION_I]
+            genome_obj_name_by_ref[base_genome_ref] = base_genome_obj_name
+            genome_obj_ver_by_ref[base_genome_ref] = base_genome_obj_ver
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
         accepted_input_types = ["KBaseGenomes.Genome"]
@@ -6545,16 +6557,42 @@ This module contains methods for running and visualizing results of phylogenomic
                                             key=compare_genome_cluster_overlap_cnt.__getitem__, reverse=True)
         compare_genome_refs = sorted_compare_genome_refs
 
-        # Get genome sci names
+        # Get genome names
         #
-        self.log(console, "GETTING GENOME SCIENTIFIC NAMES")
+        self.log(console, "GETTING GENOME NAMES")
         for genome_ref in compare_genome_refs + outgroup_genome_refs:
             try:
-                genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]['data']
-                genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
+                genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]
+                genome_obj_name_by_ref[genome_ref] = genome_obj['info']['NAME_I']
+                genome_obj_ver_by_ref[genome_ref] = genome_obj['info']['VERSION_I']
+                genome_sci_name_by_ref[genome_ref] = genome_obj['data']['scientific_name']
             except:
                 raise ValueError("unable to fetch genome: " + genome_ref)
 
+        # get Genome disp names
+        #
+        genome_disp_name_seen = dict()
+        for genome_ref in compare_genome_refs + outgroup_genome_refs:
+            genome_disp_name = ''
+            if 'obj_name' in params.get('genome_disp_name_config'):
+                genome_disp_name += genome_obj_name_by_ref[genome_ref]
+                if 'ver' in params.get('genome_disp_name_config'):
+                    genome_disp_name += '.v'+str(genome_obj_ver_by_ref[genome_ref])
+
+                if 'sci_name' in params.get('genome_disp_name_config'):
+                    genome_disp_name += ': '+genome_sci_name_by_ref[genome_ref]
+            else:
+                genome_disp_name = genome_sci_name_by_ref[genome_ref]
+
+            if genome_disp_name in genome_disp_name_seen:
+                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report"
+                self.log (console, "ABORT: "+error_msg)
+                raise ValueError ("ABORT: "+error_msg)
+
+            genome_disp_name_seen[genome_disp_name] = 1
+            genome_disp_name_by_ref[genome_ref] = genome_disp_name
+
+            
         # Determine singleton, clade-core, universal, and partial pangenome
         #   feature sets for base+compare genome set
         #   (but not including outgroup genome features)
@@ -7233,21 +7271,21 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
             font_size) + '"><nobr><b>' + "genome " + str(0) + '</b></nobr></font></td>']
         html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
-            font_size) + '"><nobr><b>' + str(genome_sci_name_by_ref[base_genome_ref]) + '</b></nobr></font></td>']
+            font_size) + '"><nobr><b>' + str(genome_disp_name_by_ref[base_genome_ref]) + '</b></nobr></font></td>']
         html_report_lines += ['</tr>']
         for genome_i, genome_ref in enumerate(compare_genome_refs):
             html_report_lines += ['<tr>']
             html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
                 font_size) + '"><nobr>' + "genome " + str(genome_i + 1) + '</nobr></font></td>']
             html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
-                font_size) + '"><nobr>' + str(genome_sci_name_by_ref[genome_ref]) + '</nobr></font></td>']
+                font_size) + '"><nobr>' + str(genome_disp_name_by_ref[genome_ref]) + '</nobr></font></td>']
             html_report_lines += ['</tr>']
         for genome_i, genome_ref in enumerate(outgroup_genome_refs):
             html_report_lines += ['<tr>']
             html_report_lines += ['<td valign="top" align="left"><font color="' +
                                   str(text_color) + '" size="' + str(font_size) + '"><nobr><i>' + "outgroup" + '</i></nobr></font></td>']
             html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
-                font_size) + '"><nobr><i>' + str(genome_sci_name_by_ref[genome_ref]) + '</i></nobr></font></td>']
+                font_size) + '"><nobr><i>' + str(genome_disp_name_by_ref[genome_ref]) + '</i></nobr></font></td>']
             html_report_lines += ['</tr>']
         for filler_line_i in range((compare_genomes_cnt + outgroup_genome_refs_cnt + 1) // 2):
             html_report_lines += ['<tr><td>' + sp + '</td></tr>']
@@ -7436,7 +7474,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # param checks
         required_params = ['input_speciesTree_ref',
-                           'input_pangenome_ref'
+                           'input_pangenome_ref',
+                           'genome_disp_name_config'
                            ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
@@ -7506,13 +7545,16 @@ This module contains methods for running and visualizing results of phylogenomic
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_obj_name_by_ref = dict()
+        genome_obj_ver_by_ref = dict()
         genome_sci_name_by_ref = dict()
-        genome_sci_name_by_id = dict()
+        genome_disp_name_by_ref = dict()
+        genome_disp_name_by_id = dict()
         uniq_genome_ws_ids = dict()
 
 
         # get names from genome object
         #
+        genome_disp_name_seen = dict()
         for genome_ref in genome_refs:
 
             # get genome object name
@@ -7521,6 +7563,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
                 input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
+                input_ver = input_obj_info[VERSION_I]
                 uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
 
             except Exception as e:
@@ -7531,6 +7574,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                  "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
+            genome_obj_ver_by_ref[genome_ref] = input_ver
 
             try:
                 genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
@@ -7539,7 +7583,25 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
-            genome_sci_name_by_id[genome_id_by_ref[genome_ref]] = genome_obj['scientific_name']
+
+            # genome disp name
+            genome_disp_name = ''
+            if 'obj_name' in params.get('genome_disp_name_config'):
+                genome_disp_name += genome_obj_name_by_ref[genome_ref]
+                if 'ver' in params.get('genome_disp_name_config'):
+                    genome_disp_name += '.v'+str(genome_obj_ver_by_ref[genome_ref])
+
+                if 'sci_name' in params.get('genome_disp_name_config'):
+                    genome_disp_name += ': '+genome_sci_name_by_ref[genome_ref]
+            else:
+                genome_disp_name = genome_sci_name_by_ref[genome_ref]
+
+            if genome_disp_name in genome_disp_name_seen:
+                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report"
+                self.log (console, "ABORT: "+error_msg)
+                raise ValueError ("ABORT: "+error_msg)
+            genome_disp_name_seen[genome_disp_name] = 1
+            genome_disp_name_by_id[genome_id_by_ref[genome_ref]] = genome_disp_name
 
 
         # get pangenome
@@ -7908,7 +7970,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_id = n.name
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
-                leaf_name_disp = genome_sci_name_by_id[genome_id]
+                leaf_name_disp = genome_disp_name_by_id[genome_id]
                 n.add_face(ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
 
             else:
