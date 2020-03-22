@@ -26,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "input_tree_ref",
     "desc",
-    "genome_disp_name_config",
     "show_skeleton_genome_sci_name",
     "reference_genome_disp",
     "skeleton_genome_disp",
@@ -46,8 +45,6 @@ public class ViewTreeInput {
     private java.lang.String inputTreeRef;
     @JsonProperty("desc")
     private java.lang.String desc;
-    @JsonProperty("genome_disp_name_config")
-    private java.lang.String genomeDispNameConfig;
     @JsonProperty("show_skeleton_genome_sci_name")
     private Long showSkeletonGenomeSciName;
     @JsonProperty("reference_genome_disp")
@@ -112,21 +109,6 @@ public class ViewTreeInput {
 
     public ViewTreeInput withDesc(java.lang.String desc) {
         this.desc = desc;
-        return this;
-    }
-
-    @JsonProperty("genome_disp_name_config")
-    public java.lang.String getGenomeDispNameConfig() {
-        return genomeDispNameConfig;
-    }
-
-    @JsonProperty("genome_disp_name_config")
-    public void setGenomeDispNameConfig(java.lang.String genomeDispNameConfig) {
-        this.genomeDispNameConfig = genomeDispNameConfig;
-    }
-
-    public ViewTreeInput withGenomeDispNameConfig(java.lang.String genomeDispNameConfig) {
-        this.genomeDispNameConfig = genomeDispNameConfig;
         return this;
     }
 
@@ -292,7 +274,7 @@ public class ViewTreeInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((((((((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", referenceGenomeDisp=")+ referenceGenomeDisp)+", skeletonGenomeDisp=")+ skeletonGenomeDisp)+", userGenomeDisp=")+ userGenomeDisp)+", user2GenomeDisp=")+ user2GenomeDisp)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", colorForUser2Genomes=")+ colorForUser2Genomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((("ViewTreeInput"+" [workspaceName=")+ workspaceName)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", referenceGenomeDisp=")+ referenceGenomeDisp)+", skeletonGenomeDisp=")+ skeletonGenomeDisp)+", userGenomeDisp=")+ userGenomeDisp)+", user2GenomeDisp=")+ user2GenomeDisp)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", colorForUser2Genomes=")+ colorForUser2Genomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

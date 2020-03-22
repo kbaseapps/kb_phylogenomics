@@ -49,7 +49,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.6.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "c12a633fc018538c5bc5bd88ef9436794ea7cbba"
+    GIT_COMMIT_HASH = "e0f990479d3c74ee653a7df4fa2123c331e5ec91"
 
     #BEGIN_CLASS_HEADER
 
@@ -882,16 +882,15 @@ This module contains methods for running and visualizing results of phylogenomic
            show a KBase Tree and make newick and images downloadable) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
-           parameter "desc" of String, parameter "genome_disp_name_config" of
-           String, parameter "show_skeleton_genome_sci_name" of type "bool",
-           parameter "reference_genome_disp" of mapping from type
-           "data_obj_ref" to mapping from String to String, parameter
-           "skeleton_genome_disp" of mapping from type "data_obj_ref" to
-           mapping from String to String, parameter "user_genome_disp" of
+           parameter "desc" of String, parameter
+           "show_skeleton_genome_sci_name" of type "bool", parameter
+           "reference_genome_disp" of mapping from type "data_obj_ref" to
+           mapping from String to String, parameter "skeleton_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
-           parameter "user2_genome_disp" of mapping from type "data_obj_ref"
-           to mapping from String to String, parameter
-           "color_for_reference_genomes" of String, parameter
+           parameter "user_genome_disp" of mapping from type "data_obj_ref"
+           to mapping from String to String, parameter "user2_genome_disp" of
+           mapping from type "data_obj_ref" to mapping from String to String,
+           parameter "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter
            "color_for_user2_genomes" of String, parameter "tree_shape" of
@@ -1353,9 +1352,8 @@ This module contains methods for running and visualizing results of phylogenomic
            parameter "input_genomeSet_ref" of type "data_obj_ref", parameter
            "input_tree_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "genome_disp_name_config" of String, parameter
-           "show_skeleton_genome_sci_name" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool", parameter
+           String, parameter "show_skeleton_genome_sci_name" of type "bool",
+           parameter "enforce_genome_version_match" of type "bool", parameter
            "reference_genome_disp" of mapping from type "data_obj_ref" to
            mapping from String to String, parameter "skeleton_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
@@ -1637,22 +1635,24 @@ This module contains methods for running and visualizing results of phylogenomic
             reportObj['text_message'] = report_text
         else:
             # RUN view_tree() and forward report object through
+            optional_params = [
+                'show_skeleton_genome_sci_name',
+                'reference_genome_disp',
+                'skeleton_genome_disp',
+                'user_genome_disp',
+                'user2_genome_disp',
+                'color_for_reference_genomes',
+                'color_for_skeleton_genomes',
+                'color_for_user_genomes',
+                'color_for_user2_genomes',
+                'tree_shape'
+            ]
             view_tree_Params = {'workspace_name': params['workspace_name'],
                                 'input_tree_ref': output_tree_ref,
-                                'desc': tree_description,
-                                'genome_disp_name_config': params['genome_disp_name_config'],
-                                'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
-                                'reference_genome_disp':    params['reference_genome_disp'],
-                                'skeleton_genome_disp':     params['skeleton_genome_disp'],
-                                'user_genome_disp':         params['user_genome_disp'],
-                                'user2_genome_disp':        params['user2_genome_disp'],
-                                'color_for_reference_genomes':  params['color_for_reference_genomes'],
-                                'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
-                                'color_for_user_genomes':       params['color_for_user_genomes'],
-                                'color_for_user2_genomes':      params['color_for_user2_genomes'],
-                                'tree_shape':                   params['tree_shape']
-
-                            }
+                                'desc': tree_description}
+            for arg in optional_params:
+                if params.get(arg):
+                    view_tree_Params[arg] = params[arg]
             self.log(console, "RUNNING view_tree() for tree: " + output_tree_ref)
             view_tree_retVal = self.view_tree(ctx, view_tree_Params)[0]
             
@@ -1721,11 +1721,11 @@ This module contains methods for running and visualizing results of phylogenomic
            parameter "input_genome_refs" of type "data_obj_ref", parameter
            "input_genome2_refs" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "genome_disp_name_config" of String, parameter
-           "show_skeleton_genome_sci_name" of type "bool", parameter
-           "skeleton_set" of String, parameter "num_proximal_sisters" of
-           Long, parameter "proximal_sisters_ANI_spacing" of Double,
-           parameter "color_for_reference_genomes" of String, parameter
+           String, parameter "show_skeleton_genome_sci_name" of type "bool",
+           parameter "skeleton_set" of String, parameter
+           "num_proximal_sisters" of Long, parameter
+           "proximal_sisters_ANI_spacing" of Double, parameter
+           "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter
            "color_for_user2_genomes" of String, parameter "tree_shape" of
@@ -2073,7 +2073,6 @@ This module contains methods for running and visualizing results of phylogenomic
                             'input_tree_ref':          untrimmed_speciesTree_obj_ref,
                             'output_tree_name':        params['output_tree_name'],
                             'desc':                    params['desc'],
-                            'genome_disp_name_config': params['genome_disp_name_config'],
                             'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
                             'enforce_genome_version_match': 1,
                             'reference_genome_disp':        reference_genome_disp,
@@ -3486,7 +3485,7 @@ This module contains methods for running and visualizing results of phylogenomic
             else:
                 genome_disp_name = genome_sci_name
 
-            if genome_disp_name in genome_disp_name_seen:
+            if genome_disp_name in genome_ref_by_disp_name:
                 error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report"
                 self.log (console, "ABORT: "+error_msg)
                 raise ValueError ("ABORT: "+error_msg)
@@ -6562,17 +6561,18 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "GETTING GENOME NAMES")
         for genome_ref in compare_genome_refs + outgroup_genome_refs:
             try:
-                genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]
-                genome_obj_name_by_ref[genome_ref] = genome_obj['info']['NAME_I']
-                genome_obj_ver_by_ref[genome_ref] = genome_obj['info']['VERSION_I']
-                genome_sci_name_by_ref[genome_ref] = genome_obj['data']['scientific_name']
+                #genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]
+                genome_obj = wsClient.get_objects2({'objects':[{'ref':genome_ref}]})['data'][0]
             except:
                 raise ValueError("unable to fetch genome: " + genome_ref)
+            genome_obj_name_by_ref[genome_ref] = genome_obj['info'][NAME_I]
+            genome_obj_ver_by_ref[genome_ref] = genome_obj['info'][VERSION_I]
+            genome_sci_name_by_ref[genome_ref] = genome_obj['data']['scientific_name']
 
         # get Genome disp names
         #
         genome_disp_name_seen = dict()
-        for genome_ref in compare_genome_refs + outgroup_genome_refs:
+        for genome_ref in [base_genome_ref] + compare_genome_refs + outgroup_genome_refs:
             genome_disp_name = ''
             if 'obj_name' in params.get('genome_disp_name_config'):
                 genome_disp_name += genome_obj_name_by_ref[genome_ref]

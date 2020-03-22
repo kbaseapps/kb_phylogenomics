@@ -66,16 +66,15 @@ class kb_phylogenomics(object):
            show a KBase Tree and make newick and images downloadable) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
-           parameter "desc" of String, parameter "genome_disp_name_config" of
-           String, parameter "show_skeleton_genome_sci_name" of type "bool",
-           parameter "reference_genome_disp" of mapping from type
-           "data_obj_ref" to mapping from String to String, parameter
-           "skeleton_genome_disp" of mapping from type "data_obj_ref" to
-           mapping from String to String, parameter "user_genome_disp" of
+           parameter "desc" of String, parameter
+           "show_skeleton_genome_sci_name" of type "bool", parameter
+           "reference_genome_disp" of mapping from type "data_obj_ref" to
+           mapping from String to String, parameter "skeleton_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
-           parameter "user2_genome_disp" of mapping from type "data_obj_ref"
-           to mapping from String to String, parameter
-           "color_for_reference_genomes" of String, parameter
+           parameter "user_genome_disp" of mapping from type "data_obj_ref"
+           to mapping from String to String, parameter "user2_genome_disp" of
+           mapping from type "data_obj_ref" to mapping from String to String,
+           parameter "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter
            "color_for_user2_genomes" of String, parameter "tree_shape" of
@@ -95,9 +94,8 @@ class kb_phylogenomics(object):
            parameter "input_genomeSet_ref" of type "data_obj_ref", parameter
            "input_tree_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "genome_disp_name_config" of String, parameter
-           "show_skeleton_genome_sci_name" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool", parameter
+           String, parameter "show_skeleton_genome_sci_name" of type "bool",
+           parameter "enforce_genome_version_match" of type "bool", parameter
            "reference_genome_disp" of mapping from type "data_obj_ref" to
            mapping from String to String, parameter "skeleton_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
@@ -125,11 +123,11 @@ class kb_phylogenomics(object):
            parameter "input_genome_refs" of type "data_obj_ref", parameter
            "input_genome2_refs" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "genome_disp_name_config" of String, parameter
-           "show_skeleton_genome_sci_name" of type "bool", parameter
-           "skeleton_set" of String, parameter "num_proximal_sisters" of
-           Long, parameter "proximal_sisters_ANI_spacing" of Double,
-           parameter "color_for_reference_genomes" of String, parameter
+           String, parameter "show_skeleton_genome_sci_name" of type "bool",
+           parameter "skeleton_set" of String, parameter
+           "num_proximal_sisters" of Long, parameter
+           "proximal_sisters_ANI_spacing" of Double, parameter
+           "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter
            "color_for_user2_genomes" of String, parameter "tree_shape" of

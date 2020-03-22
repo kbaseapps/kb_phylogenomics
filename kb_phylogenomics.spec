@@ -67,7 +67,6 @@ module kb_phylogenomics {
         workspace_name  workspace_name;
 	data_obj_ref    input_tree_ref;
 	string          desc;
-        string          genome_disp_name_config;
         bool            show_skeleton_genome_sci_name;
 
 	mapping<data_obj_ref,mapping<string,string>> reference_genome_disp;
@@ -101,7 +100,6 @@ module kb_phylogenomics {
 	data_obj_ref    input_tree_ref;
 	data_obj_name   output_tree_name;
 	string          desc;
-        string          genome_disp_name_config;
         bool            show_skeleton_genome_sci_name;
 
 	bool            enforce_genome_version_match;
@@ -136,7 +134,6 @@ module kb_phylogenomics {
         data_obj_ref   input_genome2_refs;  /* list of refs can be Genome, GenomeSet, or SpeciesTree */
 	data_obj_name  output_tree_name;
 	string         desc;
-        string         genome_disp_name_config;
         bool           show_skeleton_genome_sci_name;
 
 	string         skeleton_set;  /* RefSeq-Isolates, RefSeq+MAGs, GTDB? */
