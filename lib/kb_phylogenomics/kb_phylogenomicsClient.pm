@@ -128,6 +128,8 @@ build_gene_tree_Input is a reference to a hash where the following keys are defi
 	desc has a value which is a string
 	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	genome_disp_name_config has a value which is a string
+	skip_trimming has a value which is a kb_phylogenomics.bool
 	muscle_maxiters has a value which is an int
 	muscle_maxhours has a value which is a float
 	gblocks_trim_level has a value which is an int
@@ -148,6 +150,7 @@ build_gene_tree_Input is a reference to a hash where the following keys are defi
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 build_gene_tree_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -165,6 +168,8 @@ build_gene_tree_Input is a reference to a hash where the following keys are defi
 	desc has a value which is a string
 	input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	genome_disp_name_config has a value which is a string
+	skip_trimming has a value which is a kb_phylogenomics.bool
 	muscle_maxiters has a value which is an int
 	muscle_maxhours has a value which is a float
 	gblocks_trim_level has a value which is an int
@@ -185,6 +190,7 @@ build_gene_tree_Input is a reference to a hash where the following keys are defi
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
+bool is an int
 build_gene_tree_Output is a reference to a hash where the following keys are defined:
 	report_name has a value which is a string
 	report_ref has a value which is a string
@@ -265,7 +271,6 @@ view_tree_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	desc has a value which is a string
-	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
@@ -295,7 +300,6 @@ view_tree_Input is a reference to a hash where the following keys are defined:
 	workspace_name has a value which is a kb_phylogenomics.workspace_name
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	desc has a value which is a string
-	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 	skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
@@ -391,7 +395,6 @@ trim_speciestree_to_genomeset_Input is a reference to a hash where the following
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 	desc has a value which is a string
-	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 	reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
@@ -425,7 +428,6 @@ trim_speciestree_to_genomeset_Input is a reference to a hash where the following
 	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 	desc has a value which is a string
-	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 	reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
@@ -523,7 +525,6 @@ build_microbial_speciestree_Input is a reference to a hash where the following k
 	input_genome2_refs has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 	desc has a value which is a string
-	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	skeleton_set has a value which is a string
 	num_proximal_sisters has a value which is an int
@@ -555,7 +556,6 @@ build_microbial_speciestree_Input is a reference to a hash where the following k
 	input_genome2_refs has a value which is a kb_phylogenomics.data_obj_ref
 	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 	desc has a value which is a string
-	genome_disp_name_config has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	skeleton_set has a value which is a string
 	num_proximal_sisters has a value which is an int
@@ -1388,6 +1388,7 @@ view_pan_circle_plot_Input is a reference to a hash where the following keys are
 	input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	save_featuresets has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1410,6 +1411,7 @@ view_pan_circle_plot_Input is a reference to a hash where the following keys are
 	input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 	save_featuresets has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1796,6 +1798,7 @@ view_pan_phylo_Input is a reference to a hash where the following keys are defin
 	save_featuresets has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -1818,6 +1821,7 @@ view_pan_phylo_Input is a reference to a hash where the following keys are defin
 	save_featuresets has a value which is a kb_phylogenomics.bool
 	skip_missing_genomes has a value which is a kb_phylogenomics.bool
 	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+	genome_disp_name_config has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 bool is an int
@@ -2405,6 +2409,8 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 desc has a value which is a string
 input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+genome_disp_name_config has a value which is a string
+skip_trimming has a value which is a kb_phylogenomics.bool
 muscle_maxiters has a value which is an int
 muscle_maxhours has a value which is a float
 gblocks_trim_level has a value which is an int
@@ -2434,6 +2440,8 @@ workspace_name has a value which is a kb_phylogenomics.workspace_name
 desc has a value which is a string
 input_featureSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+genome_disp_name_config has a value which is a string
+skip_trimming has a value which is a kb_phylogenomics.bool
 muscle_maxiters has a value which is an int
 muscle_maxhours has a value which is a float
 gblocks_trim_level has a value which is an int
@@ -2513,7 +2521,6 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
-genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
@@ -2535,7 +2542,6 @@ a reference to a hash where the following keys are defined:
 workspace_name has a value which is a kb_phylogenomics.workspace_name
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 desc has a value which is a string
-genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
 skeleton_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
@@ -2610,7 +2616,6 @@ input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
-genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
@@ -2635,7 +2640,6 @@ input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
-genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
 reference_genome_disp has a value which is a reference to a hash where the key is a kb_phylogenomics.data_obj_ref and the value is a reference to a hash where the key is a string and the value is a string
@@ -2711,7 +2715,6 @@ input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 input_genome2_refs has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
-genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 skeleton_set has a value which is a string
 num_proximal_sisters has a value which is an int
@@ -2734,7 +2737,6 @@ input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 input_genome2_refs has a value which is a kb_phylogenomics.data_obj_ref
 output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
-genome_disp_name_config has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 skeleton_set has a value which is a string
 num_proximal_sisters has a value which is an int
@@ -3382,6 +3384,7 @@ input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
 
 </pre>
 
@@ -3396,6 +3399,7 @@ input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
 input_compare_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 input_outgroup_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
 
 
 =end text
@@ -3680,6 +3684,7 @@ input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
 
 </pre>
 
@@ -3694,6 +3699,7 @@ input_speciesTree_ref has a value which is a kb_phylogenomics.data_obj_ref
 save_featuresets has a value which is a kb_phylogenomics.bool
 skip_missing_genomes has a value which is a kb_phylogenomics.bool
 enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+genome_disp_name_config has a value which is a string
 
 
 =end text

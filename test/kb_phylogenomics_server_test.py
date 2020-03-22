@@ -863,6 +863,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'input_pangenome_ref':        pangenome_ref,
                    'input_compare_genome_refs':  compare_genome_refs,
                    'input_outgroup_genome_refs': outgroup_genome_refs,
+                   'genome_disp_name_config':    "obj_name_ver_sci_name",
                    'save_featuresets':           1
 
                }
@@ -924,6 +925,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
         params = { 'workspace_name':        self.getWsName(),
                    'input_pangenome_ref':   pangenome_ref,
                    'input_speciesTree_ref': tree_ref,
+                   'genome_disp_name_config': "obj_name_ver_sci_name",
                    'save_featuresets':      1,
                    'skip_missing_genomes': "0",
                    'enforce_genome_version_match': "0"
@@ -1101,6 +1103,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Microbial SpeciesTree
     ##
+    ## **** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
+    ##
     # HIDE @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
     def test_build_microbial_speciestree_01(self):
         method = 'build_microbial_speciestree'
@@ -1112,14 +1116,14 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
         # input_data
         genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
-        #genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
-        #genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
-        #genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
 
         genome_ref_0 = self.getWsName() + '/' + str(genomeInfo_0[0]) + '/' + str(genomeInfo_0[4])
-        #genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
-        #genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
-        #genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
+        genome_ref_1 = self.getWsName() + '/' + str(genomeInfo_1[0]) + '/' + str(genomeInfo_1[4])
+        genome_ref_2 = self.getWsName() + '/' + str(genomeInfo_2[0]) + '/' + str(genomeInfo_2[4])
+        genome_ref_3 = self.getWsName() + '/' + str(genomeInfo_3[0]) + '/' + str(genomeInfo_3[4])
 
         #feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
         #feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
@@ -1127,15 +1131,16 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
 
         # upload genomeSet
-        #genome_ref_list = [genome_ref_0, genome_ref_1, genome_ref_2, genome_ref_3]
-        genome_ref_list = [genome_ref_0]
+        genome_ref_list   = [genome_ref_0, genome_ref_1]
+        genome_ref_list_2 = [genome_ref_2, genome_ref_3]
+        #genome_ref_list = [genome_ref_0]
         genome_scinames = dict()
         genome_objnames = dict()
         genome_refs_by_objname = dict()
         genome_scinames[genome_ref_0] = 'Candidatus Carsonella ruddii HT isolate Thao2000'
-        #genome_scinames[genome_ref_1] = 'Wolbachia endosymbiont of Onchocerca ochengi'
-        #genome_scinames[genome_ref_2] = 'Wolbachia endosymbiont of Trichogramma pretiosum'
-        #genome_scinames[genome_ref_3] = 'Wolbachia sp. wRi'
+        genome_scinames[genome_ref_1] = 'Wolbachia endosymbiont of Onchocerca ochengi'
+        genome_scinames[genome_ref_2] = 'Wolbachia endosymbiont of Trichogramma pretiosum'
+        genome_scinames[genome_ref_3] = 'Wolbachia sp. wRi'
         for genome_ref in genome_ref_list: 
             try:
                 [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
@@ -1147,18 +1152,18 @@ class kb_phylogenomicsTest(unittest.TestCase):
                 raise ValueError('Unable to get object from workspace: (' + genome_ref +')' + str(e))
 
         # build GenomeSet obj
-        testGS = {
-            'description': 'one genome',
+        testGS_1 = {
+            'description': 'two genomes',
             'elements': dict()
         }
         for genome_ref in genome_ref_list: 
-            testGS['elements'][genome_scinames[genome_ref]] = { 'ref': genome_ref }
+            testGS_1['elements'][genome_scinames[genome_ref]] = { 'ref': genome_ref }
 
         obj_info = self.getWsClient().save_objects({'workspace': self.getWsName(),       
                                                     'objects': [
                                                         {
                                                             'type':'KBaseSearch.GenomeSet',
-                                                            'data':testGS,
+                                                            'data':testGS_1,
                                                             'name':method+'.test_genomeset',
                                                             'meta':{},
                                                             'provenance':[
@@ -1172,13 +1177,39 @@ class kb_phylogenomicsTest(unittest.TestCase):
         pprint(obj_info)
         genomeSet_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
 
+        testGS_2 = {
+            'description': 'two other genomes',
+            'elements': dict()
+        }
+        for genome_ref in genome_ref_list_2: 
+            testGS_2['elements'][genome_scinames[genome_ref]] = { 'ref': genome_ref }
+
+        obj_info = self.getWsClient().save_objects({'workspace': self.getWsName(),       
+                                                    'objects': [
+                                                        {
+                                                            'type':'KBaseSearch.GenomeSet',
+                                                            'data':testGS_2,
+                                                            'name':method+'.test_genomeset',
+                                                            'meta':{},
+                                                            'provenance':[
+                                                                {
+                                                                    'service':'kb_phylogenomics',
+                                                                    'method':'build_microbial_speciestree'
+                                                                }
+                                                            ]
+                                                        }]
+                                                })[0]
+        pprint(obj_info)
+        genomeSet2_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
 
         # run that sucker
         obj_out_name = 'Microbial_Tree_with_Skeleton.SpeciesTree'
         obj_out_type = 'KBaseTrees.Tree'
-        skeleton_set = 'RefSeq-Isolates'
+        skeleton_set = 'Bacteria-Isolates'
         params = { 'workspace_name':               self.getWsName(),
                    'input_genome_refs':            [genomeSet_ref],
+                   'input_genome2_refs':           [genomeSet2_ref],
                    'output_tree_name':             obj_out_name,
                    'desc':                         'test tree',
                    'skeleton_set':                 skeleton_set
@@ -1467,6 +1498,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'desc': 'gene tree for '+testFS['description'],
                    'input_featureSet_ref': featureSet_ref,
                    'output_tree_name': obj_out_name,
+                   'genome_disp_name_config': "obj_name_ver_sci_name",
                    'muscle_maxiters': '16',
                    'muscle_maxours': '0.5',
                    'gblocks_trim_level': '1',
@@ -1493,7 +1525,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
         report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
         self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
 
-        created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        last_obj_index = len(report_obj['objects_created']) - 1
+        created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][last_obj_index]['ref']}]})[0]
         self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
         self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
 

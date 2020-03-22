@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Phylogenetic Pangenome Accumulation - v1.4.0
+name: Phylogenetic Pangenome Accumulation - v1.6.0
 
 tooltip: |
     View a Pangenome in a phylogenetic context.
@@ -39,6 +39,11 @@ parameters :
             Species Tree
         short-hint : |
             The Species Tree of the Pangenome members.
+    genome_disp_name_config :
+        ui-name : |
+            Display genome as
+        short-hint : |
+            Use the object name, object version, and/or scientific name of the Genome in the function profile report
     save_featuresets :
         ui-name : |
             Save Pangenome FeatureSets

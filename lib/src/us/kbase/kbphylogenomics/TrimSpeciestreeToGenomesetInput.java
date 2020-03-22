@@ -28,7 +28,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "input_tree_ref",
     "output_tree_name",
     "desc",
-    "genome_disp_name_config",
     "show_skeleton_genome_sci_name",
     "enforce_genome_version_match",
     "reference_genome_disp",
@@ -53,8 +52,6 @@ public class TrimSpeciestreeToGenomesetInput {
     private java.lang.String outputTreeName;
     @JsonProperty("desc")
     private java.lang.String desc;
-    @JsonProperty("genome_disp_name_config")
-    private java.lang.String genomeDispNameConfig;
     @JsonProperty("show_skeleton_genome_sci_name")
     private Long showSkeletonGenomeSciName;
     @JsonProperty("enforce_genome_version_match")
@@ -151,21 +148,6 @@ public class TrimSpeciestreeToGenomesetInput {
 
     public TrimSpeciestreeToGenomesetInput withDesc(java.lang.String desc) {
         this.desc = desc;
-        return this;
-    }
-
-    @JsonProperty("genome_disp_name_config")
-    public java.lang.String getGenomeDispNameConfig() {
-        return genomeDispNameConfig;
-    }
-
-    @JsonProperty("genome_disp_name_config")
-    public void setGenomeDispNameConfig(java.lang.String genomeDispNameConfig) {
-        this.genomeDispNameConfig = genomeDispNameConfig;
-    }
-
-    public TrimSpeciestreeToGenomesetInput withGenomeDispNameConfig(java.lang.String genomeDispNameConfig) {
-        this.genomeDispNameConfig = genomeDispNameConfig;
         return this;
     }
 
@@ -346,7 +328,7 @@ public class TrimSpeciestreeToGenomesetInput {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((((((((((((((((((((("TrimSpeciestreeToGenomesetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", referenceGenomeDisp=")+ referenceGenomeDisp)+", skeletonGenomeDisp=")+ skeletonGenomeDisp)+", userGenomeDisp=")+ userGenomeDisp)+", user2GenomeDisp=")+ user2GenomeDisp)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", colorForUser2Genomes=")+ colorForUser2Genomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((((((("TrimSpeciestreeToGenomesetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", referenceGenomeDisp=")+ referenceGenomeDisp)+", skeletonGenomeDisp=")+ skeletonGenomeDisp)+", userGenomeDisp=")+ userGenomeDisp)+", user2GenomeDisp=")+ user2GenomeDisp)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", colorForUser2Genomes=")+ colorForUser2Genomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

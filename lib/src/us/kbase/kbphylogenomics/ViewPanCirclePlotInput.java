@@ -28,7 +28,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "input_pangenome_ref",
     "input_compare_genome_refs",
     "input_outgroup_genome_refs",
-    "save_featuresets"
+    "save_featuresets",
+    "genome_disp_name_config"
 })
 public class ViewPanCirclePlotInput {
 
@@ -44,6 +45,8 @@ public class ViewPanCirclePlotInput {
     private String inputOutgroupGenomeRefs;
     @JsonProperty("save_featuresets")
     private Long saveFeaturesets;
+    @JsonProperty("genome_disp_name_config")
+    private String genomeDispNameConfig;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -136,6 +139,21 @@ public class ViewPanCirclePlotInput {
         return this;
     }
 
+    @JsonProperty("genome_disp_name_config")
+    public String getGenomeDispNameConfig() {
+        return genomeDispNameConfig;
+    }
+
+    @JsonProperty("genome_disp_name_config")
+    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+    }
+
+    public ViewPanCirclePlotInput withGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -148,7 +166,7 @@ public class ViewPanCirclePlotInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((("ViewPanCirclePlotInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRef=")+ inputGenomeRef)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputCompareGenomeRefs=")+ inputCompareGenomeRefs)+", inputOutgroupGenomeRefs=")+ inputOutgroupGenomeRefs)+", saveFeaturesets=")+ saveFeaturesets)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((("ViewPanCirclePlotInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRef=")+ inputGenomeRef)+", inputPangenomeRef=")+ inputPangenomeRef)+", inputCompareGenomeRefs=")+ inputCompareGenomeRefs)+", inputOutgroupGenomeRefs=")+ inputOutgroupGenomeRefs)+", saveFeaturesets=")+ saveFeaturesets)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

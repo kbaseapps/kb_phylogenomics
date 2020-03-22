@@ -25,7 +25,10 @@ module kb_phylogenomics {
         data_obj_ref   input_featureSet_ref;
         data_obj_name  output_tree_name;
 
-        int            muscle_maxiters;
+        string         genome_disp_name_config;
+	bool           skip_trimming;  /* 0=use_trimming, 1=skip_trimming */
+
+	int            muscle_maxiters;
         float          muscle_maxhours;
 
         int            gblocks_trim_level;                   /* 0=no gaps allowed, 1=half gaps allowed, 2=all gaps allowed */
@@ -64,7 +67,6 @@ module kb_phylogenomics {
         workspace_name  workspace_name;
 	data_obj_ref    input_tree_ref;
 	string          desc;
-        string          genome_disp_name_config;
         bool            show_skeleton_genome_sci_name;
 
 	mapping<data_obj_ref,mapping<string,string>> reference_genome_disp;
@@ -98,7 +100,6 @@ module kb_phylogenomics {
 	data_obj_ref    input_tree_ref;
 	data_obj_name   output_tree_name;
 	string          desc;
-        string          genome_disp_name_config;
         bool            show_skeleton_genome_sci_name;
 
 	bool            enforce_genome_version_match;
@@ -133,7 +134,6 @@ module kb_phylogenomics {
         data_obj_ref   input_genome2_refs;  /* list of refs can be Genome, GenomeSet, or SpeciesTree */
 	data_obj_name  output_tree_name;
 	string         desc;
-        string         genome_disp_name_config;
         bool           show_skeleton_genome_sci_name;
 
 	string         skeleton_set;  /* RefSeq-Isolates, RefSeq+MAGs, GTDB? */
@@ -355,6 +355,7 @@ module kb_phylogenomics {
         data_obj_ref   input_compare_genome_refs;
         data_obj_ref   input_outgroup_genome_refs;
 	bool           save_featuresets;
+        string         genome_disp_name_config;
     } view_pan_circle_plot_Input;
 
     typedef structure {
@@ -438,6 +439,7 @@ module kb_phylogenomics {
 	bool           save_featuresets;
 	bool           skip_missing_genomes;
 	bool           enforce_genome_version_match;
+        string         genome_disp_name_config;
     } view_pan_phylo_Input;
 
     typedef structure {

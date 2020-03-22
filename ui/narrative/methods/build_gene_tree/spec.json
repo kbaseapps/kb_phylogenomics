@@ -43,6 +43,72 @@
             }
         },
         {
+            "id": "genome_disp_name_config",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "obj_name" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "obj_name",
+					"display": "Object_Name",
+					"id": "genome_disp_name_config-obj_name",
+					"ui-name": "genome_disp_name_config-obj_name"
+				},
+				{
+					"value": "obj_name_ver",
+					"display": "Object_Name.version",
+					"id": "genome_disp_name_config-obj_name_ver",
+					"ui-name": "genome_disp_name_config-obj_name_ver"
+				},
+				{
+					"value": "sci_name",
+					"display": "Scientific Name",
+					"id": "genome_disp_name_config-sci_name",
+					"ui-name": "genome_disp_name_config-sci_name"
+				},
+				{
+					"value": "obj_name_sci_name",
+					"display": "Object_Name: Scientific Name",
+					"id": "genome_disp_name_config-obj_name_sci_name",
+					"ui-name": "genome_disp_name_config-obj_name_sci_name"
+				},
+				{
+					"value": "obj_name_ver_sci_name",
+					"display": "Object_Name.version: Scientific Name",
+					"id": "genome_disp_name_config-obj_name_ver_sci_name",
+					"ui-name": "genome_disp_name_config-obj_name_ver_sci_name"
+				}
+		]
+            }
+        },
+        {
+            "id": "skip_trimming",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+                "options": [
+		    {
+			"value": "0",
+			"display": "DO trim MSA",
+			"id": "skip_trimming-0",
+			"ui-name": "skip_trimming-0"
+		    },
+		    {
+			"value": "1",
+			"display": "DON'T trim MSA",
+			"id": "skip_trimming-1",
+			"ui-name": "skip_trimming-1"
+		    }
+		]
+	    }
+        },
+        {
             "id": "muscle_maxiters",
             "optional": false,
             "advanced": true,
@@ -270,6 +336,14 @@
                 {
                     "input_parameter": "output_tree_name",
 		    "target_property": "output_tree_name"
+                },
+                {
+                    "input_parameter": "genome_disp_name_config",
+                    "target_property": "genome_disp_name_config"
+                },
+                {
+                    "input_parameter": "skip_trimming",
+                    "target_property": "skip_trimming"
                 },
                 {
                     "input_parameter": "muscle_maxiters",

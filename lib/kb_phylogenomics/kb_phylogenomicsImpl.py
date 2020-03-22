@@ -48,8 +48,8 @@ This module contains methods for running and visualizing results of phylogenomic
     # the latter method is running.
     ######################################### noqa
     VERSION = "1.6.0"
-    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "c24806899ff92ee0eae8ec24624f568efee8c250"
+    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
+    GIT_COMMIT_HASH = "e0f990479d3c74ee653a7df4fa2123c331e5ec91"
 
     #BEGIN_CLASS_HEADER
 
@@ -581,10 +581,11 @@ This module contains methods for running and visualizing results of phylogenomic
            Common types), parameter "desc" of String, parameter
            "input_featureSet_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter
-           "muscle_maxiters" of Long, parameter "muscle_maxhours" of Double,
-           parameter "gblocks_trim_level" of Long, parameter
-           "gblocks_min_seqs_for_conserved" of Long, parameter
-           "gblocks_min_seqs_for_flank" of Long, parameter
+           "genome_disp_name_config" of String, parameter "skip_trimming" of
+           type "bool", parameter "muscle_maxiters" of Long, parameter
+           "muscle_maxhours" of Double, parameter "gblocks_trim_level" of
+           Long, parameter "gblocks_min_seqs_for_conserved" of Long,
+           parameter "gblocks_min_seqs_for_flank" of Long, parameter
            "gblocks_max_pos_contig_nonconserved" of Long, parameter
            "gblocks_min_block_len" of Long, parameter
            "gblocks_remove_mask_positions_flag" of Long, parameter
@@ -604,6 +605,8 @@ This module contains methods for running and visualizing results of phylogenomic
         ##
         console = []
         invalid_msgs = []
+        objects_created = []
+        file_links = []
         self.log(console, 'Running build_gene_tree() with params=')
         self.log(console, "\n" + pformat(params))
         report = ''
@@ -633,13 +636,15 @@ This module contains methods for running and visualizing results of phylogenomic
         ##
         required_params = ['workspace_name',
                            'input_featureSet_ref',
-                           'output_tree_name'
+                           'output_tree_name',
+                           'genome_disp_name_config'
                           ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
                 raise ValueError("Must define required param: '" + arg + "'")
 
         param_defaults = { 'desc': 'KBase Gene Tree '+params['output_tree_name'],
+                           'skip_trimming': '0',
                            'muscle_maxiters': '16',
                            'muscle_maxhours': '0.5',
                            'gblocks_trim_level': '0',
@@ -706,39 +711,65 @@ This module contains methods for running and visualizing results of phylogenomic
         except Exception as e:
             raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
 
+        # attach created items to final report
+        objects_created.extend(this_report_obj['objects_created'])
+        for file_link_item in this_report_obj['file_links']:
+            #this_shock_id = file_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+            new_file_link_item = {'shock_id': this_shock_id,
+                                  'name': file_link_item['name'],
+                                  'label': file_link_item['label']
+            }
+            file_links.append(new_file_link_item)
+
 
         #### STEP 4: Run GBLOCKS
         ##
         sub_method = 'GBLOCKS'
-        self.log(console, "RUNNING "+sub_method)
-        gblocks_msa_name = params['output_tree_name']+'-GBLOCKS.MSA'
-        gblocks_params = {'workspace_name': params['workspace_name'],
-                          'desc': params['desc'] + ' GBLOCKS MSA',
-                          'input_ref': muscle_msa_ref,
-                          'output_name': gblocks_msa_name,
-                          'trim_level': params['gblocks_trim_level'],
-                          'min_seqs_for_conserved': params['gblocks_min_seqs_for_conserved'],
-                          'min_seqs_for_flank': params['gblocks_min_seqs_for_flank'],
-                          'max_pos_contig_nonconserved': params['gblocks_max_pos_contig_nonconserved'],
-                          'min_block_len': params['gblocks_min_block_len'],
-                          'remove_mask_positions_flag': params['gblocks_remove_mask_positions_flag']
-                     }
-        try:
-            gblocksClient = kb_gblocks(self.callbackURL, token=token, service_ver=SERVICE_VER)
-        except Exception as e:
-            raise ValueError("unable to instantiate gblocksClient. "+str(e))
-        try:
-            this_retVal = gblocksClient.run_Gblocks(gblocks_params)
-        except Exception as e:
-            raise ValueError ("unable to run "+sub_method+". "+str(e))
-        try:
-            this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
-        except Exception as e:
-            raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
-        try:
-            gblocks_msa_ref = this_report_obj['objects_created'][0]['ref']
-        except Exception as e:
-            raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+        if not params.get('skip_trimming') or int(params['skip_trimming']) == 1:
+            self.log(console, "SKIPPING "+sub_method)
+        else:
+            self.log(console, "RUNNING "+sub_method)
+            gblocks_msa_name = params['output_tree_name']+'-GBLOCKS.MSA'
+            gblocks_params = {'workspace_name': params['workspace_name'],
+                              'desc': params['desc'] + ' GBLOCKS MSA',
+                              'input_ref': muscle_msa_ref,
+                              'output_name': gblocks_msa_name,
+                              'trim_level': params['gblocks_trim_level'],
+                              'min_seqs_for_conserved': params['gblocks_min_seqs_for_conserved'],
+                              'min_seqs_for_flank': params['gblocks_min_seqs_for_flank'],
+                              'max_pos_contig_nonconserved': params['gblocks_max_pos_contig_nonconserved'],
+                              'min_block_len': params['gblocks_min_block_len'],
+                              'remove_mask_positions_flag': params['gblocks_remove_mask_positions_flag']
+            }
+            try:
+                gblocksClient = kb_gblocks(self.callbackURL, token=token, service_ver=SERVICE_VER)
+            except Exception as e:
+                raise ValueError("unable to instantiate gblocksClient. "+str(e))
+            try:
+                this_retVal = gblocksClient.run_Gblocks(gblocks_params)
+            except Exception as e:
+                raise ValueError ("unable to run "+sub_method+". "+str(e))
+            try:
+                this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
+            except Exception as e:
+                raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
+            try:
+                gblocks_msa_ref = this_report_obj['objects_created'][0]['ref']
+            except Exception as e:
+                raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+            objects_created.extend(this_report_obj['objects_created'])
+
+            # attach created items to final report
+            objects_created.extend(this_report_obj['objects_created'])
+            for file_link_item in this_report_obj['file_links']:
+                #this_shock_id = file_link_item['URL']
+                this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+                new_file_link_item = {'shock_id': this_shock_id,
+                                      'name': file_link_item['name'],
+                                      'label': file_link_item['label']
+                }
+                file_links.append(new_file_link_item)
 
 
         #### STEP 5: Run FASTTREE
@@ -780,6 +811,17 @@ This module contains methods for running and visualizing results of phylogenomic
             raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
         fasttree_reportObj = this_report_obj
 
+        # attach created items to final report
+        objects_created.extend(this_report_obj['objects_created'])
+        for file_link_item in this_report_obj['file_links']:
+            #this_shock_id = file_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+            new_file_link_item = {'shock_id': this_shock_id,
+                                  'name': file_link_item['name'],
+                                  'label': file_link_item['label']
+            }
+            file_links.append(new_file_link_item)
+
 
         #### STEP 6: Create Report
         ##
@@ -806,17 +848,9 @@ This module contains methods for running and visualizing results of phylogenomic
                                   'label': html_link_item['label']
             }
             reportObj['html_links'].append(new_html_link_item)
-        for file_link_item in fasttree_reportObj['file_links']:
-            #this_shock_id = file_link_item['URL']
-            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
-            new_file_link_item = {'shock_id': this_shock_id,
-                                  'name': file_link_item['name'],
-                                  'label': file_link_item['label']
-            }
-            reportObj['file_links'].append(new_file_link_item)
 
-        reportObj['objects_created'].append({'ref': fasttree_tree_ref,
-                                             'description': 'Build Gene Tree '+params['output_tree_name']})
+        reportObj['file_links'] = file_links
+        reportObj['objects_created'] = objects_created
 
 
         # save report object
@@ -848,16 +882,15 @@ This module contains methods for running and visualizing results of phylogenomic
            show a KBase Tree and make newick and images downloadable) ->
            structure: parameter "workspace_name" of type "workspace_name" (**
            Common types), parameter "input_tree_ref" of type "data_obj_ref",
-           parameter "desc" of String, parameter "genome_disp_name_config" of
-           String, parameter "show_skeleton_genome_sci_name" of type "bool",
-           parameter "reference_genome_disp" of mapping from type
-           "data_obj_ref" to mapping from String to String, parameter
-           "skeleton_genome_disp" of mapping from type "data_obj_ref" to
-           mapping from String to String, parameter "user_genome_disp" of
+           parameter "desc" of String, parameter
+           "show_skeleton_genome_sci_name" of type "bool", parameter
+           "reference_genome_disp" of mapping from type "data_obj_ref" to
+           mapping from String to String, parameter "skeleton_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
-           parameter "user2_genome_disp" of mapping from type "data_obj_ref"
-           to mapping from String to String, parameter
-           "color_for_reference_genomes" of String, parameter
+           parameter "user_genome_disp" of mapping from type "data_obj_ref"
+           to mapping from String to String, parameter "user2_genome_disp" of
+           mapping from type "data_obj_ref" to mapping from String to String,
+           parameter "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter
            "color_for_user2_genomes" of String, parameter "tree_shape" of
@@ -1319,9 +1352,8 @@ This module contains methods for running and visualizing results of phylogenomic
            parameter "input_genomeSet_ref" of type "data_obj_ref", parameter
            "input_tree_ref" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "genome_disp_name_config" of String, parameter
-           "show_skeleton_genome_sci_name" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool", parameter
+           String, parameter "show_skeleton_genome_sci_name" of type "bool",
+           parameter "enforce_genome_version_match" of type "bool", parameter
            "reference_genome_disp" of mapping from type "data_obj_ref" to
            mapping from String to String, parameter "skeleton_genome_disp" of
            mapping from type "data_obj_ref" to mapping from String to String,
@@ -1603,22 +1635,24 @@ This module contains methods for running and visualizing results of phylogenomic
             reportObj['text_message'] = report_text
         else:
             # RUN view_tree() and forward report object through
+            optional_params = [
+                'show_skeleton_genome_sci_name',
+                'reference_genome_disp',
+                'skeleton_genome_disp',
+                'user_genome_disp',
+                'user2_genome_disp',
+                'color_for_reference_genomes',
+                'color_for_skeleton_genomes',
+                'color_for_user_genomes',
+                'color_for_user2_genomes',
+                'tree_shape'
+            ]
             view_tree_Params = {'workspace_name': params['workspace_name'],
                                 'input_tree_ref': output_tree_ref,
-                                'desc': tree_description,
-                                'genome_disp_name_config': params['genome_disp_name_config'],
-                                'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
-                                'reference_genome_disp':    params['reference_genome_disp'],
-                                'skeleton_genome_disp':     params['skeleton_genome_disp'],
-                                'user_genome_disp':         params['user_genome_disp'],
-                                'user2_genome_disp':        params['user2_genome_disp'],
-                                'color_for_reference_genomes':  params['color_for_reference_genomes'],
-                                'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
-                                'color_for_user_genomes':       params['color_for_user_genomes'],
-                                'color_for_user2_genomes':      params['color_for_user2_genomes'],
-                                'tree_shape':                   params['tree_shape']
-
-                            }
+                                'desc': tree_description}
+            for arg in optional_params:
+                if params.get(arg):
+                    view_tree_Params[arg] = params[arg]
             self.log(console, "RUNNING view_tree() for tree: " + output_tree_ref)
             view_tree_retVal = self.view_tree(ctx, view_tree_Params)[0]
             
@@ -1687,11 +1721,11 @@ This module contains methods for running and visualizing results of phylogenomic
            parameter "input_genome_refs" of type "data_obj_ref", parameter
            "input_genome2_refs" of type "data_obj_ref", parameter
            "output_tree_name" of type "data_obj_name", parameter "desc" of
-           String, parameter "genome_disp_name_config" of String, parameter
-           "show_skeleton_genome_sci_name" of type "bool", parameter
-           "skeleton_set" of String, parameter "num_proximal_sisters" of
-           Long, parameter "proximal_sisters_ANI_spacing" of Double,
-           parameter "color_for_reference_genomes" of String, parameter
+           String, parameter "show_skeleton_genome_sci_name" of type "bool",
+           parameter "skeleton_set" of String, parameter
+           "num_proximal_sisters" of Long, parameter
+           "proximal_sisters_ANI_spacing" of Double, parameter
+           "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter
            "color_for_user2_genomes" of String, parameter "tree_shape" of
@@ -2039,7 +2073,6 @@ This module contains methods for running and visualizing results of phylogenomic
                             'input_tree_ref':          untrimmed_speciesTree_obj_ref,
                             'output_tree_name':        params['output_tree_name'],
                             'desc':                    params['desc'],
-                            'genome_disp_name_config': params['genome_disp_name_config'],
                             'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
                             'enforce_genome_version_match': 1,
                             'reference_genome_disp':        reference_genome_disp,
@@ -3458,6 +3491,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 raise ValueError ("ABORT: "+error_msg)
 
             genome_ref_by_disp_name[genome_disp_name] = genome_ref
+            
 
         # html report buffer
         html_report_lines = []
@@ -6339,7 +6373,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "input_pangenome_ref" of type "data_obj_ref", parameter
            "input_compare_genome_refs" of type "data_obj_ref", parameter
            "input_outgroup_genome_refs" of type "data_obj_ref", parameter
-           "save_featuresets" of type "bool"
+           "save_featuresets" of type "bool", parameter
+           "genome_disp_name_config" of String
         :returns: instance of type "view_pan_circle_plot_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
@@ -6371,7 +6406,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # param checks
         required_params = ['input_genome_ref',
-                           'input_pangenome_ref'
+                           'input_pangenome_ref',
+                           'genome_disp_name_config'
                            ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
@@ -6394,10 +6430,16 @@ This module contains methods for running and visualizing results of phylogenomic
         if not os.path.exists(html_output_dir):
             os.makedirs(html_output_dir)
 
+        # init mappings
+        #
+        genome_obj_name_by_ref = dict()
+        genome_obj_ver_by_ref = dict()
+        genome_sci_name_by_ref = dict()
+        genome_disp_name_by_ref = dict()
+
         # get base genome
         #
         self.log(console, "GETTING BASE GENOME OBJECT")
-        genome_sci_name_by_ref = dict()
         base_genome_ref = input_ref = params['input_genome_ref']
         base_genome_obj_name = None
         try:
@@ -6405,6 +6447,9 @@ This module contains methods for running and visualizing results of phylogenomic
             input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
             base_genome_obj_name = input_obj_info[NAME_I]
             base_genome_obj_name = base_genome_obj_name.replace(" ", "_")
+            base_genome_obj_ver  = input_obj_info[VERSION_I]
+            genome_obj_name_by_ref[base_genome_ref] = base_genome_obj_name
+            genome_obj_ver_by_ref[base_genome_ref] = base_genome_obj_ver
         except Exception as e:
             raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
         accepted_input_types = ["KBaseGenomes.Genome"]
@@ -6511,16 +6556,43 @@ This module contains methods for running and visualizing results of phylogenomic
                                             key=compare_genome_cluster_overlap_cnt.__getitem__, reverse=True)
         compare_genome_refs = sorted_compare_genome_refs
 
-        # Get genome sci names
+        # Get genome names
         #
-        self.log(console, "GETTING GENOME SCIENTIFIC NAMES")
+        self.log(console, "GETTING GENOME NAMES")
         for genome_ref in compare_genome_refs + outgroup_genome_refs:
             try:
-                genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]['data']
-                genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
+                #genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]
+                genome_obj = wsClient.get_objects2({'objects':[{'ref':genome_ref}]})['data'][0]
             except:
                 raise ValueError("unable to fetch genome: " + genome_ref)
+            genome_obj_name_by_ref[genome_ref] = genome_obj['info'][NAME_I]
+            genome_obj_ver_by_ref[genome_ref] = genome_obj['info'][VERSION_I]
+            genome_sci_name_by_ref[genome_ref] = genome_obj['data']['scientific_name']
 
+        # get Genome disp names
+        #
+        genome_disp_name_seen = dict()
+        for genome_ref in [base_genome_ref] + compare_genome_refs + outgroup_genome_refs:
+            genome_disp_name = ''
+            if 'obj_name' in params.get('genome_disp_name_config'):
+                genome_disp_name += genome_obj_name_by_ref[genome_ref]
+                if 'ver' in params.get('genome_disp_name_config'):
+                    genome_disp_name += '.v'+str(genome_obj_ver_by_ref[genome_ref])
+
+                if 'sci_name' in params.get('genome_disp_name_config'):
+                    genome_disp_name += ': '+genome_sci_name_by_ref[genome_ref]
+            else:
+                genome_disp_name = genome_sci_name_by_ref[genome_ref]
+
+            if genome_disp_name in genome_disp_name_seen:
+                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report"
+                self.log (console, "ABORT: "+error_msg)
+                raise ValueError ("ABORT: "+error_msg)
+
+            genome_disp_name_seen[genome_disp_name] = 1
+            genome_disp_name_by_ref[genome_ref] = genome_disp_name
+
+            
         # Determine singleton, clade-core, universal, and partial pangenome
         #   feature sets for base+compare genome set
         #   (but not including outgroup genome features)
@@ -7199,21 +7271,21 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
             font_size) + '"><nobr><b>' + "genome " + str(0) + '</b></nobr></font></td>']
         html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
-            font_size) + '"><nobr><b>' + str(genome_sci_name_by_ref[base_genome_ref]) + '</b></nobr></font></td>']
+            font_size) + '"><nobr><b>' + str(genome_disp_name_by_ref[base_genome_ref]) + '</b></nobr></font></td>']
         html_report_lines += ['</tr>']
         for genome_i, genome_ref in enumerate(compare_genome_refs):
             html_report_lines += ['<tr>']
             html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
                 font_size) + '"><nobr>' + "genome " + str(genome_i + 1) + '</nobr></font></td>']
             html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
-                font_size) + '"><nobr>' + str(genome_sci_name_by_ref[genome_ref]) + '</nobr></font></td>']
+                font_size) + '"><nobr>' + str(genome_disp_name_by_ref[genome_ref]) + '</nobr></font></td>']
             html_report_lines += ['</tr>']
         for genome_i, genome_ref in enumerate(outgroup_genome_refs):
             html_report_lines += ['<tr>']
             html_report_lines += ['<td valign="top" align="left"><font color="' +
                                   str(text_color) + '" size="' + str(font_size) + '"><nobr><i>' + "outgroup" + '</i></nobr></font></td>']
             html_report_lines += ['<td valign="top" align="left"><font color="' + str(text_color) + '" size="' + str(
-                font_size) + '"><nobr><i>' + str(genome_sci_name_by_ref[genome_ref]) + '</i></nobr></font></td>']
+                font_size) + '"><nobr><i>' + str(genome_disp_name_by_ref[genome_ref]) + '</i></nobr></font></td>']
             html_report_lines += ['</tr>']
         for filler_line_i in range((compare_genomes_cnt + outgroup_genome_refs_cnt + 1) // 2):
             html_report_lines += ['<tr><td>' + sp + '</td></tr>']
@@ -7371,7 +7443,8 @@ This module contains methods for running and visualizing results of phylogenomic
            "input_speciesTree_ref" of type "data_obj_ref", parameter
            "save_featuresets" of type "bool", parameter
            "skip_missing_genomes" of type "bool", parameter
-           "enforce_genome_version_match" of type "bool"
+           "enforce_genome_version_match" of type "bool", parameter
+           "genome_disp_name_config" of String
         :returns: instance of type "view_pan_phylo_Output" -> structure:
            parameter "report_name" of String, parameter "report_ref" of String
         """
@@ -7401,7 +7474,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # param checks
         required_params = ['input_speciesTree_ref',
-                           'input_pangenome_ref'
+                           'input_pangenome_ref',
+                           'genome_disp_name_config'
                            ]
         for arg in required_params:
             if arg not in params or params[arg] == None or params[arg] == '':
@@ -7471,13 +7545,16 @@ This module contains methods for running and visualizing results of phylogenomic
         # get object names, sci names, protein-coding gene counts, and SEED annot
         #
         genome_obj_name_by_ref = dict()
+        genome_obj_ver_by_ref = dict()
         genome_sci_name_by_ref = dict()
-        genome_sci_name_by_id = dict()
+        genome_disp_name_by_ref = dict()
+        genome_disp_name_by_id = dict()
         uniq_genome_ws_ids = dict()
 
 
         # get names from genome object
         #
+        genome_disp_name_seen = dict()
         for genome_ref in genome_refs:
 
             # get genome object name
@@ -7486,6 +7563,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
                 input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
                 input_name = input_obj_info[NAME_I]
+                input_ver = input_obj_info[VERSION_I]
                 uniq_genome_ws_ids[input_obj_info[WSID_I]] = True
 
             except Exception as e:
@@ -7496,6 +7574,7 @@ This module contains methods for running and visualizing results of phylogenomic
                                  "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
 
             genome_obj_name_by_ref[genome_ref] = input_name
+            genome_obj_ver_by_ref[genome_ref] = input_ver
 
             try:
                 genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
@@ -7504,7 +7583,25 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # sci name
             genome_sci_name_by_ref[genome_ref] = genome_obj['scientific_name']
-            genome_sci_name_by_id[genome_id_by_ref[genome_ref]] = genome_obj['scientific_name']
+
+            # genome disp name
+            genome_disp_name = ''
+            if 'obj_name' in params.get('genome_disp_name_config'):
+                genome_disp_name += genome_obj_name_by_ref[genome_ref]
+                if 'ver' in params.get('genome_disp_name_config'):
+                    genome_disp_name += '.v'+str(genome_obj_ver_by_ref[genome_ref])
+
+                if 'sci_name' in params.get('genome_disp_name_config'):
+                    genome_disp_name += ': '+genome_sci_name_by_ref[genome_ref]
+            else:
+                genome_disp_name = genome_sci_name_by_ref[genome_ref]
+
+            if genome_disp_name in genome_disp_name_seen:
+                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report"
+                self.log (console, "ABORT: "+error_msg)
+                raise ValueError ("ABORT: "+error_msg)
+            genome_disp_name_seen[genome_disp_name] = 1
+            genome_disp_name_by_id[genome_id_by_ref[genome_ref]] = genome_disp_name
 
 
         # get pangenome
@@ -7873,7 +7970,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 genome_id = n.name
                 #n.name = genome_sci_name_by_id[genome_id]
                 n.name = None
-                leaf_name_disp = genome_sci_name_by_id[genome_id]
+                leaf_name_disp = genome_disp_name_by_id[genome_id]
                 n.add_face(ete3.TextFace(leaf_name_disp, fsize=leaf_fontsize), column=0, position="branch-right")
 
             else:
