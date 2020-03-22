@@ -49,7 +49,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.6.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "64b646a4fccffd811f0122a85b38c106f9678581"
+    GIT_COMMIT_HASH = "c12a633fc018538c5bc5bd88ef9436794ea7cbba"
 
     #BEGIN_CLASS_HEADER
 
@@ -8216,7 +8216,7 @@ This module contains methods for running and visualizing results of phylogenomic
            "neighbor_thresh" of Long, parameter "ident_thresh" of Double,
            parameter "overlap_fraction" of Double, parameter "e_value" of
            Double, parameter "bitscore" of Double, parameter "color_seed" of
-           Double, parameter "genome_disp_name_config" of String
+           Double
         :returns: instance of type "find_homologs_with_genome_context_Output"
            -> structure: parameter "report_name" of String, parameter
            "report_ref" of String

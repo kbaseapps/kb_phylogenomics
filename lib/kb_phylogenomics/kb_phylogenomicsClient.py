@@ -376,7 +376,7 @@ class kb_phylogenomics(object):
            "neighbor_thresh" of Long, parameter "ident_thresh" of Double,
            parameter "overlap_fraction" of Double, parameter "e_value" of
            Double, parameter "bitscore" of Double, parameter "color_seed" of
-           Double, parameter "genome_disp_name_config" of String
+           Double
         :returns: instance of type "find_homologs_with_genome_context_Output"
            -> structure: parameter "report_name" of String, parameter
            "report_ref" of String

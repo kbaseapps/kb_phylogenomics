@@ -32,8 +32,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "overlap_fraction",
     "e_value",
     "bitscore",
-    "color_seed",
-    "genome_disp_name_config"
+    "color_seed"
 })
 public class FindHomologsWithGenomeContextInput {
 
@@ -57,8 +56,6 @@ public class FindHomologsWithGenomeContextInput {
     private Double bitscore;
     @JsonProperty("color_seed")
     private Double colorSeed;
-    @JsonProperty("genome_disp_name_config")
-    private String genomeDispNameConfig;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -211,21 +208,6 @@ public class FindHomologsWithGenomeContextInput {
         return this;
     }
 
-    @JsonProperty("genome_disp_name_config")
-    public String getGenomeDispNameConfig() {
-        return genomeDispNameConfig;
-    }
-
-    @JsonProperty("genome_disp_name_config")
-    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
-        this.genomeDispNameConfig = genomeDispNameConfig;
-    }
-
-    public FindHomologsWithGenomeContextInput withGenomeDispNameConfig(String genomeDispNameConfig) {
-        this.genomeDispNameConfig = genomeDispNameConfig;
-        return this;
-    }
-
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -238,7 +220,7 @@ public class FindHomologsWithGenomeContextInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((("FindHomologsWithGenomeContextInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", savePerGenomeFeatureSets=")+ savePerGenomeFeatureSets)+", neighborThresh=")+ neighborThresh)+", identThresh=")+ identThresh)+", overlapFraction=")+ overlapFraction)+", eValue=")+ eValue)+", bitscore=")+ bitscore)+", colorSeed=")+ colorSeed)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((("FindHomologsWithGenomeContextInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", inputSpeciesTreeRef=")+ inputSpeciesTreeRef)+", savePerGenomeFeatureSets=")+ savePerGenomeFeatureSets)+", neighborThresh=")+ neighborThresh)+", identThresh=")+ identThresh)+", overlapFraction=")+ overlapFraction)+", eValue=")+ eValue)+", bitscore=")+ bitscore)+", colorSeed=")+ colorSeed)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
