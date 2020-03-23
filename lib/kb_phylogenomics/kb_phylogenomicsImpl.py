@@ -1445,11 +1445,13 @@ This module contains methods for running and visualizing results of phylogenomic
 
         genome_id_by_ref = dict()
         genome_ref_by_id = dict()
+        tree_workspace_ids = dict()
         for genome_id in tree_in['default_node_labels'].keys():
             genome_ref = tree_in['ws_refs'][genome_id]['g'][0]
+            (ws_id, obj_id, version) = genome_ref.split('/')
+            tree_workspace_ids[ws_id] = True
             genome_id_by_ref[genome_ref] = genome_id
             genome_ref_by_id[genome_id] = genome_ref        
-            self.log (console, "GENOME_REF_BY_ID: "+genome_ref+"\t"+str(genome_id))  # DEBUG
             
 
         #### STEP 4: Get GenomeSet object
@@ -1479,16 +1481,24 @@ This module contains methods for running and visualizing results of phylogenomic
         wobble_version = True
         retained_genome_refs = dict()
         retained_genome_refs_versionless = dict()
+        genomeset_workspace_ids = dict()
         for genome_id in genomeSet_obj['elements'].keys():
             genome_ref = genomeSet_obj['elements'][genome_id]['ref']
             (ws_id, obj_id, version) = genome_ref.split('/')
+            genomeset_workspace_ids[ws_id] = True
             genome_ref_versionless = str(ws_id)+'/'+str(obj_id)
             retained_genome_refs[genome_ref] = True
             retained_genome_refs_versionless[genome_ref_versionless] = True
         if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
             wobble_version = False
 
+        for genomeset_ws_id in sorted(genomeset_workspace_ids.keys()):
+            try:
+                present = tree_workspace_ids[genomeset_ws_id]
+            except:
+                raise ValueError ("ABORT: workspace ID "+str(genomeset_ws_id)+" in GenomeSet is not found in Tree.  Tree workspace ids are: "+", ".sorted(tree_workspace_ids.keys()))
 
+            
         # STEP 5 - Prune tree if any leaf genomes not found in GenomeSet
         #
         newick_buf = tree_in['tree']
@@ -1502,9 +1512,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in species_tree.traverse():
             if n.is_leaf():
                 genome_id = n.name
-                self.log (console, "GENOME_ID in tree: "+str(genome_id))  # DEBUG
                 genome_ref = genome_ref_by_id[genome_id]
-                self.log (console, "GENOME_REF from tree: "+str(genome_ref))  # DEBUG
                 (ws_id, obj_id, version) = genome_ref.split('/')
                 genome_ref_versionless = str(ws_id)+'/'+str(obj_id)
                 if wobble_version and genome_ref_versionless in retained_genome_refs_versionless:
