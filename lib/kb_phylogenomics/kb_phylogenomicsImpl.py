@@ -1449,7 +1449,8 @@ This module contains methods for running and visualizing results of phylogenomic
             genome_ref = tree_in['ws_refs'][genome_id]['g'][0]
             genome_id_by_ref[genome_ref] = genome_id
             genome_ref_by_id[genome_id] = genome_ref        
-
+            self.log (console, "GENOME_REF_BY_ID: "+genome_ref+"\t"+str(genome_id))  # DEBUG
+            
 
         #### STEP 4: Get GenomeSet object
         #
@@ -1501,7 +1502,9 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in species_tree.traverse():
             if n.is_leaf():
                 genome_id = n.name
+                self.log (console, "GENOME_ID in tree: "+str(genome_id))  # DEBUG
                 genome_ref = genome_ref_by_id[genome_id]
+                self.log (console, "GENOME_REF from tree: "+str(genome_ref))  # DEBUG
                 (ws_id, obj_id, version) = genome_ref.split('/')
                 genome_ref_versionless = str(ws_id)+'/'+str(obj_id)
                 if wobble_version and genome_ref_versionless in retained_genome_refs_versionless:
@@ -1535,8 +1538,8 @@ This module contains methods for running and visualizing results of phylogenomic
             if params.get('desc'):
                 tree_description = params['desc']
             else:
-                if tree_in.get('desc'):
-                    tree_description = tree_in['desc']+" TRIMMED "
+                if tree_in.get('description') and tree_in['description'] != '':
+                    tree_description = tree_in['description']+" TRIMMED "
                 else:
                     tree_description = "Tree TRIMMED "
                 for genome_id in prune_remove_list:
