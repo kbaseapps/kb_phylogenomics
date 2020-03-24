@@ -1445,11 +1445,13 @@ This module contains methods for running and visualizing results of phylogenomic
 
         genome_id_by_ref = dict()
         genome_ref_by_id = dict()
+        tree_workspace_ids = dict()
         for genome_id in tree_in['default_node_labels'].keys():
             genome_ref = tree_in['ws_refs'][genome_id]['g'][0]
+            ws_id = genome_ref.split('/')[0]
+            tree_workspace_ids[ws_id] = True
             genome_id_by_ref[genome_ref] = genome_id
             genome_ref_by_id[genome_id] = genome_ref        
-            self.log (console, "GENOME_REF_BY_ID: "+genome_ref+"\t"+str(genome_id))  # DEBUG
             
 
         #### STEP 4: Get GenomeSet object
@@ -1479,16 +1481,24 @@ This module contains methods for running and visualizing results of phylogenomic
         wobble_version = True
         retained_genome_refs = dict()
         retained_genome_refs_versionless = dict()
+        genomeset_workspace_ids = dict()
         for genome_id in genomeSet_obj['elements'].keys():
             genome_ref = genomeSet_obj['elements'][genome_id]['ref']
             (ws_id, obj_id, version) = genome_ref.split('/')
+            genomeset_workspace_ids[ws_id] = True
             genome_ref_versionless = str(ws_id)+'/'+str(obj_id)
             retained_genome_refs[genome_ref] = True
             retained_genome_refs_versionless[genome_ref_versionless] = True
         if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
             wobble_version = False
 
+        for genomeset_ws_id in sorted(genomeset_workspace_ids.keys()):
+            try:
+                present = tree_workspace_ids[genomeset_ws_id]
+            except:
+                raise ValueError ("ABORT: workspace ID "+str(genomeset_ws_id)+" in GenomeSet is not found in Tree.  Tree workspace ids are: "+", ".sorted(tree_workspace_ids.keys()))
 
+            
         # STEP 5 - Prune tree if any leaf genomes not found in GenomeSet
         #
         newick_buf = tree_in['tree']
@@ -1502,9 +1512,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for n in species_tree.traverse():
             if n.is_leaf():
                 genome_id = n.name
-                self.log (console, "GENOME_ID in tree: "+str(genome_id))  # DEBUG
                 genome_ref = genome_ref_by_id[genome_id]
-                self.log (console, "GENOME_REF from tree: "+str(genome_ref))  # DEBUG
                 (ws_id, obj_id, version) = genome_ref.split('/')
                 genome_ref_versionless = str(ws_id)+'/'+str(obj_id)
                 if wobble_version and genome_ref_versionless in retained_genome_refs_versionless:
@@ -6444,6 +6452,7 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         self.log(console, "GETTING BASE GENOME OBJECT")
         base_genome_ref = input_ref = params['input_genome_ref']
+        base_genome_ws_id = base_genome_ref.split('/')[0]
         base_genome_obj_name = None
         try:
             input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
@@ -6505,6 +6514,17 @@ This module contains methods for running and visualizing results of phylogenomic
                     continue
                 compare_genome_refs.append(g_ref)
                 compare_genomes_cnt += 1
+        pg_workspace_ids = dict()
+        for g_ref in pg_genome_refs:
+            pg_ws_id = g_ref.split('/')[0]
+            pg_workspace_ids[pg_ws_id] = True
+        for g_ref in compare_genome_refs:
+            g_ws_id = g_ref.split('/')[0]
+            try:
+                present = pg_workspace_ids[g_ws_id]
+            except:
+                raise ValueError ("ABORT: workspace ID "+str(g_ws_id)+" in target genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".sorted(pg_workspace_ids.keys()))
+                
 
         # get outgroup genomes and remove from compare_genomes
         #
@@ -7529,11 +7549,14 @@ This module contains methods for running and visualizing results of phylogenomic
         genome_refs = []
         genome_id_by_ref = dict()
         genome_ref_by_id = dict()
+        tree_workspace_ids = dict()
         for genome_id in speciesTree_obj['default_node_labels'].keys():
             genome_ref = speciesTree_obj['ws_refs'][genome_id]['g'][0]
             genome_id_by_ref[genome_ref] = genome_id
             genome_ref_by_id[genome_id] = genome_ref
-
+            ws_id = genome_ref.split('/')[0]
+            tree_workspace_ids[ws_id] = True
+            
         species_tree = ete3.Tree(speciesTree_obj['tree'])  # instantiate ETE3 tree
         species_tree.ladderize()
         for genome_id in species_tree.get_leaf_names():
@@ -7635,8 +7658,10 @@ This module contains methods for running and visualizing results of phylogenomic
         missing_in_pangenome = []
         missing_msg = []
         updated_pg_genome_refs = []
+        pg_workspace_ids = dict()
         for pg_genome_ref in pg_obj['genome_refs']:
             (ws_id, obj_id, version) = pg_genome_ref.split('/')
+            pg_workspace_ids[ws_id] = True
             genome_ref_versionless = ws_id+'/'+obj_id 
             if genome_ref_versionless in genome_ref_by_versionless:
                 updated_pg_genome_refs.append(genome_ref_by_versionless[genome_ref_versionless])
@@ -7651,6 +7676,12 @@ This module contains methods for running and visualizing results of phylogenomic
         # at least one genome is missing
         if len(missing_in_pangenome) > 0:
             for genome_ref in missing_in_pangenome:
+                ws_id = genome_ref.split('/')[0]
+                try:
+                    present = pg_workspace_ids[ws_id]
+                except:
+                    raise ValueError ("ABORT: workspace ID "+str(ws_id)+" in tree genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".sorted(pg_workspace_ids.keys()))
+
                 missing_msg.append("\t" + 'MISSING PANGENOME CALCULATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
 
             # if strict, then abort
