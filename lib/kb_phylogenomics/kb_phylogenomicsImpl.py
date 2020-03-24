@@ -1496,7 +1496,7 @@ This module contains methods for running and visualizing results of phylogenomic
             try:
                 present = tree_workspace_ids[genomeset_ws_id]
             except:
-                raise ValueError ("ABORT: workspace ID "+str(genomeset_ws_id)+" in GenomeSet is not found in Tree.  Tree workspace ids are: "+", ".sorted(tree_workspace_ids.keys()))
+                raise ValueError ("ABORT: workspace ID "+str(genomeset_ws_id)+" in GenomeSet is not found in Tree.  Tree workspace ids are: "+", ".join(sorted(tree_workspace_ids.keys())))
 
             
         # STEP 5 - Prune tree if any leaf genomes not found in GenomeSet
@@ -6523,7 +6523,7 @@ This module contains methods for running and visualizing results of phylogenomic
             try:
                 present = pg_workspace_ids[g_ws_id]
             except:
-                raise ValueError ("ABORT: workspace ID "+str(g_ws_id)+" in target genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".sorted(pg_workspace_ids.keys()))
+                raise ValueError ("ABORT: workspace ID "+str(g_ws_id)+" in target genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".join(sorted(pg_workspace_ids.keys())))
                 
 
         # get outgroup genomes and remove from compare_genomes
@@ -7680,7 +7680,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 try:
                     present = pg_workspace_ids[ws_id]
                 except:
-                    raise ValueError ("ABORT: workspace ID "+str(ws_id)+" in tree genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".sorted(pg_workspace_ids.keys()))
+                    raise ValueError ("ABORT: workspace ID "+str(ws_id)+" in tree genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".join(sorted(pg_workspace_ids.keys())))
 
                 missing_msg.append("\t" + 'MISSING PANGENOME CALCULATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
 
