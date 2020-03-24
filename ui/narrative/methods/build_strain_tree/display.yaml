@@ -1,14 +1,14 @@
 #
 # define display information
 #
-name: Build Gene Tree - v1.6.0
+name: Build Strain Tree - v1.6.0
 
 tooltip: |
-    Build Gene Tree for a set of homologously related genes in a FeatureSet
+    Build Phylogenetic Tree for a set of Strain Genomes
 
 screenshots: []
 
-icon: genetree-purple.png
+icon: straintree-purple.png
 
 #
 # define a set of similar methods that might be useful to the user
@@ -29,16 +29,16 @@ suggestions:
 # Configure the display and description of parameters
 #
 parameters :
-    input_featureSet_ref :
+    input_genome_refs :
         ui-name : |
-            Features
+            Genomes
         short-hint : |
-            The related features
+            The strain genomes
     desc :
         ui-name : |
             Description
         short-hint : |
-            A description of the Gene Tree which will be added to the title in the tree image.
+            A description of the Strain Tree which will be added to the title in the tree image.
     genome_disp_name_config :
         ui-name : |
             Display genome as
@@ -151,9 +151,13 @@ parameters :
             The name of the output Tree object
 
 description : |
-    <p>This App allows the user to build a phylogenetic tree of related protein encoding genes using the amino acid sequences.</p>
+    <p>This App allows the user to build a phylogenetic tree of related genomes that are strain variants.</p>
 
-    <p>Running this App is the functional equivalent to running each of the Apps in the <a href="https://narrative.kbase.us/narrative/22290">Build a Gene Tree</a> Tutorial Narrative, but is invoked as a single App.  It includes the same parameters as would be given to each of the steps separately, starting with <a href="https://narrative.kbase.us/#catalog/apps/kb_muscle/MUSCLE_prot">MUSCLE</a> to build the initial Multiple Sequence Alignment (MSA), then <a href="https://narrative.kbase.us/#catalog/apps/kb_gblocks/run_Gblocks">Gblocks</a> to trim the MSA to the less variable regions, and finally <a href="https://narrative.kbase.us/#catalog/apps/kb_fasttree/run_FastTree">FastTree-2</a> to build the phylogenetic inference from the distances between the sequences in the MSA.</p>
+    <p>Strain-level similar genomes cannot be aligned using protein sequences.  This App allows for alignment and phylogenetic reconstruction by performing a nucleotide multiple sequence alignment (MSA) of the largest genome segment of a collection of genomes.  It includes the same parameters as would be given to each of the steps separately, starting with <a href="https://narrative.kbase.us/#catalog/apps/kb_muscle/MUSCLE_nuc_genome">MUSCLE</a> to build the initial Multiple Sequence Alignment (MSA), then <a href="https://narrative.kbase.us/#catalog/apps/kb_gblocks/run_Gblocks">Gblocks</a> to trim the MSA to the less variable regions, and finally <a href="https://narrative.kbase.us/#catalog/apps/kb_fasttree/run_FastTree">FastTree-2</a> to build the phylogenetic inference from the distances between the nucleotide sequences in the MSA.</p>
+
+    <p>There is an option to skip trimming that is the recommended mode when genomes are very similar and indels are likely to yield meaningful phylogenetic signal.</p>
+    
+    <p>This method is meant to be used on small genomes, such as viruses and, while it may function, is not optimized for even small bacteria.</a>
 
     <p><hr></p>
     <p><b>MUSCLE</b> performs a Multiple Sequence Alignment (MSA) of homologously related sequences.</p>

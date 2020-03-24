@@ -254,6 +254,296 @@ build_gene_tree_Output is a reference to a hash where the following keys are def
  
 
 
+=head2 build_strain_tree
+
+  $output = $obj->build_strain_tree($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_phylogenomics.build_strain_tree_Input
+$output is a kb_phylogenomics.build_strain_tree_Output
+build_strain_tree_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	desc has a value which is a string
+	input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
+	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	genome_disp_name_config has a value which is a string
+	skip_trimming has a value which is a kb_phylogenomics.bool
+	muscle_maxiters has a value which is an int
+	muscle_maxhours has a value which is a float
+	gblocks_trim_level has a value which is an int
+	gblocks_min_seqs_for_conserved has a value which is an int
+	gblocks_min_seqs_for_flank has a value which is an int
+	gblocks_max_pos_contig_nonconserved has a value which is an int
+	gblocks_min_block_len has a value which is an int
+	gblocks_remove_mask_positions_flag has a value which is an int
+	fasttree_fastest has a value which is an int
+	fasttree_pseudo has a value which is an int
+	fasttree_gtr has a value which is an int
+	fasttree_wag has a value which is an int
+	fasttree_noml has a value which is an int
+	fasttree_nome has a value which is an int
+	fasttree_cat has a value which is an int
+	fasttree_nocat has a value which is an int
+	fasttree_gamma has a value which is an int
+workspace_name is a string
+data_obj_ref is a string
+data_obj_name is a string
+bool is an int
+build_strain_tree_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_phylogenomics.build_strain_tree_Input
+$output is a kb_phylogenomics.build_strain_tree_Output
+build_strain_tree_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	desc has a value which is a string
+	input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
+	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	genome_disp_name_config has a value which is a string
+	skip_trimming has a value which is a kb_phylogenomics.bool
+	muscle_maxiters has a value which is an int
+	muscle_maxhours has a value which is a float
+	gblocks_trim_level has a value which is an int
+	gblocks_min_seqs_for_conserved has a value which is an int
+	gblocks_min_seqs_for_flank has a value which is an int
+	gblocks_max_pos_contig_nonconserved has a value which is an int
+	gblocks_min_block_len has a value which is an int
+	gblocks_remove_mask_positions_flag has a value which is an int
+	fasttree_fastest has a value which is an int
+	fasttree_pseudo has a value which is an int
+	fasttree_gtr has a value which is an int
+	fasttree_wag has a value which is an int
+	fasttree_noml has a value which is an int
+	fasttree_nome has a value which is an int
+	fasttree_cat has a value which is an int
+	fasttree_nocat has a value which is an int
+	fasttree_gamma has a value which is an int
+workspace_name is a string
+data_obj_ref is a string
+data_obj_name is a string
+bool is an int
+build_strain_tree_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub build_strain_tree
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function build_strain_tree (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to build_strain_tree:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'build_strain_tree');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_phylogenomics.build_strain_tree",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'build_strain_tree',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method build_strain_tree",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'build_strain_tree',
+				       );
+    }
+}
+ 
+
+
+=head2 build_pangenome_species_tree
+
+  $output = $obj->build_pangenome_species_tree($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_phylogenomics.build_pangenome_species_tree_Input
+$output is a kb_phylogenomics.build_pangenome_species_tree_Output
+build_pangenome_species_tree_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	desc has a value which is a string
+	input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
+	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	genome_disp_name_config has a value which is a string
+	skip_trimming has a value which is a kb_phylogenomics.bool
+	perc_marker_presence_min has a value which is a float
+	muscle_maxiters has a value which is an int
+	muscle_maxhours has a value which is a float
+	gblocks_trim_level has a value which is an int
+	gblocks_min_seqs_for_conserved has a value which is an int
+	gblocks_min_seqs_for_flank has a value which is an int
+	gblocks_max_pos_contig_nonconserved has a value which is an int
+	gblocks_min_block_len has a value which is an int
+	gblocks_remove_mask_positions_flag has a value which is an int
+	fasttree_fastest has a value which is an int
+	fasttree_pseudo has a value which is an int
+	fasttree_gtr has a value which is an int
+	fasttree_wag has a value which is an int
+	fasttree_noml has a value which is an int
+	fasttree_nome has a value which is an int
+	fasttree_cat has a value which is an int
+	fasttree_nocat has a value which is an int
+	fasttree_gamma has a value which is an int
+workspace_name is a string
+data_obj_ref is a string
+data_obj_name is a string
+bool is an int
+build_pangenome_species_tree_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_phylogenomics.build_pangenome_species_tree_Input
+$output is a kb_phylogenomics.build_pangenome_species_tree_Output
+build_pangenome_species_tree_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	desc has a value which is a string
+	input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
+	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	genome_disp_name_config has a value which is a string
+	skip_trimming has a value which is a kb_phylogenomics.bool
+	perc_marker_presence_min has a value which is a float
+	muscle_maxiters has a value which is an int
+	muscle_maxhours has a value which is a float
+	gblocks_trim_level has a value which is an int
+	gblocks_min_seqs_for_conserved has a value which is an int
+	gblocks_min_seqs_for_flank has a value which is an int
+	gblocks_max_pos_contig_nonconserved has a value which is an int
+	gblocks_min_block_len has a value which is an int
+	gblocks_remove_mask_positions_flag has a value which is an int
+	fasttree_fastest has a value which is an int
+	fasttree_pseudo has a value which is an int
+	fasttree_gtr has a value which is an int
+	fasttree_wag has a value which is an int
+	fasttree_noml has a value which is an int
+	fasttree_nome has a value which is an int
+	fasttree_cat has a value which is an int
+	fasttree_nocat has a value which is an int
+	fasttree_gamma has a value which is an int
+workspace_name is a string
+data_obj_ref is a string
+data_obj_name is a string
+bool is an int
+build_pangenome_species_tree_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub build_pangenome_species_tree
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function build_pangenome_species_tree (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to build_pangenome_species_tree:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'build_pangenome_species_tree');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_phylogenomics.build_pangenome_species_tree",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'build_pangenome_species_tree',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method build_pangenome_species_tree",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'build_pangenome_species_tree',
+				       );
+    }
+}
+ 
+
+
 =head2 view_tree
 
   $output = $obj->view_tree($params)
@@ -2468,6 +2758,234 @@ fasttree_gamma has a value which is an int
 
 
 =head2 build_gene_tree_Output
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 build_strain_tree_Input
+
+=over 4
+
+
+
+=item Description
+
+build_strain_tree()
+**
+** build a species tree for a collection of strain genomes
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+desc has a value which is a string
+input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
+output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+genome_disp_name_config has a value which is a string
+skip_trimming has a value which is a kb_phylogenomics.bool
+muscle_maxiters has a value which is an int
+muscle_maxhours has a value which is a float
+gblocks_trim_level has a value which is an int
+gblocks_min_seqs_for_conserved has a value which is an int
+gblocks_min_seqs_for_flank has a value which is an int
+gblocks_max_pos_contig_nonconserved has a value which is an int
+gblocks_min_block_len has a value which is an int
+gblocks_remove_mask_positions_flag has a value which is an int
+fasttree_fastest has a value which is an int
+fasttree_pseudo has a value which is an int
+fasttree_gtr has a value which is an int
+fasttree_wag has a value which is an int
+fasttree_noml has a value which is an int
+fasttree_nome has a value which is an int
+fasttree_cat has a value which is an int
+fasttree_nocat has a value which is an int
+fasttree_gamma has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+desc has a value which is a string
+input_genome_refs has a value which is a kb_phylogenomics.data_obj_ref
+output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+genome_disp_name_config has a value which is a string
+skip_trimming has a value which is a kb_phylogenomics.bool
+muscle_maxiters has a value which is an int
+muscle_maxhours has a value which is a float
+gblocks_trim_level has a value which is an int
+gblocks_min_seqs_for_conserved has a value which is an int
+gblocks_min_seqs_for_flank has a value which is an int
+gblocks_max_pos_contig_nonconserved has a value which is an int
+gblocks_min_block_len has a value which is an int
+gblocks_remove_mask_positions_flag has a value which is an int
+fasttree_fastest has a value which is an int
+fasttree_pseudo has a value which is an int
+fasttree_gtr has a value which is an int
+fasttree_wag has a value which is an int
+fasttree_noml has a value which is an int
+fasttree_nome has a value which is an int
+fasttree_cat has a value which is an int
+fasttree_nocat has a value which is an int
+fasttree_gamma has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 build_strain_tree_Output
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 build_pangenome_species_tree_Input
+
+=over 4
+
+
+
+=item Description
+
+build_pangenome_species_tree()
+**
+** build a species tree using the single copy genes from a pangenome
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+desc has a value which is a string
+input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
+output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+genome_disp_name_config has a value which is a string
+skip_trimming has a value which is a kb_phylogenomics.bool
+perc_marker_presence_min has a value which is a float
+muscle_maxiters has a value which is an int
+muscle_maxhours has a value which is a float
+gblocks_trim_level has a value which is an int
+gblocks_min_seqs_for_conserved has a value which is an int
+gblocks_min_seqs_for_flank has a value which is an int
+gblocks_max_pos_contig_nonconserved has a value which is an int
+gblocks_min_block_len has a value which is an int
+gblocks_remove_mask_positions_flag has a value which is an int
+fasttree_fastest has a value which is an int
+fasttree_pseudo has a value which is an int
+fasttree_gtr has a value which is an int
+fasttree_wag has a value which is an int
+fasttree_noml has a value which is an int
+fasttree_nome has a value which is an int
+fasttree_cat has a value which is an int
+fasttree_nocat has a value which is an int
+fasttree_gamma has a value which is an int
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+desc has a value which is a string
+input_pangenome_ref has a value which is a kb_phylogenomics.data_obj_ref
+output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+genome_disp_name_config has a value which is a string
+skip_trimming has a value which is a kb_phylogenomics.bool
+perc_marker_presence_min has a value which is a float
+muscle_maxiters has a value which is an int
+muscle_maxhours has a value which is a float
+gblocks_trim_level has a value which is an int
+gblocks_min_seqs_for_conserved has a value which is an int
+gblocks_min_seqs_for_flank has a value which is an int
+gblocks_max_pos_contig_nonconserved has a value which is an int
+gblocks_min_block_len has a value which is an int
+gblocks_remove_mask_positions_flag has a value which is an int
+fasttree_fastest has a value which is an int
+fasttree_pseudo has a value which is an int
+fasttree_gtr has a value which is an int
+fasttree_wag has a value which is an int
+fasttree_noml has a value which is an int
+fasttree_nome has a value which is an int
+fasttree_cat has a value which is an int
+fasttree_nocat has a value which is an int
+fasttree_gamma has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 build_pangenome_species_tree_Output
 
 =over 4
 

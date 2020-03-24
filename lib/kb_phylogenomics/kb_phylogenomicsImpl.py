@@ -49,7 +49,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.6.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "e0f990479d3c74ee653a7df4fa2123c331e5ec91"
+    GIT_COMMIT_HASH = "4a74559790b116dcfcbb4ae3f48601748cacc59d"
 
     #BEGIN_CLASS_HEADER
 
@@ -872,6 +872,81 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method build_gene_tree return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def build_strain_tree(self, ctx, params):
+        """
+        :param params: instance of type "build_strain_tree_Input"
+           (build_strain_tree() ** ** build a species tree for a collection
+           of strain genomes) -> structure: parameter "workspace_name" of
+           type "workspace_name" (** Common types), parameter "desc" of
+           String, parameter "input_genome_refs" of type "data_obj_ref",
+           parameter "output_tree_name" of type "data_obj_name", parameter
+           "genome_disp_name_config" of String, parameter "skip_trimming" of
+           type "bool", parameter "muscle_maxiters" of Long, parameter
+           "muscle_maxhours" of Double, parameter "gblocks_trim_level" of
+           Long, parameter "gblocks_min_seqs_for_conserved" of Long,
+           parameter "gblocks_min_seqs_for_flank" of Long, parameter
+           "gblocks_max_pos_contig_nonconserved" of Long, parameter
+           "gblocks_min_block_len" of Long, parameter
+           "gblocks_remove_mask_positions_flag" of Long, parameter
+           "fasttree_fastest" of Long, parameter "fasttree_pseudo" of Long,
+           parameter "fasttree_gtr" of Long, parameter "fasttree_wag" of
+           Long, parameter "fasttree_noml" of Long, parameter "fasttree_nome"
+           of Long, parameter "fasttree_cat" of Long, parameter
+           "fasttree_nocat" of Long, parameter "fasttree_gamma" of Long
+        :returns: instance of type "build_strain_tree_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN build_strain_tree
+        #END build_strain_tree
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method build_strain_tree return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def build_pangenome_species_tree(self, ctx, params):
+        """
+        :param params: instance of type "build_pangenome_species_tree_Input"
+           (build_pangenome_species_tree() ** ** build a species tree using
+           the single copy genes from a pangenome) -> structure: parameter
+           "workspace_name" of type "workspace_name" (** Common types),
+           parameter "desc" of String, parameter "input_pangenome_ref" of
+           type "data_obj_ref", parameter "output_tree_name" of type
+           "data_obj_name", parameter "genome_disp_name_config" of String,
+           parameter "skip_trimming" of type "bool", parameter
+           "perc_marker_presence_min" of Double, parameter "muscle_maxiters"
+           of Long, parameter "muscle_maxhours" of Double, parameter
+           "gblocks_trim_level" of Long, parameter
+           "gblocks_min_seqs_for_conserved" of Long, parameter
+           "gblocks_min_seqs_for_flank" of Long, parameter
+           "gblocks_max_pos_contig_nonconserved" of Long, parameter
+           "gblocks_min_block_len" of Long, parameter
+           "gblocks_remove_mask_positions_flag" of Long, parameter
+           "fasttree_fastest" of Long, parameter "fasttree_pseudo" of Long,
+           parameter "fasttree_gtr" of Long, parameter "fasttree_wag" of
+           Long, parameter "fasttree_noml" of Long, parameter "fasttree_nome"
+           of Long, parameter "fasttree_cat" of Long, parameter
+           "fasttree_nocat" of Long, parameter "fasttree_gamma" of Long
+        :returns: instance of type "build_pangenome_species_tree_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN build_pangenome_species_tree
+        #END build_pangenome_species_tree
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method build_pangenome_species_tree return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]
@@ -6518,7 +6593,7 @@ This module contains methods for running and visualizing results of phylogenomic
         for g_ref in pg_genome_refs:
             pg_ws_id = g_ref.split('/')[0]
             pg_workspace_ids[pg_ws_id] = True
-        for g_ref in compare_genome_refs:
+        for g_ref in [base_genome_ref] + compare_genome_refs:
             g_ws_id = g_ref.split('/')[0]
             try:
                 present = pg_workspace_ids[g_ws_id]
@@ -7673,20 +7748,44 @@ This module contains methods for running and visualizing results of phylogenomic
                 if genome_ref not in updated_pg_genome_refs:
                     missing_in_pangenome.append(genome_ref)
 
-        # at least one genome is missing
-        if len(missing_in_pangenome) > 0:
-            for genome_ref in missing_in_pangenome:
+        # all tree genomes are missing
+        error_msg = ''
+        if len(missing_in_pangenome) == len(genome_refs):
+            error_msg = "ABORT: All genomes from SpeciesTree are missing from Pangenome."
+            for genome_ref in genome_refs:
                 ws_id = genome_ref.split('/')[0]
                 try:
                     present = pg_workspace_ids[ws_id]
                 except:
-                    raise ValueError ("ABORT: workspace ID "+str(ws_id)+" in tree genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".join(sorted(pg_workspace_ids.keys())))
-
+                    error_msg += "\n<br>workspace ID "+str(ws_id)+" in tree genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".join(sorted(pg_workspace_ids.keys()))
+                    break
+            raise ValueError (error_msg)
+        
+        # not enough tree left
+        elif len(genome_refs) - len(missing_in_pangenome) < 3:
+            error_msg = "ABORT: too many genomes from SpeciesTree are missing from Pangenome.  Less than 3 leaves left."
+            for genome_ref in genome_refs:
+                ws_id = genome_ref.split('/')[0]
+                try:
+                    present = pg_workspace_ids[ws_id]
+                except:
+                    error_msg += "\n<br>workspace ID "+str(ws_id)+" in tree genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".join(sorted(pg_workspace_ids.keys()))
+                    break
+            raise ValueError (error_msg)
+        
+        # at least one genome is missing
+        elif len(missing_in_pangenome) > 0:
+            for genome_ref in missing_in_pangenome:
                 missing_msg.append("\t" + 'MISSING PANGENOME CALCULATION FOR: ' + 'ref: '+genome_ref + ', obj_name: '+genome_obj_name_by_ref[genome_ref]+', sci_name: '+genome_sci_name_by_ref[genome_ref])
 
             # if strict, then abort
             if not params.get('skip_missing_genomes') or int(params.get('skip_missing_genomes')) != 1:
-                error_msg = "ABORT: You must include the following additional Genomes in the Pangenome Calculation first (or select the SKIP option)\n<p>\n"
+                ws_id = genome_ref.split('/')[0]
+                try:
+                    present = pg_workspace_ids[ws_id]
+                except:
+                    error_msg += "workspace ID "+str(ws_id)+" in tree genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".join(sorted(pg_workspace_ids.keys()))
+                error_msg += "ABORT: You must include the following additional Genomes in the Pangenome Calculation first (or select the SKIP option)\n<p>\n"
                 error_msg += "\n<br>\n".join(missing_msg)
                 raise ValueError(error_msg)
 

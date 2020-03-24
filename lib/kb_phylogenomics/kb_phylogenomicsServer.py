@@ -342,6 +342,14 @@ class Application(object):
                              name='kb_phylogenomics.build_gene_tree',
                              types=[dict])
         self.method_authentication['kb_phylogenomics.build_gene_tree'] = 'required'  # noqa
+        self.rpc_service.add(impl_kb_phylogenomics.build_strain_tree,
+                             name='kb_phylogenomics.build_strain_tree',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.build_strain_tree'] = 'required'  # noqa
+        self.rpc_service.add(impl_kb_phylogenomics.build_pangenome_species_tree,
+                             name='kb_phylogenomics.build_pangenome_species_tree',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.build_pangenome_species_tree'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.view_tree,
                              name='kb_phylogenomics.view_tree',
                              types=[dict])
