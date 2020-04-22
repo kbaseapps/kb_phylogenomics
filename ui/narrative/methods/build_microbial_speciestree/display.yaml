@@ -1,10 +1,10 @@
 #
 # define display information
 #
-name: Build Microbial SpeciesTree - v1.5.1
+name: Build Microbial SpeciesTree - v1.6.0
 
 tooltip: |
-    Build Species Tree for your Microbial Genomes, including Reference Genomes and Tree Skeleton with Phylum Exemplars
+    Build Species Tree for your Microbial Genomes, optionally including Tree Skeleton of Phylum Exemplars
 
 screenshots: []
 

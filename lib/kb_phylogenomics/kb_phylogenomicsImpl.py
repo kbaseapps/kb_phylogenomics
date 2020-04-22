@@ -2348,7 +2348,7 @@ This module contains methods for running and visualizing results of phylogenomic
         ##
         skeleton_genome_ref_order = []
         skeleton_genome_disp = dict()
-        if params.get('skeleton_set'):
+        if params.get('skeleton_set') and params['skeleton_set'].lower() != 'none':
             #skeleton_ws_id = 45087;  # CI
             skeleton_ws_id = 50737;  # PROD
             skeleton_genomeSet_obj_name = 'Phylogenetic_Skeleton-'+params['skeleton_set']+".GenomeSet"
