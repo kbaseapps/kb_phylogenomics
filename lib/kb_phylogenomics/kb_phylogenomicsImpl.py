@@ -22,7 +22,7 @@ from installed_clients.WorkspaceClient import Workspace as workspaceService
 from installed_clients.DataFileUtilClient import DataFileUtil as DFUClient
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.SetAPIServiceClient import SetAPI
-from installed_clients.kb_ObjectUtiltiesClient import kb_ObjectUtilities
+#from installed_clients.kb_ObjectUtiltiesClient import kb_ObjectUtilities
 from installed_clients.SpeciesTreeBuilderClient import SpeciesTreeBuilder
 from installed_clients.DomainAnnotationClient import DomainAnnotation
 from installed_clients.kb_blastClient import kb_blast
@@ -51,7 +51,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.6.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "4a74559790b116dcfcbb4ae3f48601748cacc59d"
+    GIT_COMMIT_HASH = "eadd0da30c0de32c2766f0eb74812f731ba1bd84"
 
     #BEGIN_CLASS_HEADER
 
@@ -2166,13 +2166,9 @@ This module contains methods for running and visualizing results of phylogenomic
            "output_tree_name" of type "data_obj_name", parameter "desc" of
            String, parameter "show_skeleton_genome_sci_name" of type "bool",
            parameter "skeleton_set" of String, parameter
-           "num_proximal_sisters" of Long, parameter
-           "proximal_sisters_ANI_spacing" of Double, parameter
-           "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter
-           "color_for_user2_genomes" of String, parameter "tree_shape" of
-           String
+           "color_for_user2_genomes" of String
         :returns: instance of type "build_microbial_speciestree_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

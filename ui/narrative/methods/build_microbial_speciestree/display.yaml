@@ -54,6 +54,11 @@ parameters :
             Skeleton exemplar set
         short-hint : |
             Include lineage exemplars to form a skeleton for the Species Tree.
+    color_for_skeleton_genomes :
+        ui-name : |
+            Color skeleton genomes
+        short-hint : |
+            Add color to final species tree image for phylogenetic skeleton genome leaves.
     color_for_user_genomes :
         ui-name : |
             Color user genomes

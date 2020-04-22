@@ -226,13 +226,15 @@ module kb_phylogenomics {
         bool           show_skeleton_genome_sci_name;
 
 	string         skeleton_set;  /* RefSeq-Isolates, RefSeq+MAGs, GTDB? */
+	/*
 	int            num_proximal_sisters;
 	float          proximal_sisters_ANI_spacing;
 	string         color_for_reference_genomes;
+	*/
 	string         color_for_skeleton_genomes;
 	string         color_for_user_genomes;
 	string         color_for_user2_genomes;
-	string         tree_shape;  /* circle, wedge, rect */
+	/*string         tree_shape;*/  /* circle, wedge, rect */
     } build_microbial_speciestree_Input;
 
     typedef structure {

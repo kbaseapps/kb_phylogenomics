@@ -817,13 +817,9 @@ build_microbial_speciestree_Input is a reference to a hash where the following k
 	desc has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	skeleton_set has a value which is a string
-	num_proximal_sisters has a value which is an int
-	proximal_sisters_ANI_spacing has a value which is a float
-	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
 	color_for_user2_genomes has a value which is a string
-	tree_shape has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
@@ -848,13 +844,9 @@ build_microbial_speciestree_Input is a reference to a hash where the following k
 	desc has a value which is a string
 	show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 	skeleton_set has a value which is a string
-	num_proximal_sisters has a value which is an int
-	proximal_sisters_ANI_spacing has a value which is a float
-	color_for_reference_genomes has a value which is a string
 	color_for_skeleton_genomes has a value which is a string
 	color_for_user_genomes has a value which is a string
 	color_for_user2_genomes has a value which is a string
-	tree_shape has a value which is a string
 workspace_name is a string
 data_obj_ref is a string
 data_obj_name is a string
@@ -3235,13 +3227,9 @@ output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 skeleton_set has a value which is a string
-num_proximal_sisters has a value which is an int
-proximal_sisters_ANI_spacing has a value which is a float
-color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
 color_for_user2_genomes has a value which is a string
-tree_shape has a value which is a string
 
 </pre>
 
@@ -3257,13 +3245,9 @@ output_tree_name has a value which is a kb_phylogenomics.data_obj_name
 desc has a value which is a string
 show_skeleton_genome_sci_name has a value which is a kb_phylogenomics.bool
 skeleton_set has a value which is a string
-num_proximal_sisters has a value which is an int
-proximal_sisters_ANI_spacing has a value which is a float
-color_for_reference_genomes has a value which is a string
 color_for_skeleton_genomes has a value which is a string
 color_for_user_genomes has a value which is a string
 color_for_user2_genomes has a value which is a string
-tree_shape has a value which is a string
 
 
 =end text

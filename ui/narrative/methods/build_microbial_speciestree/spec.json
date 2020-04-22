@@ -114,56 +114,6 @@
             }
         },
         {
-            "id": "num_proximal_sisters",
-            "optional": false,
-            "advanced": false,
-            "allow_multiple": false,
-            "default_values": [ "0" ],
-            "field_type": "text",
-            "text_options": {
-	    	"validate_as": "int",
-	    	"min_float": "0",
-	    	"max_float": "100"
-            }
-        },
-        {
-            "id": "proximal_sisters_ANI_spacing",
-            "optional": false,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values": [ "0.0" ],
-            "field_type": "text",
-            "text_options": {
-	    	"validate_as": "float",
-	    	"min_float": "0.0",
-	    	"max_float": "20.0"
-            }
-        },
-        {
-            "id": "color_for_reference_genomes",
-            "optional": true,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values": [ "no_color" ],
-            "field_type": "dropdown",
-            "dropdown_options": {
-	    	"options": [
-				{
-					"value": "no_color",
-					"display": "no color",
-					"id": "add_color_to_reference_genomes-no_color",
-					"ui-name": "add_color_to_reference_genomes-no_color"
-				},
-				{
-					"value": "lightblue",
-					"display": "lightblue",
-					"id": "add_color_to_reference_genomes-lightblue",
-					"ui-name": "add_color_to_reference_genomes-lightblue"
-				}
-		]
-            }
-        },
-        {
             "id": "color_for_skeleton_genomes",
             "optional": true,
             "advanced": true,
@@ -236,24 +186,6 @@
             }
         },
         {
-            "id": "tree_shape",
-            "optional": true,
-            "advanced": true,
-            "allow_multiple": false,
-            "default_values": [ "rect" ],
-            "field_type": "dropdown",
-            "dropdown_options": {
-	    	"options": [
-				{
-					"value": "rect",
-					"display": "Rectangular",
-					"id": "tree_shape-rect",
-					"ui-name": "tree_shape-rect"
-				}
-		]
-            }
-        },
-        {
             "id": "output_tree_name",
             "optional": false,
             "advanced": false,
@@ -299,18 +231,6 @@
 		    "target_property": "skeleton_set"
                 },
                 {
-                    "input_parameter": "num_proximal_sisters",
-		    "target_property": "num_proximal_sisters"
-                },
-                {
-                    "input_parameter": "proximal_sisters_ANI_spacing",
-		    "target_property": "proximal_sisters_ANI_spacing"
-                },
-                {
-                    "input_parameter": "color_for_reference_genomes",
-		    "target_property": "color_for_reference_genomes"
-                },
-                {
                     "input_parameter": "color_for_skeleton_genomes",
 		    "target_property": "color_for_skeleton_genomes"
                 },
@@ -321,10 +241,6 @@
                 {
                     "input_parameter": "color_for_user2_genomes",
 		    "target_property": "color_for_user2_genomes"
-                },
-                {
-                    "input_parameter": "tree_shape",
-		    "target_property": "tree_shape"
                 },
                 {
                     "input_parameter": "output_tree_name",

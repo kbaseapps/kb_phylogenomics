@@ -182,13 +182,9 @@ class kb_phylogenomics(object):
            "output_tree_name" of type "data_obj_name", parameter "desc" of
            String, parameter "show_skeleton_genome_sci_name" of type "bool",
            parameter "skeleton_set" of String, parameter
-           "num_proximal_sisters" of Long, parameter
-           "proximal_sisters_ANI_spacing" of Double, parameter
-           "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter
-           "color_for_user2_genomes" of String, parameter "tree_shape" of
-           String
+           "color_for_user2_genomes" of String
         :returns: instance of type "build_microbial_speciestree_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String
