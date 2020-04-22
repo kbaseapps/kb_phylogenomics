@@ -1229,7 +1229,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Strain Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_strain_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_strain_tree_01()")  # uncomment to skip
     def test_build_strain_tree_01(self):
         method = 'build_strain_tree'
 
@@ -1342,7 +1342,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Pangenome Species Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_pangenome_species_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_pangenome_species_tree_01()")  # uncomment to skip
     def test_build_pangenome_species_tree_01(self):
         method = 'build_pangenome_species_tree'
 
