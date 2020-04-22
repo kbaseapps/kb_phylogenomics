@@ -21,6 +21,8 @@ from matplotlib.patches import Rectangle
 from installed_clients.WorkspaceClient import Workspace as workspaceService
 from installed_clients.DataFileUtilClient import DataFileUtil as DFUClient
 from installed_clients.KBaseReportClient import KBaseReport
+from installed_clients.SetAPIServiceClient import SetAPI
+from installed_clients.kb_ObjectUtiltiesClient import kb_ObjectUtilities
 from installed_clients.SpeciesTreeBuilderClient import SpeciesTreeBuilder
 from installed_clients.DomainAnnotationClient import DomainAnnotation
 from installed_clients.kb_blastClient import kb_blast
@@ -54,9 +56,6 @@ This module contains methods for running and visualizing results of phylogenomic
     #BEGIN_CLASS_HEADER
 
     def now_ISO(self):
-#        now_timestamp = datetime.datetime.now()
-#        now_secs_from_epoch = (end_timestamp - datetime.datetime(1970,1,1)).total_seconds()
-#        now_timestamp_in_iso = datetime.datetime.fromtimestamp(int(now_secs_from_epoch)).strftime('%Y-%m-%d_%T')
         now_timestamp = datetime.now()
         now_secs_from_epoch = (now_timestamp - datetime(1970,1,1)).total_seconds()
         now_timestamp_in_iso = datetime.fromtimestamp(int(now_secs_from_epoch)).strftime('%Y-%m-%d_%T')
@@ -903,6 +902,364 @@ This module contains methods for running and visualizing results of phylogenomic
         # ctx is the context object
         # return variables are: output
         #BEGIN build_strain_tree
+
+        #### STEP 0: init
+        ##
+        console = []
+        invalid_msgs = []
+        objects_created = []
+        file_links = []
+        self.log(console, 'Running build_strain_tree() with params=')
+        self.log(console, "\n" + pformat(params))
+        report = ''
+
+        # dirs
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        html_dir = os.path.join(output_dir, 'html')
+        if not os.path.exists(html_dir):
+            os.makedirs(html_dir)
+
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'beta'  # DEBUG
+        #SERVICE_VER = 'release'
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except Exception as e:
+            raise ValueError("unable to instantiate wsClient. "+str(e))
+        try:
+            dfuClient = DFUClient(self.callbackURL, token=token)
+        except Exception as e:
+            raise ValueError("unable to instantiate dfuClient. "+str(e))
+        try:
+            setAPI_Client = SetAPI(url=self.serviceWizardURL, token=token)
+        except Exception as e:
+            raise ValueError("unable to instantiate SetAPI. "+str(e))
+
+
+        #### STEP 1: do some basic checks, and set defaults
+        ##
+        required_params = ['workspace_name',
+                           'input_genome_refs',
+                           'output_tree_name',
+                           'genome_disp_name_config',
+                           'skip_trimming'
+                          ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
+
+        param_defaults = { 'desc': 'KBase Gene Tree '+params['output_tree_name'],
+                           'skip_trimming': '0',
+                           'muscle_maxiters': '16',
+                           'muscle_maxhours': '0.5',
+                           'gblocks_trim_level': '0',
+                           'gblocks_min_seqs_for_conserved': '0',
+                           'gblocks_min_seqs_for_flank': '0',
+                           'gblocks_max_pos_contig_nonconserved': '8',
+                           'gblocks_min_block_len': '10',
+                           'gblocks_remove_mask_positions_flag': '0',
+                           'fasttree_fastest': '0',
+                           'fasttree_pseudo': '0',
+                           'fasttree_gtr': '0',
+                           'fasttree_wag': '0',
+                           'fasttree_noml': '0',
+                           'fasttree_nome': '0',
+                           'fasttree_cat': '20',
+                           'fasttree_nocat': '0',
+                           'fasttree_gamma': '0'
+                           }
+        for arg in sorted(param_defaults.keys()):
+            if arg not in params or params[arg] == None or params[arg] == '':
+                params[arg] = param_defaults[arg]
+                self.log (console, 'setting param '+arg+' = '+str(param_defaults[arg]))
+
+
+        #### STEP 2: expand genomesets and uniq genome refs
+        ##
+        uniq_genome_refs = dict()
+        genome_refs = []
+        genomeSet_types =  ["KBaseSearch.GenomeSet","KBaseSets.GenomeSet"]
+        for input_ref in params['input_genome_refs']:
+            try:
+                input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+                input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            except Exception as e:
+                raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+            if input_obj_type in genomeSet_types:
+                # get set obj
+                try:
+                    genomeSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
+                except:
+                    raise ValueError("unable to fetch genomeSet: " + input_ref)
+
+                # get genome refs and object names
+                genome_ids = genomeSet_obj['elements'].keys()  # note: genome_id may be meaningless
+                for genome_id in genome_ids:
+                    uniq_genome_refs[genomeSet_obj['elements'][genome_id]['ref']] = True
+            else:
+                uniq_genome_refs[input_ref] = True
+
+        genome_refs = sorted(uniq_genome_refs.keys())
+            
+
+        #### STEP 3: load the method provenance from the context object
+        ##
+        self.log(console, "SETTING PROVENANCE")  # DEBUG
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects'] = []
+        for input_ref in params['input_genome_refs']:
+            provenance[0]['input_ws_objects'].append(input_ref)
+        provenance[0]['service'] = 'kb_phylogenomics'
+        provenance[0]['method'] = 'build_strain_tree'
+
+
+        #### STEP 4: Get assembly refs from genomes and save as AssemblySet object
+        ##
+        assembly_refs = []
+        invalid_msgs = []
+        for genome_ref in genome_refs:
+            try:
+                genome_obj = wsClient.get_objects2({'objects':[{'ref':genome_ref}]})['data'][0]
+                genome_obj_data = genome_obj['data']
+                genome_obj_info = genome_obj['info']
+            except Exception as e:
+                raise ValueError("unable to retrieve genome object for ref "+genome_ref+". "+str(e))
+            obj_name = genome_obj_info[NAME_I]
+            sci_name = genome_obj_data['scientific_name']
+
+            # validate
+            valid_assembly = True
+            if not genome_obj_data.get('assembly_ref'):
+                valid_assembly = False
+                self.log(invalid_msgs, "Genome "+obj_name+" sci_name: "+sci_name+" ref: "+genome_ref+" is missing assembly_ref.  Please update your object to current KBaseGenome.Genome version.\n")
+            if int(genome_obj_data['num_contigs']) != 1:
+                valid_assembly = False
+                self.log(invalid_msgs, "Genome "+obj_name+" sci_name: "+sci_name+" ref: "+genome_ref+" contains more than one contig.  This App can only align genomes with a single contig.  Please remove this genome and rerun.\n")
+
+            if valid_assembly:
+                assembly_refs.append(genome_obj_data['assembly_ref'])
+
+        if len(invalid_msgs) > 0:
+            raise ValueError ("ABORT: Genomes are not all passing validation (See messages above).")
+        # build assembly set for MUSCLE input
+        self.log(console, "SAVING AssemblySet...")
+        assemblySet_name = params['output_tree_name']+'.AssemblySet'
+        items = []
+        for ass_ref in assembly_refs:
+            try:
+                ass_info = wsClient.get_object_info_new({'objects': [{'ref': ass_ref}]})[0]
+            except Exception as e:
+                raise ValueError ("ABORT: unable to retrieve assembly object info for "+ass_ref+".\n"+str(e))
+            items.append({'ref': ass_ref, 'label': ass_info[NAME_I]})
+        assemblySet_obj = { 'description': 'AssemblySet for strain genomes in '+params['output_tree_name'],
+                            'items': items
+                          }
+        try:
+            assemblySet_ref = setAPI_Client.save_assembly_set_v1 (
+                {'workspace_name': params['workspace_name'],
+                 'output_object_name': assemblySet_name,
+                 'data': assemblySet_obj,
+                 })['set_ref']
+        except Exception as e:
+            raise ValueError ("ABORT: unable to save AssemblySet object.\n"+str(e))
+
+                    
+        #### STEP 5: Run MUSCLE
+        ##
+        sub_method = 'MUSCLE'
+        self.log(console, "RUNNING "+sub_method)
+        muscle_msa_name = params['output_tree_name']+'-MUSCLE.MSA'
+        muscle_params = {'workspace_name': params['workspace_name'],
+                         'desc': params['desc'] + ' MUSCLE MSA',
+                         'input_ref': assemblySet_ref,
+                         'output_name': muscle_msa_name,
+                         'maxiters': params['muscle_maxiters'],
+                         'maxhours': params['muscle_maxhours']
+                     }
+        try:
+            muscleClient = kb_muscle(self.callbackURL, token=token, service_ver=SERVICE_VER)
+        except Exception as e:
+            raise ValueError("unable to instantiate muscleClient. "+str(e))
+        try:
+            this_retVal = muscleClient.MUSCLE_nuc(muscle_params)
+        except Exception as e:
+            raise ValueError ("unable to run "+sub_method+". "+str(e))
+        try:
+            this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
+        except Exception as e:
+            raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
+        try:
+            muscle_msa_ref = this_report_obj['objects_created'][0]['ref']
+        except Exception as e:
+            raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+
+        # attach created items to final report
+        objects_created.extend(this_report_obj['objects_created'])
+        for file_link_item in this_report_obj['file_links']:
+            #this_shock_id = file_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+            new_file_link_item = {'shock_id': this_shock_id,
+                                  'name': file_link_item['name'],
+                                  'label': file_link_item['label']
+            }
+            file_links.append(new_file_link_item)
+
+
+        #### STEP 6: Run GBLOCKS
+        ##
+        sub_method = 'GBLOCKS'
+        if not params.get('skip_trimming') or int(params['skip_trimming']) == 1:
+            self.log(console, "SKIPPING "+sub_method)
+        else:
+            self.log(console, "RUNNING "+sub_method)
+            gblocks_msa_name = params['output_tree_name']+'-GBLOCKS.MSA'
+            gblocks_params = {'workspace_name': params['workspace_name'],
+                              'desc': params['desc'] + ' GBLOCKS MSA',
+                              'input_ref': muscle_msa_ref,
+                              'output_name': gblocks_msa_name,
+                              'trim_level': params['gblocks_trim_level'],
+                              'min_seqs_for_conserved': params['gblocks_min_seqs_for_conserved'],
+                              'min_seqs_for_flank': params['gblocks_min_seqs_for_flank'],
+                              'max_pos_contig_nonconserved': params['gblocks_max_pos_contig_nonconserved'],
+                              'min_block_len': params['gblocks_min_block_len'],
+                              'remove_mask_positions_flag': params['gblocks_remove_mask_positions_flag']
+            }
+            try:
+                gblocksClient = kb_gblocks(self.callbackURL, token=token, service_ver=SERVICE_VER)
+            except Exception as e:
+                raise ValueError("unable to instantiate gblocksClient. "+str(e))
+            try:
+                this_retVal = gblocksClient.run_Gblocks(gblocks_params)
+            except Exception as e:
+                raise ValueError ("unable to run "+sub_method+". "+str(e))
+            try:
+                this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
+            except Exception as e:
+                raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
+            try:
+                gblocks_msa_ref = this_report_obj['objects_created'][0]['ref']
+            except Exception as e:
+                raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+            objects_created.extend(this_report_obj['objects_created'])
+
+            # attach created items to final report
+            objects_created.extend(this_report_obj['objects_created'])
+            for file_link_item in this_report_obj['file_links']:
+                #this_shock_id = file_link_item['URL']
+                this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+                new_file_link_item = {'shock_id': this_shock_id,
+                                      'name': file_link_item['name'],
+                                      'label': file_link_item['label']
+                }
+                file_links.append(new_file_link_item)
+
+
+        #### STEP 7: Run FASTTREE
+        ##
+        sub_method = 'FASTTREE-2'
+        self.log(console, "RUNNING "+sub_method)
+        fasttree_output_name = params['output_tree_name']
+        fasttree_params = {'workspace_name': params['workspace_name'],
+                           'desc': params['desc'],
+                           'input_ref': gblocks_msa_ref,
+                           'output_name': fasttree_output_name,
+                           'species_tree_flag': '0',
+                           'intree_ref': None,
+                           'fastest': params['fasttree_fastest'],
+                           'pseudo': params['fasttree_pseudo'],
+                           'gtr': params['fasttree_gtr'],
+                           'wag': params['fasttree_wag'],
+                           'noml': params['fasttree_noml'],
+                           'nome': params['fasttree_nome'],
+                           'cat': params['fasttree_cat'],
+                           'nocat': params['fasttree_nocat'],
+                           'gamma': params['fasttree_gamma']
+                       }
+        try:
+            fasttreeClient = kb_fasttree(self.callbackURL, token=token, service_ver=SERVICE_VER)
+        except Exception as e:
+            raise ValueError("unable to instantiate fasttreeClient. "+str(e))
+        try:
+            this_retVal = fasttreeClient.run_FastTree(fasttree_params)
+        except Exception as e:
+            raise ValueError ("unable to run "+sub_method+". "+str(e))
+        try:
+            this_report_obj = wsClient.get_objects2({'objects':[{'ref':this_retVal['report_ref']}]})['data'][0]['data']
+        except Exception as e:
+            raise ValueError("unable to fetch "+sub_method+" report: " + this_retVal['report_ref']+". "+str(e))
+        try:
+            fasttree_tree_ref = this_report_obj['objects_created'][0]['ref']
+        except Exception as e:
+            raise ValueError("unable to get "+sub_method+" output obj ref. "+str(e))
+        fasttree_reportObj = this_report_obj
+
+        # attach created items to final report
+        objects_created.extend(this_report_obj['objects_created'])
+        for file_link_item in this_report_obj['file_links']:
+            #this_shock_id = file_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+            new_file_link_item = {'shock_id': this_shock_id,
+                                  'name': file_link_item['name'],
+                                  'label': file_link_item['label']
+            }
+            file_links.append(new_file_link_item)
+
+
+        #### STEP 8: Create Report
+        ##
+        reportName = 'build_strain_tree_report_' + str(uuid.uuid4())
+        reportObj = {'objects_created': [],
+                     'direct_html_link_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+                     }
+        # can't just copy substructures because format of those fields in report object different from the format needed to pass to create_extended_report() method
+        # for example, below doesn't work
+        #for field in ('direct_html_link_index', 'file_links', 'html_links'):
+        #    reportObj[field] = view_tree_reportObj[field]
+        #    self.log<(console, "REPORT "+field+": "+pformat(view_tree_reportObj[field]))  # DEBUG
+        #
+        reportObj['direct_html_link_index'] = fasttree_reportObj['direct_html_link_index']
+        for html_link_item in fasttree_reportObj['html_links']:
+            #this_shock_id = html_link_item['URL']
+            this_shock_id = re.sub('^.*/', '', html_link_item['URL'])
+            new_html_link_item = {'shock_id': this_shock_id,
+                                  'name': html_link_item['name'],
+                                  'label': html_link_item['label']
+            }
+            reportObj['html_links'].append(new_html_link_item)
+
+        reportObj['file_links'] = file_links
+        reportObj['objects_created'] = objects_created
+
+
+        # save report object
+        try:
+            reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        except:
+            raise ValueError ("unable to instantiate KBaseReport")
+        report_info = reportClient.create_extended_report(reportObj)
+
+        # Done
+        self.log(console, "BUILDING RETURN OBJECT")
+        output = {'report_name': report_info['name'],
+                  'report_ref': report_info['ref']
+                  }
+
+        self.log(console, "build_strain_tree() DONE")
         #END build_strain_tree
 
         # At some point might do deeper type checking...

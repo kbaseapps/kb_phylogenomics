@@ -54,26 +54,6 @@ parameters :
             Skeleton exemplar set
         short-hint : |
             Include lineage exemplars to form a skeleton for the Species Tree.
-    num_proximal_sisters :
-        ui-name : |
-            Proximal reference sister count
-        short-hint : |
-            Specify the number of close relatives from reference genome database.
-    proximal_sisters_ANI_spacing :
-        ui-name : |
-            Proximal sisters ANI spacing
-        short-hint : |
-            Enforce diversity between proximal sister genomes by trying to space them out by average nucleotide identity (ANI).
-    color_for_reference_genomes :
-        ui-name : |
-            Color proximal sisters
-        short-hint : |
-            Add color to final species tree image for proximal sister leaves.
-    color_for_skeleton_genomes :
-        ui-name : |
-            Color skeleton exemplars
-        short-hint : |
-            Add color to final species tree image for skeleton phylum exemplar leaves.
     color_for_user_genomes :
         ui-name : |
             Color user genomes
@@ -84,11 +64,6 @@ parameters :
             Color additional genomes
         short-hint : |
             Add color to final species tree image for additional genome leaves.
-    tree_shape :
-        ui-name : |
-            Tree shape
-        short-hint : |
-            Pick the shape for the tree in the generated image.
     output_tree_name :
         ui-name : |
             Output Tree
@@ -96,9 +71,9 @@ parameters :
             The name of the output Tree object
 
 description : |
-    <p>This App allows the user to build a microbial <b><i>SpeciesTree</i></b> of their genomes, with options to include Phylum exemplar genomes to act as a skeleton and public reference genomes.</p>
+    <p>This App allows the user to build a microbial <b><i>SpeciesTree</i></b> of their genomes, with options to include Phylum exemplar genomes to act as a skeleton.</p>
 
-    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> Dylan Chivian, based on the Insert Genomes into Species Tree App developed by Paramvir Dehal and Roman Sutormin. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>, based on the Insert Genomes into Species Tree App developed by Paramvir Dehal and Roman Sutormin. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
 
 
 publications :
