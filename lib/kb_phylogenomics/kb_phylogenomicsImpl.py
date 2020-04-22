@@ -2340,8 +2340,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         #### STEP 5: Get proximal sisters for user genomes
         ##
-        reference_genome_ref_order = []
-        reference_genome_disp = dict()
+        #reference_genome_ref_order = []
+        #reference_genome_disp = dict()
 
 
         #### STEP 6: Get Skeleton genomes
@@ -2388,12 +2388,12 @@ This module contains methods for running and visualizing results of phylogenomic
             combined_genome_ref_order.append(genome_ref)
         for genome_ref in skeleton_genome_ref_order:
             combined_genome_ref_order.append(genome_ref)
-        for genome_ref in reference_genome_ref_order:
-            combined_genome_ref_order.append(genome_ref)
+        #for genome_ref in reference_genome_ref_order:
+        #    combined_genome_ref_order.append(genome_ref)
         if len(skeleton_genome_ref_order) > 0:
             provenance[0]['input_ws_objects'].extend(skeleton_genome_ref_order)
-        if len(reference_genome_ref_order) > 0:
-            provenance[0]['input_ws_objects'].extend(reference_genome_ref_order)
+        #if len(reference_genome_ref_order) > 0:
+        #    provenance[0]['input_ws_objects'].extend(reference_genome_ref_order)
 
         # DEBUG
         #self.log (console, "GENOME REFS: "+"\t".join(combined_genome_ref_order))
@@ -2514,15 +2514,15 @@ This module contains methods for running and visualizing results of phylogenomic
                             'desc':                    params['desc'],
                             'show_skeleton_genome_sci_name': params['show_skeleton_genome_sci_name'],
                             'enforce_genome_version_match': 1,
-                            'reference_genome_disp':        reference_genome_disp,
+                            #'reference_genome_disp':        reference_genome_disp,
                             'skeleton_genome_disp':         skeleton_genome_disp,
                             'user_genome_disp':             query_genome_disp,
                             'user2_genome_disp':            query2_genome_disp,
-                            'color_for_reference_genomes':  params['color_for_reference_genomes'],
+                            #'color_for_reference_genomes':  params['color_for_reference_genomes'],
                             'color_for_skeleton_genomes':   params['color_for_skeleton_genomes'],
                             'color_for_user_genomes':       params['color_for_user_genomes'],
                             'color_for_user2_genomes':      params['color_for_user2_genomes'],
-                            'tree_shape':                   params['tree_shape']
+                            #'tree_shape':                   params['tree_shape']
         }
         self.log(console, "RUNNING trim_speciestree_to_genomeset() for tree: " + untrimmed_tree_name+" genomeSet: "+trimmed_genomeSet_name)
         trim_tree_retVal = self.trim_speciestree_to_genomeset(ctx, trim_tree_Params)[0]
