@@ -75,16 +75,10 @@
             "dropdown_options": {
 	    	"options": [
 				{
-					"value": "",
+					"value": "none",
 					"display": "None",
 					"id": "skeleton_set-none",
 					"ui-name": "skeleton_set-none"
-				},
-				{
-					"value": "test",
-					"display": "test",
-					"id": "skeleton_set-test",
-					"ui-name": "skeleton_set-test"
 				},
 				{
 					"value": "Bacteria-Archaea-Isolates-MAGs-SAGs",
