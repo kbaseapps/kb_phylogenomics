@@ -1,14 +1,14 @@
 #
 # define display information
 #
-name: Build Gene Tree - v1.6.0
+name: Build Pangenome Species Tree - v1.6.0
 
 tooltip: |
-    Build Gene Tree for a set of homologously related genes in a FeatureSet
+    Build Phylogenetic Tree for a set of Genomes using single copy markers found in Pangenome
 
 screenshots: []
 
-icon: genetree-purple.png
+icon: pangenometree-purple.png
 
 #
 # define a set of similar methods that might be useful to the user
@@ -29,16 +29,16 @@ suggestions:
 # Configure the display and description of parameters
 #
 parameters :
-    input_featureSet_ref :
+    input_pangenome_ref :
         ui-name : |
-            Features
+            Panenome
         short-hint : |
-            The related features
+            The pangenome for the set of genomes
     desc :
         ui-name : |
             Description
         short-hint : |
-            A description of the Gene Tree which will be added to the title in the tree image.
+            A description of the Species Tree which will be added to the title in the tree image.
     genome_disp_name_config :
         ui-name : |
             Display genome as
@@ -49,6 +49,11 @@ parameters :
             Skip Trimming
         short-hint : |
             For very similar genomes, indels may be key to phylogenetic inference, so skip trimming
+    perc_marker_presence_min :
+        ui-name : |
+            Marker Percentage
+        short-hint : |
+            Percentage of genomes in which a single-copy marker must be present
     muscle_maxiters :
         ui-name : |
             MUSCLE Max Iterations
@@ -151,9 +156,11 @@ parameters :
             The name of the output Tree object
 
 description : |
-    <p>This App allows the user to build a phylogenetic tree of related protein encoding genes using the amino acid sequences.</p>
+    <p>This App allows the user to build a phylogenetic tree of related genomes using the single-copy protein encoding genes found in a corresponding pangenome object.</p>
 
-    <p>Running this App is the functional equivalent to running each of the Apps in the <a href="https://narrative.kbase.us/narrative/22290">Build a Gene Tree</a> Tutorial Narrative, but is invoked as a single App.  It includes the same parameters as would be given to each of the steps separately, starting with <a href="https://narrative.kbase.us/#catalog/apps/kb_muscle/MUSCLE_prot">MUSCLE</a> to build the initial Multiple Sequence Alignment (MSA), then <a href="https://narrative.kbase.us/#catalog/apps/kb_gblocks/run_Gblocks">Gblocks</a> to trim the MSA to the less variable regions, and finally <a href="https://narrative.kbase.us/#catalog/apps/kb_fasttree/run_FastTree">FastTree-2</a> to build the phylogenetic inference from the distances between the sequences in the MSA.</p>
+    <p>Running this App is the functional equivalent to running each of the Apps in the <a href="https://narrative.kbase.us/narrative/22290">Build a Gene Tree</a> Tutorial Narrative, but with the additional steps of determining which genes are single-copy and frequently found in the genomes.  A concatenation of the multiple sequence alignments of each marker gene set is performed prior to tree construction.</p>
+
+    <p><b>Note:</b> this App should only be used on small genomes, such as viruses, or when the number of overlapping gene families is not so large as to require an MSA calculation for thousands of homologous gene families, as the method is not optimized for such applications.</p>
 
     <p><hr></p>
     <p><b>MUSCLE</b> performs a Multiple Sequence Alignment (MSA) of homologously related sequences.</p>

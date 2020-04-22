@@ -60,6 +60,63 @@ class kb_phylogenomics(object):
         return self._client.call_method('kb_phylogenomics.build_gene_tree',
                                         [params], self._service_ver, context)
 
+    def build_strain_tree(self, params, context=None):
+        """
+        :param params: instance of type "build_strain_tree_Input"
+           (build_strain_tree() ** ** build a species tree for a collection
+           of strain genomes) -> structure: parameter "workspace_name" of
+           type "workspace_name" (** Common types), parameter "desc" of
+           String, parameter "input_genome_refs" of type "data_obj_ref",
+           parameter "output_tree_name" of type "data_obj_name", parameter
+           "genome_disp_name_config" of String, parameter "skip_trimming" of
+           type "bool", parameter "muscle_maxiters" of Long, parameter
+           "muscle_maxhours" of Double, parameter "gblocks_trim_level" of
+           Long, parameter "gblocks_min_seqs_for_conserved" of Long,
+           parameter "gblocks_min_seqs_for_flank" of Long, parameter
+           "gblocks_max_pos_contig_nonconserved" of Long, parameter
+           "gblocks_min_block_len" of Long, parameter
+           "gblocks_remove_mask_positions_flag" of Long, parameter
+           "fasttree_fastest" of Long, parameter "fasttree_pseudo" of Long,
+           parameter "fasttree_gtr" of Long, parameter "fasttree_wag" of
+           Long, parameter "fasttree_noml" of Long, parameter "fasttree_nome"
+           of Long, parameter "fasttree_cat" of Long, parameter
+           "fasttree_nocat" of Long, parameter "fasttree_gamma" of Long
+        :returns: instance of type "build_strain_tree_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        return self._client.call_method('kb_phylogenomics.build_strain_tree',
+                                        [params], self._service_ver, context)
+
+    def build_pangenome_species_tree(self, params, context=None):
+        """
+        :param params: instance of type "build_pangenome_species_tree_Input"
+           (build_pangenome_species_tree() ** ** build a species tree using
+           the single copy genes from a pangenome) -> structure: parameter
+           "workspace_name" of type "workspace_name" (** Common types),
+           parameter "desc" of String, parameter "input_pangenome_ref" of
+           type "data_obj_ref", parameter "output_tree_name" of type
+           "data_obj_name", parameter "genome_disp_name_config" of String,
+           parameter "skip_trimming" of type "bool", parameter
+           "perc_marker_presence_min" of Double, parameter "muscle_maxiters"
+           of Long, parameter "muscle_maxhours" of Double, parameter
+           "gblocks_trim_level" of Long, parameter
+           "gblocks_min_seqs_for_conserved" of Long, parameter
+           "gblocks_min_seqs_for_flank" of Long, parameter
+           "gblocks_max_pos_contig_nonconserved" of Long, parameter
+           "gblocks_min_block_len" of Long, parameter
+           "gblocks_remove_mask_positions_flag" of Long, parameter
+           "fasttree_fastest" of Long, parameter "fasttree_pseudo" of Long,
+           parameter "fasttree_gtr" of Long, parameter "fasttree_wag" of
+           Long, parameter "fasttree_noml" of Long, parameter "fasttree_nome"
+           of Long, parameter "fasttree_cat" of Long, parameter
+           "fasttree_nocat" of Long, parameter "fasttree_gamma" of Long
+        :returns: instance of type "build_pangenome_species_tree_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        return self._client.call_method('kb_phylogenomics.build_pangenome_species_tree',
+                                        [params], self._service_ver, context)
+
     def view_tree(self, params, context=None):
         """
         :param params: instance of type "view_tree_Input" (view_tree() ** **
@@ -125,13 +182,9 @@ class kb_phylogenomics(object):
            "output_tree_name" of type "data_obj_name", parameter "desc" of
            String, parameter "show_skeleton_genome_sci_name" of type "bool",
            parameter "skeleton_set" of String, parameter
-           "num_proximal_sisters" of Long, parameter
-           "proximal_sisters_ANI_spacing" of Double, parameter
-           "color_for_reference_genomes" of String, parameter
            "color_for_skeleton_genomes" of String, parameter
            "color_for_user_genomes" of String, parameter
-           "color_for_user2_genomes" of String, parameter "tree_shape" of
-           String
+           "color_for_user2_genomes" of String
         :returns: instance of type "build_microbial_speciestree_Output" ->
            structure: parameter "report_name" of String, parameter
            "report_ref" of String

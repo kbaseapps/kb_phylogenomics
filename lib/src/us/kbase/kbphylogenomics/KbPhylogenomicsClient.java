@@ -181,6 +181,40 @@ public class KbPhylogenomicsClient {
     }
 
     /**
+     * <p>Original spec-file function name: build_strain_tree</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.BuildStrainTreeInput BuildStrainTreeInput} (original type "build_strain_tree_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.BuildStrainTreeOutput BuildStrainTreeOutput} (original type "build_strain_tree_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public BuildStrainTreeOutput buildStrainTree(BuildStrainTreeInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<BuildStrainTreeOutput>> retType = new TypeReference<List<BuildStrainTreeOutput>>() {};
+        List<BuildStrainTreeOutput> res = caller.jsonrpcCall("kb_phylogenomics.build_strain_tree", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: build_pangenome_species_tree</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.BuildPangenomeSpeciesTreeInput BuildPangenomeSpeciesTreeInput} (original type "build_pangenome_species_tree_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.BuildPangenomeSpeciesTreeOutput BuildPangenomeSpeciesTreeOutput} (original type "build_pangenome_species_tree_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public BuildPangenomeSpeciesTreeOutput buildPangenomeSpeciesTree(BuildPangenomeSpeciesTreeInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<BuildPangenomeSpeciesTreeOutput>> retType = new TypeReference<List<BuildPangenomeSpeciesTreeOutput>>() {};
+        List<BuildPangenomeSpeciesTreeOutput> res = caller.jsonrpcCall("kb_phylogenomics.build_pangenome_species_tree", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
      * <p>Original spec-file function name: view_tree</p>
      * <pre>
      * </pre>

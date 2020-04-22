@@ -30,13 +30,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "desc",
     "show_skeleton_genome_sci_name",
     "skeleton_set",
-    "num_proximal_sisters",
-    "proximal_sisters_ANI_spacing",
-    "color_for_reference_genomes",
     "color_for_skeleton_genomes",
     "color_for_user_genomes",
-    "color_for_user2_genomes",
-    "tree_shape"
+    "color_for_user2_genomes"
 })
 public class BuildMicrobialSpeciestreeInput {
 
@@ -54,20 +50,12 @@ public class BuildMicrobialSpeciestreeInput {
     private Long showSkeletonGenomeSciName;
     @JsonProperty("skeleton_set")
     private String skeletonSet;
-    @JsonProperty("num_proximal_sisters")
-    private Long numProximalSisters;
-    @JsonProperty("proximal_sisters_ANI_spacing")
-    private Double proximalSistersANISpacing;
-    @JsonProperty("color_for_reference_genomes")
-    private String colorForReferenceGenomes;
     @JsonProperty("color_for_skeleton_genomes")
     private String colorForSkeletonGenomes;
     @JsonProperty("color_for_user_genomes")
     private String colorForUserGenomes;
     @JsonProperty("color_for_user2_genomes")
     private String colorForUser2Genomes;
-    @JsonProperty("tree_shape")
-    private String treeShape;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -175,51 +163,6 @@ public class BuildMicrobialSpeciestreeInput {
         return this;
     }
 
-    @JsonProperty("num_proximal_sisters")
-    public Long getNumProximalSisters() {
-        return numProximalSisters;
-    }
-
-    @JsonProperty("num_proximal_sisters")
-    public void setNumProximalSisters(Long numProximalSisters) {
-        this.numProximalSisters = numProximalSisters;
-    }
-
-    public BuildMicrobialSpeciestreeInput withNumProximalSisters(Long numProximalSisters) {
-        this.numProximalSisters = numProximalSisters;
-        return this;
-    }
-
-    @JsonProperty("proximal_sisters_ANI_spacing")
-    public Double getProximalSistersANISpacing() {
-        return proximalSistersANISpacing;
-    }
-
-    @JsonProperty("proximal_sisters_ANI_spacing")
-    public void setProximalSistersANISpacing(Double proximalSistersANISpacing) {
-        this.proximalSistersANISpacing = proximalSistersANISpacing;
-    }
-
-    public BuildMicrobialSpeciestreeInput withProximalSistersANISpacing(Double proximalSistersANISpacing) {
-        this.proximalSistersANISpacing = proximalSistersANISpacing;
-        return this;
-    }
-
-    @JsonProperty("color_for_reference_genomes")
-    public String getColorForReferenceGenomes() {
-        return colorForReferenceGenomes;
-    }
-
-    @JsonProperty("color_for_reference_genomes")
-    public void setColorForReferenceGenomes(String colorForReferenceGenomes) {
-        this.colorForReferenceGenomes = colorForReferenceGenomes;
-    }
-
-    public BuildMicrobialSpeciestreeInput withColorForReferenceGenomes(String colorForReferenceGenomes) {
-        this.colorForReferenceGenomes = colorForReferenceGenomes;
-        return this;
-    }
-
     @JsonProperty("color_for_skeleton_genomes")
     public String getColorForSkeletonGenomes() {
         return colorForSkeletonGenomes;
@@ -265,21 +208,6 @@ public class BuildMicrobialSpeciestreeInput {
         return this;
     }
 
-    @JsonProperty("tree_shape")
-    public String getTreeShape() {
-        return treeShape;
-    }
-
-    @JsonProperty("tree_shape")
-    public void setTreeShape(String treeShape) {
-        this.treeShape = treeShape;
-    }
-
-    public BuildMicrobialSpeciestreeInput withTreeShape(String treeShape) {
-        this.treeShape = treeShape;
-        return this;
-    }
-
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -292,7 +220,7 @@ public class BuildMicrobialSpeciestreeInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((((((((("BuildMicrobialSpeciestreeInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRefs=")+ inputGenomeRefs)+", inputGenome2Refs=")+ inputGenome2Refs)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", skeletonSet=")+ skeletonSet)+", numProximalSisters=")+ numProximalSisters)+", proximalSistersANISpacing=")+ proximalSistersANISpacing)+", colorForReferenceGenomes=")+ colorForReferenceGenomes)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", colorForUser2Genomes=")+ colorForUser2Genomes)+", treeShape=")+ treeShape)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((("BuildMicrobialSpeciestreeInput"+" [workspaceName=")+ workspaceName)+", inputGenomeRefs=")+ inputGenomeRefs)+", inputGenome2Refs=")+ inputGenome2Refs)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", showSkeletonGenomeSciName=")+ showSkeletonGenomeSciName)+", skeletonSet=")+ skeletonSet)+", colorForSkeletonGenomes=")+ colorForSkeletonGenomes)+", colorForUserGenomes=")+ colorForUserGenomes)+", colorForUser2Genomes=")+ colorForUser2Genomes)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

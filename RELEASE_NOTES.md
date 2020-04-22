@@ -2,9 +2,7 @@
 __Changes__
 - updated Pfam version to 32.0 in VFP apps
 - added Build Gene Tree App
-- added Build Strain Tree App
-- added Build Pangenome Species Tree App
-- added Genome Object name instead of Species Name option for report display to Build Gene Tree, Build Strain Tree, Build Pangenome Species Tree, View Pangenome Circle Plot, View Phylogenetic Pangenome, but not VFP Apps because they already had the option.
+- added Genome Object name instead of Species Name option for report display to Build Gene Tree, View Pangenome Circle Plot, View Phylogenetic Pangenome, but not VFP Apps because they already had the option.
 
 ### Version 1.5.1
 __Changes__
