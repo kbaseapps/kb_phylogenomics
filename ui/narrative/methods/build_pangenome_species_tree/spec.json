@@ -1,11 +1,11 @@
 {
-    "ver": "1.6.0",
+    "ver": "1.7.0",
     "authors": [
         "dylan"
     ],
     "contact": "http://kbase.us/contact-us/",
     "visible": true,
-    "categories": ["inactive", "comparative_genomics"],
+    "categories": ["active", "comparative_genomics"],
     "widgets": {
         "input": null,
         "output": "no-display"

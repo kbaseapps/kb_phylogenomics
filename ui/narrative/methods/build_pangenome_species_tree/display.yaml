@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Build Pangenome Species Tree - v1.6.0
+name: Build Pangenome Species Tree - v1.7.0
 
 tooltip: |
     Build Phylogenetic Tree for a set of Genomes using single copy markers found in Pangenome
