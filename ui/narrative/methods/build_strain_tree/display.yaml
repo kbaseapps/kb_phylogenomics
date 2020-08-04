@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Build Strain Tree - v1.6.0
+name: Build Strain Tree - v1.7.0
 
 tooltip: |
     Build Phylogenetic Tree for a set of Strain Genomes

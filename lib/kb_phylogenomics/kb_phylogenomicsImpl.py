@@ -22,7 +22,7 @@ from installed_clients.WorkspaceClient import Workspace as workspaceService
 from installed_clients.DataFileUtilClient import DataFileUtil as DFUClient
 from installed_clients.KBaseReportClient import KBaseReport
 from installed_clients.SetAPIServiceClient import SetAPI
-#from installed_clients.kb_ObjectUtiltiesClient import kb_ObjectUtilities
+from installed_clients.kb_ObjectUtiltiesClient import kb_ObjectUtilities
 from installed_clients.SpeciesTreeBuilderClient import SpeciesTreeBuilder
 from installed_clients.DomainAnnotationClient import DomainAnnotation
 from installed_clients.kb_blastClient import kb_blast

@@ -1,3 +1,8 @@
+### Version 1.7.0
+__Changes__
+- DEBUGGING added Build Strain Tree App
+- DEBUGGING added Build Core Pangenome SpeciesTree App
+
 ### Version 1.6.0
 __Changes__
 - updated Pfam version to 32.0 in VFP apps

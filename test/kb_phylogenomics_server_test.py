@@ -434,7 +434,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
-    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
+    @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_02_SpeciesTree(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -506,7 +506,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for GenomeSet
     ##
-    # HIDE @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
     def test_view_fxn_profile_01(self):
         method = 'view_fxn_profile'
 
@@ -622,7 +622,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for FeatureSet
     ##
-    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
     def test_view_fxn_profile_featureSet_01(self):
         method = 'view_fxn_profile_featureSet'
 
@@ -738,7 +738,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for Tree
     ##
-    # HIDE @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
     def test_view_fxn_profile_phylo_01(self):
         method = 'view_fxn_profile_phylo'
 
@@ -820,7 +820,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome Circle Plot
     ##
-    # HIDE @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
     def test_view_pan_circle_plot_01(self):
         method = 'view_pan_circle_plot'
 
@@ -882,7 +882,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome on Tree
     ##
-    # HIDE @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
     def test_view_pan_phylo_01(self):
         method = 'view_pan_phylo'
 
@@ -945,7 +945,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Tree
     ##
-    # HIDE @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
     def test_view_tree_01(self):
         method = 'view_tree'
 
@@ -998,7 +998,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Trim SpeciesTree to GenomeSet
     ##
-    # HIDE @unittest.skip("skipped test_trim_speciestree_to_genomeset_01()")  # uncomment to skip
+    @unittest.skip("skipped test_trim_speciestree_to_genomeset_01()")  # uncomment to skip
     def test_trim_speciestree_to_genomeset_01(self):
         method = 'trim_speciestree_to_genomeset'
 
@@ -1105,7 +1105,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
     ##
     ## **** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
     ##
-    # HIDE @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
     def test_build_microbial_speciestree_01(self):
         method = 'build_microbial_speciestree'
 
@@ -1231,7 +1231,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
     ##
     ## **** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
     ##
-    # HIDE @unittest.skip("skipped test_build_microbial_speciestree_no_skeleton_02()")  # uncomment to skip
+    @unittest.skip("skipped test_build_microbial_speciestree_no_skeleton_02()")  # uncomment to skip
     def test_build_microbial_speciestree_no_skeleton_02(self):
         method = 'build_microbial_speciestree'
 
@@ -1355,7 +1355,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Strain Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_strain_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_strain_tree_01()")  # uncomment to skip
     def test_build_strain_tree_01(self):
         method = 'build_strain_tree'
 
@@ -1452,7 +1452,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'fasttree_nocat': '0',
                    'fasttree_gamma': '0'
                }
-        ret = self.getImpl().build_microbial_speciestree(self.getContext(),params)[0]
+        ret = self.getImpl().build_strain_tree(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])
 
         # check created obj
@@ -1468,7 +1468,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Pangenome Species Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_pangenome_species_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_pangenome_species_tree_01()")  # uncomment to skip
     def test_build_pangenome_species_tree_01(self):
         method = 'build_pangenome_species_tree'
 
@@ -1531,7 +1531,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'fasttree_nocat': '0',
                    'fasttree_gamma': '0'
                }
-        ret = self.getImpl().build_microbial_speciestree(self.getContext(),params)[0]
+        ret = self.getImpl().build_pangenome_speciestree(self.getContext(),params)[0]
         self.assertIsNotNone(ret['report_ref'])
 
         # check created obj
@@ -1547,7 +1547,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Find Homologs with Genome Context
     ##
-    # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
+    @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
     def test_find_homologs_with_genome_context_01(self):
         method = 'find_homologs_with_genome_context'
 
@@ -1651,7 +1651,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Find Homologs with Genome Context (with queries with no matches)
     ##
-    # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_02()")  # uncomment to skip
+    @unittest.skip("skipped test_find_homologs_with_genome_context_02()")  # uncomment to skip
     def test_find_homologs_with_genome_context_02(self):
         method = 'find_homologs_with_genome_context'
 
@@ -1755,7 +1755,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Gene Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_gene_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_gene_tree_01()")  # uncomment to skip
     def test_build_gene_tree_01(self):
         method = 'build_gene_tree'
 
@@ -1851,7 +1851,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Get Categories auto-configure method
     ##
-    # HIDE @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
+    @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
     def test_get_categories(self):
         method = 'get_configure_categories'
 
