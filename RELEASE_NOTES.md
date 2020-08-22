@@ -1,5 +1,6 @@
 ### Version 1.7.0
 __Changes__
+- DEBUGGING fixed DomainAnnotation_Sets() unit test
 - DEBUGGING added Build Strain Tree App
 - DEBUGGING added Build Core Pangenome SpeciesTree App
 
