@@ -12,9 +12,10 @@ from __future__ import print_function
 try:
     # baseclient and this client are in a package
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
-except ImportError:
+except:
     # no they aren't
     from baseclient import BaseClient as _BaseClient  # @Reimport
+import time
 
 
 class KBParallel(object):
@@ -23,7 +24,7 @@ class KBParallel(object):
             self, url=None, timeout=30 * 60, user_id=None,
             password=None, token=None, ignore_authrc=False,
             trust_all_ssl_certificates=False,
-            auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login',
+            auth_svc='https://kbase.us/services/authorization/Sessions/Login',
             service_ver='release',
             async_job_check_time_ms=100, async_job_check_time_scale_percent=150, 
             async_job_check_max_time_ms=300000):
@@ -39,47 +40,39 @@ class KBParallel(object):
             async_job_check_time_scale_percent=async_job_check_time_scale_percent,
             async_job_check_max_time_ms=async_job_check_max_time_ms)
 
+    def _check_job(self, job_id):
+        return self._client._check_job('KBParallel', job_id)
+
+    def _run_batch_submit(self, params, context=None):
+        return self._client._submit_job(
+             'KBParallel.run_batch', [params],
+             self._service_ver, context)
+
     def run_batch(self, params, context=None):
         """
-        Run many tasks in parallel, either locally or remotely.
-        :param params: instance of type "RunBatchParams" (* Run a set of
-           multiple batch jobs, either locally or remotely. If run remotely,
-           they will be * started using NarrativeJobService#run_job. If run
-           locally, the job will be started using the * callback server. * *
-           Required arguments: *   tasks - a list of task objects to be run
-           in batch (see the Task type). * Optional arguments: *   runner -
-           one of 'local_serial', 'local_parallel', or 'parallel': *     
-           local_serial - run tasks on the node in serial, ignoring the
-           concurrent task limits *      local_parallel - run multiple tasks
-           on the node in parallel. Unless you know where your *        job
-           will run, you probably don't want to set this higher than 2 *     
-           parallel - look at both the local task and njsw task limits and
-           operate appropriately. *        Therefore, you could always just
-           select this option and tweak the task limits to get *       
-           either serial_local or parallel_local behavior. *  
-           concurrent_njsw_tasks - how many concurrent tasks to run remotely
-           on NJS. This has a *     maximum of 50. *   concurrent_local_tasks
-           - how many concurrent tasks to run locally. This has a hard
-           maximum *     of 20, but you will only want to set this to about 2
-           due to resource limitations. *   max_retries - how many times to
-           re-attempt failed jobs. This has a minimum of 1 and *     maximum
-           of 5. *   parent_job_id - you can manually pass in a custom job ID
-           which will be assigned to NJS *     sub-jobs that are spawned by
-           KBParallel. This is useful if you need to track the running *    
-           tasks that were started by KBParallel. *   workspace_id - a custom
-           workspace ID to assign to new NJS jobs that are spawned by *    
-           KBParallel.) -> structure: parameter "tasks" of list of type
-           "Task" (* Specifies a task to run by module name, method name,
-           version, and parameters. Parameters is * an arbitrary data object
-           passed to the function.) -> structure: parameter "function" of
-           type "Function" (Specifies a specific KBase module function to
-           run) -> structure: parameter "module_name" of String, parameter
-           "function_name" of String, parameter "version" of String,
-           parameter "params" of unspecified object, parameter "runner" of
-           String, parameter "concurrent_local_tasks" of Long, parameter
-           "concurrent_njsw_tasks" of Long, parameter "max_retries" of Long,
-           parameter "parent_job_id" of String, parameter "workspace_id" of
-           Long
+        :param params: instance of type "RunBatchParams" (runner =
+           serial_local | parallel_local | parallel serial_local will run
+           tasks on the node in serial, ignoring the concurrent task limits
+           parallel_local will run multiple tasks on the node in parallel,
+           and will ignore the njsw_task parameter. Unless you know where
+           your job will run, you probably don't want to set this higher than
+           2 parallel will look at both the local task and njsw task limits
+           and operate appropriately. Therefore, you could always just select
+           this option and tweak the task limits to get either serial_local
+           or parallel_local behavior. TODO: wsid - if defined, the workspace
+           id or name (service will handle either string or int) on which to
+           attach the job. Anyone with permissions to that WS will be able to
+           view job status for this run.) -> structure: parameter "tasks" of
+           list of type "Task" (Specifies a task to run.  Parameters is an
+           arbitrary data object passed to the function.  If it is a list,
+           the params will be interpreted as) -> structure: parameter
+           "function" of type "Function" (Specifies a specific KBase module
+           function to run) -> structure: parameter "module_name" of String,
+           parameter "function_name" of String, parameter "version" of
+           String, parameter "params" of unspecified object, parameter
+           "runner" of String, parameter "concurrent_local_tasks" of Long,
+           parameter "concurrent_njsw_tasks" of Long, parameter "max_retries"
+           of Long
         :returns: instance of type "BatchResults" (The list of results will
            be in the same order as the input list of tasks.) -> structure:
            parameter "results" of list of type "TaskResult" -> structure:
@@ -95,9 +88,28 @@ class KBParallel(object):
            add: AWE node ID, client group, total run time, etc) -> structure:
            parameter "location" of String, parameter "job_id" of String
         """
-        return self._client.run_job('KBParallel.run_batch',
-                                    [params], self._service_ver, context)
+        job_id = self._run_batch_submit(params, context)
+        async_job_check_time = self._client.async_job_check_time
+        while True:
+            time.sleep(async_job_check_time)
+            async_job_check_time = (async_job_check_time *
+                self._client.async_job_check_time_scale_percent / 100.0)
+            if async_job_check_time > self._client.async_job_check_max_time:
+                async_job_check_time = self._client.async_job_check_max_time
+            job_state = self._check_job(job_id)
+            if job_state['finished']:
+                return job_state['result'][0]
 
     def status(self, context=None):
-        return self._client.run_job('KBParallel.status',
-                                    [], self._service_ver, context)
+        job_id = self._client._submit_job('KBParallel.status', 
+            [], self._service_ver, context)
+        async_job_check_time = self._client.async_job_check_time
+        while True:
+            time.sleep(async_job_check_time)
+            async_job_check_time = (async_job_check_time *
+                self._client.async_job_check_time_scale_percent / 100.0)
+            if async_job_check_time > self._client.async_job_check_max_time:
+                async_job_check_time = self._client.async_job_check_max_time
+            job_state = self._check_job(job_id)
+            if job_state['finished']:
+                return job_state['result'][0]
