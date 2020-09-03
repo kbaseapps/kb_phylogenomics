@@ -3064,7 +3064,7 @@ This module contains methods for running and visualizing results of phylogenomic
             # da_retVal = daClient.search_domains(DomainAnnotation_Params)
 
         # run them in batch
-        batch_run_params = {'tasks': tasks,
+        batch_run_params = {'tasks': parallel_tasks,
                             'runner': 'parallel',
                             'concurrent_local_tasks': 1,
                             'concurrent_njsw_tasks': 0,
