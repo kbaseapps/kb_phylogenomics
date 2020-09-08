@@ -29,6 +29,7 @@ from installed_clients.kb_blastClient import kb_blast
 from installed_clients.kb_muscleClient import kb_muscle
 from installed_clients.kb_gblocksClient import kb_gblocks
 from installed_clients.kb_fasttreeClient import kb_fasttree
+from installed_clients.KBParallelClient import KBParallel
 #END_HEADER
 
 
@@ -49,7 +50,7 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.6.0"
+    VERSION = "1.7.0"
     GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
     GIT_COMMIT_HASH = "eadd0da30c0de32c2766f0eb74812f731ba1bd84"
 
@@ -3009,18 +3010,25 @@ This module contains methods for running and visualizing results of phylogenomic
             domain_annot_done[genome_ref] = True
 
 
-        ### STEP 4: run DomainAnnotation on each genome in set
+        ### STEP 4: run DomainAnnotation on each genome in set, in parallel
         try:
             #SERVICE_VER = 'dev'  # DEBUG
             #SERVICE_VER = 'release'
             SERVICE_VER = 'beta'  # has Pfam32
-            daClient = DomainAnnotation(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
-            #daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
+            # no longer used, since run in parallel:
+            # daClient = DomainAnnotation(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
+            # daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
             raise ValueError("unable to instantiate DomainAnnotationClient")
 
-        # RUN DomainAnnotations
+        try:
+            parallelClient = KBParallel(self.callbackURL)
+        except:
+            raise ValueError("unable to instantiate KBParallelClient")
+        
+        # RUN DomainAnnotations in parallel
         report_text = ''
+        parallel_tasks = []
         for genome_i, genome_ref in enumerate(genome_refs):
 
             if 'override_annot' not in params or params['override_annot'] != '1':
@@ -3041,15 +3049,41 @@ This module contains methods for running and visualizing results of phylogenomic
                                        #'ws': ws_name_by_genome_ref[genome_ref],
                                        'output_result_id': domains_obj_name
                                        }
-            self.log(console, "RUNNING domain annotation for genome: " + genome_obj_name_by_ref[genome_ref])
+
+            parallel_tasks.append( {'module_name': 'DomainAnnotation',
+                                    'function_name': 'search_domains',
+                                    'version': SERVICE_VER,
+                                    'parameters': DomainAnnotation_Params
+                                    } )
+            
+            self.log(console, "QUEUING domain annotation for genome: " + genome_obj_name_by_ref[genome_ref])
             self.log(console, "\n" + pformat(DomainAnnotation_Params))
             self.log(console, str(datetime.now()))
 
-            #da_retVal = daClient.search_domains (DomainAnnotation_Params)[0]
-            da_retVal = daClient.search_domains(DomainAnnotation_Params)
-            this_output_ref = da_retVal['output_result_id']
-            this_report_name = da_retVal['report_name']
-            this_report_ref = da_retVal['report_ref']
+            # da_retVal = daClient.search_domains(DomainAnnotation_Params)
+
+        # run them in batch
+        batch_run_params = {'tasks': parallel_tasks,
+                            'runner': 'parallel',
+                            'concurrent_local_tasks': 1,
+                            'concurrent_njsw_tasks': 0,
+                            'max_retries': 2}
+
+        self.log(console, "RUNNING all domain annotations in parallel.")
+        self.log(console, "\n" + pformat(batch_run_params))
+        self.log(console, str(datetime.now()))
+        kbparallel_results = parallelClient.run_batch(batch_run_params)
+
+        for fd in kbparallel_results['results']:
+           if fd['result_package']['error'] is not None:
+               raise ValueError('kb_parallel failed to complete without throwing an error on at least one of the nodes.')
+
+        ### STEP 4b:  combine and save reports
+        for fd in kbparallel_results['results']:
+            # self.log(console, "FD = " + pformat(fd))
+            this_output_ref = fd['result_package']['result'][0]['output_result_id']
+            this_report_name = fd['result_package']['result'][0]['report_name']
+            this_report_ref = fd['result_package']['result'][0]['report_ref']
 
             try:
                 this_report_obj = wsClient.get_objects([{'ref': this_report_ref}])[0]['data']
