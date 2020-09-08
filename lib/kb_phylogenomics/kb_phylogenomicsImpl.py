@@ -3015,7 +3015,8 @@ This module contains methods for running and visualizing results of phylogenomic
             #SERVICE_VER = 'dev'  # DEBUG
             #SERVICE_VER = 'release'
             SERVICE_VER = 'beta'  # has Pfam32
-            daClient = DomainAnnotation(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
+            # no longer used, since run in parallel:
+            # daClient = DomainAnnotation(url=self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)  # SDK Local
             # daClient = DomainAnnotation (url=self.serviceWizardURL, token=ctx['token'], service_ver=SERVICE_VER)  # Dynamic service
         except:
             raise ValueError("unable to instantiate DomainAnnotationClient")
