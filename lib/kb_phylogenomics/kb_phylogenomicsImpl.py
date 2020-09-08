@@ -2846,7 +2846,6 @@ This module contains methods for running and visualizing results of phylogenomic
         # return the results
         return [output]
 
-    JMC:
     def run_DomainAnnotation_Sets(self, ctx, params):
         """
         :param params: instance of type "run_DomainAnnotation_Sets_Input"
@@ -3080,7 +3079,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         ### STEP 4b:  combine and save reports
         for fd in kbparallel_results['results']:
-            self.log(console, "FD = " + pformat(fd))
+            # self.log(console, "FD = " + pformat(fd))
             this_output_ref = fd['result_package']['result'][0]['output_result_id']
             this_report_name = fd['result_package']['result'][0]['report_name']
             this_report_ref = fd['result_package']['result'][0]['report_ref']
