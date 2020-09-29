@@ -3044,7 +3044,7 @@ This module contains methods for running and visualizing results of phylogenomic
             domains_obj_name += '.DomainAnnotation'
             domains_obj_name = 'domains_' + domains_obj_name  # DEBUG
             DomainAnnotation_Params = {'genome_ref': genome_ref,
-                                       'dms_ref': 'KBasePublicGeneDomains/All',
+                                       'dms_ref': 'KBasePublicGeneDomains/All-1.0.8', # for Pfam 32
                                        'ws': params['workspace_name'],
                                        #'ws': ws_name_by_genome_ref[genome_ref],
                                        'output_result_id': domains_obj_name
