@@ -3044,7 +3044,7 @@ This module contains methods for running and visualizing results of phylogenomic
             domains_obj_name += '.DomainAnnotation'
             domains_obj_name = 'domains_' + domains_obj_name  # DEBUG
             DomainAnnotation_Params = {'genome_ref': genome_ref,
-                                       'dms_ref': 'KBasePublicGeneDomains/All',
+                                       'dms_ref': 'KBasePublicGeneDomains/All-1.0.8', # for Pfam 32
                                        'ws': params['workspace_name'],
                                        #'ws': ws_name_by_genome_ref[genome_ref],
                                        'output_result_id': domains_obj_name
@@ -3062,35 +3062,42 @@ This module contains methods for running and visualizing results of phylogenomic
 
             # da_retVal = daClient.search_domains(DomainAnnotation_Params)
 
-        # run them in batch
-        batch_run_params = {'tasks': parallel_tasks,
-                            'runner': 'parallel',
-                            'concurrent_local_tasks': 1,
-                            'concurrent_njsw_tasks': 0,
-                            'max_retries': 2}
+        if len(parallel_tasks)==0:
+            self.log(console, "All domain annotations have already been done.")
+            self.log(console, "Select 'overwrite existing domain annotations' if you want to redo them.")
+            report_text += "All domain annotations have already been done.\n"
+            report_text += "Select 'overwrite existing domain annotations' if you want to redo them.\n"
 
-        self.log(console, "RUNNING all domain annotations in parallel.")
-        self.log(console, "\n" + pformat(batch_run_params))
-        self.log(console, str(datetime.now()))
-        kbparallel_results = parallelClient.run_batch(batch_run_params)
+        else:
+            # run them in batch
+            batch_run_params = {'tasks': parallel_tasks,
+                                'runner': 'parallel',
+                                'concurrent_local_tasks': 1,
+                                'concurrent_njsw_tasks': 0,
+                                'max_retries': 2}
 
-        for fd in kbparallel_results['results']:
-           if fd['result_package']['error'] is not None:
-               raise ValueError('kb_parallel failed to complete without throwing an error on at least one of the nodes.')
+            self.log(console, "RUNNING all domain annotations in parallel.")
+            self.log(console, "\n" + pformat(batch_run_params))
+            self.log(console, str(datetime.now()))
+            kbparallel_results = parallelClient.run_batch(batch_run_params)
 
-        ### STEP 4b:  combine and save reports
-        for fd in kbparallel_results['results']:
-            # self.log(console, "FD = " + pformat(fd))
-            this_output_ref = fd['result_package']['result'][0]['output_result_id']
-            this_report_name = fd['result_package']['result'][0]['report_name']
-            this_report_ref = fd['result_package']['result'][0]['report_ref']
+            for fd in kbparallel_results['results']:
+                if fd['result_package']['error'] is not None:
+                    raise ValueError('kb_parallel failed to complete without throwing an error on at least one of the nodes.')
 
-            try:
-                this_report_obj = wsClient.get_objects([{'ref': this_report_ref}])[0]['data']
-            except:
-                raise ValueError("unable to fetch report: " + this_report_ref)
-            report_text += this_report_obj['text_message']
-            report_text += "\n\n"
+            ### STEP 4b:  combine and save reports
+            for fd in kbparallel_results['results']:
+                # self.log(console, "FD = " + pformat(fd))
+                this_output_ref = fd['result_package']['result'][0]['output_result_id']
+                this_report_name = fd['result_package']['result'][0]['report_name']
+                this_report_ref = fd['result_package']['result'][0]['report_ref']
+
+                try:
+                    this_report_obj = wsClient.get_objects([{'ref': this_report_ref}])[0]['data']
+                except:
+                    raise ValueError("unable to fetch report: " + this_report_ref)
+                report_text += this_report_obj['text_message']
+                report_text += "\n\n"
 
         ### STEP 5: build and save the report
         reportObj = {
