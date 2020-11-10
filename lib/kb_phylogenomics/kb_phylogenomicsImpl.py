@@ -691,6 +691,7 @@ This module contains methods for running and visualizing results of phylogenomic
                          'desc': params['desc'] + ' MUSCLE MSA',
                          'input_ref': params['input_featureSet_ref'],
                          'output_name': muscle_msa_name,
+                         'genome_disp_name_config': params['genome_disp_name_config'],
                          'maxiters': params['muscle_maxiters'],
                          'maxhours': params['muscle_maxhours']
                      }
@@ -3072,8 +3073,8 @@ This module contains methods for running and visualizing results of phylogenomic
             # run them in batch
             batch_run_params = {'tasks': parallel_tasks,
                                 'runner': 'parallel',
-                                'concurrent_local_tasks': 1,
-                                'concurrent_njsw_tasks': 0,
+                                'concurrent_local_tasks': 0,
+                                'concurrent_njsw_tasks': 50,
                                 'max_retries': 2}
 
             self.log(console, "RUNNING all domain annotations in parallel.")
