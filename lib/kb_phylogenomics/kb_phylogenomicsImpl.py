@@ -3072,8 +3072,8 @@ This module contains methods for running and visualizing results of phylogenomic
             # run them in batch
             batch_run_params = {'tasks': parallel_tasks,
                                 'runner': 'parallel',
-                                'concurrent_local_tasks': 1,
-                                'concurrent_njsw_tasks': 0,
+                                'concurrent_local_tasks': 0,
+                                'concurrent_njsw_tasks': 50,
                                 'max_retries': 2}
 
             self.log(console, "RUNNING all domain annotations in parallel.")
