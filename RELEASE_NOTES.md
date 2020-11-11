@@ -1,3 +1,8 @@
+### Version 1.7.1
+__Changes__
+- Annotate Domains in a GenomeSet runs up to 50 jobs in parallel on remote workers
+- Pass genome_disp_name_config through in Build_Gene_Tree()
+
 ### Version 1.7.0
 __Changes__
 - Annotate Domains in a GenomeSet now runs in parallel, one job per genome
