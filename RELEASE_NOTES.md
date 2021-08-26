@@ -1,3 +1,10 @@
+### Version 1.7.2
+__Changes__
+- NOT YET: fixed bug to allow a minimum of 3 genomes in Phylogenetic Pangenome Accumulation
+- replaced Travis-CI with Github Actions unit tests
+- updated contact URL in all spec.json
+- NOT YET: simplified unit test code with sub methods
+
 ### Version 1.7.1
 __Changes__
 - Annotate Domains in a GenomeSet runs up to 10 jobs in parallel on remote workers
