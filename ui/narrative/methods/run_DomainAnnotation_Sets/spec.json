@@ -1,9 +1,9 @@
 {
-    "ver": "1.0.0",
+    "ver": "1.7.1",
     "authors": [
         "dylan", "jmc", "psnovichkov", "rsutormin"	
     ],
-    "contact": "http://kbase.us/contact-us/",
+    "contact": "http://www.kbase.us/support/",
     "visible": true,
     "categories": ["active", "annotation", "comparative_genomics"],
     "widgets": {

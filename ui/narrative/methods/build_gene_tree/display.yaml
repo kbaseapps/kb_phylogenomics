@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Build Gene Tree - v1.6.0
+name: Build Gene Tree - v1.7.1
 
 tooltip: |
     Build Gene Tree for a set of homologously related genes in a FeatureSet
