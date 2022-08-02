@@ -152,7 +152,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
         shutil.copy(domain_data_file, domain_file)
 
         # create object
-        with open (domain_file, 'r', 0) as domain_fh:
+        with open (domain_file, 'r') as domain_fh:
             domain_obj = json.load(domain_fh)
 
         domain_obj['used_dms_ref'] = 'KBasePublicGeneDomains/All'
@@ -211,7 +211,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
         shutil.copy(tree_data_file, tree_file)
 
         # create object
-        with open (tree_file, 'r', 0) as tree_fh:
+        with open (tree_file, 'r') as tree_fh:
             tree_obj = json.load(tree_fh)
 
         # update genome_refs
@@ -277,7 +277,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
         shutil.copy(pan_data_file, pan_file)
 
         # create object
-        with open (pan_file, 'r', 0) as pan_fh:
+        with open (pan_file, 'r') as pan_fh:
             pan_obj = json.load(pan_fh)
 
         # update genome_refs
@@ -330,7 +330,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
-    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
+    @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_01_GenomeSet(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -440,7 +440,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a SpeciesTree
     ##
-    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
+    @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_02_SpeciesTree(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -1119,9 +1119,11 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Microbial SpeciesTree
     ##
-    ## **** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
+    ## ** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
+    ##          also requires SpeciesTreeBuilder refdata (eg /data/cogs/cog_list.txt)
+    ## SKIPPING
     ##
-    # HIDE @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
     def test_build_microbial_speciestree_01(self):
         method = 'build_microbial_speciestree'
 
@@ -1245,9 +1247,11 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Microbial SpeciesTree
     ##
-    ## **** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
+    ## ** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
+    ##          also requires SpeciesTreeBuilder refdata (eg /data/cogs/cog_list.txt)
+    ## SKIPPING
     ##
-    # HIDE @unittest.skip("skipped test_build_microbial_speciestree_no_skeleton_02()")  # uncomment to skip
+    @unittest.skip("skipped test_build_microbial_speciestree_no_skeleton_02()")  # uncomment to skip
     def test_build_microbial_speciestree_no_skeleton_02(self):
         method = 'build_microbial_speciestree'
 
@@ -1371,7 +1375,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Strain Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_strain_tree_01()")  # uncomment to skip
+    ## SKIPPING until active App
+    @unittest.skip("skipped test_build_strain_tree_01()")  # uncomment to skip
     def test_build_strain_tree_01(self):
         method = 'build_strain_tree'
 
@@ -1484,7 +1489,9 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Pangenome Species Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_pangenome_species_tree_01()")  # uncomment to skip
+    ## SKIPPING until active App
+    ##
+    @unittest.skip("skipped test_build_pangenome_species_tree_01()")  # uncomment to skip
     def test_build_pangenome_species_tree_01(self):
         method = 'build_pangenome_species_tree'
 

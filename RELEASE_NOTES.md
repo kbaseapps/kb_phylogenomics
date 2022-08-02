@@ -1,9 +1,11 @@
-### Version 1.7.2
+### Version 1.8.0
 __Changes__
-- NOT YET: fixed bug to allow a minimum of 3 genomes in Phylogenetic Pangenome Accumulation
+- update Docker base image to kbase/sdkpython:3.8.10
+- update ETE3 to 3.1.2
+- update PyQt5 (note: must use PyQt5==5.11.3 on debian)
+- NOT YET: fixed bug to require a minimum of 3 genomes in Phylogenetic Pangenome Accumulation
 - replaced Travis-CI with Github Actions unit tests
 - updated contact URL in all spec.json
-- NOT YET: simplified unit test code with sub methods
 
 ### Version 1.7.1
 __Changes__

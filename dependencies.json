@@ -17,7 +17,7 @@
 }, {
   "module_name" : "kb_blast",
   "type" : "sdk",
-  "version_tag" : "beta"
+  "version_tag" : "release"
 }, {
   "module_name" : "kb_fasttree",
   "type" : "sdk",

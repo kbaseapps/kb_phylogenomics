@@ -50,9 +50,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.7.2"
+    VERSION = "1.8.0"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "554b3fe88cf38f5f20931b6dd6f422eb27c29de7"
+    GIT_COMMIT_HASH = "224299f6aabb042e6b66d3e318de1b7888f27843"
 
     #BEGIN_CLASS_HEADER
 
@@ -300,7 +300,7 @@ This module contains methods for running and visualizing results of phylogenomic
             cat2domfams[namespace] = dict()
 
             # get high-level cats
-            with open(domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
+            with open(domain_cat_names_path[namespace], 'r') as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line = line.strip()
 
@@ -339,7 +339,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         cat2group[namespace][cat] = cat_group
 
             # get domfam to cat map, and vice versa
-            with open(domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
+            with open(domain_to_cat_map_path[namespace], 'r') as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
                     line = line.strip()
 
@@ -485,14 +485,14 @@ This module contains methods for running and visualizing results of phylogenomic
                 domfam2name[namespace] = dict()
 
                 if namespace == 'COG':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r') as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
                             domfam2name[namespace][domfam] = domfam_name
 
                 elif namespace == 'PF':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r') as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
@@ -503,7 +503,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'TIGR':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r') as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             if line.startswith('!'):
@@ -526,7 +526,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'SEED':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r') as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [level1, level2, level3, domfam] = line.split("\t")[0:4]
@@ -795,7 +795,10 @@ This module contains methods for running and visualizing results of phylogenomic
                            'gamma': params['fasttree_gamma']
                        }
         try:
-            fasttreeClient = kb_fasttree(self.callbackURL, token=token, service_ver=SERVICE_VER)
+            # DEBUG
+            FastTree_SERVICE_VER = 'beta'
+#            fasttreeClient = kb_fasttree(self.callbackURL, token=token, service_ver=SERVICE_VER)
+            fasttreeClient = kb_fasttree(self.callbackURL, token=token, service_ver=FastTree_SERVICE_VER)
         except Exception as e:
             raise ValueError("unable to instantiate fasttreeClient. "+str(e))
         try:
@@ -1398,7 +1401,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         intree_newick_file_path = os.path.join(output_dir, intree_name + ".newick")
         self.log(console, 'writing intree file: ' + intree_newick_file_path)
-        with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
+        with open(intree_newick_file_path, 'w') as intree_newick_file_handle:
             intree_newick_file_handle.write(tree_in['tree'])
 
         # upload
@@ -1453,7 +1456,7 @@ This module contains methods for running and visualizing results of phylogenomic
             #    new_ids[row_id] = default_row_ids[row_id]
 
             mod_newick_buf = tree_in['tree']
-            mod_newick_buf = re.sub('\|', '%' + '|'.encode("hex"), mod_newick_buf)
+            mod_newick_buf = re.sub('\|', '%' + '|'.encode("utf-8").hex(), mod_newick_buf)
             #for row_id in new_ids.keys():
             for node_id in tree_in['default_node_labels'].keys():
                 label = None
@@ -1466,18 +1469,18 @@ This module contains methods for running and visualizing results of phylogenomic
                 #self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
                 label = re.sub(' \(kb[^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
                 label = re.sub('\s', '_', label)
-                #label = re.sub('\/','%'+'/'.encode("hex"), label)
-                #label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
-                #label = re.sub('\[','%'+'['.encode("hex"), label)
-                #label = re.sub('\]','%'+']'.encode("hex"), label)
+                #label = re.sub('\/','%'+'/'.encode("utf-8").hex(), label)
+                #label = re.sub(r'\\','%'+'\\'.encode("utf-8").hex(), label)
+                #label = re.sub('\[','%'+'['.encode("utf-8").hex(), label)
+                #label = re.sub('\]','%'+']'.encode("utf-8").hex(), label)
                 label = re.sub('\(', '[', label)
                 label = re.sub('\)', ']', label)
-                label = re.sub('\:', '%' + ':'.encode("hex"), label)
-                label = re.sub('\;', '%' + ';'.encode("hex"), label)
-                label = re.sub('\|', '%' + '|'.encode("hex"), label)
+                label = re.sub('\:', '%' + ':'.encode("utf-8").hex(), label)
+                label = re.sub('\;', '%' + ';'.encode("utf-8").hex(), label)
+                label = re.sub('\|', '%' + '|'.encode("utf-8").hex(), label)
                 #self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
                 #self.log (console, "NEWICK B4: '"+mod_newick_buf+"'")  # DEBUG
-                mod_node_id = re.sub('\|', '%' + '|'.encode("hex"), node_id)
+                mod_node_id = re.sub('\|', '%' + '|'.encode("utf-8").hex(), node_id)
                 mod_newick_buf = re.sub('\(' + mod_node_id + '\:', '(' + label + ':', mod_newick_buf)
                 mod_newick_buf = re.sub('\,' + mod_node_id + '\:', ',' + label + ':', mod_newick_buf)
                 #self.log (console, "NEWICK AF: '"+mod_newick_buf+"'")  # DEBUG
@@ -1485,7 +1488,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
 
             mod_newick_buf = re.sub('_', ' ', mod_newick_buf)
-            with open(output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
+            with open(output_newick_labels_file_path, 'w') as output_newick_labels_file_handle:
                 output_newick_labels_file_handle.write(mod_newick_buf)
 
             # upload
@@ -1696,7 +1699,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
 
         html_report_str = "\n".join(html_report_lines)
-        with open(output_html_file_path, 'w', 0) as html_handle:
+        with open(output_html_file_path, 'w') as html_handle:
             html_handle.write(html_report_str)
 
         # upload images and html
@@ -4263,7 +4266,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # write html to file and upload
         html_file = os.path.join(output_dir, 'domain_profile_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -5475,7 +5478,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # write html to file and upload
         html_file = os.path.join(output_dir, 'domain_profile_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -6786,7 +6789,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # write html to file and upload
         html_file = os.path.join(html_output_dir, 'domain_profile_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -7794,7 +7797,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # write html to file and upload
         self.log(console, "SAVING AND UPLOADING HTML REPORT")
         html_file = os.path.join(html_output_dir, 'pan_circle_plot_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -8673,7 +8676,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # write html to file and upload
         html_file = os.path.join(html_output_dir, 'pan_phylo_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -8868,7 +8871,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # save newick file
         intree_newick_file_path = os.path.join(output_dir, intree_name + ".newick")
         self.log(console, 'writing intree file: ' + intree_newick_file_path)
-        with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
+        with open(intree_newick_file_path, 'w') as intree_newick_file_handle:
             intree_newick_file_handle.write(tree_in['tree'])
 
         """
@@ -8944,7 +8947,7 @@ This module contains methods for running and visualizing results of phylogenomic
             #    new_ids[row_id] = default_row_ids[row_id]
 
             mod_newick_buf = tree_in['tree']
-            mod_newick_buf = re.sub('\|', '%' + '|'.encode("hex"), mod_newick_buf)
+            mod_newick_buf = re.sub('\|', '%' + '|'.encode("utf-8").hex(), mod_newick_buf)
             #for row_id in new_ids.keys():
             for node_id in tree_in['default_node_labels'].keys():
                 label = tree_in['default_node_labels'][node_id]
@@ -8952,18 +8955,18 @@ This module contains methods for running and visualizing results of phylogenomic
                 #self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
                 label = re.sub(' \(kb[^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
                 label = re.sub('\s', '_', label)
-                #label = re.sub('\/','%'+'/'.encode("hex"), label)
-                #label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
-                #label = re.sub('\[','%'+'['.encode("hex"), label)
-                #label = re.sub('\]','%'+']'.encode("hex"), label)
+                #label = re.sub('\/','%'+'/'.encode("utf-8").hex(), label)
+                #label = re.sub(r'\\','%'+'\\'.encode("utf-8").hex(), label)
+                #label = re.sub('\[','%'+'['.encode("utf-8").hex(), label)
+                #label = re.sub('\]','%'+']'.encode("utf-8").hex(), label)
                 label = re.sub('\(', '[', label)
                 label = re.sub('\)', ']', label)
-                label = re.sub('\:', '%' + ':'.encode("hex"), label)
-                label = re.sub('\;', '%' + ';'.encode("hex"), label)
-                label = re.sub('\|', '%' + '|'.encode("hex"), label)
+                label = re.sub('\:', '%' + ':'.encode("utf-8").hex(), label)
+                label = re.sub('\;', '%' + ';'.encode("utf-8").hex(), label)
+                label = re.sub('\|', '%' + '|'.encode("utf-8").hex(), label)
                 #self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
                 #self.log (console, "NEWICK B4: '"+mod_newick_buf+"'")  # DEBUG
-                mod_node_id = re.sub('\|', '%' + '|'.encode("hex"), node_id)
+                mod_node_id = re.sub('\|', '%' + '|'.encode("utf-8").hex(), node_id)
                 mod_newick_buf = re.sub('\(' + mod_node_id + '\:', '(' + label + ':', mod_newick_buf)
                 mod_newick_buf = re.sub('\,' + mod_node_id + '\:', ',' + label + ':', mod_newick_buf)
                 #self.log (console, "NEWICK AF: '"+mod_newick_buf+"'")  # DEBUG
@@ -8971,7 +8974,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
 
             mod_newick_buf = re.sub('_', ' ', mod_newick_buf)
-            with open(output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
+            with open(output_newick_labels_file_path, 'w') as output_newick_labels_file_handle:
                 output_newick_labels_file_handle.write(mod_newick_buf)
 
             """
@@ -9241,13 +9244,15 @@ This module contains methods for running and visualizing results of phylogenomic
 
             BLASTp_Params = {'workspace_name':       params['workspace_name'],
                              'input_one_ref':        input_individual_FS_ref,
-                             'input_many_ref':       tree_derived_genomeSet_ref,
+                             'input_many_refs':      [tree_derived_genomeSet_ref],
                              'output_filtered_name': output_individual_FS_name,
                              'ident_thresh':         params['ident_thresh'],
                              'e_value':              params['e_value'],
                              'bitscore':             params['bitscore'],
                              'overlap_fraction':     params['overlap_fraction'],
-                             'maxaccepts':           1000  # hopefully won't exceed 1000 genomes!
+                             'maxaccepts':           1000,  # hopefully won't exceed 1000 genomes!
+                             'genome_disp_name_config': 'obj_name',
+                             'output_extra_format':     'none'
                              }
 
             self.log (console, "running BLASTp for "+input_individual_FS_name)
@@ -9651,7 +9656,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
 
         html_report_str = "\n".join(html_report_lines)
-        with open(output_html_file_path, 'w', 0) as html_handle:
+        with open(output_html_file_path, 'w') as html_handle:
             html_handle.write(html_report_str)
 
         """
