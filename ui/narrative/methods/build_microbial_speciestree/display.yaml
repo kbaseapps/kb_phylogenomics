@@ -78,7 +78,7 @@ parameters :
 description : |
     <p>This App allows the user to build a microbial <b><i>SpeciesTree</i></b> of their genomes, with options to include Phylum exemplar genomes to act as a skeleton.</p>
 
-    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>, based on the Insert Genomes into Species Tree App developed by Paramvir Dehal and Roman Sutormin. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>, based on the Insert Genomes into Species Tree App developed by Paramvir Dehal and Roman Sutormin. For questions, please <a href=”http://www.kbase.us/support/”>contact us</a>.</p>
 
 
 publications :

@@ -38,7 +38,7 @@ parameters :
 description : |
     <p>This App takes DomainAnnotation objects, looks at the name of the Genome Object that it points to in another Narrative (likely the same Narrative that the DomainAnnotation object was copied from), looks at the current Narrative to find a Genome Object with the same name, and updates the DomainAnnotation object to point at the local Genome object instance.</p>
 
-    <p><strong>Team members who developed &amp; deployed this App in KBase:</strong> Dylan Chivian. For questions, please <a href="http://kbase.us/contact-us/">contact us</a>.</p>
+    <p><strong>Team members who developed &amp; deployed this App in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>. For questions, please <a href="http://www.kbase.us/support/">contact us</a>.</p>
 
 publications :
     -

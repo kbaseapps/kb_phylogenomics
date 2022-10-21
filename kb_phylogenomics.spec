@@ -213,6 +213,31 @@ module kb_phylogenomics {
         authentication required;
 
 
+    /* trim_genetree_to_genomeset()
+    **
+    ** reduce tree to match genomes found in genomeset (optionally skip AMA genes)
+    */
+    typedef structure {
+        workspace_name  workspace_name;
+        data_obj_ref    input_genomeSet_ref;
+	data_obj_ref    input_tree_ref;
+	data_obj_name   output_tree_name;
+	string          desc;
+
+	bool            enforce_genome_version_match;
+	bool            keep_ama_genes;
+    } trim_genetree_to_genomeset_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } trim_genetree_to_genomeset_Output;
+
+    funcdef trim_genetree_to_genomeset(trim_genetree_to_genomeset_Input params) 
+        returns (trim_genetree_to_genomeset_Output output) 
+        authentication required;
+
+
     /* build_microbial_speciestree()
     **
     ** run Insert Set of Genomes into Species Tree with extra features

@@ -201,7 +201,7 @@ description : |
     If the user wishes to view the results as a heatmap in a <i>logarithmic</i> scale (instead of the default <i>linear</i>), specify the base of the logarithm here (2 or 10 are standard, depending on the distribution of abundance values).  Our suggestion for gene counts is to start with a linear report, and then if most of the signal is in just a few cells with a high count so that the heatmap bleaches the lower values and makes them difficult to discern, use a logarithmic scale to bring down the highest values and spread out the color more evenly.</p>
 
     <p><h4>E-value upper limit</h4>
-    The DomainAnnotation App includes the confidence of the match to the domain family model as an e-value.  This can be used to threshold what is considered a valid hit by the View Functional Profile App.  Since smaller e-values mean greater confidence of a correct assignment, the threshold should be specified as the largest value to accept.  For example, a value of 0.001 is meant to correspond to 1 erroneous assignment per 1000.  That said, the actual confidence threshold is variable between domain family models, but it is beyond the capability of this particular App to offer a custom e-value threshold for each domain family.  If you wish to annotate with a limited number of domain families with custom thresholds, please <a href="http://kbase.us/contact-us">ask about making an App</a> to do just that.</p>
+    The DomainAnnotation App includes the confidence of the match to the domain family model as an e-value.  This can be used to threshold what is considered a valid hit by the View Functional Profile App.  Since smaller e-values mean greater confidence of a correct assignment, the threshold should be specified as the largest value to accept.  For example, a value of 0.001 is meant to correspond to 1 erroneous assignment per 1000.  That said, the actual confidence threshold is variable between domain family models, but it is beyond the capability of this particular App to offer a custom e-value threshold for each domain family.  If you wish to annotate with a limited number of domain families with custom thresholds, please <a href="http://www.kbase.us/support/">ask about making an App</a> to do just that.</p>
 
     <p><h4>Count only top hit or alternate hits</h4>
     The e-value scores for domain hits are sorted and the user can choose to use only the most confident hit in assigning a function to a gene or use all hits (that have a confidence better than the threshold).  While it may be that domain hits are non-overlapping and therefore secondary confidence hits should not be considered in conflict with the top hit, it is beyond the logic of this App at this time to include non-overlapping secondary hits as also being "top hits".  The reason for this lies in the meaning of the summation of genes by "top hits" is no longer a 1:1 rule and so a clear count is lost.  This is a problem with using "all hits" as well, but in this mode "double counting" is at least expected.</p>
@@ -274,7 +274,7 @@ description : |
 
     <p><hr></p>
 
-    <p><strong>Team members who developed &amp; deployed App in KBase:</strong> Dylan Chivian. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+    <p><strong>Team members who developed &amp; deployed App in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>. For questions, please <a href=”http://www.kbase.us/support/”>contact us</a>.</p>
 
 publications :
     -

@@ -171,6 +171,24 @@ class kb_phylogenomics(object):
         return self._client.call_method('kb_phylogenomics.trim_speciestree_to_genomeset',
                                         [params], self._service_ver, context)
 
+    def trim_genetree_to_genomeset(self, params, context=None):
+        """
+        :param params: instance of type "trim_genetree_to_genomeset_Input"
+           (trim_genetree_to_genomeset() ** ** reduce tree to match genomes
+           found in genomeset (optionally skip AMA genes)) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
+           parameter "input_tree_ref" of type "data_obj_ref", parameter
+           "output_tree_name" of type "data_obj_name", parameter "desc" of
+           String, parameter "enforce_genome_version_match" of type "bool",
+           parameter "keep_ama_genes" of type "bool"
+        :returns: instance of type "trim_genetree_to_genomeset_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        return self._client.call_method('kb_phylogenomics.trim_genetree_to_genomeset',
+                                        [params], self._service_ver, context)
+
     def build_microbial_speciestree(self, params, context=None):
         """
         :param params: instance of type "build_microbial_speciestree_Input"

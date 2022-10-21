@@ -43,7 +43,7 @@ parameters :
 description : |
     <p>Currently KBase supports the creation of gene and Species Trees. This App displays the selected tree as a static image and provides links to download the image in PNG and PDF formats.  It also provides links to download file containing the NEWICK representation of the tree (with identifiers or labels). There is also button (‘View report in separate window’) and a link to open a new web page with just the image of the tree.</p>
 
-    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> Dylan Chivian. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>. For questions, please <a href=”http://www.kbase.us/support/”>contact us</a>.</p>
 
 
 publications :

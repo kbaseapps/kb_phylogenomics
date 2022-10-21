@@ -83,7 +83,7 @@ description : |
 
     <p><b>Save Pangenome feature sets:</b> Feature Sets containing Core, Singleton, and Partial Pangenome (see above) gene members from the ortholog clusters are created if this option is set. These categories are calculated and generated for each node in the Species Tree, using the collection of genomes for which that node represents the ancestor (i.e. the leaves of that branch).</p>
 
-    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> Dylan Chivian. Species Tree Builder by Roman Sutormin and Paramvir Dehal. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>. Species Tree Builder by Roman Sutormin and Paramvir Dehal. For questions, please <a href=”http://www.kbase.us/support/”>contact us</a>.</p>
 
 results : |
     <p><b>Feature Sets</b> corresponding to the Core, Singleton, and Partial Pangenome (see above) may be created. These three categories are represented for each node in the tree, except for those joining two genomes where only Singleton or Core categories can be determined (or if there are no genes corresponding to the given category for that node).</p>
