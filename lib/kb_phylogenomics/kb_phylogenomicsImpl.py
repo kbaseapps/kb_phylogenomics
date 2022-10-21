@@ -4900,7 +4900,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     gene_name = feature['id']
                     if featureSet_element_id in featureSet_obj['elements']:
                         target_feature = True
-
+                        #print ("FEATURE_ID: '{}'".format(featureSet_element_id))  # DEBUG
+                        
                     #if f_cnt % 100 == 0:
                     #    self.log (console, "iterating features: "+str(f_cnt))  # DEBUG
 
@@ -4966,6 +4967,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
 
                                 """
+                                # THIS IS DIFFERENT
+                                if not target_feature:
+                                    continue
+
                                 if top_hit_flag:  # does SEED give more than one function?
                                     domfam_list = [domfam_list[0]]
                                 for domfam in domfam_list:
