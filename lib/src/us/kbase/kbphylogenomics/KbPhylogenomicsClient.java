@@ -249,6 +249,23 @@ public class KbPhylogenomicsClient {
     }
 
     /**
+     * <p>Original spec-file function name: trim_genetree_to_genomeset</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.TrimGenetreeToGenomesetInput TrimGenetreeToGenomesetInput} (original type "trim_genetree_to_genomeset_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.TrimGenetreeToGenomesetOutput TrimGenetreeToGenomesetOutput} (original type "trim_genetree_to_genomeset_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public TrimGenetreeToGenomesetOutput trimGenetreeToGenomeset(TrimGenetreeToGenomesetInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<TrimGenetreeToGenomesetOutput>> retType = new TypeReference<List<TrimGenetreeToGenomesetOutput>>() {};
+        List<TrimGenetreeToGenomesetOutput> res = caller.jsonrpcCall("kb_phylogenomics.trim_genetree_to_genomeset", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
      * <p>Original spec-file function name: build_microbial_speciestree</p>
      * <pre>
      * </pre>

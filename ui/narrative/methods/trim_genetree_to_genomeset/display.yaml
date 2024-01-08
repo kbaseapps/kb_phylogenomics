@@ -1,0 +1,74 @@
+#
+# define display information
+#
+name: Trim GeneTree to GenomeSet- v1.8.0
+
+tooltip: |
+    Allows users to reduce a GeneTree to match the genomes in a GenomeSet.
+
+screenshots: []
+
+icon: genetree-purple.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            []
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_tree_ref :
+        ui-name : |
+            Tree
+        short-hint : |
+            The GeneTree object to trim.
+    input_genomeSet_ref :
+        ui-name : |
+            GenomeSet
+        short-hint : |
+            The GenomeSet to trim the tree to match.
+    desc :
+        ui-name : |
+            Description
+        short-hint : |
+            A description of the SpeciesTree which will be added to the title in the tree image.
+    output_tree_name :
+        ui-name : |
+            Output Tree
+        short-hint : |
+            The name of the output Tree object
+    enforce_genome_version_match :
+        ui-name : |
+            Enforce genome version match
+        short-hint : |
+            Require that the genome version between the GenomeSet and the SpeciesTree be the same to retain in output SpeciesTree
+    keep_ama_genes :
+        ui-name : |
+            Keep AMA genes
+        short-hint : |
+            Annotated Metagenome Assemblies aren't in GenomeSets, so keep their genes in GeneTree.
+
+description : |
+    <p>This App allows the user to trim a Gene Tree object to just include genes from Genomes that are found in a GenomeSet.  The trimmed tree is saved as a new Gene Tree object and is offered as a static image and provided as links to download the image in PNG and PDF formats.  One can also download a file containing the NEWICK representation of the tree (with identifiers or labels). There is also button (‘View report in separate window’) and a link to open a new web page with just the image of the tree.</p>
+
+    <p><strong>Team members who developed &amp; deployed algorithm in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>. For questions, please <a href=”http://www.kbase.us/support/”>contact us</a>.</p>
+
+
+publications :
+    -
+        pmid: 29979655
+        display-text : |
+            Arkin AP, Cottingham RW, Henry CS, Harris NL, Stevens RL, Maslov S, et al. KBase: The United States Department of Energy Systems Biology Knowledgebase. Nature Biotechnology. 2018;36: 566. doi: 10.1038/nbt.4163
+        link: https://www.nature.com/articles/nbt.4163

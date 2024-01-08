@@ -796,6 +796,118 @@ trim_speciestree_to_genomeset_Output is a reference to a hash where the followin
  
 
 
+=head2 trim_genetree_to_genomeset
+
+  $output = $obj->trim_genetree_to_genomeset($params)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$params is a kb_phylogenomics.trim_genetree_to_genomeset_Input
+$output is a kb_phylogenomics.trim_genetree_to_genomeset_Output
+trim_genetree_to_genomeset_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	desc has a value which is a string
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+	keep_ama_genes has a value which is a kb_phylogenomics.bool
+workspace_name is a string
+data_obj_ref is a string
+data_obj_name is a string
+bool is an int
+trim_genetree_to_genomeset_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+$params is a kb_phylogenomics.trim_genetree_to_genomeset_Input
+$output is a kb_phylogenomics.trim_genetree_to_genomeset_Output
+trim_genetree_to_genomeset_Input is a reference to a hash where the following keys are defined:
+	workspace_name has a value which is a kb_phylogenomics.workspace_name
+	input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+	input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+	output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+	desc has a value which is a string
+	enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+	keep_ama_genes has a value which is a kb_phylogenomics.bool
+workspace_name is a string
+data_obj_ref is a string
+data_obj_name is a string
+bool is an int
+trim_genetree_to_genomeset_Output is a reference to a hash where the following keys are defined:
+	report_name has a value which is a string
+	report_ref has a value which is a string
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub trim_genetree_to_genomeset
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function trim_genetree_to_genomeset (received $n, expecting 1)");
+    }
+    {
+	my($params) = @args;
+
+	my @_bad_arguments;
+        (ref($params) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"params\" (value was \"$params\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to trim_genetree_to_genomeset:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'trim_genetree_to_genomeset');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "kb_phylogenomics.trim_genetree_to_genomeset",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'trim_genetree_to_genomeset',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method trim_genetree_to_genomeset",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'trim_genetree_to_genomeset',
+				       );
+    }
+}
+ 
+
+
 =head2 build_microbial_speciestree
 
   $output = $obj->build_microbial_speciestree($params)
@@ -3170,6 +3282,87 @@ tree_shape has a value which is a string
 
 
 =head2 trim_speciestree_to_genomeset_Output
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+report_name has a value which is a string
+report_ref has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 trim_genetree_to_genomeset_Input
+
+=over 4
+
+
+
+=item Description
+
+trim_genetree_to_genomeset()
+**
+** reduce tree to match genomes found in genomeset (optionally skip AMA genes)
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+desc has a value which is a string
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+keep_ama_genes has a value which is a kb_phylogenomics.bool
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+workspace_name has a value which is a kb_phylogenomics.workspace_name
+input_genomeSet_ref has a value which is a kb_phylogenomics.data_obj_ref
+input_tree_ref has a value which is a kb_phylogenomics.data_obj_ref
+output_tree_name has a value which is a kb_phylogenomics.data_obj_name
+desc has a value which is a string
+enforce_genome_version_match has a value which is a kb_phylogenomics.bool
+keep_ama_genes has a value which is a kb_phylogenomics.bool
+
+
+=end text
+
+=back
+
+
+
+=head2 trim_genetree_to_genomeset_Output
 
 =over 4
 

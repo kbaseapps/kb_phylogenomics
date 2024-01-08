@@ -50,9 +50,9 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.7.0"
-    GIT_URL = "https://github.com/dcchivian/kb_phylogenomics"
-    GIT_COMMIT_HASH = "eadd0da30c0de32c2766f0eb74812f731ba1bd84"
+    VERSION = "1.8.0"
+    GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
+    GIT_COMMIT_HASH = "ec9c0f7399fae23a1fae3c42089fb6d178285cd9"
 
     #BEGIN_CLASS_HEADER
 
@@ -300,7 +300,7 @@ This module contains methods for running and visualizing results of phylogenomic
             cat2domfams[namespace] = dict()
 
             # get high-level cats
-            with open(domain_cat_names_path[namespace], 'r', 0) as dom_cat_handle:
+            with open(domain_cat_names_path[namespace], 'r') as dom_cat_handle:
                 for line in dom_cat_handle.readlines():
                     line = line.strip()
 
@@ -339,7 +339,7 @@ This module contains methods for running and visualizing results of phylogenomic
                         cat2group[namespace][cat] = cat_group
 
             # get domfam to cat map, and vice versa
-            with open(domain_to_cat_map_path[namespace], 'r', 0) as dom2cat_map_handle:
+            with open(domain_to_cat_map_path[namespace], 'r') as dom2cat_map_handle:
                 for line in dom2cat_map_handle.readlines():
                     line = line.strip()
 
@@ -485,14 +485,14 @@ This module contains methods for running and visualizing results of phylogenomic
                 domfam2name[namespace] = dict()
 
                 if namespace == 'COG':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r') as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, cat_class, domfam_name] = line.split("\t")[0:3]
                             domfam2name[namespace][domfam] = domfam_name
 
                 elif namespace == 'PF':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r') as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [domfam, class_id, class_name, domfam_id, domfam_name] = line.split("\t")[0:5]
@@ -503,7 +503,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'TIGR':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r') as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             if line.startswith('!'):
@@ -526,7 +526,7 @@ This module contains methods for running and visualizing results of phylogenomic
                             domfam2name[namespace][domfam] = combo_name
 
                 elif namespace == 'SEED':
-                    with open(domain_fam_names_path[namespace], 'r', 0) as dom_fam_handle:
+                    with open(domain_fam_names_path[namespace], 'r') as dom_fam_handle:
                         for line in dom_fam_handle.readlines():
                             line = line.strip()
                             [level1, level2, level3, domfam] = line.split("\t")[0:4]
@@ -795,7 +795,10 @@ This module contains methods for running and visualizing results of phylogenomic
                            'gamma': params['fasttree_gamma']
                        }
         try:
-            fasttreeClient = kb_fasttree(self.callbackURL, token=token, service_ver=SERVICE_VER)
+            # DEBUG
+            FastTree_SERVICE_VER = 'beta'
+#            fasttreeClient = kb_fasttree(self.callbackURL, token=token, service_ver=SERVICE_VER)
+            fasttreeClient = kb_fasttree(self.callbackURL, token=token, service_ver=FastTree_SERVICE_VER)
         except Exception as e:
             raise ValueError("unable to instantiate fasttreeClient. "+str(e))
         try:
@@ -1398,7 +1401,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         intree_newick_file_path = os.path.join(output_dir, intree_name + ".newick")
         self.log(console, 'writing intree file: ' + intree_newick_file_path)
-        with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
+        with open(intree_newick_file_path, 'w') as intree_newick_file_handle:
             intree_newick_file_handle.write(tree_in['tree'])
 
         # upload
@@ -1453,7 +1456,7 @@ This module contains methods for running and visualizing results of phylogenomic
             #    new_ids[row_id] = default_row_ids[row_id]
 
             mod_newick_buf = tree_in['tree']
-            mod_newick_buf = re.sub('\|', '%' + '|'.encode("hex"), mod_newick_buf)
+            mod_newick_buf = re.sub('\|', '%' + '|'.encode("utf-8").hex(), mod_newick_buf)
             #for row_id in new_ids.keys():
             for node_id in tree_in['default_node_labels'].keys():
                 label = None
@@ -1466,18 +1469,18 @@ This module contains methods for running and visualizing results of phylogenomic
                 #self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
                 label = re.sub(' \(kb[^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
                 label = re.sub('\s', '_', label)
-                #label = re.sub('\/','%'+'/'.encode("hex"), label)
-                #label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
-                #label = re.sub('\[','%'+'['.encode("hex"), label)
-                #label = re.sub('\]','%'+']'.encode("hex"), label)
+                #label = re.sub('\/','%'+'/'.encode("utf-8").hex(), label)
+                #label = re.sub(r'\\','%'+'\\'.encode("utf-8").hex(), label)
+                #label = re.sub('\[','%'+'['.encode("utf-8").hex(), label)
+                #label = re.sub('\]','%'+']'.encode("utf-8").hex(), label)
                 label = re.sub('\(', '[', label)
                 label = re.sub('\)', ']', label)
-                label = re.sub('\:', '%' + ':'.encode("hex"), label)
-                label = re.sub('\;', '%' + ';'.encode("hex"), label)
-                label = re.sub('\|', '%' + '|'.encode("hex"), label)
+                label = re.sub('\:', '%' + ':'.encode("utf-8").hex(), label)
+                label = re.sub('\;', '%' + ';'.encode("utf-8").hex(), label)
+                label = re.sub('\|', '%' + '|'.encode("utf-8").hex(), label)
                 #self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
                 #self.log (console, "NEWICK B4: '"+mod_newick_buf+"'")  # DEBUG
-                mod_node_id = re.sub('\|', '%' + '|'.encode("hex"), node_id)
+                mod_node_id = re.sub('\|', '%' + '|'.encode("utf-8").hex(), node_id)
                 mod_newick_buf = re.sub('\(' + mod_node_id + '\:', '(' + label + ':', mod_newick_buf)
                 mod_newick_buf = re.sub('\,' + mod_node_id + '\:', ',' + label + ':', mod_newick_buf)
                 #self.log (console, "NEWICK AF: '"+mod_newick_buf+"'")  # DEBUG
@@ -1485,7 +1488,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
 
             mod_newick_buf = re.sub('_', ' ', mod_newick_buf)
-            with open(output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
+            with open(output_newick_labels_file_path, 'w') as output_newick_labels_file_handle:
                 output_newick_labels_file_handle.write(mod_newick_buf)
 
             # upload
@@ -1696,7 +1699,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
 
         html_report_str = "\n".join(html_report_lines)
-        with open(output_html_file_path, 'w', 0) as html_handle:
+        with open(output_html_file_path, 'w') as html_handle:
             html_handle.write(html_report_str)
 
         # upload images and html
@@ -2153,6 +2156,376 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method trim_speciestree_to_genomeset return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def trim_genetree_to_genomeset(self, ctx, params):
+        """
+        :param params: instance of type "trim_genetree_to_genomeset_Input"
+           (trim_genetree_to_genomeset() ** ** reduce tree to match genomes
+           found in genomeset (optionally skip AMA genes)) -> structure:
+           parameter "workspace_name" of type "workspace_name" (** Common
+           types), parameter "input_genomeSet_ref" of type "data_obj_ref",
+           parameter "input_tree_ref" of type "data_obj_ref", parameter
+           "output_tree_name" of type "data_obj_name", parameter "desc" of
+           String, parameter "enforce_genome_version_match" of type "bool",
+           parameter "keep_ama_genes" of type "bool"
+        :returns: instance of type "trim_genetree_to_genomeset_Output" ->
+           structure: parameter "report_name" of String, parameter
+           "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN trim_genetree_to_genomeset
+
+        #### STEP 0: init
+        ##
+        dfu = DFUClient(self.callbackURL)
+        console = []
+        invalid_msgs = []
+        self.log(console, 'Running trim_genetree_to_genomeset() with params=')
+        self.log(console, "\n" + pformat(params))
+        report = ''
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output_' + str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
+
+
+        #### STEP 1: do some basic checks
+        ##
+        required_params = ['workspace_name',
+                           'input_tree_ref',
+                           'input_genomeSet_ref',
+                           'output_tree_name',
+                           "keep_ama_genes"
+                           ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
+
+
+        #### STEP 2: load the method provenance from the context object
+        ##
+        self.log(console, "SETTING PROVENANCE")  # DEBUG
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        # add additional info to provenance here, in this case the input data object reference
+        provenance[0]['input_ws_objects'] = []
+        provenance[0]['input_ws_objects'].append(params['input_tree_ref'])
+        provenance[0]['input_ws_objects'].append(params['input_genomeSet_ref'])
+        provenance[0]['service'] = 'kb_phylogenomics'
+        provenance[0]['method'] = 'trim_genetree_to_genomeset'
+
+
+        #### STEP 3: Get tree object and store genome id and ref relationship
+        ##
+        try:
+            objects = wsClient.get_objects([{'ref': params['input_tree_ref']}])
+            data = objects[0]['data']
+            info = objects[0]['info']
+            intree_name = info[1]
+            intree_type_name = info[2].split('.')[1].split('-')[0]
+
+        except Exception as e:
+            raise ValueError('Unable to fetch input_tree_ref object from workspace: ' + str(e))
+            #to get the full stack trace: traceback.format_exc()
+
+        if intree_type_name == 'Tree':
+            tree_in = data
+        else:
+            raise ValueError('Cannot yet handle input_tree type of: ' + intree_type_name)
+
+        genome_id_by_ref = dict()
+        genome_ref_by_id = dict()
+        tree_workspace_ids = dict()
+        for genome_id in tree_in['default_node_labels'].keys():
+            genome_ref = tree_in['ws_refs'][genome_id]['g'][0]
+            ws_id = genome_ref.split('/')[0]
+            tree_workspace_ids[ws_id] = True
+            genome_id_by_ref[genome_ref] = genome_id
+            genome_ref_by_id[genome_id] = genome_ref        
+            
+
+        #### STEP 4: Get GenomeSet object
+        #
+        input_ref = params['input_genomeSet_ref']
+        try:
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_name = input_obj_info[NAME_I]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseSearch.GenomeSet"]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
+        input_genomeSet_name = input_obj_name
+
+
+        # get set obj
+        try:
+            genomeSet_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
+        except:
+            raise ValueError("unable to fetch genomeSet: " + input_ref)
+
+        # get genome refs from GenomeSet and determine whether to wobble version
+        #
+        wobble_version = True
+        retained_genome_refs = dict()
+        retained_genome_refs_versionless = dict()
+        genomeset_workspace_ids = dict()
+        for genome_id in genomeSet_obj['elements'].keys():
+            genome_ref = genomeSet_obj['elements'][genome_id]['ref']
+            (ws_id, obj_id, version) = genome_ref.split('/')
+            genomeset_workspace_ids[ws_id] = True
+            genome_ref_versionless = str(ws_id)+'/'+str(obj_id)
+            retained_genome_refs[genome_ref] = True
+            retained_genome_refs_versionless[genome_ref_versionless] = True
+        if params.get('enforce_genome_version_match') and int(params.get('enforce_genome_version_match')) == 1:
+            wobble_version = False
+
+        for genomeset_ws_id in sorted(genomeset_workspace_ids.keys()):
+            try:
+                present = tree_workspace_ids[genomeset_ws_id]
+            except:
+                raise ValueError ("ABORT: workspace ID "+str(genomeset_ws_id)+" in GenomeSet is not found in Tree.  Tree workspace ids are: "+", ".join(sorted(tree_workspace_ids.keys())))
+
+            
+        # STEP 5 - Prune tree if any leaf genomes not found in GenomeSet
+        #
+        newick_buf = tree_in['tree']
+        self.log(console, "NEWICK_BUF: '" + newick_buf + "'")
+
+        # init ETE3 objects
+        species_tree = ete3.Tree(newick_buf)
+        prune_retain_list = []  # prune() method takes list of leaves to keep
+        prune_remove_list = []
+        leaves_trimmed = False
+        for n in species_tree.traverse():
+            if n.is_leaf():
+                genome_id = n.name
+                genome_ref = genome_ref_by_id[genome_id]
+                (ws_id, obj_id, version) = genome_ref.split('/')
+                genome_ref_versionless = str(ws_id)+'/'+str(obj_id)
+                if wobble_version and genome_ref_versionless in retained_genome_refs_versionless:
+                    prune_retain_list.append(n.name)
+                    self.log(console, "Retaining "+n.name) # DEBUG
+                elif genome_ref in retained_genome_refs:
+                    prune_retain_list.append(n.name)
+                    self.log(console, "Retaining "+n.name) # DEBUG
+                else:
+                    prune_remove_list.append(n.name)
+
+        if len(prune_retain_list) < 3:
+            raise ValueError ("ABORT: less than 3 leaves left so output tree not meaningful")
+        if len(prune_remove_list) > 0:
+            leaves_trimmed = True
+            self.log(console, "Pruning following genomes from SpeciesTree")
+            for genome_id in prune_remove_list:
+                self.log(console, "\t"+"Removing from SpeciesTree "+genome_id+" ref: "+genome_ref_by_id[genome_id])
+            # prune() takes keep list, not remove list
+            species_tree.prune (prune_retain_list)
+        else:
+            self.log(console, "No genomes found to remove from SpeciesTree")
+
+
+        #### STEP 6: upload trimmed tree
+        ##
+        if leaves_trimmed:
+            self.log(console,"UPLOADING RESULTS")  # DEBUG
+
+            tree_name = params['output_tree_name']
+            if params.get('desc'):
+                tree_description = params['desc']
+            else:
+                if tree_in.get('description') and tree_in['description'] != '':
+                    tree_description = tree_in['description']+" TRIMMED "
+                else:
+                    tree_description = "Tree TRIMMED "
+                for genome_id in prune_remove_list:
+                    tree_description += " "+genome_id+"("+genome_ref_by_id[genome_id]+")"
+            tree_type = 'SpeciesTree'
+            species_tree.ladderize()
+            output_newick_buf = species_tree.write()
+            if not output_newick_buf.endswith(';'):
+                output_newick_buf += ';'
+            self.log(console,"\nNEWICK:\n"+output_newick_buf+"\n")
+        
+            # Extract info from input tree
+            #
+            tree_attributes = None
+            default_node_labels = None
+            ws_refs = None
+            kb_refs = None
+            leaf_list = None
+            if 'default_node_labels' in tree_in:
+                default_node_labels = dict()
+                leaf_list = []
+                for node_id in tree_in['default_node_labels'].keys():
+                    genome_id = node_id
+                    if genome_id in prune_retain_list:
+                        default_node_labels[node_id] = tree_in['default_node_labels'][node_id]
+                        leaf_list.append(node_id)
+            if 'ws_refs' in tree_in.keys() and tree_in['ws_refs'] != None:
+                ws_refs = dict()
+                for node_id in tree_in['ws_refs'].keys():
+                    genome_id = node_id
+                    if genome_id in prune_retain_list:
+                        ws_refs[node_id] = tree_in['ws_refs'][node_id]
+            if 'kb_refs' in tree_in.keys() and tree_in['kb_refs'] != None:
+                kb_refs = dict()
+                for node_id in tree_in['kb_refs'].keys():
+                    genome_id = node_id
+                    if genome_id in prune_retain_list:
+                        kb_refs[node_id] = tree_in['kb_refs'][node_id]
+
+            # Build output_Tree structure
+            #
+            output_Tree = {
+                      'name': tree_name,
+                      'description': tree_description,
+                      'type': tree_type,
+                      'tree': output_newick_buf
+                     }
+            if tree_attributes != None:
+                output_Tree['tree_attributes'] = tree_attributes
+            if default_node_labels != None:
+                output_Tree['default_node_labels'] = default_node_labels
+            if ws_refs != None:
+                output_Tree['ws_refs'] = ws_refs 
+            if kb_refs != None:
+                output_Tree['kb_refs'] = kb_refs
+            if leaf_list != None:
+                output_Tree['leaf_list'] = leaf_list 
+
+            # Store output_Tree
+            #
+            try:
+                tree_out_obj_info = wsClient.save_objects({
+                    'workspace': params['workspace_name'],
+                    'objects':[{
+                        'type': 'KBaseTrees.Tree',
+                        'data': output_Tree,
+                        'name': params['output_tree_name'],
+                        'meta': {},
+                        'provenance': provenance
+                    }]
+                })[0]
+            except Exception as e:
+                raise ValueError('Unable to save tree '+params['output_tree_name']+' object to workspace '+str(params['workspace_name'])+': ' + str(e))
+                #to get the full stack trace: traceback.format_exc()
+
+            output_tree_ref = '/'.join([str(tree_out_obj_info[WSID_I]),
+                                        str(tree_out_obj_info[OBJID_I]),
+                                        str(tree_out_obj_info[VERSION_I])])
+
+
+        #### STEP 7: call view_tree() to make report (if trimmed)
+        ##
+        report_info = dict()
+        reportName = 'trim_genetree_to_genomeset_report_' + str(uuid.uuid4())
+        #report += output_newick_buf+"\n"
+        reportObj = {'objects_created': [],
+                     'direct_html_link_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+        }
+        if not leaves_trimmed:
+            # Create report obj
+            report_text = "No genomes found in GenomeSet "+input_genomeSet_name+" to remove from GeneTree "+intree_name
+            reportObj['text_message'] = report_text
+        else:
+            # RUN view_tree() and forward report object through
+            optional_params = [
+                'show_skeleton_genome_sci_name',
+                'reference_genome_disp',
+                'skeleton_genome_disp',
+                'user_genome_disp',
+                'user2_genome_disp',
+                'color_for_reference_genomes',
+                'color_for_skeleton_genomes',
+                'color_for_user_genomes',
+                'color_for_user2_genomes',
+                'tree_shape'
+            ]
+            view_tree_Params = {'workspace_name': params['workspace_name'],
+                                'input_tree_ref': output_tree_ref,
+                                'desc': tree_description}
+            for arg in optional_params:
+                if params.get(arg):
+                    view_tree_Params[arg] = params[arg]
+            self.log(console, "RUNNING view_tree() for tree: " + output_tree_ref)
+            view_tree_retVal = self.view_tree(ctx, view_tree_Params)[0]
+            
+            # can't just pass forward report because we created objects we need to add
+            try:
+                view_tree_reportObj = wsClient.get_objects([{'ref': view_tree_retVal['report_ref']}])[0]['data']
+            except Exception as e:
+                raise ValueError('Unable to fetch view_tree() report from workspace: ' + str(e))
+                #to get the full stack trace: traceback.format_exc()
+
+            # can't just copy substructures because format of those fields in report object different from the format needed to pass to create_extended_report() method
+            #for field in ('direct_html_link_index', 'file_links', 'html_links'):
+            #    reportObj[field] = view_tree_reportObj[field]
+            #    self.log<(console, "REPORT "+field+": "+pformat(view_tree_reportObj[field]))  # DEBUG
+            #
+            reportObj['direct_html_link_index'] = view_tree_reportObj['direct_html_link_index']
+            for html_link_item in view_tree_reportObj['html_links']:
+                #this_shock_id = html_link_item['URL']
+                this_shock_id = re.sub('^.*/', '', html_link_item['URL'])
+                new_html_link_item = {'shock_id': this_shock_id,
+                                      'name': html_link_item['name'],
+                                      'label': html_link_item['label']
+                                    }
+                reportObj['html_links'].append(new_html_link_item)
+            for file_link_item in view_tree_reportObj['file_links']:
+                #this_shock_id = file_link_item['URL']
+                this_shock_id = re.sub('^.*/', '', file_link_item['URL'])
+                new_file_link_item = {'shock_id': this_shock_id,
+                                      'name': file_link_item['name'],
+                                      'label': file_link_item['label']
+                                    }
+                reportObj['file_links'].append(new_file_link_item)
+
+            reportObj['objects_created'].append({'ref': output_tree_ref,
+                                                 'description': params['output_tree_name']+' Trimmed Tree'})
+
+
+        # save report object
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        report_info = reportClient.create_extended_report(reportObj)
+
+
+        # Done
+        #
+        self.log(console, "BUILDING RETURN OBJECT")
+        output = {'report_name': report_info['name'],
+                  'report_ref': report_info['ref']
+                  }
+
+        self.log(console, "trim_genetree_to_genomeset() DONE")
+        #END trim_genetree_to_genomeset
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method trim_genetree_to_genomeset return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]
@@ -4263,7 +4636,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # write html to file and upload
         html_file = os.path.join(output_dir, 'domain_profile_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -4527,7 +4900,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     gene_name = feature['id']
                     if featureSet_element_id in featureSet_obj['elements']:
                         target_feature = True
-
+                        #print ("FEATURE_ID: '{}'".format(featureSet_element_id))  # DEBUG
+                        
                     #if f_cnt % 100 == 0:
                     #    self.log (console, "iterating features: "+str(f_cnt))  # DEBUG
 
@@ -4593,6 +4967,10 @@ This module contains methods for running and visualizing results of phylogenomic
                                         #    self.log (console, "domfam: '"+str(domfam)+"'")  # DEBUG
 
                                 """
+                                # THIS IS DIFFERENT
+                                if not target_feature:
+                                    continue
+
                                 if top_hit_flag:  # does SEED give more than one function?
                                     domfam_list = [domfam_list[0]]
                                 for domfam in domfam_list:
@@ -5475,7 +5853,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # write html to file and upload
         html_file = os.path.join(output_dir, 'domain_profile_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -6786,7 +7164,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # write html to file and upload
         html_file = os.path.join(html_output_dir, 'domain_profile_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -7794,7 +8172,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # write html to file and upload
         self.log(console, "SAVING AND UPLOADING HTML REPORT")
         html_file = os.path.join(html_output_dir, 'pan_circle_plot_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -8673,7 +9051,7 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # write html to file and upload
         html_file = os.path.join(html_output_dir, 'pan_phylo_report.html')
-        with open(html_file, 'w', 0) as html_handle:
+        with open(html_file, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -8868,7 +9246,7 @@ This module contains methods for running and visualizing results of phylogenomic
         # save newick file
         intree_newick_file_path = os.path.join(output_dir, intree_name + ".newick")
         self.log(console, 'writing intree file: ' + intree_newick_file_path)
-        with open(intree_newick_file_path, 'w', 0) as intree_newick_file_handle:
+        with open(intree_newick_file_path, 'w') as intree_newick_file_handle:
             intree_newick_file_handle.write(tree_in['tree'])
 
         """
@@ -8944,7 +9322,7 @@ This module contains methods for running and visualizing results of phylogenomic
             #    new_ids[row_id] = default_row_ids[row_id]
 
             mod_newick_buf = tree_in['tree']
-            mod_newick_buf = re.sub('\|', '%' + '|'.encode("hex"), mod_newick_buf)
+            mod_newick_buf = re.sub('\|', '%' + '|'.encode("utf-8").hex(), mod_newick_buf)
             #for row_id in new_ids.keys():
             for node_id in tree_in['default_node_labels'].keys():
                 label = tree_in['default_node_labels'][node_id]
@@ -8952,18 +9330,18 @@ This module contains methods for running and visualizing results of phylogenomic
                 #self.log (console, "node "+node_id+" label B4: '"+label+"'")  # DEBUG
                 label = re.sub(' \(kb[^\)]*\)', '', label)  # just get rid of problematic (kb|g.1234)
                 label = re.sub('\s', '_', label)
-                #label = re.sub('\/','%'+'/'.encode("hex"), label)
-                #label = re.sub(r'\\','%'+'\\'.encode("hex"), label)
-                #label = re.sub('\[','%'+'['.encode("hex"), label)
-                #label = re.sub('\]','%'+']'.encode("hex"), label)
+                #label = re.sub('\/','%'+'/'.encode("utf-8").hex(), label)
+                #label = re.sub(r'\\','%'+'\\'.encode("utf-8").hex(), label)
+                #label = re.sub('\[','%'+'['.encode("utf-8").hex(), label)
+                #label = re.sub('\]','%'+']'.encode("utf-8").hex(), label)
                 label = re.sub('\(', '[', label)
                 label = re.sub('\)', ']', label)
-                label = re.sub('\:', '%' + ':'.encode("hex"), label)
-                label = re.sub('\;', '%' + ';'.encode("hex"), label)
-                label = re.sub('\|', '%' + '|'.encode("hex"), label)
+                label = re.sub('\:', '%' + ':'.encode("utf-8").hex(), label)
+                label = re.sub('\;', '%' + ';'.encode("utf-8").hex(), label)
+                label = re.sub('\|', '%' + '|'.encode("utf-8").hex(), label)
                 #self.log (console, "node "+node_id+" label AF: '"+label+"'")  # DEBUG
                 #self.log (console, "NEWICK B4: '"+mod_newick_buf+"'")  # DEBUG
-                mod_node_id = re.sub('\|', '%' + '|'.encode("hex"), node_id)
+                mod_node_id = re.sub('\|', '%' + '|'.encode("utf-8").hex(), node_id)
                 mod_newick_buf = re.sub('\(' + mod_node_id + '\:', '(' + label + ':', mod_newick_buf)
                 mod_newick_buf = re.sub('\,' + mod_node_id + '\:', ',' + label + ':', mod_newick_buf)
                 #self.log (console, "NEWICK AF: '"+mod_newick_buf+"'")  # DEBUG
@@ -8971,7 +9349,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 #self.log(console, "new_id: '"+new_id+"' label: '"+label+"'")  # DEBUG
 
             mod_newick_buf = re.sub('_', ' ', mod_newick_buf)
-            with open(output_newick_labels_file_path, 'w', 0) as output_newick_labels_file_handle:
+            with open(output_newick_labels_file_path, 'w') as output_newick_labels_file_handle:
                 output_newick_labels_file_handle.write(mod_newick_buf)
 
             """
@@ -9241,13 +9619,15 @@ This module contains methods for running and visualizing results of phylogenomic
 
             BLASTp_Params = {'workspace_name':       params['workspace_name'],
                              'input_one_ref':        input_individual_FS_ref,
-                             'input_many_ref':       tree_derived_genomeSet_ref,
+                             'input_many_refs':      [tree_derived_genomeSet_ref],
                              'output_filtered_name': output_individual_FS_name,
                              'ident_thresh':         params['ident_thresh'],
                              'e_value':              params['e_value'],
                              'bitscore':             params['bitscore'],
                              'overlap_fraction':     params['overlap_fraction'],
-                             'maxaccepts':           1000  # hopefully won't exceed 1000 genomes!
+                             'maxaccepts':           1000,  # hopefully won't exceed 1000 genomes!
+                             'genome_disp_name_config': 'obj_name',
+                             'output_extra_format':     'none'
                              }
 
             self.log (console, "running BLASTp for "+input_individual_FS_name)
@@ -9651,7 +10031,7 @@ This module contains methods for running and visualizing results of phylogenomic
         html_report_lines += ['</html>']
 
         html_report_str = "\n".join(html_report_lines)
-        with open(output_html_file_path, 'w', 0) as html_handle:
+        with open(output_html_file_path, 'w') as html_handle:
             html_handle.write(html_report_str)
 
         """

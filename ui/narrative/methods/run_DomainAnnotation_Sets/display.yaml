@@ -1,7 +1,7 @@
 #
 # define display information
 #
-name: Annotate Domains in a GenomeSet
+name: Annotate Domains in a GenomeSet - v1.7.1
 
 tooltip: |
     Annotate domains in every Genome within a GenomeSet using protein domains from widely used domain libraries.
@@ -47,7 +47,7 @@ description : |
 
     <p>Each Genome is annotated with domains from all available domain libraries (for a complete list, see the documentation linked above).  This may take several hours per genome, depending on the genome size.
 
-    <p><strong>Team members who developed &amp; deployed this App in KBase:</strong> Dylan Chivian. <i>Annotate Domains in a Genome</i> was developed by John-Marc Chandonia, Roman Sutormin, and Pavel Novichkov. For questions, please <a href="http://kbase.us/contact-us/">contact us</a>.</p>
+    <p><strong>Team members who developed &amp; deployed this App in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>. <i>Annotate Domains in a Genome</i> was developed by John-Marc Chandonia, Roman Sutormin, and Pavel Novichkov. For questions, please <a href="http://www.kbase.us/support/">contact us</a>.</p>
 
 publications :
     -

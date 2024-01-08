@@ -1,12 +1,6 @@
 import sys
-import os
-import os.path
 from jinja2 import Template
-try:
-    from ConfigParser import ConfigParser  # py2
-except:
-    from configparser import ConfigParser  # py3
-import StringIO
+from configparser import ConfigParser  # py3
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
@@ -18,18 +12,7 @@ if __name__ == "__main__":
     text = file.read()
     t = Template(text)
     config = ConfigParser()
-    if os.path.isfile(sys.argv[2]):
-        config.read(sys.argv[2])
-    elif "KBASE_ENDPOINT" in os.environ:
-        kbase_endpoint = os.environ.get("KBASE_ENDPOINT")
-        props = "[global]\n" + \
-                "job_service_url = " + kbase_endpoint + "/userandjobstate\n" + \
-                "workspace_url = " + kbase_endpoint + "/ws\n" + \
-                "shock_url = " + kbase_endpoint + "/shock-api\n" + \
-                "kbase_endpoint = " + kbase_endpoint + "\n"
-        config.readfp(StringIO.StringIO(props))
-    else:
-        raise ValueError('Neither ' + sys.argv[2] + ' file nor KBASE_ENDPOINT env-variable found')
+    config.read(sys.argv[2])
     props = dict(config.items("global"))
     output = t.render(props)
     with open(sys.argv[1] + ".orig", 'w') as f:

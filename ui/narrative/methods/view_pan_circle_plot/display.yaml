@@ -90,7 +90,7 @@ description : |
 
     <p><b>Save Pangenome FeatureSets:</b> FeatureSets containing Core (with outgroup Genome(s) this will be split into Clade-specific Core and Non-specific Core), Singleton, and Partial Pangenome (see above) gene members from the ortholog clusters are created if this option is set.</p>
 
-    <p><strong>Team members who developed &amp; deployed App in KBase:</strong> Dylan Chivian, using Pangenome Calculator OrthoMCL. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+    <p><strong>Team members who developed &amp; deployed App in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>, using Pangenome Calculator OrthoMCL. For questions, please <a href=”http://www.kbase.us/support/”>contact us</a>.</p>
 
 results : |
     <p><ul>

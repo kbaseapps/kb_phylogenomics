@@ -1,7 +1,18 @@
+### Version 1.8.0
+__Changes__
+- added Trim_Gene_Tree_to_GenomeSet() App
+- update Docker base image to kbase/sdkpython:3.8.10
+- update ETE3 to 3.1.2
+- update PyQt5 (note: must use PyQt5==5.11.3 on debian)
+- NOT YET: fixed bug to require a minimum of 3 genomes in Phylogenetic Pangenome Accumulation
+- replaced Travis-CI with Github Actions unit tests
+- updated contact URL in all spec.json and display.yaml
+
 ### Version 1.7.1
 __Changes__
-- Annotate Domains in a GenomeSet runs up to 50 jobs in parallel on remote workers
+- Annotate Domains in a GenomeSet runs up to 10 jobs in parallel on remote workers
 - Pass genome_disp_name_config through in Build_Gene_Tree()
+- Build Gene Tree can include features from Annotated Metagenome Assemblies
 
 ### Version 1.7.0
 __Changes__

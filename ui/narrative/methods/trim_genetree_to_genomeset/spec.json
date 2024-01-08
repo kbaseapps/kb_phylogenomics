@@ -1,0 +1,159 @@
+{
+    "ver": "1.8.0",
+    "authors": [
+        "dylan"
+    ],
+    "contact": "http://www.kbase.us/support/",
+    "visible": true,
+    "categories": ["inactive", "comparative_genomics"],
+    "widgets": {
+        "input": null,
+        "output": "no-display"
+    },
+    "parameters": [ 
+        {
+            "id": "input_tree_ref",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseTrees.Tree" ]
+            }
+        },
+        {
+            "id": "input_genomeSet_ref",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseSearch.GenomeSet" ]
+            }
+        },
+        {
+            "id": "desc",
+            "optional": true,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text"
+        },
+        {
+            "id": "output_tree_name",
+            "optional": false,
+            "advanced": false,
+            "allow_multiple": false,
+            "default_values": [ "" ],
+            "field_type": "text",
+            "text_options": {
+                "valid_ws_types": [ "KBaseTrees.Tree" ],
+		"is_output_name": true
+            }
+        },
+        {
+            "id": "enforce_genome_version_match",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "0" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "0",
+					"display": "DON'T require genome version match",
+					"id": "hide",
+					"ui-name": "hide"
+				},
+				{
+					"value": "1",
+				        "display": "DO require genome version match",
+					"id": "show",
+					"ui-name": "show"
+				}
+		]
+            }
+        },
+        {
+            "id": "keep_ama_genes",
+            "optional": false,
+            "advanced": true,
+            "allow_multiple": false,
+            "default_values": [ "1" ],
+            "field_type": "dropdown",
+            "dropdown_options": {
+	    	"options": [
+				{
+					"value": "0",
+					"display": "DON'T keep AMA genes in GeneTree",
+					"id": "ama_genes-0",
+					"ui-name": "ama_genes-0"
+				},
+				{
+					"value": "1",
+				        "display": "DO keep AMA genes in GeneTree",
+					"id": "ama_genes-1",
+					"ui-name": "ama_genes-1"
+				}
+		]
+            }
+        }
+    ],
+    "behavior": {
+        "service-mapping": {
+            "url": "",
+            "name": "kb_phylogenomics",
+            "method": "trim_speciestree_to_genomeset",
+            "input_mapping": [
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "workspace_name"
+                },
+                {
+                    "input_parameter": "input_tree_ref",
+		    "target_property": "input_tree_ref",
+		    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter": "input_genomeSet_ref",
+		    "target_property": "input_genomeSet_ref",
+		    "target_type_transform": "resolved-ref"
+                },
+                {
+                    "input_parameter": "desc",
+		    "target_property": "desc"
+                },
+                {
+                    "input_parameter": "output_tree_name",
+		    "target_property": "output_tree_name"
+                },
+                {
+                    "input_parameter": "enforce_genome_version_match",
+		    "target_property": "enforce_genome_version_match"
+                },
+                {
+                    "input_parameter": "keep_ama_genes",
+		    "target_property": "keep_ama_genes"
+                }
+            ],
+            "output_mapping": [
+                {
+                    "service_method_output_path": [0, "report_name"],
+                    "target_property": "report_name"
+                },
+                {
+                    "service_method_output_path": [0, "report_ref"],
+                    "target_property": "report_ref"
+                },
+                {
+                    "narrative_system_variable": "workspace",
+                    "target_property": "workspace_name"
+                }
+            ]
+        }
+    },
+    "job_id_output_field": "docker"
+}

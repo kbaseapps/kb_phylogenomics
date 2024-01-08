@@ -1,2 +1,4 @@
 test_local
 sdk.cfg
+scripts/count_loaded_objs.py
+scripts/alter_genome_objs.py

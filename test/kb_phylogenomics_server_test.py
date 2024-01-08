@@ -152,7 +152,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
         shutil.copy(domain_data_file, domain_file)
 
         # create object
-        with open (domain_file, 'r', 0) as domain_fh:
+        with open (domain_file, 'r') as domain_fh:
             domain_obj = json.load(domain_fh)
 
         domain_obj['used_dms_ref'] = 'KBasePublicGeneDomains/All'
@@ -211,7 +211,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
         shutil.copy(tree_data_file, tree_file)
 
         # create object
-        with open (tree_file, 'r', 0) as tree_fh:
+        with open (tree_file, 'r') as tree_fh:
             tree_obj = json.load(tree_fh)
 
         # update genome_refs
@@ -277,7 +277,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
         shutil.copy(pan_data_file, pan_file)
 
         # create object
-        with open (pan_file, 'r', 0) as pan_fh:
+        with open (pan_file, 'r') as pan_fh:
             pan_obj = json.load(pan_fh)
 
         # update genome_refs
@@ -330,7 +330,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
-    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
+    @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_01_GenomeSet(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -440,7 +440,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a SpeciesTree
     ##
-    # HIDE @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
+    @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_02_SpeciesTree(self):
         method = 'run_DomainAnnotation_Sets'
 
@@ -636,13 +636,13 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
 
 
-    #### View Fxn Profile for FeatureSet
+    #### View Fxn Profile for FeatureSet for COG
     ##
-    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_01()")  # uncomment to skip
-    def test_view_fxn_profile_featureSet_01(self):
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_01_COG()")  # uncomment to skip
+    def test_view_fxn_profile_featureSet_01_COG(self):
         method = 'view_fxn_profile_featureSet'
 
-        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("\n\nRUNNING: test_"+method+"_01_COG()")
         print ("==================================================\n\n")
 
         # input_data
@@ -725,6 +725,135 @@ class kb_phylogenomicsTest(unittest.TestCase):
                    'genome_disp_name_config': "obj_name",
                    #'count_category': "perc_annot",
                    'count_category': "raw_count",
+                   'heatmap': "1",
+                   'vertical': "1",
+                   'top_hit': "1",
+                   'e_value': "0.001",
+                   'log_base': "",
+                   'required_COG_annot_perc': "10",
+                   'required_TIGR_annot_perc': "10",
+                   'required_PFAM_annot_perc': "10",
+                   'required_SEED_annot_perc': "33",
+                   'count_hypothetical': "0",
+                   'show_blanks': "0",
+                   'skip_missing_genomes': "0",
+                   'enforce_genome_version_match': "0"
+               }
+        ret = self.getImpl().view_fxn_profile_featureSet(self.getContext(),params)[0]
+        self.assertIsNotNone(ret['report_ref'])
+
+        # check created obj
+        #report_obj = self.getWsClient().get_objects2({'objects':[{'ref':ret['report_ref']}]})['data'][0]['data']
+        #report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
+        #self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
+
+        #created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        #self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
+        #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
+    #### View Fxn Profile for FeatureSet for SEED
+    ##
+    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_02_SEED()")  # uncomment to skip
+    def test_view_fxn_profile_featureSet_02_SEED(self):
+        method = 'view_fxn_profile_featureSet'
+
+        print ("\n\nRUNNING: test_"+method+"_02_SEED()")
+        print ("==================================================\n\n")
+
+        # input_data
+        #genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        #genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+#        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+#        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+        genomeInfo_4 = self.getGenomeInfo('Wolbachia_A_aegypti-RAST.Genome', 4)  # Wolbachia endosymbiont of Aedes aegypti
+        genomeInfo_5 = self.getGenomeInfo('Wolbachia_C_quinquefasciatus-RAST.Genome', 5)  # Wolbachia endosymbiont of Culex quinquefasciatus
+        genomeInfo_6 = self.getGenomeInfo('Wolbachia_D_melanogaster-RAST.Genome', 6)  # Wolbachia endosymbiont of Drosophila melanogaster
+        
+        genome_ref_4 = self.getWsName() + '/' + str(genomeInfo_4[0]) + '/' + str(genomeInfo_4[4])
+        genome_ref_5 = self.getWsName() + '/' + str(genomeInfo_5[0]) + '/' + str(genomeInfo_5[4])
+        genome_ref_6 = self.getWsName() + '/' + str(genomeInfo_6[0]) + '/' + str(genomeInfo_6[4])
+
+        # Aedes aegypti
+        feature_id_0_0 = 'J8Z14_RS00005'   # DnaA
+        feature_id_0_1 = 'J8Z14_RS00190'   # DnaJ
+        feature_id_0_2 = 'J8Z14_RS00200'   # hypothetical protein.  pseudo with internal stop
+        feature_id_0_3 = 'J8Z14_RS00205'   # hyptothetical protein
+        feature_id_0_4 = 'J8Z14_RS00210'    # Retron-type RNA-directed DNA polymerase (EC 2.7.7.49)
+        # Culex quinquefasciatus
+        feature_id_1_0 = 'WP_RS00005'   # DnaA
+        feature_id_1_1 = 'WP_RS00970'   # DnaJ
+        feature_id_1_2 = 'WP_RS00975'   # (E)-4-hydroxy-3-methylbut-2-enyl-diphosphate synthase (flavodoxin) (EC 1.17.7.3)
+        feature_id_1_3 = 'WP_RS00980'   # hypothetical protein
+        feature_id_1_4 = 'WP_RS00985'   # hypothetical protein
+        # Drosophila melanogaster
+        feature_id_2_0 = 'GQX67_RS00005'   # DnaA
+        feature_id_2_1 = 'GQX67_RS00190'   # DnaJ
+        feature_id_2_2 = 'GQX67_RS00200'   # hypothetical protein.  pseudo with internal stop
+        feature_id_2_3 = 'GQX67_RS00205'   # hypothetical protein
+        feature_id_2_4 = 'GQX67_RS00210'   # Retron-type RNA-directed DNA polymerase (EC 2.7.7.49)
+
+        # build FeatureSet obj
+        testFS = {
+            'description': 'a few features',
+            'elements': { feature_id_0_0: [genome_ref_4],
+                          feature_id_0_1: [genome_ref_4],
+                          feature_id_0_2: [genome_ref_4],
+                          feature_id_0_3: [genome_ref_4],
+                          feature_id_0_4: [genome_ref_4],
+                          feature_id_1_0: [genome_ref_5],
+                          feature_id_1_1: [genome_ref_5],
+                          feature_id_1_2: [genome_ref_5],
+                          feature_id_1_3: [genome_ref_5],
+                          feature_id_1_4: [genome_ref_5],
+                          feature_id_2_0: [genome_ref_6],
+                          feature_id_2_1: [genome_ref_6],
+                          feature_id_2_2: [genome_ref_6],
+                          feature_id_2_3: [genome_ref_6],
+                          feature_id_2_4: [genome_ref_6]
+                      }
+        }
+        
+        obj_info = self.getWsClient().save_objects({'workspace': self.getWsName(),       
+                                                    'objects': [
+                                                        {
+                                                            'type':'KBaseCollections.FeatureSet',
+                                                            'data':testFS,
+                                                            'name':method+'.test_FeatureSet',
+                                                            'meta':{},
+                                                            'provenance':[
+                                                                {
+                                                                    'service':'kb_phylogenomics',
+                                                                    'method':'test_view_fxn_profile_featureSet'
+                                                                }
+                                                            ]
+                                                        }]
+                                                })[0]
+
+        pprint(obj_info)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        featureSet_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        # get annotated domains
+        #domain_info_0 = self.getDomainInfo('Carsonella.Domains', 0, genome_ref_0)
+        #domain_info_1 = self.getDomainInfo('Wolbachia_ochengi.Domains', 1, genome_ref_1)
+#        domain_info_2 = self.getDomainInfo('Wolbachia_pretiosum.Domains', 2, genome_ref_2)
+#        domain_info_3 = self.getDomainInfo('Wolbachia_sp.wRi.Domains', 3, genome_ref_3)
+
+
+        # run that sucker
+        params = { 'workspace_name': self.getWsName(),
+                   'custom_target_fams': { 'target_fams': [],
+                                           'extra_target_fam_groups_COG':  [],
+                                           'extra_target_fam_groups_PFAM': [],
+                                           'extra_target_fam_groups_TIGR': [],
+                                           'extra_target_fam_groups_SEED': []
+                                       },
+                   'input_featureSet_ref': featureSet_ref,
+                   'namespace': 'SEED',
+                   'genome_disp_name_config': "obj_name",
+                   'count_category': "perc_annot",
+                   #'count_category': "raw_count",
                    'heatmap': "1",
                    'vertical': "1",
                    'top_hit': "1",
@@ -1119,9 +1248,11 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Microbial SpeciesTree
     ##
-    ## **** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
+    ## ** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
+    ##          also requires SpeciesTreeBuilder refdata (eg /data/cogs/cog_list.txt)
+    ## SKIPPING
     ##
-    # HIDE @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_microbial_speciestree_01()")  # uncomment to skip
     def test_build_microbial_speciestree_01(self):
         method = 'build_microbial_speciestree'
 
@@ -1245,9 +1376,11 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Microbial SpeciesTree
     ##
-    ## **** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
+    ## ** NOTE: must be run against PROD to see Phylogenetic Skeleton Genomes
+    ##          also requires SpeciesTreeBuilder refdata (eg /data/cogs/cog_list.txt)
+    ## SKIPPING
     ##
-    # HIDE @unittest.skip("skipped test_build_microbial_speciestree_no_skeleton_02()")  # uncomment to skip
+    @unittest.skip("skipped test_build_microbial_speciestree_no_skeleton_02()")  # uncomment to skip
     def test_build_microbial_speciestree_no_skeleton_02(self):
         method = 'build_microbial_speciestree'
 
@@ -1371,7 +1504,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Strain Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_strain_tree_01()")  # uncomment to skip
+    ## SKIPPING until active App
+    @unittest.skip("skipped test_build_strain_tree_01()")  # uncomment to skip
     def test_build_strain_tree_01(self):
         method = 'build_strain_tree'
 
@@ -1484,7 +1618,9 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Pangenome Species Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_pangenome_species_tree_01()")  # uncomment to skip
+    ## SKIPPING until active App
+    ##
+    @unittest.skip("skipped test_build_pangenome_species_tree_01()")  # uncomment to skip
     def test_build_pangenome_species_tree_01(self):
         method = 'build_pangenome_species_tree'
 
