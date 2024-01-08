@@ -330,6 +330,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Annotate domains in a GenomeSet
     ##
+    ## SKIPPING because very slow test
+    ##
     @unittest.skip("skipped test_run_DomainAnnotation_Sets_01()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_01_GenomeSet(self):
         method = 'run_DomainAnnotation_Sets'
@@ -439,6 +441,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
 
     #### Annotate domains in a SpeciesTree
+    ##
+    ## SKIPPING because very slow test
     ##
     @unittest.skip("skipped test_run_DomainAnnotation_Sets_02_SpeciesTree()")  # uncomment to skip
     def test_run_DomainAnnotation_Sets_02_SpeciesTree(self):

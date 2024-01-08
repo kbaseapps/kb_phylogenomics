@@ -52,7 +52,7 @@ This module contains methods for running and visualizing results of phylogenomic
     ######################################### noqa
     VERSION = "1.8.0"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "ec9c0f7399fae23a1fae3c42089fb6d178285cd9"
+    GIT_COMMIT_HASH = "783cfe2216151a867ff1b055784d07bceb032b2e"
 
     #BEGIN_CLASS_HEADER
 

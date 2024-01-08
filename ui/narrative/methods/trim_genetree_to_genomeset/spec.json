@@ -106,7 +106,7 @@
         "service-mapping": {
             "url": "",
             "name": "kb_phylogenomics",
-            "method": "trim_speciestree_to_genomeset",
+            "method": "trim_genetree_to_genomeset",
             "input_mapping": [
                 {
                     "narrative_system_variable": "workspace",
