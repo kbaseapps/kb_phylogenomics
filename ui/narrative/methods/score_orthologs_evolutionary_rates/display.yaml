@@ -1,0 +1,106 @@
+#
+# define display information
+#
+name: Score Orthologs Evolutionary Rates - v1.9.0
+
+tooltip: |
+    Score the evolutionary rates of orthologs and save most conserved and most divergent features
+
+screenshots:
+    - 
+
+icon: pan_circle-purple.png
+
+#
+# define a set of similar methods that might be useful to the user
+#
+suggestions:
+    apps:
+        related:
+            []
+        next:
+            [kb_phylogenomics.view_fxn_profile_featureSet,kb_SetUtilities.KButil_Slice_FeatureSets_by_Genomes,kb_SetUtilities.KButil_Merge_FeatureSet_Collection,kb_SetUtilities.KButil_Logical_Slice_Two_FeatureSets]
+    methods:
+        related:
+            []
+        next:
+            []
+
+#
+# Configure the display and description of parameters
+#
+parameters :
+    input_genome_ref :
+        ui-name : |
+            Base Genome
+        short-hint : |
+            The Genome to use as the base of the comparison.
+    input_pangenome_ref :
+        ui-name : |
+            Pangenome
+        short-hint : |
+            The Pangenome to use for determining orthologs.
+    input_compare_genome_refs :
+        ui-name : |
+            Custom Compare Genome(s)
+        short-hint : |
+            The Genome(s) to compare against the base.
+    genome_disp_name_config :
+        ui-name : |
+            Display genome as
+        short-hint : |
+            Use the object name, object version, and/or scientific name of the Genome in the function profile report
+    save_featuresets :
+        ui-name : |
+            Save FeatureSets
+        short-hint : |
+            Flag to determine whether to save featuresets. Should be used with zscore values.
+    conserved_featureset_nuc_identity_zscore :
+        ui-name : |
+            Conserved Nuc Identity Z-Score
+        short-hint : |
+            Z-Score threshold of nucleotide identity distribution below which to save conserved genes.
+    divergent_featureset_nuc_identity_zscore :
+        ui-name : |
+            Divergent Nuc Identity Z-Score
+        short-hint : |
+            Z-Score threshold of nucleotide identity distribution above which to save divergent genes.
+    conserved_featureset_aa_identity_zscore :
+        ui-name : |
+            Conserved AA Identity Z-Score
+        short-hint : |
+            Z-Score threshold of amino acid identity distribution below which to save conserved genes.
+    divergent_featureset_aa_identity_zscore :
+        ui-name : |
+            Divergent AA Identity Z-Score
+        short-hint : |
+            Z-Score threshold of amino acid identity distribution above which to save divergent genes.
+    conserved_featureset_dNdS :
+        ui-name : |
+            Conserved dN/dS threshold
+        short-hint : |
+            Threshold below which to save conserved genes (e.g. 0.5)
+    divergent_featureset_dNdS :
+        ui-name : |
+            Divergent dN/dS threshold
+        short-hint : |
+            Threshold above which to save divergent genes (e.g. 2.0)
+
+description : |
+    <p>After performing a <b><i>Pangenome</i></b> calculation, you can use this App to determine the evolutionary rates of orthologous genes. Additionally, this App will save <b><i>Feature Sets</i></b> corresponding to the most (divergent) and least (conserved) rapidly evolving genes, using nucleotide identity, amino acid identity, and amino acid similarity (blosum scores).</p>
+
+    <hr>
+
+    <p><strong>Team members who developed &amp; deployed App in KBase:</strong> <a href="https://narrative.kbase.us/#people/dylan">Dylan Chivian</a>. For questions, please <a href=”http://www.kbase.us/support/”>contact us</a>.</p>
+
+results : |
+    <p><ul>
+      <li><b>Feature Sets</b> corresponding to the most conserved and divergent genes (see above) may be created.</li>
+    </ul>
+    </p>
+
+publications :
+    -
+        display-text: |
+            Li L, Stoeckert CJ, Roos DS. OrthoMCL: Identification of Ortholog Groups for Eukaryotic Genomes. Genome Res. 2003;13: 2178–2189. doi:10.1101/gr.1224503
+        link: https://genome.cshlp.org/content/13/9/2178

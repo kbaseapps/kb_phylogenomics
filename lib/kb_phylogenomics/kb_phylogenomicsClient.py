@@ -431,6 +431,33 @@ class kb_phylogenomics(object):
         return self._client.call_method('kb_phylogenomics.view_pan_phylo',
                                         [params], self._service_ver, context)
 
+    def score_orthologs_evolutionary_rates(self, params, context=None):
+        """
+        :param params: instance of type
+           "score_orthologs_evolutionary_rates_Input"
+           (score_orthologs_evolutionary_rates() ** ** score mutations
+           between a base genome and additional genomes **   using the
+           Pangenome to determine orthologs **   (split paralogs in larger
+           clusters)) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter "input_genome_ref"
+           of type "data_obj_ref", parameter "input_pangenome_ref" of type
+           "data_obj_ref", parameter "input_compare_genome_refs" of type
+           "data_obj_ref", parameter
+           "conserved_featureset_nuc_identity_zscore" of Double, parameter
+           "divergent_featureset_nuc_identity_zscore" of Double, parameter
+           "conserved_featureset_aa_identity_zscore" of Double, parameter
+           "divergent_featureset_aa_identity_zscore" of Double, parameter
+           "conserved_featureset_dNdS" of Double, parameter
+           "divergent_featureset_dNdS" of Double, parameter
+           "save_featuresets" of type "bool", parameter
+           "genome_disp_name_config" of String
+        :returns: instance of type
+           "score_orthologs_evolutionary_rates_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        return self._client.call_method('kb_phylogenomics.score_orthologs_evolutionary_rates',
+                                        [params], self._service_ver, context)
+
     def find_homologs_with_genome_context(self, params, context=None):
         """
         :param params: instance of type

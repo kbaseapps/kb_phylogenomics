@@ -525,7 +525,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for GenomeSet
     ##
-    # HIDE @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_fxn_profile_01()")  # uncomment to skip
     def test_view_fxn_profile_01(self):
         method = 'view_fxn_profile'
 
@@ -642,7 +642,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for FeatureSet for COG
     ##
-    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_01_COG()")  # uncomment to skip
+    @unittest.skip("skipped test_view_fxn_profile_featureSet_01_COG()")  # uncomment to skip
     def test_view_fxn_profile_featureSet_01_COG(self):
         method = 'view_fxn_profile_featureSet'
 
@@ -758,7 +758,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for FeatureSet for SEED
     ##
-    # HIDE @unittest.skip("skipped test_view_fxn_profile_featureSet_02_SEED()")  # uncomment to skip
+    @unittest.skip("skipped test_view_fxn_profile_featureSet_02_SEED()")  # uncomment to skip
     def test_view_fxn_profile_featureSet_02_SEED(self):
         method = 'view_fxn_profile_featureSet'
 
@@ -887,7 +887,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Fxn Profile for Tree
     ##
-    # HIDE @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_fxn_profile_phylo_01()")  # uncomment to skip
     def test_view_fxn_profile_phylo_01(self):
         method = 'view_fxn_profile_phylo'
 
@@ -969,7 +969,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome Circle Plot
     ##
-    # HIDE @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_pan_circle_plot_01()")  # uncomment to skip
     def test_view_pan_circle_plot_01(self):
         method = 'view_pan_circle_plot'
 
@@ -1031,7 +1031,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### View Pangenome on Tree
     ##
-    # HIDE @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_pan_phylo_01()")  # uncomment to skip
     def test_view_pan_phylo_01(self):
         method = 'view_pan_phylo'
 
@@ -1092,9 +1092,75 @@ class kb_phylogenomicsTest(unittest.TestCase):
         #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
 
 
+    #### Score Orthologs Evolutionary Rates
+    ##
+    # HIDE @unittest.skip("skipped test_score_ortho_evo_rates_01()")  # uncomment to skip
+    def test_score_ortho_evo_rates_01(self):
+        method = 'score_ortho_evo_rates'
+
+        print ("\n\nRUNNING: test_"+method+"_01()")
+        print ("==================================================\n\n")
+
+        # input_data
+        genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
+        genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
+        genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
+        genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
+
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        genome_ref_0 = str(genomeInfo_0[WSID_I]) + '/' + str(genomeInfo_0[OBJID_I]) + '/' + str(genomeInfo_0[VERSION_I])
+        genome_ref_1 = str(genomeInfo_1[WSID_I]) + '/' + str(genomeInfo_1[OBJID_I]) + '/' + str(genomeInfo_1[VERSION_I])
+        genome_ref_2 = str(genomeInfo_2[WSID_I]) + '/' + str(genomeInfo_2[OBJID_I]) + '/' + str(genomeInfo_2[VERSION_I])
+        genome_ref_3 = str(genomeInfo_3[WSID_I]) + '/' + str(genomeInfo_3[OBJID_I]) + '/' + str(genomeInfo_3[VERSION_I])
+
+        #feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
+        #feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
+        #feature_id_2 = 'AOR14_RS04755'  # F0 ATP Synthase subunit B
+        #feature_id_3 = 'WRI_RS01560'    # F0 ATP Synthase subunit B
+
+        # upload Pangenome
+        genome_refs_map = { '23880/3/1': genome_ref_0,
+                            '23880/4/1': genome_ref_1,
+                            '23880/5/1': genome_ref_2,
+                            '23880/6/1': genome_ref_3
+                        }
+        obj_info = self.getPangenomeInfo('Tiny_things.OrthoMCL_pangenome', 0, genome_refs_map)
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+        pangenome_ref = str(obj_info[WSID_I])+'/'+str(obj_info[OBJID_I])+'/'+str(obj_info[VERSION_I])
+
+        # run that sucker
+        base_genome_ref = genome_ref_1
+        compare_genome_refs = [genome_ref_1, genome_ref_2, genome_ref_3]  # Wolbachia
+        params = { 'workspace_name':             self.getWsName(),
+                   'input_genome_ref':           base_genome_ref,
+                   'input_pangenome_ref':        pangenome_ref,
+                   'input_compare_genome_refs':  compare_genome_refs,
+                   'genome_disp_name_config':    "obj_name_ver_sci_name",
+                   'conserved_featureset_nuc_identity_zscore': -2.0,
+                   'diverging_featureset_nuc_identity_zscore': 2.0,
+                   'conserved_featureset_aa_identity_zscore': -2.0,
+                   'diverging_featureset_aa_identity_zscore': 2.0,
+                   'conserved_featureset_aa_blosum_zscore': -2.0,
+                   'diverging_featureset_aa_blosum_zscore': 2.0,
+                   'save_featuresets':           1,
+
+               }
+        ret = self.getImpl().score_orthologs_evolutionary_rates(self.getContext(),params)[0]
+        self.assertIsNotNone(ret['report_ref'])
+
+        # check created obj
+        #report_obj = self.getWsClient().get_objects2({'objects':[{'ref':ret['report_ref']}]})['data'][0]['data']
+        #report_obj = self.getWsClient().get_objects([{'ref':ret['report_ref']}])[0]['data']
+        #self.assertIsNotNone(report_obj['objects_created'][0]['ref'])
+
+        #created_obj_0_info = self.getWsClient().get_object_info_new({'objects':[{'ref':report_obj['objects_created'][0]['ref']}]})[0]
+        #self.assertEqual(created_obj_0_info[NAME_I], obj_out_name)
+        #self.assertEqual(created_obj_0_info[TYPE_I].split('-')[0], obj_out_type)
+
+
     #### View Tree
     ##
-    # HIDE @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_view_tree_01()")  # uncomment to skip
     def test_view_tree_01(self):
         method = 'view_tree'
 
@@ -1147,7 +1213,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Trim SpeciesTree to GenomeSet
     ##
-    # HIDE @unittest.skip("skipped test_trim_speciestree_to_genomeset_01()")  # uncomment to skip
+    @unittest.skip("skipped test_trim_speciestree_to_genomeset_01()")  # uncomment to skip
     def test_trim_speciestree_to_genomeset_01(self):
         method = 'trim_speciestree_to_genomeset'
 
@@ -1703,7 +1769,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Find Homologs with Genome Context
     ##
-    # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
+    @unittest.skip("skipped test_find_homologs_with_genome_context_01()")  # uncomment to skip
     def test_find_homologs_with_genome_context_01(self):
         method = 'find_homologs_with_genome_context'
 
@@ -1807,7 +1873,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Find Homologs with Genome Context (with queries with no matches)
     ##
-    # HIDE @unittest.skip("skipped test_find_homologs_with_genome_context_02()")  # uncomment to skip
+    @unittest.skip("skipped test_find_homologs_with_genome_context_02()")  # uncomment to skip
     def test_find_homologs_with_genome_context_02(self):
         method = 'find_homologs_with_genome_context'
 
@@ -1911,7 +1977,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Build Gene Tree
     ##
-    # HIDE @unittest.skip("skipped test_build_gene_tree_01()")  # uncomment to skip
+    @unittest.skip("skipped test_build_gene_tree_01()")  # uncomment to skip
     def test_build_gene_tree_01(self):
         method = 'build_gene_tree'
 
@@ -2007,7 +2073,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Get Categories auto-configure method
     ##
-    # HIDE @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
+    @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
     def test_get_categories(self):
         method = 'get_configure_categories'
 

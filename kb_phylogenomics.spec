@@ -568,6 +568,37 @@ module kb_phylogenomics {
         authentication required;
 
 
+    /* score_orthologs_evolutionary_rates()
+    **
+    ** score mutations between a base genome and additional genomes
+    **   using the Pangenome to determine orthologs
+    **   (split paralogs in larger clusters)
+    */
+    typedef structure {
+        workspace_name workspace_name;
+        data_obj_ref   input_genome_ref;
+	data_obj_ref   input_pangenome_ref;
+        data_obj_ref   input_compare_genome_refs;
+	float          conserved_featureset_nuc_identity_zscore;
+	float          divergent_featureset_nuc_identity_zscore;
+	float          conserved_featureset_aa_identity_zscore;
+	float          divergent_featureset_aa_identity_zscore;
+	float          conserved_featureset_dNdS;
+	float          divergent_featureset_dNdS;
+	bool           save_featuresets;
+        string         genome_disp_name_config;
+    } score_orthologs_evolutionary_rates_Input;
+
+    typedef structure {
+        string report_name;
+        string report_ref;
+    } score_orthologs_evolutionary_rates_Output;
+
+    funcdef score_orthologs_evolutionary_rates(score_orthologs_evolutionary_rates_Input params) 
+        returns (score_orthologs_evolutionary_rates_Output output) 
+        authentication required;
+
+
     /* find_homologs_with_genome_context()
     **
     ** show homolgous genes across multiple genomes within genome context against species tree

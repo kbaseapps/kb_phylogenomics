@@ -25,6 +25,15 @@ RUN pip install ete3==3.1.2 PyQt5==5.11.3 numpy==1.23.1
 # Install MatPlotLib
 RUN pip install matplotlib==3.5.2
 
+# Install MUSCLE
+#
+RUN mkdir -p /kb/module/muscle/bin && \
+    cd /kb/module/muscle/bin && \
+    curl http://drive5.com/muscle/muscle3.8.425_binaries.tar.gz > muscle3.8.425_binaries.tar.gz && \
+    tar xfz muscle3.8.425_binaries.tar.gz && \
+    ln -s muscle3.8.425_i86linux64 muscle && \
+    rm muscle3.8.425_binaries.tar.gz 
+
 # -----------------------------------------
 
 COPY ./ /kb/module

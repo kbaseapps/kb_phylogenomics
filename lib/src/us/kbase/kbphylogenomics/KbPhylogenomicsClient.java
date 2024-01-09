@@ -470,6 +470,23 @@ public class KbPhylogenomicsClient {
     }
 
     /**
+     * <p>Original spec-file function name: score_orthologs_evolutionary_rates</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link us.kbase.kbphylogenomics.ScoreOrthologsEvolutionaryRatesInput ScoreOrthologsEvolutionaryRatesInput} (original type "score_orthologs_evolutionary_rates_Input")
+     * @return   parameter "output" of type {@link us.kbase.kbphylogenomics.ScoreOrthologsEvolutionaryRatesOutput ScoreOrthologsEvolutionaryRatesOutput} (original type "score_orthologs_evolutionary_rates_Output")
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public ScoreOrthologsEvolutionaryRatesOutput scoreOrthologsEvolutionaryRates(ScoreOrthologsEvolutionaryRatesInput params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<ScoreOrthologsEvolutionaryRatesOutput>> retType = new TypeReference<List<ScoreOrthologsEvolutionaryRatesOutput>>() {};
+        List<ScoreOrthologsEvolutionaryRatesOutput> res = caller.jsonrpcCall("kb_phylogenomics.score_orthologs_evolutionary_rates", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res.get(0);
+    }
+
+    /**
      * <p>Original spec-file function name: find_homologs_with_genome_context</p>
      * <pre>
      * </pre>

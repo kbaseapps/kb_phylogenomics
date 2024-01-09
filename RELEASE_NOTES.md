@@ -1,3 +1,7 @@
+### Version 1.9.0
+__Changes__
+- added Score_Orthologs_Evolutionary_Rates() App
+
 ### Version 1.8.0
 __Changes__
 - added Trim_Gene_Tree_to_GenomeSet() App

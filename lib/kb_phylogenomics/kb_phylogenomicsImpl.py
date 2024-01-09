@@ -10,6 +10,8 @@ import re
 import sys
 import uuid
 import random
+import subprocess
+
 from datetime import datetime
 from pprint import pformat,pprint
 
@@ -50,12 +52,16 @@ This module contains methods for running and visualizing results of phylogenomic
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "1.8.0"
+    VERSION = "1.9.0"
     GIT_URL = "https://github.com/kbaseapps/kb_phylogenomics"
-    GIT_COMMIT_HASH = "783cfe2216151a867ff1b055784d07bceb032b2e"
+    GIT_COMMIT_HASH = "3ff3550c05d4d7b6efdc370296fb78ddf8ba6919"
 
     #BEGIN_CLASS_HEADER
 
+    # executable path
+    MUSCLE_bin = '/kb/module/muscle/bin/muscle'
+
+    # utils
     def now_ISO(self):
         now_timestamp = datetime.now()
         now_secs_from_epoch = (now_timestamp - datetime(1970,1,1)).total_seconds()
@@ -549,6 +555,44 @@ This module contains methods for running and visualizing results of phylogenomic
         return(cats, cat2name, cat2group, domfam2cat, cat2domfams, namespaces_reading, target_fams,
                extra_target_fams, extra_target_fam_groups, domfam2group, domfam2name)
 
+
+    # _run_muscle()
+    #
+    def _run_muscle (self, in_file, msa_file, max_iters, max_hours):
+        #   e.g. muscle -in <fasta_in> -out <fasta_out> -maxiters <n> -haxhours <h>
+        muscle_cmd = [self.MUSCLE_bin]
+        muscle_cmd.append('-in')
+        muscle_cmd.append(in_file)
+        muscle_cmd.append('-out')
+        muscle_cmd.append(msa_file)
+        muscle_cmd.append('-maxiters')
+        muscle_cmd.append(str(max_iters))
+        muscle_cmd.append('-maxhours')
+        muscle_cmd.append(str(max_hours))
+
+        # Run MUSCLE, capture output as it happens
+        #
+        #self.log(console, 'RUNNING MUSCLE:')
+        #self.log(console, '    '+' '.join(muscle_cmd))
+        p = subprocess.Popen(muscle_cmd, \
+                             cwd = self.scratch, \
+                             stdout = subprocess.PIPE, \
+                             stderr = subprocess.STDOUT, \
+                             shell = False)
+
+        while True:
+            line = p.stdout.readline().decode()
+            if not line: break
+            #self.log(console, line.replace('\n', ''))
+
+        p.stdout.close()
+        p.wait()
+        #self.log(console, 'return code: ' + str(p.returncode))
+        if p.returncode != 0:
+            raise ValueError('Error running MUSCLE, return code: '+str(p.returncode))
+
+        return
+    
     #END_CLASS_HEADER
 
     # config contains contents of config file in a hash or None if it couldn't
@@ -3076,7 +3120,6 @@ This module contains methods for running and visualizing results of phylogenomic
                 except:
                     raise ValueError("unable to fetch genome: " + remote_genome_ref)
 
-# HERE
                 genome_assembly_type = None
                 if not genome_obj_data.get('contig_set_ref') and not genome_obj_data.get('assembly_ref'):
                     msg = "Genome " + remote_genome_name + \
@@ -7415,7 +7458,7 @@ This module contains methods for running and visualizing results of phylogenomic
             genomes_seen = dict()
             for cluster_member in cluster['orthologs']:
                 feature_id = cluster_member[0]
-                feature_len_maybe = cluster_member[1]
+                feature_order = cluster_member[1]
                 genome_ref = cluster_member[2]
                 genomes_seen[genome_ref] = True
             if base_genome_ref in genomes_seen:
@@ -7478,7 +7521,7 @@ This module contains methods for running and visualizing results of phylogenomic
             fids_by_genome_ref = dict()
             for cluster_member in cluster['orthologs']:
                 feature_id = cluster_member[0]
-                feature_len_maybe = cluster_member[1]
+                feature_order = cluster_member[1]
                 genome_ref = cluster_member[2]
                 genomes_seen[genome_ref] = True
                 try:
@@ -7651,7 +7694,7 @@ This module contains methods for running and visualizing results of phylogenomic
             outgroup_genomes_seen = []
             for cluster_member in cluster['orthologs']:
                 feature_id = cluster_member[0]
-                feature_len_maybe = cluster_member[1]
+                feature_order = cluster_member[1]
                 genome_ref = cluster_member[2]
                 genomes_seen[genome_ref] = True
                 if genome_ref == base_genome_ref:
@@ -9104,6 +9147,723 @@ This module contains methods for running and visualizing results of phylogenomic
         # At some point might do deeper type checking...
         if not isinstance(output, dict):
             raise ValueError('Method view_pan_phylo return value ' +
+                             'output is not type dict as required.')
+        # return the results
+        return [output]
+
+    def score_orthologs_evolutionary_rates(self, ctx, params):
+        """
+        :param params: instance of type
+           "score_orthologs_evolutionary_rates_Input"
+           (score_orthologs_evolutionary_rates() ** ** score mutations
+           between a base genome and additional genomes **   using the
+           Pangenome to determine orthologs **   (split paralogs in larger
+           clusters)) -> structure: parameter "workspace_name" of type
+           "workspace_name" (** Common types), parameter "input_genome_ref"
+           of type "data_obj_ref", parameter "input_pangenome_ref" of type
+           "data_obj_ref", parameter "input_compare_genome_refs" of type
+           "data_obj_ref", parameter
+           "conserved_featureset_nuc_identity_zscore" of Double, parameter
+           "divergent_featureset_nuc_identity_zscore" of Double, parameter
+           "conserved_featureset_aa_identity_zscore" of Double, parameter
+           "divergent_featureset_aa_identity_zscore" of Double, parameter
+           "conserved_featureset_dNdS" of Double, parameter
+           "divergent_featureset_dNdS" of Double, parameter
+           "save_featuresets" of type "bool", parameter
+           "genome_disp_name_config" of String
+        :returns: instance of type
+           "score_orthologs_evolutionary_rates_Output" -> structure:
+           parameter "report_name" of String, parameter "report_ref" of String
+        """
+        # ctx is the context object
+        # return variables are: output
+        #BEGIN score_orthologs_evolutionary_rates
+
+        ### STEP 0: basic init
+        console = []
+        invalid_msgs = []
+        self.log(console, 'Running score_orthologs_evolutionary_rates(): ')
+        self.log(console, "\n" + pformat(params))
+
+        # ws obj info indices
+        [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I,
+         WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
+
+        # constant
+        genome_ref_feature_id_delim = '.f:'
+        
+        #SERVICE_VER = 'dev'  # DEBUG
+        SERVICE_VER = 'release'
+        token = ctx['token']
+        try:
+            wsClient = workspaceService(self.workspaceURL, token=token)
+        except:
+            raise ValueError("unable to instantiate wsClient")
+        try:
+            dfuClient = DFUClient(self.callbackURL, token=token, service_ver=SERVICE_VER)
+        except Exception as e:
+            raise ValueError("unable to instantiate dfuClient. "+str(e))
+
+        headers = {'Authorization': 'OAuth ' + token}
+        env = os.environ.copy()
+        env['KB_AUTH_TOKEN'] = token
+
+        # param checks
+        required_params = ['input_genome_ref',
+                           'input_pangenome_ref',
+                           'input_compare_genome_refs',
+                           'genome_disp_name_config'
+                           ]
+        for arg in required_params:
+            if arg not in params or params[arg] == None or params[arg] == '':
+                raise ValueError("Must define required param: '" + arg + "'")
+
+        if int(params.get('save_featuresets',0)) != 0:
+            featureset_params = ['conserved_featureset_nuc_identity_zscore',
+                                 'conserved_featureset_aa_identity_zscore',
+                                 'conserved_featureset_aa_blosum_zscore',
+                                 'divergent_featureset_nuc_identity_zscore',
+                                 'divergent_featureset_aa_identity_zscore',
+                                 'divergent_featureset_aa_blosum_zscore'
+                                 ]
+            one_thresh_found = False
+            for fs_param in featureset_params:
+                if int(params.get(fs_param,0)) != 0:
+                    one_thresh_found = True
+            if not one_thresh_found:
+                raise ValueError("Must set at least one Z-Score threshold if saving feature sets")
+            
+        # load provenance
+        provenance = [{}]
+        if 'provenance' in ctx:
+            provenance = ctx['provenance']
+        provenance[0]['input_ws_objects'] = [str(params['input_genome_ref']),
+                                             str(params['input_pangenome_ref'])
+                                             ]
+        provenance[0]['input_ws_objects'].extend(params['input_compare_genome_refs'])
+
+        # set the output paths
+        timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
+        output_dir = os.path.join(self.scratch, 'output.' + str(timestamp))
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        msa_run_dir =  os.path.join(output_dir, 'msa_rundir')
+        if not os.path.exists(msa_run_dir):
+            os.makedirs(msa_run_dir)
+        html_output_dir = os.path.join(output_dir, 'html_output')
+        if not os.path.exists(html_output_dir):
+            os.makedirs(html_output_dir)
+
+        # init mappings
+        #
+        genome_obj_data_by_ref = dict()
+        genome_obj_name_by_ref = dict()
+        genome_obj_ver_by_ref = dict()
+        genome_sci_name_by_ref = dict()
+        genome_disp_name_by_ref = dict()
+        
+        # get base genome
+        #
+        self.log(console, "GETTING BASE GENOME OBJECT")
+        base_genome_ref = input_ref = params['input_genome_ref']
+        base_genome_ws_id = base_genome_ref.split('/')[0]
+        base_genome_obj_name = None
+        try:
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            base_genome_obj_name = input_obj_info[NAME_I]
+            base_genome_obj_name = base_genome_obj_name.replace(" ", "_")
+            base_genome_obj_ver  = input_obj_info[VERSION_I]
+            genome_obj_name_by_ref[base_genome_ref] = base_genome_obj_name
+            genome_obj_ver_by_ref[base_genome_ref] = base_genome_obj_ver
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseGenomes.Genome"]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
+
+        try:
+            base_genome_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
+            genome_obj_data_by_ref[base_genome_ref] = base_genome_obj
+            genome_sci_name_by_ref[base_genome_ref] = base_genome_obj['scientific_name']
+        except:
+            raise ValueError("unable to fetch genome: " + input_ref)
+
+        # get pangenome
+        #
+        self.log(console, "GETTING PANGENOME OBJECT")
+        input_ref = params['input_pangenome_ref']
+        try:
+            input_obj_info = wsClient.get_object_info_new({'objects': [{'ref': input_ref}]})[0]
+            input_obj_type = re.sub('-[0-9]+\.[0-9]+$', "", input_obj_info[TYPE_I])  # remove trailing version
+            pg_obj_name = input_obj_info[NAME_I]
+            pg_obj_name = pg_obj_name.replace(" ", "_")
+        except Exception as e:
+            raise ValueError('Unable to get object from workspace: (' + input_ref + ')' + str(e))
+        accepted_input_types = ["KBaseGenomes.Pangenome"]
+        if input_obj_type not in accepted_input_types:
+            raise ValueError("Input object of type '" + input_obj_type +
+                             "' not accepted.  Must be one of " + ", ".join(accepted_input_types))
+
+        try:
+            pg_obj = wsClient.get_objects([{'ref': input_ref}])[0]['data']
+        except:
+            raise ValueError("unable to fetch genome: " + input_ref)
+
+        # get genome_refs from pangenome and make sure requested genomes are found
+        #
+        self.log(console, "READING GENOME REFS IN PANGENOME")
+        pg_genome_refs = pg_obj['genome_refs']
+        compare_genome_refs = []
+        compare_genomes_cnt = 0
+        if 'input_compare_genome_refs' not in params or not params['input_compare_genome_refs']:
+            for g_ref in pg_genome_refs:
+                if g_ref == base_genome_ref:
+                    continue
+                compare_genome_refs.append(g_ref)
+                compare_genomes_cnt += 1
+        else:
+            for g_ref in params['input_compare_genome_refs']:
+                if g_ref == base_genome_ref:
+                    continue
+                compare_genome_refs.append(g_ref)
+                compare_genomes_cnt += 1
+        pg_workspace_ids = dict()
+        for g_ref in pg_genome_refs:
+            pg_ws_id = g_ref.split('/')[0]
+            pg_workspace_ids[pg_ws_id] = True
+        for g_ref in [base_genome_ref] + compare_genome_refs:
+            g_ws_id = g_ref.split('/')[0]
+            try:
+                present = pg_workspace_ids[g_ws_id]
+            except:
+                raise ValueError ("ABORT: workspace ID "+str(g_ws_id)+" in target genome set is not found in Pangenome.  Pangenome workspace ids are: "+", ".join(sorted(pg_workspace_ids.keys())))
+                
+
+        # Make sure all requested genomes are in pangenome
+        #
+        self.log(console, "CHECKING FOR REQUESTED GENOMES IN PANGENOME")
+        missing_genomes = []
+        for genome_ref in [base_genome_ref] + compare_genome_refs:
+            if genome_ref not in pg_genome_refs:
+                missing_genomes.append(genome_ref)
+        if missing_genomes:
+            msg = ''
+            for genome_ref in missing_genomes:
+                msg += "genome " + genome_ref + " not found in pangenome\n"
+            raise ValueError(msg)
+
+        # Reorder compare genomes by fractional overlap to base by pangenome
+        #
+        self.log(console, "ORDERING TARGET GENOMES BY OVERLAP WITH BASE")
+        compare_genome_cluster_overlap_cnt = dict()
+        for genome_ref in compare_genome_refs:
+            compare_genome_cluster_overlap_cnt[genome_ref] = 0
+
+        for cluster in pg_obj['orthologs']:
+            genomes_seen = dict()
+            for cluster_member in cluster['orthologs']:
+                feature_id = cluster_member[0]
+                feature_order = cluster_member[1]
+                genome_ref = cluster_member[2]
+                genomes_seen[genome_ref] = True
+            if base_genome_ref in genomes_seen:
+                for genome_ref in compare_genome_refs:
+                    if genome_ref in genomes_seen:
+                        compare_genome_cluster_overlap_cnt[genome_ref] += 1
+
+        sorted_compare_genome_refs = sorted(compare_genome_cluster_overlap_cnt,
+                                            key=compare_genome_cluster_overlap_cnt.__getitem__, reverse=True)
+        compare_genome_refs = sorted_compare_genome_refs
+
+        # Get genome names
+        #
+        self.log(console, "GETTING GENOME NAMES")
+        for genome_ref in compare_genome_refs:
+            try:
+                #genome_obj = wsClient.get_objects([{'ref': genome_ref}])[0]
+                genome_obj = wsClient.get_objects2({'objects':[{'ref':genome_ref}]})['data'][0]
+            except:
+                raise ValueError("unable to fetch genome: " + genome_ref)
+            genome_obj_data_by_ref[genome_ref] = genome_obj['data']
+            genome_obj_name_by_ref[genome_ref] = genome_obj['info'][NAME_I]
+            genome_obj_ver_by_ref[genome_ref] = genome_obj['info'][VERSION_I]
+            genome_sci_name_by_ref[genome_ref] = genome_obj['data']['scientific_name']
+
+        # get Genome disp names
+        #
+        genome_disp_name_seen = dict()
+        for genome_ref in [base_genome_ref] + compare_genome_refs:
+            genome_disp_name = ''
+            if 'obj_name' in params.get('genome_disp_name_config'):
+                genome_disp_name += genome_obj_name_by_ref[genome_ref]
+                if 'ver' in params.get('genome_disp_name_config'):
+                    genome_disp_name += '.v'+str(genome_obj_ver_by_ref[genome_ref])
+
+                if 'sci_name' in params.get('genome_disp_name_config'):
+                    genome_disp_name += ': '+genome_sci_name_by_ref[genome_ref]
+            else:
+                genome_disp_name = genome_sci_name_by_ref[genome_ref]
+
+            if genome_disp_name in genome_disp_name_seen:
+                error_msg = "duplicate genome display names.  Can be fixed by adding genome object name to report"
+                self.log (console, "ABORT: "+error_msg)
+                raise ValueError ("ABORT: "+error_msg)
+
+            genome_disp_name_seen[genome_disp_name] = 1
+            genome_disp_name_by_ref[genome_ref] = genome_disp_name
+
+
+        # Get gene nuc and aa seqs
+        #
+        self.log(console, "READING GENE SEQS")
+        nuc_seqs = dict()
+        aa_seqs = dict()
+        for genome_ref in [base_genome_ref] + compare_genome_refs:
+            nuc_seqs[genome_ref] = dict()
+            aa_seqs[genome_ref] = dict()
+            genome = genome_obj_data_by_ref[genome_ref]
+            protein_coding_features = genome.get('features',[])
+            #all_features = protein_coding_features + genome.get('non_coding_features',[])
+
+            #for feature in all_features:
+            for feature in protein_coding_features:
+                fid = feature['id']
+                #print ("FEATURE: '"+str(feature)+"'")
+                nuc_seqs[genome_ref][fid] = feature['dna_sequence']
+
+            for feature in protein_coding_features:
+                fid = feature['id']
+                aa_seqs[genome_ref][fid] = feature['protein_translation']
+
+
+        # Get MSAs for clusters
+        #
+        self.log(console, "CALCULATING MSAs FOR CLUSTERS")
+        for cluster in pg_obj['orthologs']:
+            cluster_id = cluster['id']
+
+            genomes_seen = dict()
+            fids_by_genome_ref = dict()
+            for cluster_member in cluster['orthologs']:
+                feature_id = cluster_member[0]
+                feature_order = cluster_member[1]
+                genome_ref = cluster_member[2]
+                genomes_seen[genome_ref] = True
+                try:
+                    fid_list = fids_by_genome_ref[genome_ref]
+                except:
+                    fids_by_genome_ref[genome_ref] = []
+                fids_by_genome_ref[genome_ref].append(feature_id)
+
+            # build nucleotide alignment
+            do_alignment = False
+            if base_genome_ref in genomes_seen:
+                for genome_ref in compare_genome_refs:
+                    if genome_ref in genomes_seen:
+                        do_alignment = True
+                        break
+            if do_alignment:
+                nuc_in_buf = []
+                aa_in_buf = []
+                for genome_ref in [base_genome_ref] + compare_genome_refs:
+                    if genome_ref in fids_by_genome_ref:
+                        for fid in fids_by_genome_ref[genome_ref]:
+                            this_fid = genome_ref + genome_ref_feature_id_delim + fid
+                            nuc_in_buf.append('>'+this_fid)
+                            nuc_in_buf.append(nuc_seqs[genome_ref][fid])
+                            aa_in_buf.append('>'+this_fid)
+                            aa_in_buf.append(aa_seqs[genome_ref][fid])
+
+                nuc_in_file = os.path.join(msa_run_dir, cluster_id+'.fna')
+                aa_in_file = os.path.join(msa_run_dir, cluster_id+'.faa')
+                with open (nuc_in_file, 'w') as fasta_h:
+                    fasta_h.write("\n".join(nuc_in_buf)+"\n")
+                with open (aa_in_file, 'w') as fasta_h:
+                    fasta_h.write("\n".join(aa_in_buf)+"\n")
+
+                # run MSA calc
+                #
+                nuc_msa_file = os.path.join(msa_run_dir, cluster_id+'-muscle'+'.fna')
+                aa_msa_file = os.path.join(msa_run_dir, cluster_id+'-muscle'+'.faa')
+                max_iters = 16
+                max_hours = 0.5
+
+                self._run_muscle (nuc_in_file, nuc_msa_file, max_iters, max_hours)
+                self._run_muscle (aa_in_file, aa_msa_file, max_iters, max_hours)
+
+                
+        # Score orthologs
+        #
+        self.log(console, "CALCULATING ORTHOLOG SCORES")
+        top_hit = dict()
+        top_hit_nuc_score = dict() 
+        top_hit_aa_score = dict()
+        
+        for cluster in pg_obj['orthologs']:
+            cluster_id = cluster['id']
+            nuc_msa_file = os.path.join(msa_run_dir, cluster_id+'-muscle'+'.fna')
+            aa_msa_file = os.path.join(msa_run_dir, cluster_id+'-muscle'+'.faa')
+            nuc_msa_seqs = dict()
+            aa_msa_seqs = dict()
+            nuc_msa_found = False
+            aa_msa_found = False
+
+            # read alignment seqs
+            if os.path.isfile(nuc_msa_file):
+                nuc_msa_found = True
+                last_id = None
+                seq = ''
+                with open (nuc_msa_file, 'r') as fasta_h:
+                    for line in fasta_h:
+                        line = line.rstrip()
+                        if line.startswith('>'):
+                            this_id = line.lstrip('>')
+                            if last_id:
+                                [genome_ref, fid] = last_id.split(genome_ref_feature_id_delim)
+                                if genome_ref not in nuc_msa_seqs:
+                                    nuc_msa_seqs[genome_ref] = dict()
+                                nuc_msa_seqs[genome_ref][fid] = seq
+                            last_id = this_id
+                            seq = ''
+                        else:
+                            seq += line
+                    if last_id:
+                        [genome_ref, fid] = last_id.split(genome_ref_feature_id_delim)
+                        if genome_ref not in nuc_msa_seqs:
+                            nuc_msa_seqs[genome_ref] = dict()
+                        nuc_msa_seqs[genome_ref][fid] = seq
+                    last_id = None
+                    seq = ''
+
+            if os.path.isfile(aa_msa_file):
+                aa_msa_found = True
+                last_id = None
+                seq = ''
+                with open (aa_msa_file, 'r') as fasta_h:
+                    for line in fasta_h:
+                        line = line.rstrip()
+                        if line.startswith('>'):
+                            this_id = line.lstrip('>')
+                            if last_id:
+                                [genome_ref, fid] = last_id.split(genome_ref_feature_id_delim)
+                                if genome_ref not in aa_msa_seqs:
+                                    aa_msa_seqs[genome_ref] = dict()
+                                aa_msa_seqs[genome_ref][fid] = seq
+                            last_id = this_id
+                            seq = ''
+                        else:
+                            seq += line
+                    if last_id:
+                        [genome_ref, fid] = last_id.split(genome_ref_feature_id_delim)
+                        if genome_ref not in aa_msa_seqs:
+                            aa_msa_seqs[genome_ref] = dict()
+                        aa_msa_seqs[genome_ref][fid] = seq
+                    last_id = None
+                    seq = ''
+                
+            if not nuc_msa_found or not aa_msa_found:
+                continue
+
+            # determine reciprocal ortholog pairs
+            for fid in nuc_msa_seqs[base_genome_ref]:
+                for genome_ref in sorted(nuc_msa_seqs.keys()):
+                    if genome_ref == base_genome_ref:
+                        continue
+
+                    for hfid in nuc_msa_seqs[genome_ref]:
+                        nuc_sum = 0
+                        char_cnt = 0
+                        for i in range(len(nuc_msa_seqs[base_genome_ref][fid])):
+                            bc = nuc_msa_seqs[base_genome_ref][fid][i]
+                            hc = nuc_msa_seqs[genome_ref][hfid][i]
+                            if bc == '-' and hc == '-':
+                                continue
+                            char_cnt += 1
+                            if bc == hc:
+                                nuc_sum += 1
+                        nuc_ident = float(nuc_sum) / float(char_cnt)
+                                
+                        aa_sum = 0
+                        char_cnt = 0
+                        for i in range(len(aa_msa_seqs[base_genome_ref][fid])):
+                            bc = aa_msa_seqs[base_genome_ref][fid][i]
+                            hc = aa_msa_seqs[genome_ref][hfid][i]
+                            if bc == '-' and hc == '-':
+                                continue
+                            char_cnt += 1
+                            if bc == hc:
+                                aa_sum += 1
+                        aa_ident = float(aa_sum) / float(char_cnt)
+
+                        if base_genome_ref not in top_hit:
+                            top_hit[base_genome_ref] = dict()
+                            top_hit_nuc_score[base_genome_ref] = dict()
+                            top_hit_aa_score[base_genome_ref] = dict()
+                        if fid not in top_hit[base_genome_ref]:
+                            top_hit[base_genome_ref][fid] = dict()
+                            top_hit_nuc_score[base_genome_ref][fid] = dict()
+                            top_hit_aa_score[base_genome_ref][fid] = dict()
+
+                        if genome_ref not in top_hit[base_genome_ref][fid] \
+                            or \
+                            (aa_ident == top_hit_aa_score[base_genome_ref][fid][genome_ref] and \
+                             nuc_ident > top_hit_nuc_score[base_genome_ref][fid][genome_ref]) \
+                            or \
+                            aa_ident > top_hit_aa_score[base_genome_ref][fid][genome_ref]:
+
+                            top_hit[base_genome_ref][fid][genome_ref] = hfid
+                            top_hit_nuc_score[base_genome_ref][fid][genome_ref] = nuc_ident
+                            top_hit_aa_score[base_genome_ref][fid][genome_ref] = aa_ident
+
+            # determine reciprocal best hits
+            for genome_ref in sorted(nuc_msa_seqs.keys()):
+                if genome_ref == base_genome_ref:
+                    continue
+                for hfid in nuc_msa_seqs[genome_ref]:
+
+                    for fid in nuc_msa_seqs[base_genome_ref]:
+                        nuc_sum = 0
+                        char_cnt = 0
+                        for i in range(len(nuc_msa_seqs[base_genome_ref][fid])):
+                            bc = nuc_msa_seqs[base_genome_ref][fid][i]
+                            hc = nuc_msa_seqs[genome_ref][hfid][i]
+                            if bc == '-' and hc == '-':
+                                continue
+                            char_cnt += 1
+                            if bc == hc:
+                                nuc_sum += 1
+                        nuc_ident = float(nuc_sum) / float(char_cnt)
+                                
+                        aa_sum = 0
+                        char_cnt = 0
+                        for i in range(len(aa_msa_seqs[base_genome_ref][fid])):
+                            bc = aa_msa_seqs[base_genome_ref][fid][i]
+                            hc = aa_msa_seqs[genome_ref][hfid][i]
+                            if bc == '-' and hc == '-':
+                                continue
+                            char_cnt += 1
+                            if bc == hc:
+                                aa_sum += 1
+                        aa_ident = float(aa_sum) / float(char_cnt)
+
+                        if genome_ref not in top_hit:
+                            top_hit[genome_ref] = dict()
+                            top_hit_nuc_score[genome_ref] = dict()
+                            top_hit_aa_score[genome_ref] = dict()
+                        if hfid not in top_hit[genome_ref]:
+                            top_hit[genome_ref][hfid] = dict()
+                            top_hit_nuc_score[genome_ref][hfid] = dict()
+                            top_hit_aa_score[genome_ref][hfid] = dict()
+
+                        if base_genome_ref not in top_hit[genome_ref][hfid] \
+                            or \
+                            (aa_ident == top_hit_aa_score[genome_ref][hfid][base_genome_ref] and \
+                             nuc_ident > top_hit_nuc_score[genome_ref][hfid][base_genome_ref]) \
+                            or \
+                            aa_ident > top_hit_aa_score[genome_ref][hfid][base_genome_ref]:
+
+                            top_hit[genome_ref][hfid][base_genome_ref] = fid
+                            top_hit_nuc_score[genome_ref][hfid][base_genome_ref] = nuc_ident
+                            top_hit_aa_score[genome_ref][hfid][base_genome_ref] = aa_ident
+
+        # add score
+        total_ortholog_count = dict()
+        base_ortholog = dict()
+        nuc_ident_scores = dict()
+        aa_ident_scores = dict()
+        dNdS_scores = dict()
+        mean_nuc_score = dict()
+        stddev_nuc_score = dict()
+        zscore_nuc = dict()
+        mean_aa_score = dict()
+        stddev_aa_score = dict()
+        zscore_aa = dict()
+        for genome_ref in compare_genome_refs:
+
+            base_ortholog[genome_ref] = dict()
+            nuc_ident_scores[genome_ref] = dict()
+            aa_ident_scores[genome_ref] = dict()
+            dNdS_scores[genome_ref] = dict()
+            zscore_nuc[genome_ref] = dict()
+            zscore_aa[genome_ref] = dict()
+            
+            # get mean
+            total_ortholog_count = 0
+            sum_nuc_scores = 0.0
+            sum_aa_scores = 0.0
+            for hfid in sorted(top_hit[genome_ref].keys()):
+                # require reciprocal best hits
+                fid = top_hit[genome_ref][hfid][base_genome_ref]
+                if top_hit[base_genome_ref][fid][genome_ref] != hfid:
+                    continue
+
+                total_ortholog_count += 1
+                nuc_score = top_hit_nuc_score[genome_ref][hfid][base_genome_ref]
+                aa_score = top_hit_aa_score[genome_ref][hfid][base_genome_ref]
+
+                base_ortholog[genome_ref][hfid] = fid
+                sum_nuc_scores += nuc_score
+                sum_aa_scores += aa_score
+                nuc_ident_scores[genome_ref][hfid] = nuc_score
+                aa_ident_scores[genome_ref][hfid] = aa_score
+                
+            mean_nuc_score[genome_ref] = sum_nuc_scores / float(total_ortholog_count)
+            mean_aa_score[genome_ref] = sum_aa_scores / float(total_ortholog_count)
+
+            # get stddev
+            sum_sq_delta_nuc = 0.0
+            sum_sq_delta_aa = 0.0
+            for hfid in sorted(nuc_ident_scores[genome_ref].keys()):
+                nuc_score = nuc_ident_scores[genome_ref][hfid]
+                aa_score = aa_ident_scores[genome_ref][hfid]
+
+                sum_sq_delta_nuc += (nuc_score - mean_nuc_score[genome_ref]) ** 2
+                sum_sq_delta_aa += (aa_score - mean_aa_score[genome_ref]) ** 2
+            
+            stddev_nuc_score[genome_ref] = math.sqrt(sum_sq_delta_nuc / float(total_ortholog_count))
+            stddev_aa_score[genome_ref] = math.sqrt(sum_sq_delta_aa / float(total_ortholog_count))
+
+            # get zscores
+            for hfid in sorted(nuc_ident_scores[genome_ref].keys()):
+                nuc_score = nuc_ident_scores[genome_ref][hfid]
+                aa_score = aa_ident_scores[genome_ref][hfid]
+
+                zscore_nuc[genome_ref][hfid] = (nuc_score - mean_nuc_score[genome_ref]) / stddev_nuc_score[genome_ref]
+                zscore_aa[genome_ref][hfid] = (aa_score - mean_aa_score[genome_ref]) / stddev_aa_score[genome_ref]
+            
+
+        # save results as TSV
+        #
+        self.log(console, "SAVING ORTHOLOG SCORES TO FILE")
+        score_buf = []
+        header = ['BASE_FID']
+        for genome_ref in compare_genome_refs:
+            header.extend (['GENOME', 'GENE', 'NUC_IDENT', 'NUC_ZSCORE', 'AA_IDENT', 'AA_ZSCORE'])
+        score_buf.append("\t".join(header))
+
+        for fid in sorted (top_hit[base_genome_ref].keys()):
+            row = [fid]
+            for genome_ref in compare_genome_refs:
+                if genome_ref not in top_hit[base_genome_ref][fid]:
+                    row.extend ([genome_ref, '-', '-', '-', '-', '-'])
+                    continue
+                hfid = top_hit[base_genome_ref][fid][genome_ref]
+                if hfid not in nuc_ident_scores[genome_ref]:
+                    row.extend ([genome_ref, '-', '-', '-', '-', '-'])
+                else:
+                    row.extend ([genome_ref,
+                                 hfid,
+                                 str(nuc_ident_scores[genome_ref][hfid]),
+                                 str(zscore_nuc[genome_ref][hfid]),
+                                 str(aa_ident_scores[genome_ref][hfid]),
+                                 str(zscore_aa[genome_ref][hfid])
+                                 ])
+            score_buf.append("\t".join(row))
+
+        # save file and upload
+        tsv_score_file = os.path.join(output_dir, 'gene_evolution_scores.tsv')
+        with open (tsv_score_file, 'w') as tsv_h:
+            tsv_h.write("\n".join(score_buf)+"\n")
+        try:
+            tsv_upload_ret = dfuClient.file_to_shock({'file_path': tsv_score_file,
+                                                      #'pack': 'zip'})
+                                                      'make_handle': 0})
+        except:
+            raise ValueError('error uploading TSV file to shock')
+
+        file_links = [{'shock_id': tsv_upload_ret['shock_id'],
+                       'name': 'gene_evolution_scores.tsv',
+                       'label': 'Gene Evolution Scores'
+                       }]
+
+        # HERE
+
+
+            
+        # MORE HERE
+        # build report object
+        #
+        self.log(console, "CREATING HTML REPORT")
+        reportName = 'kb_phylogenomics_report_' + str(uuid.uuid4())
+        reportObj = {'objects_created': [],
+                     'direct_html_link_index': 0,
+                     'file_links': [],
+                     'html_links': [],
+                     'workspace_name': params['workspace_name'],
+                     'report_object_name': reportName
+                     }
+        #reportObj['objects_created'] = objects_created
+        reportObj['objects_created'] = []
+
+        # build html report
+        #
+        cell_padding = 0
+        cell_spacing = 10
+        #cell_spacing = 0
+        cell_border = 0
+        sp = '&nbsp;'
+        text_color = "#606060"
+        font_size = '3'
+        space_fontsize = '1'
+        bar_char = '.'
+        bar_fontsize = '1'
+        bar_width = 50
+        num_bars_per_node = 2 + 1
+
+        html_report_lines = []
+        html_report_lines += ['<html>']
+        html_report_lines += ['<head>']
+        html_report_lines += ['<title>KBase Orthologs Evolutionary Rates</title>']
+        html_report_lines += ['</head>']
+        html_report_lines += ['<body bgcolor="white">']
+        html_report_lines += ['<table cellpadding="' +
+                              str(cell_padding) + '" cellspacing="' + str(cell_spacing) + '" border="' + str(cell_border) + '">']
+
+        html_report_lines += ['<tr><td></td></tr>']
+
+        # close
+        html_report_lines += ['</table>']
+        html_report_lines += ['</body>']
+        html_report_lines += ['</html>']
+
+        html_report_str = "\n".join(html_report_lines)
+        #reportObj['direct_html'] = html_report_str
+
+        # write html to file and upload
+        self.log(console, "SAVING AND UPLOADING HTML REPORT")
+        html_file = os.path.join(html_output_dir, 'score_orthologs_evolutionary_rates_report.html')
+        with open(html_file, 'w') as html_handle:
+            html_handle.write(html_report_str)
+        dfu = DFUClient(self.callbackURL)
+        try:
+            #upload_ret = dfu.file_to_shock({'file_path': html_file,
+            upload_ret = dfu.file_to_shock({'file_path': html_output_dir,
+                                            'make_handle': 0,
+                                            'pack': 'zip'})
+        except:
+            raise ValueError('Logging exception loading html_report to shock')
+
+        reportObj['file_links'] = file_links
+        reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
+                                    'name': 'pan_circle_plot_report.html',
+                                    'label': 'Pangenome Circle Plot Report'}
+                                   ]
+
+        # save report object
+        #
+        reportClient = KBaseReport(self.callbackURL, token=ctx['token'], service_ver=SERVICE_VER)
+        #report_info = report.create({'report':reportObj, 'workspace_name':params['workspace_name']})
+        report_info = reportClient.create_extended_report(reportObj)
+
+        output = {'report_name': report_info['name'], 'report_ref': report_info['ref']}
+
+        #END score_orthologs_evolutionary_rates
+
+        # At some point might do deeper type checking...
+        if not isinstance(output, dict):
+            raise ValueError('Method score_orthologs_evolutionary_rates return value ' +
                              'output is not type dict as required.')
         # return the results
         return [output]

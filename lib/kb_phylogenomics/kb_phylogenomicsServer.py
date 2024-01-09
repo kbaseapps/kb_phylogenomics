@@ -410,6 +410,10 @@ class Application(object):
                              name='kb_phylogenomics.view_pan_phylo',
                              types=[dict])
         self.method_authentication['kb_phylogenomics.view_pan_phylo'] = 'required'  # noqa
+        self.rpc_service.add(impl_kb_phylogenomics.score_orthologs_evolutionary_rates,
+                             name='kb_phylogenomics.score_orthologs_evolutionary_rates',
+                             types=[dict])
+        self.method_authentication['kb_phylogenomics.score_orthologs_evolutionary_rates'] = 'required'  # noqa
         self.rpc_service.add(impl_kb_phylogenomics.find_homologs_with_genome_context,
                              name='kb_phylogenomics.find_homologs_with_genome_context',
                              types=[dict])
