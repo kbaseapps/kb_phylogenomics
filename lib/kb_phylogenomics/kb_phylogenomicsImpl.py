@@ -9436,7 +9436,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 if re.search('_CDS_\d+$', fid):
                     if not fid.endswith('CDS_1'):
                         continue
-                    fid = fid.replace('CDS_1','')
+                    fid = fid.replace('_CDS_1','')
                 #print ("FEATURE: '"+str(feature)+"'")
                 nuc_seqs[genome_ref][fid] = feature['dna_sequence']
 
@@ -9445,7 +9445,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 if re.search('_CDS_\d+$', fid):
                     if not fid.endswith('CDS_1'):
                         continue
-                    fid = fid.replace('CDS_1','')
+                    fid = fid.replace('_CDS_1','')
                 aa_seqs[genome_ref][fid] = feature['protein_translation']
                 gene_functions[genome_ref][fid] = ";".join(feature['functions'])
                 
