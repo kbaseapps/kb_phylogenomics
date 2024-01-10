@@ -9433,17 +9433,19 @@ This module contains methods for running and visualizing results of phylogenomic
             #for feature in all_features:
             for feature in protein_coding_features:
                 fid = feature['id']
-                if not fid.endswith('CDS_1'):
-                    continue
-                fid = fid.replace('CDS_1','')
+                if re.search('_CDS_\d+$', fid):
+                    if not fid.endswith('CDS_1'):
+                        continue
+                    fid = fid.replace('CDS_1','')
                 #print ("FEATURE: '"+str(feature)+"'")
                 nuc_seqs[genome_ref][fid] = feature['dna_sequence']
 
             for feature in protein_coding_features:
                 fid = feature['id']
-                if not fid.endswith('CDS_1'):
-                    continue
-                fid = fid.replace('CDS_1','')
+                if re.search('_CDS_\d+$', fid):
+                    if not fid.endswith('CDS_1'):
+                        continue
+                    fid = fid.replace('CDS_1','')
                 aa_seqs[genome_ref][fid] = feature['protein_translation']
                 gene_functions[genome_ref][fid] = ";".join(feature['functions'])
                 
