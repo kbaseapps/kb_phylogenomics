@@ -9525,7 +9525,7 @@ This module contains methods for running and visualizing results of phylogenomic
                 nuc_msa_file = os.path.join(msa_run_dir, cluster_id+'-muscle'+'.fna')
                 aa_msa_file = os.path.join(msa_run_dir, cluster_id+'-muscle'+'.faa')
                 max_iters = 16
-                max_hours = 0.5
+                max_hours = 4.0
 
                 self._run_muscle (nuc_in_file, nuc_msa_file, max_iters, max_hours)
                 self._run_muscle (aa_in_file, aa_msa_file, max_iters, max_hours)
