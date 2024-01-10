@@ -9793,9 +9793,9 @@ This module contains methods for running and visualizing results of phylogenomic
                     row.extend ([genome_obj_name_by_ref[genome_ref],
                                  locus_tags[genome_ref][hfid],
                                  hfid,
-                                 "{:.2f".format(100*nuc_ident_scores[genome_ref][hfid]),
+                                 "{:.2f}".format(100*nuc_ident_scores[genome_ref][hfid]),
                                  "{:.4f}".format(zscore_nuc[genome_ref][hfid]),
-                                 "{:.2f".format(100*aa_ident_scores[genome_ref][hfid]),
+                                 "{:.2f}".format(100*aa_ident_scores[genome_ref][hfid]),
                                  "{:.4f}".format(zscore_aa[genome_ref][hfid])
                                  ])
             score_buf.append("\t".join(row))
