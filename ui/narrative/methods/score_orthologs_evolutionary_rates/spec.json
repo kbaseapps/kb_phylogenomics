@@ -36,7 +36,7 @@
         {
             "id": "input_compare_genome_refs",
             "optional": true,
-            "advanced": true,
+            "advanced": false,
             "allow_multiple": true,
             "default_values": [ "" ],
             "field_type": "text",

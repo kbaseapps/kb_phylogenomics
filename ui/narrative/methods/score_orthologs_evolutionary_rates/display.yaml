@@ -42,7 +42,7 @@ parameters :
             The Pangenome to use for determining orthologs.
     input_compare_genome_refs :
         ui-name : |
-            Custom Compare Genome(s)
+            Compare Genome(s)
         short-hint : |
             The Genome(s) to compare against the base.
     genome_disp_name_config :

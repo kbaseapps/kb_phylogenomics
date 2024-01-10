@@ -9211,7 +9211,6 @@ This module contains methods for running and visualizing results of phylogenomic
         # param checks
         required_params = ['input_genome_ref',
                            'input_pangenome_ref',
-                           'input_compare_genome_refs',
                            'genome_disp_name_config'
                            ]
         for arg in required_params:
@@ -9240,7 +9239,6 @@ This module contains methods for running and visualizing results of phylogenomic
         provenance[0]['input_ws_objects'] = [str(params['input_genome_ref']),
                                              str(params['input_pangenome_ref'])
                                              ]
-        provenance[0]['input_ws_objects'].extend(params['input_compare_genome_refs'])
 
         # set the output paths
         timestamp = int((datetime.utcnow() - datetime.utcfromtimestamp(0)).total_seconds() * 1000)
@@ -9329,6 +9327,8 @@ This module contains methods for running and visualizing results of phylogenomic
                     continue
                 compare_genome_refs.append(g_ref)
                 compare_genomes_cnt += 1
+        provenance[0]['input_ws_objects'].extend(compare_genome_refs)
+
         pg_workspace_ids = dict()
         for g_ref in pg_genome_refs:
             pg_ws_id = g_ref.split('/')[0]
