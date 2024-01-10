@@ -9420,23 +9420,33 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "READING GENE SEQS")
         nuc_seqs = dict()
         aa_seqs = dict()
+        gene_functions = dict()
         for genome_ref in [base_genome_ref] + compare_genome_refs:
             nuc_seqs[genome_ref] = dict()
             aa_seqs[genome_ref] = dict()
+            gene_functions[genome_ref] = dict()
             genome = genome_obj_data_by_ref[genome_ref]
-            protein_coding_features = genome.get('features',[])
+            #protein_coding_features = genome.get('features',[])
+            protein_coding_features = genome.get('cdss',[])
             #all_features = protein_coding_features + genome.get('non_coding_features',[])
 
             #for feature in all_features:
             for feature in protein_coding_features:
                 fid = feature['id']
+                if not fid.endswith('CDS_1'):
+                    continue
+                fid = fid.replace('CDS_1','')
                 #print ("FEATURE: '"+str(feature)+"'")
                 nuc_seqs[genome_ref][fid] = feature['dna_sequence']
 
             for feature in protein_coding_features:
                 fid = feature['id']
+                if not fid.endswith('CDS_1'):
+                    continue
+                fid = fid.replace('CDS_1','')
                 aa_seqs[genome_ref][fid] = feature['protein_translation']
-
+                gene_functions[genome_ref][fid] = ";".join(feature['functions'])
+                
 
         # Get MSAs for clusters
         #
@@ -9738,22 +9748,22 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         self.log(console, "SAVING ORTHOLOG SCORES TO FILE")
         score_buf = []
-        header = ['BASE_FID']
+        header = ['BASE_GENOME', 'BASE_FID', 'FUNCTIONS']
         for genome_ref in compare_genome_refs:
             header.extend (['GENOME', 'GENE', 'NUC_IDENT', 'NUC_ZSCORE', 'AA_IDENT', 'AA_ZSCORE'])
         score_buf.append("\t".join(header))
 
         for fid in sorted (top_hit[base_genome_ref].keys()):
-            row = [fid]
+            row = [genome_obj_name_by_ref[base_genome_ref], fid, gene_functions[base_genome_ref][fid]]
             for genome_ref in compare_genome_refs:
                 if genome_ref not in top_hit[base_genome_ref][fid]:
-                    row.extend ([genome_ref, '-', '-', '-', '-', '-'])
+                    row.extend ([genome_obj_name_by_ref[genome_ref], '-', '-', '-', '-', '-'])
                     continue
                 hfid = top_hit[base_genome_ref][fid][genome_ref]
                 if hfid not in nuc_ident_scores[genome_ref]:
-                    row.extend ([genome_ref, '-', '-', '-', '-', '-'])
+                    row.extend ([genome_obj_name_by_ref[genome_ref], '-', '-', '-', '-', '-'])
                 else:
-                    row.extend ([genome_ref,
+                    row.extend ([genome_obj_name_by_ref[genome_ref],
                                  hfid,
                                  str(nuc_ident_scores[genome_ref][hfid]),
                                  str(zscore_nuc[genome_ref][hfid]),
