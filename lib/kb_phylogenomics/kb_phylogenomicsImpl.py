@@ -9420,12 +9420,17 @@ This module contains methods for running and visualizing results of phylogenomic
         self.log(console, "READING GENE SEQS")
         nuc_seqs = dict()
         aa_seqs = dict()
+        locus_tags = dict()
+        gene_names = dict()
         gene_functions = dict()
         for genome_ref in [base_genome_ref] + compare_genome_refs:
+            genome = genome_obj_data_by_ref[genome_ref]
+
             nuc_seqs[genome_ref] = dict()
             aa_seqs[genome_ref] = dict()
+            locus_tags[genome_ref] = dict()
+            gene_names[genome_ref] = dict()
             gene_functions[genome_ref] = dict()
-            genome = genome_obj_data_by_ref[genome_ref]
             #protein_coding_features = genome.get('features',[])
             protein_coding_features = genome.get('cdss',[])
             #all_features = protein_coding_features + genome.get('non_coding_features',[])
@@ -9447,8 +9452,28 @@ This module contains methods for running and visualizing results of phylogenomic
                         continue
                     fid = fid.replace('_CDS_1','')
                 aa_seqs[genome_ref][fid] = feature['protein_translation']
+
+            for feature in protein_coding_features:
+                fid = feature['id']
+                if re.search('_CDS_\d+$', fid):
+                    if not fid.endswith('CDS_1'):
+                        continue
+                    fid = fid.replace('_CDS_1','')
                 gene_functions[genome_ref][fid] = ";".join(feature['functions'])
-                
+                gene_names = []
+                locus_tag = 'N/A'
+                for alias in feature['aliases']:
+                    [alias_type, alias_val] = alias
+                    if alias_type == 'gene':
+                        gene_names.append(alias_val)
+                    elif alias_type == 'locus_tag':
+                        locus_tag = alias_val
+                locus_tags[genome_ref][fid] = locus_tag
+                if gene_names:
+                    gene_names[genome_ref][fid] = ";".join(gene_names)
+                else:
+                    gene_names[genome_ref][fid] = "-"
+                    
 
         # Get MSAs for clusters
         #
@@ -9750,27 +9775,28 @@ This module contains methods for running and visualizing results of phylogenomic
         #
         self.log(console, "SAVING ORTHOLOG SCORES TO FILE")
         score_buf = []
-        header = ['BASE_GENOME', 'BASE_FID', 'FUNCTIONS']
+        header = ['BASE_GENOME', 'BASE_LOCUS_TAG', 'BASE_KB_FID', 'GENE_NAME', 'FUNCTION(S)']
         for genome_ref in compare_genome_refs:
-            header.extend (['GENOME', 'GENE', 'NUC_IDENT', 'NUC_ZSCORE', 'AA_IDENT', 'AA_ZSCORE'])
+            header.extend (['GENOME', 'LOCUS_TAG', 'KB_FID', 'NUC_IDENT', 'NUC_ZSCORE', 'AA_IDENT', 'AA_ZSCORE'])
         score_buf.append("\t".join(header))
 
         for fid in sorted (top_hit[base_genome_ref].keys()):
-            row = [genome_obj_name_by_ref[base_genome_ref], fid, gene_functions[base_genome_ref][fid]]
+            row = [genome_obj_name_by_ref[base_genome_ref], locus_tags[base_genome_ref][fid], fid, gene_names[base_genome_ref][fid], gene_functions[base_genome_ref][fid]]
             for genome_ref in compare_genome_refs:
                 if genome_ref not in top_hit[base_genome_ref][fid]:
-                    row.extend ([genome_obj_name_by_ref[genome_ref], '-', '-', '-', '-', '-'])
+                    row.extend ([genome_obj_name_by_ref[genome_ref], '-', '-', '-', '-', '-', '-'])
                     continue
                 hfid = top_hit[base_genome_ref][fid][genome_ref]
                 if hfid not in nuc_ident_scores[genome_ref]:
-                    row.extend ([genome_obj_name_by_ref[genome_ref], '-', '-', '-', '-', '-'])
+                    row.extend ([genome_obj_name_by_ref[genome_ref], '-', '-', '-', '-', '-', '-'])
                 else:
                     row.extend ([genome_obj_name_by_ref[genome_ref],
+                                 locus_tags[genome_ref][hfid],
                                  hfid,
-                                 str(nuc_ident_scores[genome_ref][hfid]),
-                                 str(zscore_nuc[genome_ref][hfid]),
-                                 str(aa_ident_scores[genome_ref][hfid]),
-                                 str(zscore_aa[genome_ref][hfid])
+                                 "{:.2f".format(100*nuc_ident_scores[genome_ref][hfid]),
+                                 "{:.4f}".format(zscore_nuc[genome_ref][hfid]),
+                                 "{:.2f".format(100*aa_ident_scores[genome_ref][hfid]),
+                                 "{:.4f}".format(zscore_aa[genome_ref][hfid])
                                  ])
             score_buf.append("\t".join(row))
 
@@ -9845,8 +9871,9 @@ This module contains methods for running and visualizing results of phylogenomic
 
         # write html to file and upload
         self.log(console, "SAVING AND UPLOADING HTML REPORT")
-        html_file = os.path.join(html_output_dir, 'score_orthologs_evolutionary_rates_report.html')
-        with open(html_file, 'w') as html_handle:
+        html_file = 'orthologs_evolutionary_rates_report.html'
+        html_path = os.path.join(html_output_dir, html_file)
+        with open(html_path, 'w') as html_handle:
             html_handle.write(html_report_str)
         dfu = DFUClient(self.callbackURL)
         try:
@@ -9859,8 +9886,8 @@ This module contains methods for running and visualizing results of phylogenomic
 
         reportObj['file_links'] = file_links
         reportObj['html_links'] = [{'shock_id': upload_ret['shock_id'],
-                                    'name': 'pan_circle_plot_report.html',
-                                    'label': 'Pangenome Circle Plot Report'}
+                                    'name': html_file,
+                                    'label': 'Orthologs Evolutionary Rates Report'}
                                    ]
 
         # save report object
