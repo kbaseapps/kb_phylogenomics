@@ -10,6 +10,8 @@ on:
     - master
     - main
     - develop
+  schedule:
+    - cron:  '3 6 9 1,4,7,10 *'
   workflow_dispatch:
 
 jobs:
@@ -26,9 +28,9 @@ jobs:
       if: "!contains(github.event.head_commit.message, 'skip ci')"
       uses: actions/checkout@v2
       with:
+        ref: 'patch'
         repository: 'kbaseapps/kb_sdk_actions'
         path: 'kb_sdk_actions'
-
 
     - name: Set up test environment
       if: "!contains(github.event.head_commit.message, 'skip ci')"
@@ -37,10 +39,9 @@ jobs:
         KBASE_TEST_TOKEN: ${{ secrets.KBASE_TEST_TOKEN }}
       run: |
         # Verify kb_sdk_actions clone worked
-        test -f "$HOME/kb_sdk_actions/bin/kb-sdk" && echo "CI files cloned"
+        test -f "$GITHUB_WORKSPACE/kb_sdk_actions/bin/kb-sdk" && echo "CI files cloned"
         # Pull kb-sdk & create startup script
-        docker pull kbase/kb-sdk
-       
+        docker pull ghcr.io/kbase/kb_sdk_patch-develop:br-0.0.4
         sh $GITHUB_WORKSPACE/kb_sdk_actions/bin/make_testdir && echo "Created test_local"
         test -f "test_local/test.cfg" && echo "Confirmed config exists"
 
