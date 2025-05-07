@@ -11,19 +11,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download kb-sdk and set up path
+      - name: Download kb-sdk, set up path, and modify script
         run: |
           mkdir -p $(pwd)/bin
           docker run ghcr.io/kbase/kb_sdk_patch-develop:br-0.0.4 genscript > $(pwd)/bin/kb-sdk
           docker tag ghcr.io/kbase/kb_sdk_patch-develop:br-0.0.4 kbase/kb-sdk:latest
           chmod 755 $(pwd)/bin/kb-sdk
           echo "$(pwd)/bin" >> $GITHUB_PATH
+          sed -i 's/docker run -it/docker run /g' $(pwd)/bin/kb-sdk
 
       - name: Setup KBase SDK Tests
         env:
           KBASE_TEST_TOKEN: ${{ secrets.KBASE_TEST_TOKEN }}
         run: |
           kb-sdk test || true
+          mkdir -p ./test_local
           sed "s/^test_token=.*$/test_token=$KBASE_TEST_TOKEN/g" ./test/test.cfg.example > ./test_local/test.cfg
         continue-on-error: true
 
