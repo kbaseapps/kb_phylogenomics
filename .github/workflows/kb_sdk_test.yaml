@@ -26,7 +26,7 @@ jobs:
         run: |
           kb-sdk test || true
           mkdir -p ./test_local
-          sed "s/^test_token=.*$/test_token=$KBASE_TEST_TOKEN/g" ./test/test.cfg.example > ./test_local/test.cfg
+          sed -i "s/^test_token=.*$/test_token=$KBASE_TEST_TOKEN/g" ./test_local/test.cfg
         continue-on-error: true
 
       - name: Run KBase SDK Tests
