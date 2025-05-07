@@ -19,10 +19,13 @@ jobs:
           chmod 755 $(pwd)/bin/kb-sdk
           echo "$(pwd)/bin" >> $GITHUB_PATH
 
-      - name: Setup and run KBase SDK Tests
+      - name: Setup KBase SDK Tests
         env:
           KBASE_TEST_TOKEN: ${{ secrets.KBASE_TEST_TOKEN }}
         run: |
           kb-sdk test || true
           sed "s/^test_token=.*$/test_token=$KBASE_TEST_TOKEN/g" ./test/test.cfg.example > ./test_local/test.cfg
+        continue-on-error: true
+
+      - name: Run KBase SDK Tests
           kb-sdk test
