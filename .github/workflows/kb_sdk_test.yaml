@@ -15,6 +15,7 @@ jobs:
         run: |
           mkdir -p $(pwd)/bin
           docker run ghcr.io/kbase/kb_sdk_patch-develop:br-0.0.4 genscript > $(pwd)/bin/kb-sdk
+          docker tag ghcr.io/kbase/kb_sdk_patch-develop:br-0.0.4 kbase/kb-sdk:latest
           chmod 755 $(pwd)/bin/kb-sdk
           echo "$(pwd)/bin" >> $GITHUB_PATH
 
