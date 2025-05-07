@@ -24,8 +24,9 @@ jobs:
           KBASE_TEST_TOKEN: ${{ secrets.KBASE_TEST_TOKEN }}
         run: |
           kb-sdk test || true
+          mkdir -p ./test_local
           sed "s/^test_token=.*$/test_token=$KBASE_TEST_TOKEN/g" ./test/test.cfg.example > ./test_local/test.cfg
         continue-on-error: true
 
       - name: Run KBase SDK Tests
-          kb-sdk test
+        run: kb-sdk test
