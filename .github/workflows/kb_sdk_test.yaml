@@ -1,4 +1,4 @@
-name: KBase SDK Test
+name: Run KBase SDK Tests
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download kb-sdk, set up path, and modify script
+      - name: Download kb-sdk, set up path, and modify kb-sdk helper script
         run: |
           mkdir -p $(pwd)/bin
           docker run ghcr.io/kbase/kb_sdk_patch-develop:br-0.0.4 genscript > $(pwd)/bin/kb-sdk
@@ -20,7 +20,7 @@ jobs:
           echo "$(pwd)/bin" >> $GITHUB_PATH
           sed -i 's/docker run -it/docker run /g' $(pwd)/bin/kb-sdk
 
-      - name: Setup KBase SDK Tests
+      - name: Setup KBase SDK Tests and inject kbase token
         env:
           KBASE_TEST_TOKEN: ${{ secrets.KBASE_TEST_TOKEN }}
         run: |
