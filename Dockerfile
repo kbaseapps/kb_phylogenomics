@@ -24,7 +24,8 @@ RUN pip install ete3==3.1.2 PyQt5==5.11.3 numpy==1.23.1
 
 # Install MatPlotLib
 RUN pip install matplotlib==3.5.2
-
+# Install Bio
+RUN pip install biopython
 # Install MUSCLE
 #
 RUN mkdir -p /kb/module/muscle/bin && \

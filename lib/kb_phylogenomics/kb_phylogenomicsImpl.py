@@ -11,6 +11,7 @@ import sys
 import uuid
 import random
 import subprocess
+from Bio import SeqIO
 
 from datetime import datetime
 from pprint import pformat,pprint
