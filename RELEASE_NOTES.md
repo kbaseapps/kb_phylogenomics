@@ -1,3 +1,6 @@
+### Version 1.9.2
+* Getting sequences from assemblies when dna_sequence not found in cdss.
+
 ### Version 1.9.1
 * Updated version to sync with [DomainAnnotation](https://github.com/kbaseapps/DomainAnnotation/blob/093b943ead242d24227978d1df0b713d067beb89/ui/narrative/methods/annotate_domains_in_a_genome/spec.json#L30-L65) to fix `Server error: /data/db/Cog.aux (Read-only file system)`
 

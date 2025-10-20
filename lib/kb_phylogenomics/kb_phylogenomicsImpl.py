@@ -32,6 +32,7 @@ from installed_clients.kb_muscleClient import kb_muscle
 from installed_clients.kb_gblocksClient import kb_gblocks
 from installed_clients.kb_fasttreeClient import kb_fasttree
 from installed_clients.KBParallelClient import KBParallel
+from installed_clients.AssemblyUtilClient import AssemblyUtil
 #END_HEADER
 
 
@@ -9203,6 +9204,11 @@ This module contains methods for running and visualizing results of phylogenomic
             dfuClient = DFUClient(self.callbackURL, token=token, service_ver=SERVICE_VER)
         except Exception as e:
             raise ValueError("unable to instantiate dfuClient. "+str(e))
+        try:
+            assemblyutilClient = AssemblyUtil(self.callbackURL)
+        except Exception as e:
+            raise ValueError("unable to instantiate dfuClient. "+str(e))
+
 
         headers = {'Authorization': 'OAuth ' + token}
         env = os.environ.copy()
@@ -9431,8 +9437,46 @@ This module contains methods for running and visualizing results of phylogenomic
             locus_tags[genome_ref] = dict()
             gene_names[genome_ref] = dict()
             gene_functions[genome_ref] = dict()
-            #protein_coding_features = genome.get('features',[])
             protein_coding_features = genome.get('cdss',[])
+            if not all('dna_sequence' in cds for cds in protein_coding_features):
+                fasta_file = AssemblyUtil.get_assembly_as_fasta({'ref': genome['assembly_ref']})
+                parsed_assembly = SeqIO.parse(fasta_file['path'], 'fasta')
+                contigs = {rec.id: str(rec.seq) for rec in parsed_assembly}
+                for cds in protein_coding_features:
+                    if 'dna_sequence' in cds:
+                        continue  # already has sequence
+                    locs = cds.get('location', [])
+                    if not locs:
+                        continue  # skip malformed
+
+                    dna_segments = []
+                    for loc in locs:
+                        # Handle multi-segment (spliced) CDS
+                        try:
+                            contig_id, start, strand, length = loc
+                            contig_seq = contigs.get(contig_id)
+                            if not contig_seq:
+                                continue
+                            # Adjust for 1-based coordinates in most annotations
+                            subseq = contig_seq[start - 1 : start - 1 + length]
+                            dna_segments.append(subseq)
+                        except Exception as e:
+                            print(f"Error parsing location {loc} for {cds.get('id')}: {e}")
+                            continue
+
+                    if not dna_segments:
+                        continue
+                    # Join exons in genomic order (order already correct for '+')
+                    full_seq = "".join(dna_segments)
+
+                    # Reverse complement if strand is '-'
+                    if locs[0][2] == '-':
+                        full_seq = str(Seq(full_seq).reverse_complement())
+
+                    cds['dna_sequence'] = full_seq
+
+
+
             #all_features = protein_coding_features + genome.get('non_coding_features',[])
 
             #for feature in all_features:

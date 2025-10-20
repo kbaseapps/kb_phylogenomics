@@ -29,10 +29,10 @@ RUN pip install matplotlib==3.5.2
 #
 RUN mkdir -p /kb/module/muscle/bin && \
     cd /kb/module/muscle/bin && \
-    curl http://drive5.com/muscle/muscle3.8.425_binaries.tar.gz > muscle3.8.425_binaries.tar.gz && \
-    tar xfz muscle3.8.425_binaries.tar.gz && \
-    ln -s muscle3.8.425_i86linux64 muscle && \
-    rm muscle3.8.425_binaries.tar.gz 
+    curl https://drive5.com/muscle/downloads3.8.31/muscle3.8.31_i86linux64.tar.gz > muscle3.8.31_i86linux64.tar.gz && \
+    tar xfz muscle3.8.31_i86linux64.tar.gz && \
+    ln -s muscle3.8.31_i86linux64 muscle && \
+    rm muscle3.8.31_i86linux64.tar.gz 
 
 # -----------------------------------------
 

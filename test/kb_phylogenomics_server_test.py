@@ -1094,7 +1094,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Score Orthologs Evolutionary Rates
     ##
-    # HIDE @unittest.skip("skipped test_score_ortho_evo_rates_01()")  # uncomment to skip
+    #@unittest.skip("skipped test_score_ortho_evo_rates_01()")  # uncomment to skip
     def test_score_ortho_evo_rates_01(self):
         method = 'score_ortho_evo_rates'
 
@@ -2073,7 +2073,7 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
     #### Get Categories auto-configure method
     ##
-    @unittest.skip("skipped test_get_categoreis()")  # uncomment to skip
+    @unittest.skip("skipped test_get_categories()")  # uncomment to skip
     def test_get_categories(self):
         method = 'get_configure_categories'
 
