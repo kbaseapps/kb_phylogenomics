@@ -9205,7 +9205,7 @@ This module contains methods for running and visualizing results of phylogenomic
         except Exception as e:
             raise ValueError("unable to instantiate dfuClient. "+str(e))
         try:
-            assemblyutilClient = AssemblyUtil(self.callbackURL)
+            assembly_util = AssemblyUtil(self.callbackURL)
         except Exception as e:
             raise ValueError("unable to instantiate dfuClient. "+str(e))
 
@@ -9439,7 +9439,7 @@ This module contains methods for running and visualizing results of phylogenomic
             gene_functions[genome_ref] = dict()
             protein_coding_features = genome.get('cdss',[])
             if not all('dna_sequence' in cds for cds in protein_coding_features):
-                fasta_file = AssemblyUtil.get_assembly_as_fasta({'ref': genome['assembly_ref']})
+                fasta_file = assembly_util.get_assembly_as_fasta({'ref': genome['assembly_ref']})
                 parsed_assembly = SeqIO.parse(fasta_file['path'], 'fasta')
                 contigs = {rec.id: str(rec.seq) for rec in parsed_assembly}
                 for cds in protein_coding_features:
