@@ -9508,12 +9508,13 @@ This module contains methods for running and visualizing results of phylogenomic
                 gene_functions[genome_ref][fid] = ";".join(feature['functions'])
                 gene_name = []
                 locus_tag = 'N/A'
-                for alias in feature['aliases']:
-                    [alias_type, alias_val] = alias
-                    if alias_type == 'gene':
-                        gene_name.append(alias_val)
-                    elif alias_type == 'locus_tag':
-                        locus_tag = alias_val
+                if feature['aliases']:
+                    for alias in feature['aliases']:
+                        [alias_type, alias_val] = alias
+                        if alias_type == 'gene':
+                            gene_name.append(alias_val)
+                        elif alias_type == 'locus_tag':
+                            locus_tag = alias_val
                 locus_tags[genome_ref][fid] = locus_tag
                 if gene_names:
                     gene_names[genome_ref][fid] = ";".join(gene_name)
