@@ -19,7 +19,7 @@ from installed_clients.GenomeFileUtilClient import GenomeFileUtil
 from kb_phylogenomics.kb_phylogenomicsImpl import kb_phylogenomics
 from kb_phylogenomics.kb_phylogenomicsServer import MethodContext
 from kb_phylogenomics.authclient import KBaseAuth as _KBaseAuth
-
+ws = workspaceService("https://appdev.kbase.us/services/ws")
 
 class kb_phylogenomicsTest(unittest.TestCase):
 
@@ -1100,18 +1100,26 @@ class kb_phylogenomicsTest(unittest.TestCase):
 
         print ("\n\nRUNNING: test_"+method+"_01()")
         print ("==================================================\n\n")
-
         # input_data
         genomeInfo_0 = self.getGenomeInfo('GCF_000287295.1_ASM28729v1_genomic', 0)  # Candidatus Carsonella ruddii HT isolate Thao2000
         genomeInfo_1 = self.getGenomeInfo('GCF_000306885.1_ASM30688v1_genomic', 1)  # Wolbachia endosymbiont of Onchocerca ochengi
         genomeInfo_2 = self.getGenomeInfo('GCF_001439985.1_wTPRE_1.0_genomic',  2)  # Wolbachia endosymbiont of Trichogramma pretiosum
         genomeInfo_3 = self.getGenomeInfo('GCF_000022285.1_ASM2228v1_genomic',  3)  # Wolbachia sp. wRi
-
+        #genomeInfo_4 = ws.copy_object({
+        #    "from":{'ref':'76694/103/1'},
+        #    "to":{"workspace":os.environ['KB_WORKSPACE_ID'],'name':'additional_genome'}
+        #    })
+        #genomeInfo_4 = ws.get_objects2({'objects':[{'ref':'76694/103/1'}]})['data'][0]['data']
+        genomeInfo_4 = next((obj for obj in ws.list_objects(params={'ids':['76694']}) if str(obj[0]) == '103'), None)
+        print ("==================================================\n\n*3")
+        print(genomeInfo_4)
+        print ("==================================================\n\n*3")
         [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
         genome_ref_0 = str(genomeInfo_0[WSID_I]) + '/' + str(genomeInfo_0[OBJID_I]) + '/' + str(genomeInfo_0[VERSION_I])
         genome_ref_1 = str(genomeInfo_1[WSID_I]) + '/' + str(genomeInfo_1[OBJID_I]) + '/' + str(genomeInfo_1[VERSION_I])
         genome_ref_2 = str(genomeInfo_2[WSID_I]) + '/' + str(genomeInfo_2[OBJID_I]) + '/' + str(genomeInfo_2[VERSION_I])
         genome_ref_3 = str(genomeInfo_3[WSID_I]) + '/' + str(genomeInfo_3[OBJID_I]) + '/' + str(genomeInfo_3[VERSION_I])
+        genome_ref_4 = str(genomeInfo_4[WSID_I]) + '/' + str(genomeInfo_4[OBJID_I]) + '/' + str(genomeInfo_4[VERSION_I])
 
         #feature_id_0 = 'A355_RS00030'   # F0F1 ATP Synthase subunit B
         #feature_id_1 = 'WOO_RS00195'    # F0 ATP Synthase subunit B
@@ -1122,7 +1130,8 @@ class kb_phylogenomicsTest(unittest.TestCase):
         genome_refs_map = { '23880/3/1': genome_ref_0,
                             '23880/4/1': genome_ref_1,
                             '23880/5/1': genome_ref_2,
-                            '23880/6/1': genome_ref_3
+                            '23880/6/1': genome_ref_3,
+                            '23880/7/1': genome_ref_4
                         }
         obj_info = self.getPangenomeInfo('Tiny_things.OrthoMCL_pangenome', 0, genome_refs_map)
         [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple

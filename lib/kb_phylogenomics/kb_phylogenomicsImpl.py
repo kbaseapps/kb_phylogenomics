@@ -12,6 +12,7 @@ import uuid
 import random
 import subprocess
 from Bio import SeqIO
+from Bio.Seq import Seq
 
 from datetime import datetime
 from pprint import pformat,pprint
